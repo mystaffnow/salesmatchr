@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  employer_id: 1
+  salary_low: 1
+  salary_high: 1
+  zip: 1
+  is_remote: false
+  title: MyString
+  description: MyText
+  is_active: false
+
+two:
+  employer_id: 1
+  salary_low: 1
+  salary_high: 1
+  zip: 1
+  is_remote: false
+  title: MyString
+  description: MyText
+  is_active: false

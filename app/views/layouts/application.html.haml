@@ -1,0 +1,62 @@
+!!!
+%html
+  %head
+    %title SalesMatchr
+    %meta{charset: "utf-8"}/
+    %meta{content: "IE=edge", "http-equiv" => "X-UA-Compatible"}/
+    %meta{content: "width=device-width, initial-scale=1", name: "viewport"}/
+    %link{:type => "text/css", :rel => "stylesheet", :href => "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"}
+    %link{:type => "text/css", :rel => "stylesheet", :href => "https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"}
+    %link{:type => "text/css", :rel => "stylesheet", :href => 'http://fonts.googleapis.com/css?family=Open+Sans' }
+    %link{:type => "text/css", :rel => "stylesheet", :href => 'http://fonts.googleapis.com/css?family=Shadows+Into+Light' }
+    %link{:type => "text/css", rel:"stylesheet", href:"//assets.ziggeo.com/css/ziggeo-betajs-player.min.css" }
+    = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true
+    = javascript_include_tag 'application', 'data-turbolinks-track' => true
+    %script{:type => "text/javascript", src: "http://assets.ziggeo.com/js/ziggeo-jquery-json2-betajs-player.min.js" }
+    %script{:type => "text/javascript", :src => "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"}
+    = csrf_meta_tags
+  %body
+
+  %nav.navbar
+    .container
+      / Brand and toggle get grouped for better mobile display
+      .navbar-header
+        %button.navbar-toggle.collapsed{"data-target" => "#bs-example-navbar-collapse-1", "data-toggle" => "collapse", :type => "button"}
+          %span.sr-only Toggle navigation
+          %span.icon-bar
+          %span.icon-bar
+          %span.icon-bar
+        .navbar-brand
+          = link_to '/' do
+            %img{src: '/img/logo_white.png', style: 'width:100px'}
+          - if employer_signed_in?
+            = link_to 'my jobs', employer_jobs_path
+          - else
+            = link_to 'search jobs', jobs_path
+          - if candidate_signed_in?
+            = link_to 'my jobs', job_candidates_path
+      #bs-example-navbar-collapse-1.collapse.navbar-collapse
+        %ul.nav.navbar-nav.navbar-right
+          - if candidate_signed_in?
+            %li
+              = link_to "Profile", candidates_profile_path(current_candidate)
+            %li
+              = link_to "Sign out", destroy_candidate_session_path, :method => :delete
+          - elsif employer_signed_in?
+            %li
+              = link_to "Profile", employers_profile_path
+            %li
+              = link_to "Sign out", destroy_employer_session_path, :method => :delete
+          - else
+            %li
+              = link_to "Sign up", new_candidate_registration_path
+            %li
+              = link_to "Sign in", new_candidate_session_path
+
+  .container
+    #flash-display
+      - flash.each do |type, msg|
+        %div{:class => "alert alert-#{type == :notice ? "success" : type} fadeout", "data-dismiss" => "alert"}
+          %button.close &times;
+          = msg if msg.is_a?(String)
+  = yield

@@ -1,0 +1,30 @@
+%fieldset.account-field
+  = link_to "remove", class: "remove_fields" do
+    %i.fa.fa-trash
+  = f.label "Position"
+  = f.text_field :position, class: 'form-control'
+  = f.label "Company"
+  = f.text_field :company, class: 'form-control'
+  = f.label "Date Started"
+  %br
+  = f.date_select :start_date, class: 'form-control'
+  %br
+  = f.label "Date Ended"
+  %br
+  = f.date_select :end_date, class: 'form-control'
+  %br
+  = f.label "Description"
+  = f.text_area :description, class: 'form-control', placeholder: 'position description'
+  .col-md-6
+    = f.label "Is this a sales job?"
+    = f.check_box :is_sales, class: 'form-control'
+  .col-md-6
+    = f.label "Sales Type"
+    %br
+    = f.collection_select(:sales_type_id, SalesType.all, :id, :name,  {:class => 'form-control'})
+  = f.hidden_field :_destroy
+  %hr
+
+
+
+

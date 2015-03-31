@@ -1,0 +1,20 @@
+.panel-container
+  .panel-header
+    .row
+      .col-md-4.col-xs-12
+        %p
+          Job created
+          = format_date(job.created_at)
+      .col-md-8.col-xs-12
+        .action-bar
+          = link_to new_job_path(:copy_id => job.id) do
+            %i.fa.fa-plus{title: "copy to a new job"}
+          = link_to edit_job_path(job) do
+            %i.fa.fa-edit{title: "edit this job"}
+          = link_to job, :method => :delete, :data => { :confirm => 'Are you sure?' } do
+            %i.fa.fa-trash{title: "delete this job"}
+  .panel-content
+    = link_to employer_job_path(job) do
+      %h2= job.title
+      %p.description
+        = truncate(job.description,length: 400, omission: "...",)

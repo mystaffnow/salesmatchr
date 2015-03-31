@@ -1,0 +1,32 @@
+#post-list
+  #section.bg-highlight.header
+    .container
+      .row
+        .col-md-3
+          %h2 Jobs
+        .col-md-9{style: 'line-height:80px; text-align: right;'}
+          = link_to 'Find Now', jobs_path, class: 'btn btn-default', id: 'find-jobs'
+  #section.wrapper-sm
+    .container
+      .small
+        = @jobs_str
+      - @jobs.each do |job|
+        .row
+          = link_to job_path(job) do
+            .col-md-4
+              %h4
+                = job.title
+              = job.description
+            .col-md-4
+              %b
+                Salary Range
+              %br
+              = "$#{job.salary_low}"
+              \-
+              = "$#{job.salary_high}"
+            .col-md-4
+              %b
+                Location
+              %br
+              = "#{job.city}, #{job.state.name}"
+        %hr

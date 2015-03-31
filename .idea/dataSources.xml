@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" hash="2258756796">
+    <data-source source="LOCAL" name="Rails salesmatchr: development" uuid="f9332859-80b5-42a4-a139-9db5e949461c">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql:salesmatchr</jdbc-url>
+      <user-name>pguser</user-name>
+      <user-password>dfdadfcbdfd9dfd9dfdddfc5dfd8dfce</user-password>
+      <libraries />
+    </data-source>
+    <data-source source="LOCAL" name="Rails salesmatchr: default" uuid="9a38cb52-3694-423f-bdc7-838a085164df">
+      <driver-ref>postgresql</driver-ref>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql:salesmatchr</jdbc-url>
+      <user-name>pguser</user-name>
+      <user-password>dfdadfcbdfd9dfd9dfdddfc5dfd8dfce</user-password>
+      <libraries />
+    </data-source>
+  </component>
+</project>
+

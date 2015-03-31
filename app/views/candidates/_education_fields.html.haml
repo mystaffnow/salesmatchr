@@ -1,0 +1,13 @@
+%fieldset.account-field
+  = link_to "remove", class: "remove_fields" do
+    %i.fa.fa-trash
+  = f.label "School"
+  = f.text_field :school, class: 'form-control', placeholder: 'school'
+  = f.label "Degree"
+  %br
+  = f.collection_select(:education_level_id, EducationLevel.all, :id, :name,  {:class => 'form-control'})
+  %br
+  = f.label "Description"
+  = f.text_area :description, class: 'form-control'
+  = f.hidden_field :_destroy
+  %hr

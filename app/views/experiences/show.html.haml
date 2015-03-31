@@ -1,0 +1,30 @@
+%p#notice= notice
+
+%p
+  %b Position:
+  = @experience.position
+%p
+  %b Company:
+  = @experience.company
+%p
+  %b Description:
+  = @experience.description
+%p
+  %b Start date:
+  = @experience.start_date
+%p
+  %b End date:
+  = @experience.end_date
+%p
+  %b Is current:
+  = @experience.is_current
+%p
+  %b Is sales:
+  = @experience.is_sales
+%p
+  %b Sales type:
+  = @experience.sales_type_id
+
+= link_to 'Edit', edit_experience_path(@experience)
+\|
+= link_to 'Back', experiences_path

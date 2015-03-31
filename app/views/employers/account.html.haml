@@ -1,0 +1,48 @@
+.bg-highlight
+  .container
+    .row
+      .col-md-12
+        Profile Details
+.wrapper-sm
+  .container
+    .row{style: 'text-align:center'}
+      .col-md-3
+        .btn.btn-primary.profile#accounts
+          Profile
+      .col-md-3
+        .btn.btn-primary.profile#credit
+          Credit Card
+#account
+  #new-registration
+    = form_for(current_employer, url: employers_account_path, html: { method: :put }) do |f|
+      #accounts-panel.profile-panel
+        .container
+          .account-panel
+            .account-header
+              %h2
+                Profile Information
+            .account-content
+              = f.label "Company Name"
+              = f.text_field :company, class: 'form-control'
+              = f.label "City"
+              = f.text_field :city, class: 'form-control'
+              = f.label "State"
+              %br
+              = f.collection_select(:state_id, State.all, :id, :name,  {:class => 'form-control selectpickers'})
+              %br
+              = f.label "Zipcode"
+              = f.text_field :zip, class: 'form-control'
+              = f.label "Company Bio"
+              = f.text_area :description, class: 'form-control'
+      %br
+      .container
+        .account-panel{style: 'border:none'}
+          %button.btn.btn-primary.btn-full
+            submit
+:javascript
+  $(function(){
+    $('.profile').on('click',function(){
+      $('.profile-panel').hide();
+      $('#'+this.id+'-panel').show();
+    });
+  })

@@ -1,0 +1,152 @@
+// Place all the styles related to the pages controller here.
+// They will automatically be included in application.css.
+// You can use Sass here: http://sass-lang.com/
+// Home page
+#landing-jumbotron
+  h1
+    font-size: 50px
+    margin: 40px 0
+    color: $secondary-color
+
+#landing-content
+  padding: 60px 0
+
+  .card-container
+    padding: 20px 0 45px 0
+    .small
+      color: #BBBDBF
+      margin-top: 10px
+      font-style: italic
+
+
+#recent-jobs
+  padding-bottom: 60px
+
+// Technician
+#account
+  padding: 60px 0
+
+.account-header
+  max-width: 900px
+  margin: auto
+
+  .panel-header
+    margin-bottom: 40px
+    h2
+      display: inline
+      color: $secondary-color
+      font-size: 3em
+    span
+      float: right
+      line-height: 3em
+
+#account
+  .account-panel
+    border: 1px solid $gray
+    border-radius: 4px
+    max-width: 700px
+    margin: auto
+    .account-header
+      background-color: #f6f6f6
+      border-bottom: 1px solid $gray
+      margin-top: 0
+      padding: 15px 15px
+      h2
+        margin: 0
+        padding-bottom: 0
+    .account-content
+      padding: 20px 20px
+      input
+        width: 100%
+      .actions
+        a .btn-primary
+          width: 100%
+      .account-footer
+        margin-top: 30px
+        form input
+          background: none
+          border: none
+          &:hover
+            text-decoration: underline
+      #technician-features
+        text-align: center
+        margin-bottom: 50px
+        h2
+          margin-bottom: 20px
+          font-color: black
+        i.fa
+          color: $secondary-color
+          font-size: 1.7em
+          border-radius: 50%
+          padding: 10px 10px
+          border: 1px solid $secondary-color
+          margin-bottom: 15px
+        i.fa.fa-map-marker
+          padding: 10px 15px
+          & .fa-map-marker
+            padding-left: 20px
+
+.new-registration
+  .account-header
+    background-color: #f6f6f6
+    border-bottom: 1px solid $gray
+    padding-top: 15px
+    padding-left: 15px
+    h2
+      display: inline
+    span
+      float: right
+      line-height: 2.7em
+      @media (max-width: 540px)
+        float: none
+  .account-content
+    .actions
+      input
+        width: 100%
+    a
+      .btn.btn-primary
+        width: 100%
+    .account-footer
+      margin-top: 40px
+
+#job
+  padding: 60px 0
+  h1
+    margin-bottom: 40px
+    padding-bottom: 20px
+    border-bottom: 1px solid $gray
+  .job-info
+    margin-bottom: 20px
+    i.fa
+      color: $secondary-color
+      font-size: 1.2em
+    p
+      display: inline-block
+      margin-left: 10px
+      font-weight: bold
+  .applied
+    display: inline-block
+    padding: 10px 20px
+    border-radius: 4px
+    margin-top: 30px
+    background-color: #93ba2c
+    color: white
+    i.fa
+      font-size: 1.7em
+      margin-right: 10px
+    span
+      font-size: 1.4em
+  p.description
+    margin-top: 40px
+  a
+    width: 100%
+
+.job-info
+  margin-bottom: 20px
+  i.fa
+    color: $secondary-color
+    font-size: 1.2em
+  p
+    display: inline-block
+    margin-top: 5px
+    font-weight: bold

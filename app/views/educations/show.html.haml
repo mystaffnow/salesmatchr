@@ -1,0 +1,21 @@
+%p#notice= notice
+
+%p
+  %b School:
+  = @education.school
+%p
+  %b Degree:
+  = @education.degree_id
+%p
+  %b Description:
+  = @education.description
+%p
+  %b Start date:
+  = @education.start_date
+%p
+  %b End date:
+  = @education.end_date
+
+= link_to 'Edit', edit_education_path(@education)
+\|
+= link_to 'Back', educations_path

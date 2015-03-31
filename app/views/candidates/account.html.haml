@@ -1,0 +1,106 @@
+.container.wrapper-sm
+  .row{style: 'text-align:center'}
+    .col-md-3
+      .btn.btn-primary.profile#accounts.btn-active
+        Profile
+    .col-md-3
+      .btn.btn-primary.profile#experience
+        Experience
+    .col-md-3
+      .btn.btn-primary.profile#education
+        Education
+    .col-md-3
+      .btn.btn-primary.profile#archetype
+        Archetype
+#account
+  #new-registration
+    = form_for(current_candidate, url: candidates_account_path, html: { method: :put }) do |f|
+      #accounts-panel.profile-panel
+        .container
+          .account-panel
+            .account-header
+              %h2
+                Profile Information
+            .account-content
+              = f.label "Education Level"
+              %br
+              = f.collection_select(:education_level_id, EducationLevel.all, :id, :name,  {:class => 'form-control selectpickers'})
+              %br
+              = f.label "City"
+              = f.text_field :city, class: 'form-control'
+              = f.label "State"
+              %br
+              = f.collection_select(:state_id, State.all, :id, :name,  {:class => 'form-control selectpickers'})
+              %br
+              = f.label "Zipcode"
+              = f.text_field :zip, class: 'form-control'
+              = f.hidden_field :ziggeo_token, id: 'ziggeo-token'
+              %ziggeo{ 'ziggeo-width' => 320, 'ziggeo-height' => 240 }
+        %br
+        .container
+          .account-panel{style: 'border:none'}
+            .btn.btn-primary.btn-full.next_button#experience-button
+              next
+      #experience-panel.profile-panel{style: 'display:none'}
+        .container
+          .account-panel
+            .account-header
+              %h2
+                Work Experience
+                %i.fa.fa-info-circle.info{title: "add your work experience"}
+            .account-content
+              = f.fields_for :experiences do |builder|
+                = render 'experience_fields', f: builder
+              = link_to_add_fields "+ Add Experience", f, :experiences
+        %br
+          .container
+            .account-panel{style: 'border:none'}
+              .btn.btn-primary.btn-full.next_button#education-button
+                next
+      #education-panel.profile-panel{style: 'display:none'}
+        .container
+          .account-panel
+            .account-header
+              %h2
+                Education Experience
+                %i.fa.fa-info-circle.info{title: "add your education experience"}
+            .account-content
+              = f.fields_for :educations do |builder|
+                = render 'education_fields', f: builder
+              = link_to_add_fields "+ Add Education", f, :educations
+        %br
+          .container
+            .account-panel{style: 'border:none'}
+              .btn.btn-primary.btn-full.next_button#archetype-button
+                next
+      #archetype-panel.profile-panel{style: 'display:none'}
+        .container
+          .account-panel
+            .account-header
+              %h2
+                Archetype
+            .account-content
+              = f.text_field :archetype_score, class: 'form-control'
+        %br
+        .container
+          .account-panel{style: 'border:none'}
+            %button.btn.btn-primary.btn-full
+              submit
+:javascript
+  $(function(){
+    $('.profile').on('click',function(){
+      $('.profile').removeClass('btn-active');
+      $('.profile-panel').hide();
+      $('#'+this.id+'-panel').show();
+      $(this).addClass('btn-active');
+    });
+    $('.next_button').on('click',function(){
+      $('.profile').removeClass('btn-active');
+      $('.profile-panel').hide();
+      $('#'+this.id.split('-')[0]+'-panel').show();
+      $('#'+this.id.split('-')[0]).addClass('btn-active');
+    });
+    ZiggeoApi.Events.on("submitted", function (data) {
+    	$('#ziggeo-token').val(data.video.token);
+    });
+  })

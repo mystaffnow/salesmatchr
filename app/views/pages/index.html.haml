@@ -1,0 +1,73 @@
+#landing-jumbotron
+  %section.wrapper-lg.bg-custom
+    .container
+      .row
+        .col-md-12
+          .widget.padding-lg
+            %img{src:'/img/beta_logo.png', style:'width:400px'}
+
+#landing-content
+  .container
+    .row{style:'text-align:center'}
+      .col-md-6.wrapper-sm
+        .col-md-8.col-md-offset-2.card-container
+          %h2
+            %i.fa.fa-list
+          %h2 Post A Job
+          = link_to "Job poster sign up", new_employer_registration_path, class: 'btn btn-lg btn-primary'
+          .small
+            = link_to "Already have an account? Sign in here", new_employer_session_path
+      .col-md-6.wrapper-sm
+        .col-md-8.col-md-offset-2.card-container
+          %h2
+            %i.fa.fa-check
+          %h2 Find A Job
+          = link_to "Candidate Sign up", new_candidate_registration_path, class: 'btn btn-lg btn-primary btn-lg'
+          .small
+            = link_to "Already have an account? Sign in here", new_candidate_session_path
+#section.section-highlight.wrapper-sm
+  .container
+    .row
+      .col-md-12
+        %h2
+          Use SalesMatchr to find the right talent today!
+#section.wrapper-md
+  .container
+    .row
+      .col-md-4{style:'text-align:center'}
+        %img.callout-img{src:'img/Graphic2.png'}
+        %h4
+          We curate to find the most experienced and highest calibre talent
+      .col-md-4{style:'text-align:center'}
+        %img.callout-img{src:'img/Graphic3.png'}
+        %h4
+          We use technology and data analytics to cut traditional overhead and save you thousands of dollars
+      .col-md-4{style:'text-align:center'}
+        %img.callout-img{src:'img/Graphic4.png'}
+        %h4
+          You grow your business because you find your sales hero faster
+
+#section.section-highlight.wrapper-sm
+  .container
+    .row
+      .col-md-4
+        %h4
+          Newsletter
+      .col-md-4
+        %h4
+          Contact at
+        %p{style: 'text-align:left'}
+          %br
+            p(703) 224-8088
+          %br
+            f(703) 224-8089
+          %br
+            team@jobmatchr.co
+      .col-md-4
+        %h4
+          SalesMatchr
+        %p{style: 'text-align:left'}
+          1900 Campus Commons Dr
+          %br
+            Reston, VA 20191
+            Suite 100

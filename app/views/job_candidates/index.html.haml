@@ -1,0 +1,31 @@
+#section.bg-highlight
+  .container
+    .row
+      .col-md-12
+        %h2 My Job
+#section.wrapper-sm
+  .container
+    %table.table.table-responsive
+      - @job_candidates.each do |job_candidate|
+        %tr
+          %td
+            %h4
+              = job_candidate.job.title
+            = job_candidate.job.description
+          %td
+            %h4
+              Submitted | Viewed | Contacted
+              |
+              - if job_candidate.is_hired
+                %b.secondary-color
+                  Employed
+              - else
+                Employed
+          %td
+            = link_to job_path(job_candidate.job) do
+              %i.fa.fa-close{title: "withdraw application"}
+              Withdraw application
+          %td
+            = link_to job_path(job_candidate.job) do
+              %i.fa.fa-search{title: "view this job"}
+              View job post

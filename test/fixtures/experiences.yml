@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  position: MyString
+  company: MyString
+  description: MyString
+  start_date: 2015-03-28
+  end_date: 2015-03-28
+  is_current: false
+  is_sales: false
+  sales_type_id: 1
+
+two:
+  position: MyString
+  company: MyString
+  description: MyString
+  start_date: 2015-03-28
+  end_date: 2015-03-28
+  is_current: false
+  is_sales: false
+  sales_type_id: 1

@@ -1,0 +1,9 @@
+%p#notice= notice
+
+%p
+  %b Name:
+  = @sales_type.name
+
+= link_to 'Edit', edit_sales_type_path(@sales_type)
+\|
+= link_to 'Back', sales_types_path

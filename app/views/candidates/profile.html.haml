@@ -1,0 +1,54 @@
+.bg-highlight
+  .container
+    .row
+      .col-md-10
+      .col-md-2
+        - if current_candidate
+          = link_to 'Edit Profile', candidates_account_path
+.wrapper-sm
+  .container
+    .row
+      .col-md-1{style: 'background-color:gray;height:100px'}
+      .col-md-4
+        %h4
+          = @candidate.name
+        = get_archetype_from_score @candidate.archetype_score
+.wrapper-sm
+  .container
+    .row
+      .col-md-6
+        %ziggeo{ 'ziggeo-video' => @candidate.ziggeo_token, 'ziggeo-width' => 320, 'ziggeo-height' => 240}
+        %br
+        #account
+          .account-panel
+            .account-content
+              %p
+                %b
+                  Location
+                %br
+                = @candidate.city
+                = @candidate.state.name
+                = @candidate.zip
+                %br
+                %br
+                %b
+                  Education Level
+                %br
+                = @candidate.education_level.name
+      .col-md-6
+        #account
+          .account-panel
+            .account-header
+              %h2
+                Work History
+            .account-content
+              - @candidate.experiences.each do |experience|
+                = render 'candidates/experience_item', experience: experience
+          %br
+          .account-panel
+            .account-header
+              %h2
+                Education
+            .account-content
+              - @candidate.educations.each do |education|
+                = render 'candidates/education_item', education: education
