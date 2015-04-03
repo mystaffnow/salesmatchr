@@ -8,6 +8,8 @@ class CreateCandidates < ActiveRecord::Migration
       t.integer :education_level_id
       t.integer :archetype_score
       t.string :ziggeo_token
+      t.string :uid
+      t.string :provider
 
       t.timestamps null: false
     end

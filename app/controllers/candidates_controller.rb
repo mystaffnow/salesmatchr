@@ -8,7 +8,6 @@ class CandidatesController < ApplicationController
     end
   end
   def account
-
   end
   def update
     respond_to do |format|

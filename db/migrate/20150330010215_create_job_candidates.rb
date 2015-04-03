@@ -3,7 +3,7 @@ class CreateJobCandidates < ActiveRecord::Migration
     create_table :job_candidates do |t|
       t.integer :candidate_id
       t.integer :job_id
-      t.boolean :is_hired
+      t.integer :status
 
       t.timestamps null: false
     end

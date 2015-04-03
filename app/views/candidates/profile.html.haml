@@ -17,11 +17,14 @@
   .container
     .row
       .col-md-6
-        %ziggeo{ 'ziggeo-video' => @candidate.ziggeo_token, 'ziggeo-width' => 320, 'ziggeo-height' => 240}
+        - if @candidate.ziggeo_token != nil
+          %ziggeo{ 'ziggeo-video' => @candidate.ziggeo_token, 'ziggeo-width' => 320, 'ziggeo-height' => 240}
+        - elsif ( current_candidate == @candidate ) && ( !@candidate.ziggeo_token )
+          = link_to 'Edit your profile to add a video', candidates_account_path
         %br
         #account
           .account-panel
-            .account-content
+            .account-contentxw
               %p
                 %b
                   Location
