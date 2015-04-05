@@ -10,10 +10,12 @@
     %link{:type => "text/css", :rel => "stylesheet", :href => 'http://fonts.googleapis.com/css?family=Open+Sans' }
     %link{:type => "text/css", :rel => "stylesheet", :href => 'http://fonts.googleapis.com/css?family=Shadows+Into+Light' }
     %link{:type => "text/css", rel:"stylesheet", href:"//assets.ziggeo.com/css/ziggeo-betajs-player.min.css" }
+    %link{:type => "text/css", :rel => "stylesheet", :href => "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.3.2/css/bootstrap2/bootstrap-switch.min.css" }
     = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
     %script{:type => "text/javascript", src: "http://assets.ziggeo.com/js/ziggeo-jquery-json2-betajs-player.min.js" }
     %script{:type => "text/javascript", :src => "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"}
+    %script{:type => "text/javascript", :src => "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.3.2/js/bootstrap-switch.min.js"}
     = csrf_meta_tags
   %body
 
@@ -53,10 +55,10 @@
             %li
               = link_to "Sign in", new_candidate_session_path
 
-  .container
-    #flash-display
+  #flash-display
+    .container
       - flash.each do |type, msg|
         %div{:class => "alert alert-#{type == :notice ? "success" : type} fadeout", "data-dismiss" => "alert"}
           %button.close &times;
-          = msg if msg.is_a?(String)
+          .text-center= msg if msg.is_a?(String)
   = yield

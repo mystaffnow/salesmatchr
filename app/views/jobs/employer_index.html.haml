@@ -1,16 +1,18 @@
-#section.bg-highlight
+.action-bar
   .container
     .row
-      .col-md-10
-        %h2 Jobs
-      .col-md-2
-        = link_to 'Create New Job', new_job_path, class: 'btn btn-default', style: 'margin-top:30px'
-    .row{style: 'padding-bottom: 10px'}
-      .col-md-12
-        .small
-          = "Open Jobs (#{@jobs.count})"
-          |
-          = link_to "Inactive Jobs (#{@inactive_job_count})", employer_archive_jobs_path
+      .col-md-9
+        %h2 My Jobs
+      .col-md-3.text-right
+        = link_to 'Create New Job', new_job_path, class: 'btn btn-default'
+
+.container.padded-container
+  .row
+    .col-md-12
+      = "Open Jobs (#{@jobs.count})"
+      |
+      = link_to "Inactive Jobs (#{@inactive_job_count})", employer_archive_jobs_path
+
 #section.wrapper-sm
   .container
     %table.table.table-responsive
@@ -19,7 +21,6 @@
           %td
             %h4
               = job.title
-            = job.description
           %td
             %h4
               10 views

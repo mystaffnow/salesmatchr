@@ -1,32 +1,75 @@
-#post-list
-  #section.bg-highlight.header
+#job-list
+  .action-bar
     .container
       .row
-        .col-md-3
-          %h2 Jobs
-        .col-md-9{style: 'line-height:80px; text-align: right;'}
-          = link_to 'Find Now', jobs_path, class: 'btn btn-default', id: 'find-jobs'
-  #section.wrapper-sm
-    .container
-      .small
-        = @jobs_str
-      - @jobs.each do |job|
+        .col-md-9
+          .dropdown
+            %button#dropdownMenu1.btn.btn-default.dropdown-toggle{"aria-expanded" => "true", "data-toggle" => "dropdown", :type => "button"}
+              Position Type
+              %span.caret
+            %ul.dropdown-menu{"aria-labelledby" => "dropdownMenu1", :role => "menu"}
+              %li{:role => "presentation"}
+                %a{:href => "#", :role => "menuitem", :tabindex => "-1"} Action
+              %li{:role => "presentation"}
+                %a{:href => "#", :role => "menuitem", :tabindex => "-1"} Another action
+              %li{:role => "presentation"}
+                %a{:href => "#", :role => "menuitem", :tabindex => "-1"} Something else here
+              %li{:role => "presentation"}
+                %a{:href => "#", :role => "menuitem", :tabindex => "-1"} Separated link
+          .dropdown
+            %button#dropdownMenu1.btn.btn-default.dropdown-toggle{"aria-expanded" => "true", "data-toggle" => "dropdown", :type => "button"}
+              Medical
+              %span.caret
+            %ul.dropdown-menu{"aria-labelledby" => "dropdownMenu1", :role => "menu"}
+              %li{:role => "presentation"}
+                %a{:href => "#", :role => "menuitem", :tabindex => "-1"} Action
+              %li{:role => "presentation"}
+                %a{:href => "#", :role => "menuitem", :tabindex => "-1"} Another action
+              %li{:role => "presentation"}
+                %a{:href => "#", :role => "menuitem", :tabindex => "-1"} Something else here
+              %li{:role => "presentation"}
+                %a{:href => "#", :role => "menuitem", :tabindex => "-1"} Separated link
+          %span Remote Only
+          %input{:checked => "", :name => "my-checkbox", :type => "checkbox"}/
+        .col-md-3.text-right
+          = link_to "Find Now", jobs_path, class: "btn btn-primary action-btn", id: "find-jobs"
+  .container.padded-container
+    .row
+      .col-md-2
+        %p Positions
+        %p Matches
+        %p Saved
+        %p All
+      .col-md-10
         .row
-          = link_to job_path(job) do
-            .col-md-4
-              %h4
-                = job.title
-              = job.description
-            .col-md-4
-              %b
-                Salary Range
-              %br
-              = "$#{job.salary_low}"
-              \-
-              = "$#{job.salary_high}"
-            .col-md-4
-              %b
-                Location
-              %br
-              = "#{job.city}, #{job.state.name}"
-        %hr
+          .col-md-4
+            %h3 Position
+          .col-md-2
+            %h3 Salary
+          .col-md-3
+            %h3 Location
+          .col-md-3
+        .small
+          = @jobs_str
+        - @jobs.each do |job|
+          .row
+            = link_to job_path(job) do
+              .col-md-4
+                %h4
+                  = job.title
+              .col-md-2
+                %b
+                  Salary Range
+                %br
+                = "$#{job.salary_low}"
+                \-
+                = "$#{job.salary_high}"
+              .col-md-3
+                %b
+                  Location
+                %br
+                = "#{job.city}, #{job.state.name}"
+              .col-md-3
+                = link_to 'Save', '#', class: "btn btn-primary"
+                = link_to 'View', '#', class: "btn btn-primary"
+          %hr

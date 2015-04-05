@@ -1,109 +1,198 @@
-$primary-color: #00435F
-$secondary-color: #FF5100
+@import url(http://fonts.googleapis.com/css?family=Lato:300,400,700,900)
+
+$primary-color: #2C3E50
+$primary-hover: #34495E
+
+$secondary-color: #1abc9c
+$secondary-hover: #48c9b0
+
+$light-blue: #3498db
+
 $gray: #d1d3d5
-$background-color: #f6f6f6
+
+
+// Utility Classes
+
+.text-center
+  text-align: center
+.text-right
+  text-align: right
+.padded-container
+  padding: 60px 0
+
+
 
 // General
-body
-  font-family: "Open Sans"
-  font-size: 14px
+
+h1, h2, h3, h4, h5, p
+  font-family: 'Lato', sans-serif
+
+h1
+  font-weight: 700
+  font-size: 61px
 
 h2
-  padding-bottom: 20px
+  font-weight: 400
+  font-size: 40px
+
+h3
+  font-weight: 400
+  font-size: 28px
+
+h4
+  font-weight: 400
+  font-size: 22px
+
+p
+  font-weight: 300
+
+#flash-display
+  background-color: $light-blue
+  color: white
+  .alert
+    margin-bottom: 0
+    padding: 15px 15px
+
 
 // Navigation
-.navbar
-  background-color: $background-color
+
+nav.navbar
+  background-color: $primary-color
   border: none
   border-radius: 0
-
   span.icon-bar
-    background-color: #000
+  margin-bottom: 0
 
-.callout-img
-  text-align: center
-  padding: 40px
-  display: block
-  width: 100%
+  li
+    a
+      font-family: 'Lato', sans-serif
+      font-weight: 900
+      font-size: 1.2em
+      color: white
+      padding: 20px 20px
+      &:hover
+        background-color: $secondary-color !important
 
-// Buttons and Links
-.btn
-  border-radius: 4px
-  padding: 20px 30px
-  color: $secondary-color
-.btn:hover
-  opacity: 0.8
+
+
+// Buttons
+
 .btn-primary
-  background-color: #fff
-  border-color: $secondary-color
+  background-color: $primary-color !important
+  border-color: $primary-color !important
+  padding: 10px 20px
 .btn-primary:hover
-  background-color: $secondary-color
+  background-color: $primary-hover !important
+  transition: background-color 150ms ease-in
+.btn-default
+  background-color: $secondary-color !important
+  border-color: $secondary-color !important
+  color: white !important
+  padding: 10px 30px !important
+  span.caret
+    margin-left: 50px
+.btn-default:hover
+  background-color: $secondary-hover !important
+.close
+  opacity: 0.8
   color: #fff
-  border-color: $secondary-color
-a
-  color: $primary-color
-.btn-full
-  width: 100%
-.remove_fields
-  background-color: $secondary-color
-  color: #ffffff
-  position: absolute
-  margin-right: -35px
-  padding: 10px
-  right: 0
-  border-radius: 4px
-.account-field
-  position: relative
-.secondary-color
-  color: $secondary-color
-// Utility Classes
-.alternative-font
-  font-family: "Shadows Into Light", cursive
-  font-size: 1.6em
-  color: $primary-color
-.btn-active
-  background-color: $secondary-color
-  color: white
-.section-highlight
-  background-color: $primary-color
-  color: white
-  text-align: center
-
-.bg-custom
-  background: image-url('/img/bg-3.jpg') no-repeat center center fixed
-  background-size: cover
-  text-align: center
-  color: #ffffff
-
-.wrapper-lg
-  padding: 8em 0
-.wrapper-md
-  padding: 5em 0
-.wrapper-sm
-  padding: 2em 0
-
-.padding-lg
-  padding: 3em
-.padding-md
-  padding: 2em
-.padding-sm
-  padding: 1em
 
 
-.card-container
+
+// Forms
+
+input.form-control
+  height: 42px
+  padding: 8px 12px
+  line-height: 1.467
+  border: 1px solid #bdc3c7
+  margin-bottom: 20px
+  &:focus
+    border-color: $secondary-color
+
+
+// Account & Registration Views
+
+.account-panel
   border: 1px solid $gray
-.bg-highlight
-  background-color: #f6f6f6
-  padding: 20px 0
+  border-radius: 4px
+  max-width: 700px
+  margin: auto
+  .account-header
+    background-color: $primary-color
+    border-bottom: 1px solid $gray
+    margin-top: 0
+    padding: 40px 15px
+    text-align: center
+    position: relative
+    h2
+      margin: 0
+      padding-bottom: 0
+      color: white
+    i.fa
+      position: absolute
+      top: 0
+      right: 0
+      color: white
+      font-size: 1.4em
+      padding: 10px 10px
+  .account-content
+    padding: 40px 40px
+    input
+      width: 100%
+    .selectpickers
+      -webkit-appearance:none
+    .actions
+      a .btn-primary
+        display: block
+        margin-left: auto
+        margin-right: auto
+    .account-footer
+      margin-top: 30px
+      form input
+        background: none
+        border: none
+        &:hover
+          text-decoration: underline
 
-.navbar
-  margin-bottom: 0px
-  background-color: $primary_color
+// CSS TRIANGLE
+.account-header::after
+  content: ""
+  width: 0 
+  height: 0
+  border-left: 10px solid transparent
+  border-right: 10px solid transparent
+  border-top: 10px solid $primary-color
+  position: absolute
+  left: 49.5%
+  margin-top: 40px
+
+
+// Global Styling
+
+.action-bar
+  background-color: $light-blue
+  padding: 14px 0
   color: white
-.navbar
-  a
-    color: white
-.navbar-brand
-  a
-    font-size: smaller
-    padding: 0px 10px
+  h2
+    margin: 10px 0
+  .dropdown
+    display: inline-block
+    .btn
+      margin-right: 25px
+
+#registration-bar
+  background-color: $light-blue
+  color: white
+  text-align: center
+  .col-md-3
+    padding: 0
+  .btn.btn-primary
+    width: 100%
+    border-radius: 0
+    padding: 20px 0
+    background-color: $light-blue !important
+    border: 0
+    text-transform: uppercase
+    &:hover
+      background-color: $secondary-color !important

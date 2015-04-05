@@ -13,16 +13,17 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
+//= requier bootstrap-sprockets
 //= require_tree .
 
 function ready(){
   ZiggeoApi.token = "f2b7325a17fc847dbabf556c596170d8";
-  $('.profile-panel').on('click', '.remove_fields', function(event) {
+  $('.account-panel').on('click', '.remove_fields', function(event) {
     $(this).prev('input[type=hidden]').val('1');
     $(this).closest('fieldset').hide();
     return event.preventDefault();
   });
-  $('.profile-panel').on('click', '.add_fields', function(event) {
+  $('.account-panel').on('click', '.add_fields', function(event) {
     var regexp, time;
     time = new Date().getTime();
     regexp = new RegExp($(this).data('id'), 'g');
@@ -31,6 +32,9 @@ function ready(){
   });
 
   $('.selectpickers').selectpicker();
+
+  // http://www.bootstrap-switch.org/
+  $("[name='my-checkbox']").bootstrapSwitch();
 }
 
 $(document).ready(ready);

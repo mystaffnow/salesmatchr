@@ -24,8 +24,6 @@ ActiveRecord::Schema.define(version: 20150330010215) do
     t.integer  "education_level_id"
     t.integer  "archetype_score"
     t.string   "ziggeo_token"
-    t.string   "uid"
-    t.string   "provider"
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
     t.string   "email",                  default: "", null: false
@@ -102,7 +100,7 @@ ActiveRecord::Schema.define(version: 20150330010215) do
   create_table "job_candidates", force: :cascade do |t|
     t.integer  "candidate_id"
     t.integer  "job_id"
-    t.integer  "status"
+    t.boolean  "is_hired"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
   end
