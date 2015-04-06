@@ -1,19 +1,19 @@
-#section.bg-highlight
-  .container
-    .row
-      .col-md-12
-        %h2 My Job
-#section.wrapper-sm
-  .container
-    %table.table.table-responsive
-      - @job_candidates.each do |job_candidate|
-        %tr
-          %td
-            %h4
-              = job_candidate.job.title
-            = job_candidate.job.description
-          %td
-            %h4
+.job-list
+
+  .action-bar
+    .container
+      .row
+        .col-md-9
+          %h2 My Jobs
+
+  .container.padded-container
+    - @job_candidates.each do |job_candidate|
+      .row
+        = link_to job_path(job_candidate.job) do
+          .col-md-8
+            %h3= job_candidate.job.title
+            %p= job_candidate.job.description
+            %p
               - if job_candidate.submitted?
                 %b.secondary-color
                   Submitted
@@ -37,14 +37,17 @@
                   Withdrawn
               - else
                 Withdrawn
-          %td
-            - if !job_candidate.withdrawn?
-              = form_for(job_candidate) do |f|
-                = f.hidden_field :status, value: "#{get_status_key_by_value(JobCandidate.statuses[:withdrawn])}"
-                %button.btn.btn-primary#hire= "Withdraw Application"
-            - else
-              Application Withdrawn
-          %td
-            = link_to job_path(job_candidate.job) do
-              %i.fa.fa-search{title: "view this job"}
-              View job post
+            
+            / .btn-group{"aria-label" => "...", :role => "group"}
+            /   %button.btn.btn-default{:type => "button"} Submitted
+            /   %button.btn.btn-default{:type => "button"} Viewed
+            /   %button.btn.btn-default{:type => "button"} Accepted
+            /   %button.btn.btn-default{:type => "button"} Withdrawn
+        .col-md-4.job-actions
+          - if !job_candidate.withdrawn?
+            = form_for(job_candidate) do |f|
+              = f.hidden_field :status, value: "#{get_status_key_by_value(JobCandidate.statuses[:withdrawn])}"
+              %button.btn.btn-info#hire= "Withdraw Application"
+          - else
+            Application Withdrawn
+      %hr

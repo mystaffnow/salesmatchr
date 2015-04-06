@@ -35,6 +35,7 @@ function ready(){
 
   // http://www.bootstrap-switch.org/
   $("[name='my-checkbox']").bootstrapSwitch();
+
 }
 
 $(document).ready(ready);

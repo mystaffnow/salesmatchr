@@ -1,59 +1,73 @@
-- if current_candidate
-  .action-bar
-    .container
-      .row
-        .col-md-10
-        .col-md-2
-          = link_to "Edit Profile", candidates_account_path, class: "btn btn-default"
+#profile
 
-.container.padded-container
-  .row
-    .col-md-1{style: 'background-color:gray;height:100px'}
-    .col-md-4
-      %h4
-        = @candidate.name
-      = get_archetype_from_score @candidate.archetype_score
-
-
-
-.wrapper-sm
-  .container
+  .container.padded-container
     .row
-      .col-md-6
-        - if @candidate.ziggeo_token != nil
-          %ziggeo{ 'ziggeo-video' => @candidate.ziggeo_token, 'ziggeo-width' => 320, 'ziggeo-height' => 240}
-        - elsif ( current_candidate == @candidate ) && ( !@candidate.ziggeo_token )
-          = link_to 'Edit your profile to add a video', candidates_account_path
-        %br
-        .account-panel
-          .account-content
-            %p
-              %b
-                Location
-              %br
-              = @candidate.city
-              = @candidate.state.name
-              = @candidate.zip
-              %br
-              %br
-              %b
-                Education Level
-              %br
-              = @candidate.education_level.name
-      .col-md-6
-        #account
-          .account-panel
-            .account-header
-              %h2
-                Work History
-            .account-content
-              - @candidate.experiences.each do |experience|
-                = render 'candidates/experience_item', experience: experience
-          %br
-          .account-panel
-            .account-header
-              %h2
-                Education
-            .account-content
-              - @candidate.educations.each do |education|
-                = render 'candidates/education_item', education: education
+      .col-md-4.col-md-offset-4
+        = image_tag "rocket.png"
+    .text-center
+      %h2= @candidate.name
+      %p= get_archetype_from_score @candidate.archetype_score
+      - if current_candidate
+        = link_to "Edit Profile", candidates_account_path, class: "btn btn-default"
+    %hr
+
+
+
+    .wrapper-sm
+      .container
+        .row
+          .col-md-6
+            - if @candidate.ziggeo_token != nil
+              %ziggeo{ 'ziggeo-video' => @candidate.ziggeo_token, 'ziggeo-width' => 553, 'ziggeo-height' => 297}
+            - elsif ( current_candidate == @candidate ) && ( !@candidate.ziggeo_token )
+              = link_to 'Edit your profile to add a video', candidates_account_path
+            %br
+            .account-panel
+              .account-content
+                .row
+                  .col-md-6
+                    %h4 Location
+                    = @candidate.city
+                    = @candidate.state.name
+                    = @candidate.zip
+                  .col-md-6
+                    %h4 Base Salary
+                    %p $60k
+                .row
+                  .col-md-6
+                    %h4 Experience
+                    %p 4 - 7 years
+                  .col-md-6
+                    %h4 On Target Salary
+                    %p $300k
+                .row
+                  .col-md-6
+                    %h4 Education Level
+                    = @candidate.education_level.name
+                  .col-md-6
+                    %h4 Open to Remote?
+                    %p Yes
+
+          
+          // Work Experience & Education
+          .col-md-6
+            %div{:role => "tabpanel"}
+              / Nav tabs
+              %ul.nav.nav-tabs{:role => "tablist"}
+                %li.active{:role => "presentation"}
+                  %a{"aria-controls" => "work", "data-toggle" => "tab", :href => "#home", :role => "tab"} Work History
+                %li{:role => "presentation"}
+                  %a{"aria-controls" => "profile", "data-toggle" => "tab", :href => "#education", :role => "tab"} Education
+              / Tab panes
+              .tab-content.account-panel
+                #work.tab-pane.active{:role => "tabpanel"}
+                  .account-content
+                    %h2 Work History
+                    - @candidate.experiences.each do |experience|
+                      = render 'candidates/experience_item', experience: experience
+
+                #education.tab-pane{:role => "tabpanel"}
+                  .account-content
+                    %h2 Education
+                    - @candidate.educations.each do |education|
+                      = render 'candidates/education_item', education: education

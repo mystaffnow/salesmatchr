@@ -1,3 +1,83 @@
+/ #mixed-landing-one
+/   .jumbotron.text-center
+/     .container
+/       %h1 Find the best talent for your needs!
+/       = link_to new_employer_registration_path, class: 'btn btn-lg btn-default' do
+/         %i.fa.fa-list
+/         Post A Job
+/       = link_to new_candidate_registration_path, class: 'btn btn-lg btn-default btn-lg' do
+/         %i.fa.fa-search
+/         Find A Job
+
+/       .row
+/         .col-md-8.col-md-offset-2
+/           = image_tag "salesmatchr-preview-landing.jpg", class: "img-responsive"
+
+/   .testimonial
+
+/   .benefit1
+/     .container
+/       .text-center
+/         %h2 This is a section about the product, something <br> supportive of the benefits, features, or anything else.
+
+/         %hr
+
+/       .feature-container
+/         = image_tag "mac-screen.png", class: "img-responsive"
+/         %h2 This is a section header
+/         %p Croissant chocolate cake tart gingerbread jelly ice cream jelly apple pie. Candy canes gummies cheesecake candy canes gummi bears donut. Candy canes gummies jujubes chocolate cake. Applicake biscuit gingerbread lemon drops bonbon icing topping biscuit. Applicake cupcake pie sesame snaps carrot cake cotton candy chocolate cake sesame snaps cupcake. Jelly beans candy carrot cake cotton candy jelly.
+
+/   .benefit2
+/     .container
+/       .row
+/         .col-md-5
+/           %h2.inverse This is a section header
+/           %p Croissant chocolate cake tart gingerbread jelly ice cream jelly apple pie. Candy canes gummies cheesecake candy canes gummi bears donut. Candy canes gummies jujubes chocolate cake. Applicake biscuit gingerbread lemon drops bonbon icing topping biscuit. Applicake cupcake pie sesame snaps carrot cake cotton candy chocolate cake sesame snaps cupcake. Jelly beans candy carrot cake cotton candy jelly.
+/         .col-md-7
+/           = image_tag "mac-screen.png", class: "img-responsive"
+
+/   .benefit3
+/     .feature-container
+/       = image_tag "mac-screen.png", class: "img-responsive"
+/       %h2 This is a section header
+/       %p Croissant chocolate cake tart gingerbread jelly ice cream jelly apple pie. Candy canes gummies cheesecake candy canes gummi bears donut. Candy canes gummies jujubes chocolate cake. Applicake biscuit gingerbread lemon drops bonbon icing topping biscuit. Applicake cupcake pie sesame snaps carrot cake cotton candy chocolate cake sesame snaps cupcake. Jelly beans candy carrot cake cotton candy jelly.
+
+/   .call-to-action.text-center
+/     .container
+/       %h1 Ready for an adventure?
+/       %p Pie jujubes bonbon sugar plum dragée tart jelly cookie donut. Apple pie sweet roll caramels <br> sweet brownie. Apple pie powder biscuit gummies.
+/       = link_to "Get Started", '#', class: "btn"
+
+/   .pricing
+/     .container.text-center
+/       .pricing-header
+/         %h2 Plans and Pricing
+/         %p Travelist is free to use for public trips. Plan private trips with any of our paid plans.
+/       .row
+/         .col-md-4
+/           .price-container.regular-offer
+/             %h4 Standard Plan
+/             .price
+/               %p $9
+/               %p.month{:contenteditable => true} /album
+/             = link_to 'Choose Plan', '#', class: "btn"
+/         .col-md-4
+/           .popular-header
+/             %h4 Most Popular
+/           .popular-container
+/             %h4 Startup Plan
+/             .price
+/               %p $29
+/               %p.month /album
+/             = link_to 'Choose Plan', '#', class: "btn"
+/         .col-md-4
+/           .price-container.regular-offer
+/             %h4 Enterprise Plan
+/             .price
+/               %p $59
+/               %p.month /album
+/             = link_to 'Choose Plan', '#', class: "btn"
+
 #landing-jumbotron
   %section.wrapper-lg.bg-custom
     .container
