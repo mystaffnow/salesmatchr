@@ -33,10 +33,9 @@
       = f.label :is_remote
       = f.check_box :is_remote, class: 'form-control'
     .field
-      = f.label :archetype_low
-      = f.number_field :archetype_low, class: 'form-control'
-    .field
-      = f.label :archetype_high
-      = f.number_field :archetype_high, class: 'form-control'
+      %label
+        Job Function
+      %br
+      = f.collection_select(:job_function_id, JobFunction.all, :id, :name,  {:class => 'form-control'})
     .actions
       = f.submit 'Save', class: 'btn btn-primary'

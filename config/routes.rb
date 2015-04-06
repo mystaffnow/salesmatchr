@@ -31,6 +31,8 @@ Rails.application.routes.draw do
   get 'employer_jobs' => 'jobs#employer_index', as: 'employer_jobs'
   get 'employer_jobs/archive' => 'jobs#employer_archive', as: 'employer_archive_jobs'
   get 'employer_jobs/:id' => 'jobs#employer_show', as: 'employer_show'
+  get 'employer_job_actions/:id' => 'jobs#employer_show_actions', as: 'employer_show_actions'
+  get 'employer_job_matches/:id' => 'jobs#employer_show_matches', as: 'employer_show_matches'
   put 'inactivate_job/:id' => 'jobs#inactivate_job', as: 'inactivate_job'
 
   root to: 'pages#index'

@@ -13,7 +13,7 @@
           = current_employer.name
         = current_employer.company
         %p
-          = "#{current_employer.city} #{current_employer.state.name}, #{current_employer.zip}"
+          = "#{current_employer.city} #{current_employer.state ? current_employer.state.name: ''}, #{current_employer.zip}"
 
 .wrapper-sm
   .container
