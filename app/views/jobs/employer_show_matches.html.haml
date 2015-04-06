@@ -1,0 +1,34 @@
+#section.bg-highlight.header
+  .container
+    .row
+      .col-md-12
+        %h2
+          = @job.title
+          matches
+#section.wrapper-sm
+  .container
+    .row
+      .col-md-12
+        %h2{style: 'padding-bottom:5px'}
+          Applicants
+        %table.table.table-responsive
+          - @job.matches.each do |candidate|
+            %tr
+              %td
+                = candidate.name
+              %td
+                %b Location
+                %br
+                = get_location candidate
+              %td
+                %b Education
+                %br
+                = candidate.education_level.name
+              %td
+                = link_to candidates_profile_path(candidate) do
+                  %i.fa.fa-search
+                  View Profile
+:javascript
+  $(function(){
+
+  })

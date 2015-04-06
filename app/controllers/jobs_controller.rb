@@ -1,5 +1,5 @@
 class JobsController < ApplicationController
-  before_action :set_job, only: [:show, :edit, :update, :destroy, :inactivate_job, :employer_show]
+  before_action :set_job, only: [:show, :edit, :update, :destroy, :inactivate_job, :employer_show, :employer_show_actions, :employer_show_matches]
 
   # GET /jobs
   # GET /jobs.json
@@ -43,7 +43,12 @@ class JobsController < ApplicationController
       end
     end
   end
+  def employer_show_actions
 
+  end
+  def employer_show_matches
+
+  end
   def employer_index
     @jobs = Job.where(employer_id: current_employer.id, is_active: true )
     @inactive_job_count = Job.where(employer_id: current_employer.id, is_active: false ).count
