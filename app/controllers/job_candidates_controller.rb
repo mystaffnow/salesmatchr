@@ -5,7 +5,8 @@ class JobCandidatesController < ApplicationController
   end
   def apply
     @job = Job.find(params.permit(:id)[:id])
-    JobCandidate.create job_id: @job.id, candidate_id: current_candidate.id
+    job_candidate = JobCandidate.create job_id: @job.id, candidate_id: current_candidate.id
+    job_candidate.submitted!
     redirect_to ''
   end
   def update
@@ -20,6 +21,6 @@ class JobCandidatesController < ApplicationController
       @job_candidate = JobCandidate.find(params[:id])
     end
     def job_candidate_params
-      params.require(:job_candidate).permit(:is_hired)
+      params.require(:job_candidate).permit(:is_hired, :status)
     end
 end

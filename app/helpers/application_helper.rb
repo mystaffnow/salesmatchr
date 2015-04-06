@@ -28,15 +28,20 @@ module ApplicationHelper
     end
   end
   def format_date(date)
-    date.strftime("%B %Y")
+    if date != nil
+      date.strftime("%B %Y")
+    end
   end
   def format_date_time(date_time)
-    date_time.strftime("%m/%d/%Y %I:%M%P")
+    date_time.strftime("\ %I:%M%P")
   end
   def format_time(date)
     date.strftime("%I:%M%P")
   end
   def get_location(resource)
     resource.city + " " + resource.state.name + ", " + resource.zip
+  end
+  def get_status_key_by_value(value)
+    JobCandidate.statuses.keys[value]
   end
 end

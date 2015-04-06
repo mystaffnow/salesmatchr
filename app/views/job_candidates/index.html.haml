@@ -14,13 +14,29 @@
             = job_candidate.job.description
           %td
             %h4
-              Submitted | Viewed | Contacted
-              |
-              - if job_candidate.is_hired
+              - if job_candidate.submitted?
                 %b.secondary-color
-                  Employed
+                  Submitted
               - else
-                Employed
+                Submitted
+              |
+              - if job_candidate.viewed?
+                %b.secondary-color
+                  Viewed
+              - else
+                Viewed
+              |
+              - if job_candidate.accepted?
+                %b.secondary-color
+                  Accepted
+              - else
+                Accpeted
+              |
+              - if job_candidate.withdrawn?
+                %b.secondary-color
+                  Withdrawn
+              - else
+                Withdrawn
           %td
             = link_to job_path(job_candidate.job) do
               %i.fa.fa-close{title: "withdraw application"}

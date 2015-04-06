@@ -28,45 +28,14 @@
                   %i.fa.fa-search
                   View Profile
               %td
-                - if !job_candidate.is_hired?
+                - if !job_candidate.accepted?
                   = form_for(job_candidate) do |f|
-                    = f.hidden_field :is_hired, id: 'is_hired'
+                    = f.hidden_field :status, id: 'is_hired', value: "#{get_status_key_by_value(JobCandidate.statuses[:accepted])}"
                     %button.btn.btn-primary#hire= "Hire"
                 - else
                   Already Hired
 
 :javascript
   $(function(){
-    $('#hire').on('click', function(){
-      $('#is_hired').val(true);
-    });
-    //waitlist and hire button clicks
-    $('#waitlist').on('click', function(){
-      $('#status').val($(this).attr('status'));
-    });
-    $('#hire').on('click', function(){
-      $('#status').val($(this).attr('status'));
-    });
-
-
-    //posting-status clicks
-    $('.posting-status').on('click', function(){
-      status_id = $(this).attr('status');
-      //hide all panels
-      $('.panel-status').hide();
-      //show the panel we clicked
-      $('#status-panel-'+status_id).show();
-      //update the link
-      $('.posting-status').removeClass('posting-status-active');
-      $(this).addClass('posting-status-active');
-    });
-
-    //see if this link is pasted in, ie already has an anchor
-    if (location.hash == ""){
-      $($('.posting-status').first()).addClass('posting-status-active');
-      $(".panel-status").hide();
-      $("#status-panel-0").show();
-    }
-    //TODO: add section for pasted in anchored urls... this is least important  for all tasks
 
   })

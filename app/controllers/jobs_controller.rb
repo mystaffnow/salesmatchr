@@ -16,6 +16,14 @@ class JobsController < ApplicationController
   # GET /jobs/new
   def new
     @job = Job.new
+    if params.permit(:copy_id)[:copy_id]
+      job_copy = Job.find(params.permit(:copy_id)[:copy_id])
+      attributes = job_copy.attributes.select do |attr, value|
+        value != nil
+      end
+      @job.assign_attributes(attributes)
+      @job.id = nil
+    end
   end
 
   # GET /jobs/1/edit
@@ -23,7 +31,11 @@ class JobsController < ApplicationController
   end
 
   def employer_show
-
+    @job.job_candidates.each do |job_candidate|
+      if job_candidate.submitted?
+        job_candidate.viewed!
+      end
+    end
   end
 
   def employer_index
