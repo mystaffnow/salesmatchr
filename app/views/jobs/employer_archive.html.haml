@@ -1,43 +1,41 @@
-#section.bg-highlight
+.action-bar
   .container
     .row
       .col-md-10
-        %h2 Inactive Jobs
+        %h2 My Inactive Jobs
       .col-md-2
-        = link_to 'Create New Job', new_job_path, class: 'btn btn-default', style: 'margin-top:30px'
-    .row{style: 'padding-bottom: 10px'}
-      .col-md-12
-        .small
-          = link_to "Open Jobs (#{@active_job_count})", employer_jobs_path
-          |
-          = "Inactive Jobs (#{@jobs.count})"
-#section.wrapper-sm
-  .container
-    %table.table.table-responsive
-      - @jobs.each do |job|
-        %tr
-          %td
-            %h4
-              = job.title
-            = job.description
-          %td
-            %h4
-              10 views
-          %td
-            %h4
-              10 matches
-          %td
-            %h4
-              10 applicants
-          %td
-            = link_to new_job_path(:copy_id => job.id) do
-              %i.fa.fa-plus{title: "copy to a new job"}
-              Copy
-          %td
-            = link_to edit_job_path(job) do
-              %i.fa.fa-edit{title: "edit this job"}
-              Edit
-          %td
-            = link_to inactivate_job_path(job), :method => :put, :data => { :confirm => 'Are you sure?' } do
-              %i.fa.fa-rocket{title: "activate this job"}
-              Activate
+        = link_to 'Create New Job', new_job_path, class: 'btn btn-default'
+
+.container.padded-container
+  .row
+    .col-md-12.job-status
+      = link_to "Open Jobs (#{@active_job_count})", employer_jobs_path
+      |
+      = "Inactive Jobs (#{@jobs.count})"
+      %hr
+
+  - @jobs.each do |job|
+    .row
+      .col-md-8
+        %h3= job.title
+        %p= job.description
+        .stat
+          %i.fa.fa-eye
+          %span 10 views
+        .stat
+          %i.fa.fa-search
+          %span 10 matches
+        .stat
+          %i.fa.fa-inbox
+          %span 10 applicants
+      .col-md-4.job-actions
+        = link_to new_job_path(:copy_id => job.id), class: "btn btn-info" do
+          %i.fa.fa-plus{title: "copy to a new job"}
+          Copy
+        = link_to edit_job_path(job), class: "btn btn-info" do
+          %i.fa.fa-edit{title: "edit this job"}
+          Edit
+        = link_to inactivate_job_path(job), class: "btn btn-info", :method => :put, :data => { :confirm => 'Are you sure?' } do
+          %i.fa.fa-rocket{title: "activate this job"}
+          Activate
+    %hr

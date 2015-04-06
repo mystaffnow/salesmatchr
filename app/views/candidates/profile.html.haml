@@ -1,18 +1,21 @@
-.bg-highlight
-  .container
-    .row
-      .col-md-10
-      .col-md-2
-        - if current_candidate
-          = link_to 'Edit Profile', candidates_account_path
-.wrapper-sm
-  .container
-    .row
-      .col-md-1{style: 'background-color:gray;height:100px'}
-      .col-md-4
-        %h4
-          = @candidate.name
-        = get_archetype_from_score @candidate.archetype_score
+- if current_candidate
+  .action-bar
+    .container
+      .row
+        .col-md-10
+        .col-md-2
+          = link_to "Edit Profile", candidates_account_path, class: "btn btn-default"
+
+.container.padded-container
+  .row
+    .col-md-1{style: 'background-color:gray;height:100px'}
+    .col-md-4
+      %h4
+        = @candidate.name
+      = get_archetype_from_score @candidate.archetype_score
+
+
+
 .wrapper-sm
   .container
     .row
@@ -22,22 +25,21 @@
         - elsif ( current_candidate == @candidate ) && ( !@candidate.ziggeo_token )
           = link_to 'Edit your profile to add a video', candidates_account_path
         %br
-        #account
-          .account-panel
-            .account-contentxw
-              %p
-                %b
-                  Location
-                %br
-                = @candidate.city
-                = @candidate.state.name
-                = @candidate.zip
-                %br
-                %br
-                %b
-                  Education Level
-                %br
-                = @candidate.education_level.name
+        .account-panel
+          .account-content
+            %p
+              %b
+                Location
+              %br
+              = @candidate.city
+              = @candidate.state.name
+              = @candidate.zip
+              %br
+              %br
+              %b
+                Education Level
+              %br
+              = @candidate.education_level.name
       .col-md-6
         #account
           .account-panel

@@ -2,45 +2,40 @@
   .container
     .row
       .col-md-9
-        %h2 My Jobs
+        %h2 My Open Jobs
       .col-md-3.text-right
         = link_to 'Create New Job', new_job_path, class: 'btn btn-default'
 
 .container.padded-container
   .row
-    .col-md-12
+    .col-md-12.job-status
       = "Open Jobs (#{@jobs.count})"
       |
       = link_to "Inactive Jobs (#{@inactive_job_count})", employer_archive_jobs_path
+      %hr
 
-#section.wrapper-sm
-  .container
-    %table.table.table-responsive
-      - @jobs.each do |job|
-        %tr
-          %td
-            %h4
-              = job.title
-          %td
-            %h4
-              10 views
-          %td
-            %h4
-              10 matches
-          %td
-            %h4
-              = link_to employer_show_path(job) do
-                = job.job_candidates.count
-                Applicants
-          %td
-            = link_to new_job_path(:copy_id => job.id) do
-              %i.fa.fa-plus{title: "copy to a new job"}
-              Copy
-          %td
-            = link_to edit_job_path(job) do
-              %i.fa.fa-edit{title: "edit this job"}
-              Edit
-          %td
-            = link_to inactivate_job_path(job), :method => :put, :data => { :confirm => 'Are you sure?' } do
-              %i.fa.fa-trash{title: "inactivate this job"}
-              Inactivate
+  -@jobs.each do |job|
+    .row
+      .col-md-8
+        %h3= job.title
+        %p= job.description
+        .stat
+          %i.fa.fa-eye
+          %span 10 views
+        .stat
+          %i.fa.fa-search
+          %span 10 matches
+        .stat
+          %i.fa.fa-inbox
+          %span 10 applicants
+      .col-md-4.job-actions
+        = link_to new_job_path(:copy_id => job.id), class: "btn btn-info" do
+          %i.fa.fa-plus{title: "copy to a new job"}
+          Copy
+        = link_to edit_job_path(job), class: "btn btn-info" do
+          %i.fa.fa-edit{title: "edit this job"}
+          Edit
+        = link_to inactivate_job_path(job), class: "btn btn-info", :method => :put, :data => { :confirm => 'Are you sure?' } do
+          %i.fa.fa-trash{title: "inactivate this job"}
+          Inactivate
+    %hr

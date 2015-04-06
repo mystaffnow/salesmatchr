@@ -8,7 +8,10 @@ $secondary-hover: #48c9b0
 
 $light-blue: #3498db
 
+$light-red: #e74c3c
+
 $gray: #d1d3d5
+$gray-light: #95a5a6
 
 
 // Utility Classes
@@ -47,11 +50,14 @@ p
   font-weight: 300
 
 #flash-display
-  background-color: $light-blue
+  background-color: $gray-light
   color: white
   .alert
     margin-bottom: 0
     padding: 15px 15px
+
+.job-status
+  margin-bottom: 30px
 
 
 // Navigation
@@ -89,9 +95,17 @@ nav.navbar
   border-color: $secondary-color !important
   color: white !important
   padding: 10px 30px !important
+  margin-top: 5px
   span.caret
     margin-left: 50px
 .btn-default:hover
+  background-color: $secondary-hover !important
+.btn-info
+  background-color: $secondary-color !important
+  border-color: $secondary-color !important
+  color: white !important
+  margin-left: 10px !important
+.btn-info:hover
   background-color: $secondary-hover !important
 .close
   opacity: 0.8
