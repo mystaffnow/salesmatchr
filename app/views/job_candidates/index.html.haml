@@ -38,9 +38,12 @@
               - else
                 Withdrawn
           %td
-            = link_to job_path(job_candidate.job) do
-              %i.fa.fa-close{title: "withdraw application"}
-              Withdraw application
+            - if !job_candidate.withdrawn?
+              = form_for(job_candidate) do |f|
+                = f.hidden_field :status, value: "#{get_status_key_by_value(JobCandidate.statuses[:withdrawn])}"
+                %button.btn.btn-primary#hire= "Withdraw Application"
+            - else
+              Application Withdrawn
           %td
             = link_to job_path(job_candidate.job) do
               %i.fa.fa-search{title: "view this job"}

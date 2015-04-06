@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :candidate_job_actions
+
   resources :jobs
 
   resources :sales_types

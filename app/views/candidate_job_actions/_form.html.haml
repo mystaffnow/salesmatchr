@@ -1,0 +1,19 @@
+= form_for @candidate_job_action do |f|
+  - if @candidate_job_action.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@candidate_job_action.errors.count, "error")} prohibited this candidate_job_action from being saved:"
+      %ul
+        - @candidate_job_action.errors.full_messages.each do |msg|
+          %li= msg
+
+  .field
+    = f.label :candidate_id
+    = f.number_field :candidate_id
+  .field
+    = f.label :job_id
+    = f.number_field :job_id
+  .field
+    = f.label :is_saved
+    = f.check_box :is_saved
+  .actions
+    = f.submit 'Save'

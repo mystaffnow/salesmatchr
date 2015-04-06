@@ -12,7 +12,11 @@ class JobCandidatesController < ApplicationController
   def update
     respond_to do |format|
       if @job_candidate.update(job_candidate_params)
-        format.html { redirect_to employer_jobs_path, notice: 'Successfully hired, an email was sent to the candidate.' }
+        if current_candidate
+          format.html { redirect_to job_candidates_path, notice: 'Successfully withdrawn.' }
+        elsif current_employer
+          format.html { redirect_to employer_jobs_path, notice: 'Successfully hired, an email was sent to the candidate.' }
+        end
       end
     end
   end

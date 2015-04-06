@@ -1,0 +1,15 @@
+%p#notice= notice
+
+%p
+  %b Candidate:
+  = @candidate_job_action.candidate_id
+%p
+  %b Job:
+  = @candidate_job_action.job_id
+%p
+  %b Is saved:
+  = @candidate_job_action.is_saved
+
+= link_to 'Edit', edit_candidate_job_action_path(@candidate_job_action)
+\|
+= link_to 'Back', candidate_job_actions_path

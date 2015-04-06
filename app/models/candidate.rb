@@ -39,6 +39,9 @@ class Candidate < ActiveRecord::Base
     candidate
   end
 
+  def view_job(job)
+    CandidateJobAction.create job_id: job.id, candidate_id: self.id, is_saved: false
+  end
   def can_proceed
     self.archetype_score
   end

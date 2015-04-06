@@ -11,10 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150330010215) do
+ActiveRecord::Schema.define(version: 20150406021434) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "candidate_job_actions", force: :cascade do |t|
+    t.integer  "candidate_id"
+    t.integer  "job_id"
+    t.boolean  "is_saved"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
 
   create_table "candidates", force: :cascade do |t|
     t.string   "name"
@@ -24,6 +32,8 @@ ActiveRecord::Schema.define(version: 20150330010215) do
     t.integer  "education_level_id"
     t.integer  "archetype_score"
     t.string   "ziggeo_token"
+    t.string   "uid"
+    t.string   "provider"
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
     t.string   "email",                  default: "", null: false
@@ -100,7 +110,7 @@ ActiveRecord::Schema.define(version: 20150330010215) do
   create_table "job_candidates", force: :cascade do |t|
     t.integer  "candidate_id"
     t.integer  "job_id"
-    t.boolean  "is_hired"
+    t.integer  "status"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
   end

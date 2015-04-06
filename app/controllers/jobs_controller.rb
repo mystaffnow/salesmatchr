@@ -11,6 +11,12 @@ class JobsController < ApplicationController
   # GET /jobs/1
   # GET /jobs/1.json
   def show
+    if current_candidate
+      @candidate_job_action = CandidateJobAction.where(candidate_id: current_candidate.id, job_id: @job.id).first
+      if !@candidate_job_action
+        current_candidate.view_job(@job)
+      end
+    end
   end
 
   # GET /jobs/new

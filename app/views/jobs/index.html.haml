@@ -69,7 +69,11 @@
                   Location
                 %br
                 = "#{job.city}, #{job.state.name}"
-              .col-md-3
-                = link_to 'Save', '#', class: "btn btn-primary"
-                = link_to 'View', '#', class: "btn btn-primary"
+            .col-md-3
+              = form_for(CandidateJobAction.new) do |f|
+                = f.hidden_field :candidate_id, value: "#{current_candidate.id}"
+                = f.hidden_field :job_id, value: "#{job.id}"
+                = f.hidden_field :is_saved, value: "true"
+                %button.btn.btn-primary= "Save"
+              = link_to 'View', job_path(job), class: "btn btn-primary"
           %hr
