@@ -74,3 +74,11 @@ State.create :name => "Washington"
 State.create :name => "West Virginia"
 State.create :name => "Wisconsin"
 State.create :name => "Wyoming"
+
+JobFunction.create name: "Outside Sales, Inside Sales", low: 71, high: 100
+JobFunction.create name: "Business Development (bizdev), Outside Sales, Inside Sales, Sales Manager", low: 31, high: 70
+JobFunction.create name: "Bizdev, outside/inside sales, Sales Manager", low: 11, high: 30
+JobFunction.create name: "Sales Manager, Sales Operations, Bizdev, Customer Service", low: -10, high: 10
+JobFunction.create name: "Account Manager, Customer Service, Sales Manager", low: -30, high: -11
+JobFunction.create name: "Account Manager, Customer Service", low: -70, high: -31
+JobFunction.create name: "Customer Service, Account Manager, Sales Operations", low: -100, high: -71

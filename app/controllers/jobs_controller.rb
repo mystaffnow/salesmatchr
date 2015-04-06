@@ -70,6 +70,9 @@ class JobsController < ApplicationController
   # POST /jobs.json
   def create
     @job = Job.new(job_params)
+    job_function = JobFunction.find(job_params[:job_function_id])
+    @job.archetype_low = job_function.low
+    @job.archetype_high = job_function.high
     @job.employer_id = current_employer.id
     respond_to do |format|
       if @job.save
@@ -113,6 +116,6 @@ class JobsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def job_params
-      params.require(:job).permit(:employer_id, :city, :state_id, :archetype_low, :archetype_high, :salary_low, :salary_high, :zip, :is_remote, :title, :description, :is_active)
+      params.require(:job).permit(:job_function_id,:employer_id, :city, :state_id, :archetype_low, :archetype_high, :salary_low, :salary_high, :zip, :is_remote, :title, :description, :is_active)
     end
 end
