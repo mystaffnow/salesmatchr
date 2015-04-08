@@ -21,6 +21,6 @@ class CandidatesController < ApplicationController
   private
     # Never trust parameters from the scary internet, only allow the white list through.
     def candidate_params
-      params.require(:candidate).permit(:zip, :city, :state_id, :ziggeo_token, :education_level_id, :archetype_score, :experiences_attributes => [:position, :company, :start_date, :end_date, :description, :is_sales, :sales_type_id], educations_attributes: [:school, :education_level_id, :description] )
+      params.require(:candidate).permit(:avatar, :zip, :city, :state_id, :ziggeo_token, :education_level_id, :archetype_score, :experiences_attributes => [:position, :company, :start_date, :end_date, :description, :is_sales, :sales_type_id], educations_attributes: [:school, :education_level_id, :description] )
     end
 end

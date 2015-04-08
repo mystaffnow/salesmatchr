@@ -45,7 +45,7 @@ group :development, :test do
   gem 'spring'
 end
 
-
+gem "paperclip", "~> 4.2"
 gem 'devise', '~> 3.4.1'
 gem 'pg', '~> 0.17.1'
 gem 'haml', '~> 4.0.5'

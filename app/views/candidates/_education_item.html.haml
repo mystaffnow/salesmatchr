@@ -1,0 +1,12 @@
+%h4
+  = education.school
+%p
+  = education.education_level.name
+%small
+  = format_date education.start_date
+  \-
+  = format_date education.end_date
+%p
+  = education.description
+
+%hr

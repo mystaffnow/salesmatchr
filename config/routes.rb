@@ -23,6 +23,7 @@ Rails.application.routes.draw do
   get 'candidates/account' => 'candidates#account'
   put 'candidates/account' => 'candidates#update'
   get 'candidates/profile/:id' => 'candidates#profile', as: 'candidates_profile'
+  get 'candidates/jobs_saved' => 'candidate_job_actions#candidate_job_saved', as: 'candidate_job_saved'
   get 'my_jobs' => 'job_candidates#index'
 
   get 'employers/account' => 'employers#account'

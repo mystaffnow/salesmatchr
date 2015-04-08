@@ -17,13 +17,15 @@
 .container.padded-container
   #account
     #new-registration
-      = form_for(current_candidate, url: candidates_account_path, html: { method: :put }) do |f|
+      = form_for(current_candidate, url: candidates_account_path, html: { multipart: true, method: :put }) do |f|
 
         // Account Page
         #accounts-panel.account-panel
           .account-header
             %h2 Profile Information
           .account-content
+            = f.label "Profile Image"
+            = f.file_field :avatar
             = f.label "Education Level"
             %br
             = f.collection_select(:education_level_id, EducationLevel.all, :id, :name,  {:class => 'form-control selectpickers'})

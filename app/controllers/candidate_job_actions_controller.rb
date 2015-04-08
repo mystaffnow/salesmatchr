@@ -20,6 +20,9 @@ class CandidateJobActionsController < ApplicationController
   # GET /candidate_job_actions/1/edit
   def edit
   end
+  def candidate_job_saved
+    @candidate_job_action = CandidateJobAction.where(candidate_id: current_candidate.id, is_saved: true)
+  end
 
   # POST /candidate_job_actions
   # POST /candidate_job_actions.json

@@ -54,31 +54,24 @@
             %h3 Location
           .col-md-3
         .small
-          = @jobs_str
-        - @jobs.each do |job|
+        - @candidate_job_action.each do |candidate_job_action|
           .row
-            = link_to job_path(job) do
+            = link_to job_path(candidate_job_action.job) do
               .col-md-4
                 %h4
-                  = job.title
+                  = candidate_job_action.job.title
               .col-md-2
                 %b
                   Salary Range
                 %br
-                = "$#{job.salary_low}"
+                = "$#{candidate_job_action.job.salary_low}"
                 \-
-                = "$#{job.salary_high}"
+                = "$#{candidate_job_action.job.salary_high}"
               .col-md-3
                 %b
                   Location
                 %br
-                = "#{job.city}, #{job.state.name}"
+                = "#{candidate_job_action.job.city}, #{candidate_job_action.job.state.name}"
             .col-md-3
-              - if candidate_signed_in?
-                = form_for(CandidateJobAction.new, html: { style: 'display:inline'}) do |f|
-                  = f.hidden_field :candidate_id, value: "#{current_candidate.id}"
-                  = f.hidden_field :job_id, value: "#{job.id}"
-                  = f.hidden_field :is_saved, value: "true"
-                  %button.btn.btn-primary= "Save"
-                = link_to 'View', job_path(job), class: "btn btn-primary"
+              = link_to 'View', job_path(candidate_job_action.job), class: "btn btn-primary"
           %hr
