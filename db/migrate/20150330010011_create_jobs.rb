@@ -14,6 +14,7 @@ class CreateJobs < ActiveRecord::Migration
       t.string :city
       t.integer :archetype_low
       t.integer :archetype_high
+      t.integer :job_function_id
 
 
       t.timestamps null: false

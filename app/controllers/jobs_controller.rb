@@ -4,8 +4,20 @@ class JobsController < ApplicationController
   # GET /jobs
   # GET /jobs.json
   def index
-    @jobs = Job.all
-    @jobs_str = "showing " + @jobs.count.to_s + " jobs"
+    h = { }
+    @jobs_str = ""
+    if params[:job_function] != '' && params[:job_function]
+      h[:job_function_id] = params[:job_function]
+      job_function = JobFunction.find(params[:job_function])
+      @posting_str = @jobs_str + "for " + job_function.name + " "
+    end
+    if params[:is_remote] != '' && params[:is_remote]
+      h[:is_remote] = params[:is_remote]
+      @jobs_str = @jobs_str + "that are " + params[:is_remote] ? '' : 'not ' + " remote"
+    end
+
+    @jobs = Job.where(h)
+    @jobs_str = "Showing " + @jobs.count.to_s + " results " + @jobs_str
   end
 
   # GET /jobs/1
@@ -74,6 +86,7 @@ class JobsController < ApplicationController
     @job.archetype_low = job_function.low
     @job.archetype_high = job_function.high
     @job.employer_id = current_employer.id
+    @job.job_function_id = job_function.id
     respond_to do |format|
       if @job.save
         format.html { redirect_to employer_jobs_path, notice: 'Job was successfully created.' }

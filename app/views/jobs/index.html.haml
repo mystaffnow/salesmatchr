@@ -4,22 +4,9 @@
       .row
         .col-md-9
           .dropdown
-            = select_tag "Job Type", options_from_collection_for_select(JobFunction.all, "id", "name"), { prompt: 'Select Type', class: 'selectpickers', id: 'type-select'}
-          .dropdown
-            %button#dropdownMenu1.btn.btn-default.dropdown-toggle{"aria-expanded" => "true", "data-toggle" => "dropdown", :type => "button"}
-              Medical
-              %span.caret
-            %ul.dropdown-menu{"aria-labelledby" => "dropdownMenu1", :role => "menu"}
-              %li{:role => "presentation"}
-                %a{:href => "#", :role => "menuitem", :tabindex => "-1"} Action
-              %li{:role => "presentation"}
-                %a{:href => "#", :role => "menuitem", :tabindex => "-1"} Another action
-              %li{:role => "presentation"}
-                %a{:href => "#", :role => "menuitem", :tabindex => "-1"} Something else here
-              %li{:role => "presentation"}
-                %a{:href => "#", :role => "menuitem", :tabindex => "-1"} Separated link
+            = select_tag "Job Type", options_from_collection_for_select(JobFunction.all, "id", "name"), { prompt: 'Select Type', class: 'selectpickers', id: 'job-function-select'}
           %span Remote Only
-          %input{:checked => "", :name => "my-checkbox", :type => "checkbox"}/
+          %input{:checked => "", :name => "my-checkbox", :type => "checkbox", :id => 'remote-only-check'}/
         .col-md-3.text-right
           = link_to "Find Now", jobs_path, class: "btn btn-primary action-btn", id: "find-jobs"
   .container.padded-container
@@ -71,3 +58,9 @@
                   %button.btn.btn-primary= "Save"
                 = link_to 'View', job_path(job), class: "btn btn-primary"
           %hr
+:javascript
+  $(function(){
+    $('#find-jobs').click(function(){
+      $('#find-jobs').attr('href', $('#find-jobs').attr('href') + '?job_function=' + $('#job-function-select').val() + '&is_remote=' +  $('#remote-only-check').bootstrapSwitch('state') );
+    });
+  })
