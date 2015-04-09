@@ -4,18 +4,7 @@
       .row
         .col-md-9
           .dropdown
-            %button#dropdownMenu1.btn.btn-default.dropdown-toggle{"aria-expanded" => "true", "data-toggle" => "dropdown", :type => "button"}
-              Position Type
-              %span.caret
-            %ul.dropdown-menu{"aria-labelledby" => "dropdownMenu1", :role => "menu"}
-              %li{:role => "presentation"}
-                %a{:href => "#", :role => "menuitem", :tabindex => "-1"} Action
-              %li{:role => "presentation"}
-                %a{:href => "#", :role => "menuitem", :tabindex => "-1"} Another action
-              %li{:role => "presentation"}
-                %a{:href => "#", :role => "menuitem", :tabindex => "-1"} Something else here
-              %li{:role => "presentation"}
-                %a{:href => "#", :role => "menuitem", :tabindex => "-1"} Separated link
+            = select_tag "Job Type", options_from_collection_for_select(JobFunction.all, "id", "name"), { prompt: 'Select Type', class: 'selectpickers', id: 'type-select'}
           .dropdown
             %button#dropdownMenu1.btn.btn-default.dropdown-toggle{"aria-expanded" => "true", "data-toggle" => "dropdown", :type => "button"}
               Medical

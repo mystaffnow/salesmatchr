@@ -17,6 +17,7 @@ class Candidate < ActiveRecord::Base
   def self.from_omniauth(auth)
     candidate = Candidate.where(uid: auth.uid).first
     if !candidate
+      logger.debug("create new candidate")
       candidate = Candidate.new
       candidate.name = auth.info.first_name + " " + auth.info.last_name
       candidate.provider = auth.provider

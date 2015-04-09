@@ -1,6 +1,7 @@
 %fieldset.account-field
   = link_to "remove", class: "remove_fields" do
     %i.fa.fa-trash
+  = f.hidden_field :id
   = f.label "Position"
   = f.text_field :position, class: 'form-control'
   = f.label "Company"
