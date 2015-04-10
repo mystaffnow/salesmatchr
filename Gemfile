@@ -44,7 +44,7 @@ group :development, :test do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
 end
-
+gem 'geocoder'
 gem "paperclip", "~> 4.2"
 gem 'devise', '~> 3.4.1'
 gem 'pg', '~> 0.17.1'

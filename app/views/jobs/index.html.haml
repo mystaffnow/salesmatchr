@@ -5,6 +5,9 @@
         .col-md-9
           .dropdown
             = select_tag "Job Type", options_from_collection_for_select(JobFunction.all, "id", "name"), { prompt: 'Select Type', class: 'selectpickers', id: 'job-function-select'}
+          %input{:type => "text", :name => "zip", id: "zip", style: "color:black", placeholder: "zip code"}
+          .dropdown
+            = select_tag "Distance (miles)", "<option>10</option><option>25</option><option>100</option>".html_safe, { prompt: 'Distance (miles)', class: 'selectpickers', id: 'zip'}
           %span Remote Only
           %input{:checked => "", :name => "my-checkbox", :type => "checkbox", :id => 'remote-only-check'}/
         .col-md-3.text-right
@@ -22,6 +25,8 @@
           = link_to "All", jobs_path
       .col-md-10
         .row
+          .small
+            = @jobs_str
           .col-md-4
             %h3 Position
           .col-md-2
@@ -29,8 +34,6 @@
           .col-md-3
             %h3 Location
           .col-md-3
-        .small
-          = @jobs_str
         - @jobs.each do |job|
           .row
             = link_to job_path(job) do
@@ -61,6 +64,6 @@
 :javascript
   $(function(){
     $('#find-jobs').click(function(){
-      $('#find-jobs').attr('href', $('#find-jobs').attr('href') + '?job_function=' + $('#job-function-select').val() + '&is_remote=' +  $('#remote-only-check').bootstrapSwitch('state') );
+      $('#find-jobs').attr('href', $('#find-jobs').attr('href') + '?job_function=' + $('#job-function-select').val() + '&is_remote=' +  $('#remote-only-check').bootstrapSwitch('state') + "&zip=" + $('#zip').val() + "&distance=" + $('#distance').val());
     });
   })

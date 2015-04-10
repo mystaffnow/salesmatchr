@@ -4,7 +4,7 @@ class CreateJobs < ActiveRecord::Migration
       t.integer :employer_id
       t.integer :salary_low
       t.integer :salary_high
-      t.integer :zip
+      t.string :zip
       t.boolean :is_remote
       t.string :title
       t.text :description
@@ -15,6 +15,8 @@ class CreateJobs < ActiveRecord::Migration
       t.integer :archetype_low
       t.integer :archetype_high
       t.integer :job_function_id
+      t.float :latitude
+      t.float :longitude
 
 
       t.timestamps null: false

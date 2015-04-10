@@ -131,7 +131,7 @@ ActiveRecord::Schema.define(version: 20150408041315) do
     t.integer  "employer_id"
     t.integer  "salary_low"
     t.integer  "salary_high"
-    t.integer  "zip"
+    t.string   "zip"
     t.boolean  "is_remote"
     t.string   "title"
     t.text     "description"
@@ -142,6 +142,8 @@ ActiveRecord::Schema.define(version: 20150408041315) do
     t.integer  "archetype_low"
     t.integer  "archetype_high"
     t.integer  "job_function_id"
+    t.float    "latitude"
+    t.float    "longitude"
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
   end

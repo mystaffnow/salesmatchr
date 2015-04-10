@@ -9,15 +9,26 @@ class JobsController < ApplicationController
     if params[:job_function] != '' && params[:job_function]
       h[:job_function_id] = params[:job_function]
       job_function = JobFunction.find(params[:job_function])
-      @posting_str = @jobs_str + "for " + job_function.name + " "
+      @jobs_str = @jobs_str + "for " + job_function.name + " "
     end
     if params[:is_remote] != '' && params[:is_remote]
       h[:is_remote] = params[:is_remote]
-      @jobs_str = @jobs_str + "that are " + params[:is_remote] ? '' : 'not ' + " remote"
+      @jobs_str = @jobs_str + "that are " + ( params[:is_remote] ? '' : 'not ') + " remote"
     end
-
-    @jobs = Job.where(h)
-    @jobs_str = "Showing " + @jobs.count.to_s + " results " + @jobs_str
+    logger.debug(@jobs_str)
+    if params[:zip] != '' && params[:zip]
+      res = Integer(params[:distance]) rescue false
+      if res
+        distance = params[:distance]
+      else
+        distance = 10
+      end
+      @jobs_str = @jobs_str + " within " + distance.to_s + " miles of " + params[:zip]
+      @jobs = Job.near(params[:zip], distance.to_i).where(h)
+    else
+      @jobs = Job.where(h)
+    end
+    @jobs_str = "Displaying " + @jobs.count(:all).to_s + " results " + @jobs_str
   end
 
   # GET /jobs/1
@@ -129,6 +140,6 @@ class JobsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def job_params
-      params.require(:job).permit(:job_function_id,:employer_id, :city, :state_id, :archetype_low, :archetype_high, :salary_low, :salary_high, :zip, :is_remote, :title, :description, :is_active)
+      params.require(:job).permit(:distance, :job_function_id,:employer_id, :city, :state_id, :archetype_low, :archetype_high, :salary_low, :salary_high, :zip, :is_remote, :title, :description, :is_active)
     end
 end
