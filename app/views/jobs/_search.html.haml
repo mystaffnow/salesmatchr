@@ -1,0 +1,34 @@
+.action-bar
+  .container
+    .row
+      .col-md-9
+        .dropdown
+          = select_tag "Job Type", options_from_collection_for_select(JobFunction.all, "id", "name", selected: params[:job_function]), { prompt: 'Select Type', class: 'selectpickers', id: 'job-function-select'}
+        %input{:type => "text", :name => "zip", id: "zip", style: "color:black", placeholder: "zip code", value: params[:zip]}
+        .dropdown
+          = select_tag "Distance (miles)", options_for_select([ 10, 25, 100], params[:distance]), { prompt: 'Distance (miles)', class: 'selectpickers', id: 'distance'}
+        %span Remote Only
+        = check_box_tag "my-checkbox", "", (params[:is_remote] == "true" ? true : false) , id: 'remote-only-check'
+        %input{:type => "text", :name => "low", id: "salary_low", style: "color:black", placeholder: "Salary(low)", value: (params[:salary_low] ? params[:salary_low] : '')}
+        %input{:type => "text", :name => "high", id: "salary_high", style: "color:black", placeholder: "Salary(high)", value: (params[:salary_high] ? params[:salary_high] : '')}
+      .col-md-3.text-right
+        = link_to "Find Now", jobs_path, class: "btn btn-primary action-btn", id: "find-jobs"
+:javascript
+  $(function(){
+    $('#find-jobs').click(function(){
+      var str = $('#find-jobs').attr('href');
+      str = str + '?job_function=' + $('#job-function-select').val();
+      str = str + '&is_remote=' +  $('#remote-only-check').bootstrapSwitch('state');
+      str = str + "&zip=" + $('#zip').val();
+      if (typeof($('#distance').val()) != "undefined"){
+        str = str + "&distance=" + $('#distance').val();
+      }
+      str = str + "&salary_low=" + $('#salary_low').val();
+      str = str + "&salary_high=" + $('#salary_high').val();
+      $('#find-jobs').attr('href',  str);
+    });
+  });
+
+
+  $(document).ready(ready);
+  $(document).on('page:load', ready);

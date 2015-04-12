@@ -24,6 +24,9 @@ Rails.application.routes.draw do
   put 'candidates/account' => 'candidates#update'
   get 'candidates/profile/:id' => 'candidates#profile', as: 'candidates_profile'
   get 'candidates/jobs_saved' => 'candidate_job_actions#candidate_job_saved', as: 'candidate_job_saved'
+  get 'candidates/jobs_viewed' => 'candidate_job_actions#candidate_job_viewed', as: 'candidate_job_viewed'
+  get 'candidates/candidate_matches' => 'candidate_job_actions#candidate_matches', as: 'candidate_matches'
+
   get 'my_jobs' => 'job_candidates#index'
   get 'candidates/incognito/:is_incognito' => 'candidates#incognito'
 

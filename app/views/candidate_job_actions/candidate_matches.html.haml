@@ -7,8 +7,6 @@
           = render 'jobs/candidate_sidebar'
       .col-md-10
         .row
-          .small
-            = @jobs_str
           .col-md-4
             %h3 Position
           .col-md-2
@@ -16,6 +14,7 @@
           .col-md-3
             %h3 Location
           .col-md-3
+        .small
         - @jobs.each do |job|
           .row
             = link_to job_path(job) do
@@ -35,11 +34,5 @@
                 %br
                 = "#{job.city}, #{job.state.name}"
             .col-md-3
-              - if candidate_signed_in?
-                = form_for(CandidateJobAction.new, html: { style: 'display:inline'}) do |f|
-                  = f.hidden_field :candidate_id, value: "#{current_candidate.id}"
-                  = f.hidden_field :job_id, value: "#{job.id}"
-                  = f.hidden_field :is_saved, value: "true"
-                  %button.btn.btn-primary= "Save"
-                = link_to 'View', job_path(job), class: "btn btn-primary"
+              = link_to 'View', job_path(job), class: "btn btn-primary"
           %hr

@@ -39,4 +39,14 @@ Rails.application.configure do
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
+ ActionMailer::Base.smtp_settings = {
+     :user_name => ENV["NT_SEND_GRID_USER_NAME"],
+     :password => ENV["NT_SEND_GRID_PASSWORD"],
+     :domain => 'localhost:3000',
+     :address => 'smtp.sendgrid.net',
+     :port => 587,
+     :authentication => :plain,
+     :enable_starttls_auto => true
+ }
+ config.action_mailer.default_url_options = { :host => "http://localhost:3000" }
 end

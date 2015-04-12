@@ -36,15 +36,23 @@
               = f.text_field :zip, class: 'form-control'
               = f.label "Company Bio"
               = f.text_area :description, class: 'form-control'
+              = f.hidden_field :ziggeo_token, id: 'ziggeo-token'
+              %ziggeo{ 'ziggeo-width' => 320, 'ziggeo-height' => 240 }
       %br
       .container
         .account-panel{style: 'border:none'}
           %button.btn.btn-primary.btn-full
             submit
 :javascript
-  $(function(){
+  function account(){
     $('.profile').on('click',function(){
       $('.profile-panel').hide();
       $('#'+this.id+'-panel').show();
     });
-  })
+    ZiggeoApi.Events.on("submitted", function (data) {
+      $('#ziggeo-token').val(data.video.token);
+    });
+  };
+
+  $(document).ready(account);
+  $(document).on('page:load', account);
