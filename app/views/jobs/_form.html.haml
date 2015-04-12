@@ -13,6 +13,11 @@
       = f.label :description
       = f.text_area :description, class: 'form-control'
     .field
+      %label
+        Job Function
+      %br
+      = f.collection_select(:job_function_id, JobFunction.all, :id, :name,  {:class => 'form-control'})
+    .field
       = f.label :salary_low
       = f.number_field :salary_low, class: 'form-control'
     .field
@@ -32,10 +37,5 @@
     .field
       = f.label :is_remote
       = f.check_box :is_remote, class: 'form-control'
-    .field
-      %label
-        Job Function
-      %br
-      = f.collection_select(:job_function_id, JobFunction.all, :id, :name,  {:class => 'form-control'})
     .actions
       = f.submit 'Save', class: 'btn btn-primary'

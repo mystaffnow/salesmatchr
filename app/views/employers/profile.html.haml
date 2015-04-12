@@ -7,7 +7,8 @@
 .wrapper-sm
   .container
     .row
-      .col-md-1{style: 'background-color:gray;height:100px'}
+      .col-md-2
+        = image_tag current_employer.avatar.url
       .col-md-4
         %h4
           = current_employer.name

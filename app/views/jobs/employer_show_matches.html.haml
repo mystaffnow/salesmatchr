@@ -10,12 +10,14 @@
     .row
       .col-md-12
         %h2{style: 'padding-bottom:5px'}
-          Applicants
+          Candidate Matches
         %table.table.table-responsive
           - @job.matches.each do |candidate|
             %tr
               %td
-                = candidate.name
+                %div
+                  = candidate.name
+                %img{src: candidate.avatar_url}
               %td
                 %b Location
                 %br

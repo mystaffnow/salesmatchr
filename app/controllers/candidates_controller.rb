@@ -1,5 +1,5 @@
 class CandidatesController < ApplicationController
-  skip_before_filter :check_candidate, only: [:account, :update]
+  skip_before_filter :check_candidate, only: [:account, :update, :incognito]
   def profile
     if params[:id]
       @candidate = Candidate.find(params.permit(:id)[:id])
@@ -18,9 +18,14 @@ class CandidatesController < ApplicationController
       end
     end
   end
+  #should make a put but tired
+  def incognito
+    current_candidate.is_incognito = params[:is_incognito]
+    current_candidate.save
+  end
   private
     # Never trust parameters from the scary internet, only allow the white list through.
     def candidate_params
-      params.require(:candidate).permit(:avatar, :zip, :city, :state_id, :ziggeo_token, :education_level_id, :archetype_score, :experiences_attributes => [:position, :company, :start_date, :end_date, :description, :is_sales, :sales_type_id], educations_attributes: [:school, :education_level_id, :description] )
+      params.require(:candidate).permit(:avatar, :is_incognito, :zip, :city, :state_id, :ziggeo_token, :education_level_id, :archetype_score, :experiences_attributes => [:position, :company, :start_date, :end_date, :description, :is_sales, :sales_type_id], educations_attributes: [:school, :education_level_id, :description] )
     end
 end

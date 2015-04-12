@@ -11,7 +11,7 @@ class Candidate < ActiveRecord::Base
   accepts_nested_attributes_for :educations, allow_destroy: true
   attr_accessor :flash_notice
   attr_accessor :avatar
-  has_attached_file :avatar
+  has_attached_file :avatar,  :default_url => "/img/missing.png"
   validates_attachment_content_type :avatar, :content_type => /\Aimage\/.*\Z/
 
   def self.from_omniauth(auth)
@@ -54,5 +54,13 @@ class Candidate < ActiveRecord::Base
   end
   def email_required?
     super && provider.blank?
+  end
+  def avatar_url
+    if is_incognito
+      '/img/incognito.png'
+    else
+      self.avatar.url
+    end
+
   end
 end

@@ -10,6 +10,7 @@ class CreateCandidates < ActiveRecord::Migration
       t.string :ziggeo_token
       t.string :uid
       t.string :provider
+      t.boolean :is_incognito
 
       t.timestamps null: false
     end

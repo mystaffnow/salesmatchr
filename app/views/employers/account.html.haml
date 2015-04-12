@@ -24,6 +24,8 @@
             .account-content
               = f.label "Company Name"
               = f.text_field :company, class: 'form-control'
+              = f.label "Profile Image"
+              = f.file_field :avatar
               = f.label "City"
               = f.text_field :city, class: 'form-control'
               = f.label "State"

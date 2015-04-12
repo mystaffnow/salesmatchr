@@ -7,17 +7,21 @@
     .text-center
       %h2= @candidate.name
       %p= get_archetype_from_score @candidate.archetype_score
-      - if current_candidate
+      - if current_candidate && current_candidate.id == @candidate.id
         = link_to "Edit Profile", candidates_account_path, class: "btn btn-default"
     %hr
-
-
-
+    - if current_candidate && current_candidate.id == @candidate.id
+      .container
+        .row
+          .col-md-2
+            incognito?
+            %input{:checked => "", :name => "my-checkbox", :type => "checkbox", :id => 'incognito', checked: @candidate.is_incognito}/
     .wrapper-sm
       .container
         .row
           .col-md-6
-            = image_tag @candidate.avatar.url
+            = image_tag @candidate.avatar.url, id: 'avatar', style: "display:" + (!@candidate.is_incognito ? 'block' : 'none')
+            %img{src: '/img/incognito.png', style: "display:" + (@candidate.is_incognito ? 'block' : 'none'), id: 'incognito-img'}
             - if @candidate.ziggeo_token != nil
               %ziggeo{ 'ziggeo-video' => @candidate.ziggeo_token, 'ziggeo-width' => 553, 'ziggeo-height' => 297}
             - elsif ( current_candidate == @candidate ) && ( !@candidate.ziggeo_token )
@@ -72,3 +76,18 @@
                     %h2 Education
                     - @candidate.educations.each do |education|
                       = render 'candidates/education_item', education: education
+:javascript
+  var profile_picture_url = "#{@candidate.avatar_url}";
+  $(function(){
+    $('#incognito').on('switchChange.bootstrapSwitch', function(event, state) {
+      var url = '/candidates/incognito/' + $('#incognito').bootstrapSwitch('state');
+      $.get(url)
+      if (state){
+        $('#avatar').hide();
+        $('#incognito-img').show();
+      }else{
+        $('#avatar').show();
+        $('#incognito-img').hide();
+      }
+    })
+  })
