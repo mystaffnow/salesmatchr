@@ -9,19 +9,24 @@
       %p= get_archetype_from_score @candidate.archetype_score
       - if current_candidate && current_candidate.id == @candidate.id
         = link_to "Edit Profile", candidates_account_path, class: "btn btn-default"
-    %hr
-    - if current_candidate && current_candidate.id == @candidate.id
-      .container
-        .row
-          .col-md-2
-            incognito?
+        #incognito-panel
+          #incognito-header
+            Incognito Mode
+          #incognito-content
             %input{:checked => "", :name => "my-checkbox", :type => "checkbox", :id => 'incognito', checked: @candidate.is_incognito}/
+            - if @candidate.is_incognito
+              %p Your profile is currently hidden. Turn off incognito to make your profile public.
+            - else
+              %p Your profile is currently visible. Turn on incognito to hide your profile.
+
+    %hr
+    
     .wrapper-sm
       .container
         .row
           .col-md-6
-            = image_tag @candidate.avatar.url, id: 'avatar', style: "display:" + (!@candidate.is_incognito ? 'block' : 'none')
-            %img{src: '/img/incognito.png', style: "display:" + (@candidate.is_incognito ? 'block' : 'none'), id: 'incognito-img'}
+            / = image_tag @candidate.avatar.url, id: 'avatar', style: "display:" + (!@candidate.is_incognito ? 'block' : 'none')
+            / %img{src: '/img/incognito.png', style: "display:" + (@candidate.is_incognito ? 'block' : 'none'), id: 'incognito-img'}
             - if @candidate.ziggeo_token != nil
               %ziggeo{ 'ziggeo-video' => @candidate.ziggeo_token, 'ziggeo-width' => 553, 'ziggeo-height' => 297}
             - elsif ( current_candidate == @candidate ) && ( !@candidate.ziggeo_token )

@@ -1,37 +1,36 @@
-#section.bg-highlight.header
-  .container
-    .row
-      .col-md-10
-        %h2
-          = @job.title
-      .col-md-2{style: 'line-height:80px; '}
-        = link_to 'Apply', create_job_candidates_path(@job), class: 'btn btn-default', :data => { :confirm => 'Are you sure?' }
-#section.wrapper-sm
+.action-bar
   .container
     .row
       .col-md-8
-        %h4
-          = "About #{@job.employer.company}"
-        %p
-          = @job.employer.description
-        %hr
-        %h4
-          = @job.title
-        %p
-          = @job.description
-      .col-md-4
-        #account
-          .account-panel
-            .account-header
-              %h2
-                Job Details
-            .account-content
-              %p
-                %b Salary:
-                = "$#{@job.salary_low} - $#{@job.salary_high}"
-              %p
-                %b Location:
-                = "#{@job.city} #{@job.state.name}, #{@job.zip}"
-              %p
-                %b Is remote:
-                = @job.is_remote ? 'yes' : 'no'
+        %h2= @job.title
+      .col-md-4.text-right
+        = link_to 'Apply', create_job_candidates_path(@job), class: 'btn btn-default', :data => { :confirm => 'Are you sure?' }
+
+.container.padded-container
+  .row
+    .col-md-7
+      %h4
+        = "About #{@job.employer.company}"
+      %p
+        = @job.employer.description
+      %hr
+      %h4
+        = @job.title
+      %p
+        = @job.description
+    .col-md-4.col-md-offset-1
+      #account
+        .account-panel
+          .account-header
+            %h2
+              Job Details
+          .account-content
+            %p
+              %b Salary:
+              = "$#{@job.salary_low} - $#{@job.salary_high}"
+            %p
+              %b Location:
+              = "#{@job.city} #{@job.state.name}, #{@job.zip}"
+            %p
+              %b Is remote:
+              = @job.is_remote ? 'yes' : 'no'

@@ -7,8 +7,7 @@
           = render 'jobs/candidate_sidebar'
       .col-md-10
         .row
-          .small
-            = @jobs_str
+          %p= @jobs_str
           .col-md-4
             %h3 Position
           .col-md-2
@@ -40,6 +39,5 @@
                   = f.hidden_field :candidate_id, value: "#{current_candidate.id}"
                   = f.hidden_field :job_id, value: "#{job.id}"
                   = f.hidden_field :is_saved, value: "true"
-                  %button.btn.btn-primary= "Save"
-                = link_to 'View', job_path(job), class: "btn btn-primary"
+                  %button.btn.btn-primary.text-right= "Save"
           %hr

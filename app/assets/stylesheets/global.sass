@@ -115,12 +115,18 @@ nav.navbar
 
 // Forms
 
+.account-panel
+  input, select, textarea, input.form-control
+    margin-bottom: 30px
+
+.form-control
+  color: #333 !important
+
 input.form-control
   height: 42px
   padding: 8px 12px
   line-height: 1.467
   border: 1px solid #bdc3c7
-  margin-bottom: 20px
   &:focus
     border-color: $secondary-color
 
@@ -169,6 +175,10 @@ input.form-control
         &:hover
           text-decoration: underline
 
+#experience-panel
+  hr
+    margin-bottom: 50px
+
 // CSS TRIANGLE
 .account-header::after
   content: ""
@@ -210,3 +220,17 @@ input.form-control
     text-transform: uppercase
     &:hover
       background-color: $secondary-color !important
+
+.video-recorder-initial
+  a.btn-primary
+    display: inline
+
+#search-bar
+  .form-control
+    width: 25%
+    display: inline-block
+
+#job-list
+  .btn-primary.text-right
+    display: block
+    float: right

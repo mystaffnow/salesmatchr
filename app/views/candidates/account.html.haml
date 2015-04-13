@@ -52,6 +52,7 @@
           .account-content
             = f.fields_for :experiences do |builder|
               = render 'experience_fields', f: builder
+              %hr
             = link_to_add_fields "+ Add Experience", f, :experiences
             %br
             .btn.btn-default.btn-full.next_button#education-button
