@@ -1,23 +1,20 @@
-.action-bar
-  .container
+.profile
+  .container.padded-container
     .row
-      .col-md-3
-      .col-md-9.text-right
-        = link_to "Edit Profile", employers_account_path, class: "btn btn-default"
-        = link_to "Edit Account Settings", edit_employer_registration_path, class: "btn btn-default"
+      .col-md-4.col-md-offset-4
+        = image_tag current_employer.avatar.url
+    .text-center
+      %h2= current_employer.company
+      %h5= "#{current_employer.city} #{current_employer.state ? current_employer.state.name: ''}, #{current_employer.zip}"
+      = link_to "Edit Profile", employers_account_path, class: "btn btn-default"
+      = link_to "Account Settings", edit_employer_registration_path, class: "btn btn-default"
 
-.container.padded-container
-  .row
-    .col-md-4.col-md-offset-4
-      = image_tag current_employer.avatar.url
-  .text-center
-    %h3= current_employer.name
-    %p= current_employer.company
-    %p= "#{current_employer.city} #{current_employer.state ? current_employer.state.name: ''}, #{current_employer.zip}"
+    %hr
 
-  .row
-    .col-md-6
-      = current_employer.description
-    .col-md-6
-      - if current_employer.ziggeo_token != nil
-        %ziggeo{ 'ziggeo-video' => current_employer.ziggeo_token, 'ziggeo-width' => 553, 'ziggeo-height' => 297}
+    .row
+      .col-md-6
+        %h2= "About #{current_employer.company}"
+        = current_employer.description
+      .col-md-6
+        - if current_employer.ziggeo_token != nil
+          %ziggeo{ 'ziggeo-video' => current_employer.ziggeo_token, 'ziggeo-width' => 553, 'ziggeo-height' => 297}

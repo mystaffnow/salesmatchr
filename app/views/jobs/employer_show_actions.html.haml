@@ -1,34 +1,33 @@
-#section.bg-highlight.header
+.action-bar
   .container
     .row
       .col-md-12
-        %h2
-          = @job.title
-#section.wrapper-sm
-  .container
-    .row
-      .col-md-12
-        %h2{style: 'padding-bottom:5px'}
-          Candidate Views
-        %table.table.table-responsive
-          - @job.candidate_job_actions.each do |candidate_job_action|
-            %tr
-              %td
+        %h2= @job.title
+
+.container.padded-container
+  .row
+    .col-md-12
+      %h2{style: 'padding-bottom:5px'}
+        Candidate Views
+        %hr
+      %table.table.table-responsive
+        - @job.candidate_job_actions.each do |candidate_job_action|
+          = link_to candidates_profile_path(candidate_job_action.candidate) do
+            .row
+              .col-md-4
                 %div
                   = candidate_job_action.candidate.name
                 %img{src: candidate_job_action.candidate.avatar_url}
-              %td
-                %b Location
-                %br
+              .col-md-4
+                %h4 Location
                 = get_location candidate_job_action.candidate
-              %td
-                %b Education
-                %br
+              .col-md-4
+                %h4 Education
                 = candidate_job_action.candidate.education_level.name
-              %td
-                = link_to candidates_profile_path(candidate_job_action.candidate) do
-                  %i.fa.fa-search
-                  View Profile
+          %hr
+
+
+
 :javascript
   $(function(){
 

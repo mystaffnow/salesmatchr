@@ -1,39 +1,37 @@
-#section.bg-highlight.header
+.action-bar
   .container
     .row
       .col-md-12
-        %h2
-          = @job.title
-#section.wrapper-sm
-  .container
-    .row
-      .col-md-12
-        %h2{style: 'padding-bottom:5px'}
-          Applicants
-        %table.table.table-responsive
-          - @job.job_candidates.each do |job_candidate|
-            %tr
-              %td
-                = job_candidate.candidate.name
-              %td
-                %b Location
-                %br
+        %h2= @job.title
+
+.container.padded-container
+  .row
+    .col-md-12
+      %h2{style: 'padding-bottom:5px'}
+        Applicants
+        %hr
+      %table.table.table-responsive
+        - @job.job_candidates.each do |job_candidate|
+          = link_to candidates_profile_path(job_candidate.candidate) do
+            .row
+              .col-md-4
+                %div
+                  = job_candidate.candidate.name
+                %img{src: job_candidate.candidate.avatar_url}
+              .col-md-4
+                %h4 Location
                 = get_location job_candidate.candidate
-              %td
-                %b Education
-                %br
+              .col-md-2
+                %h4 Education
                 = job_candidate.candidate.education_level.name
-              %td
-                = link_to candidates_profile_path(job_candidate.candidate) do
-                  %i.fa.fa-search
-                  View Profile
-              %td
-                - if !job_candidate.accepted?
-                  = form_for(job_candidate) do |f|
-                    = f.hidden_field :status, id: 'is_hired', value: "#{get_status_key_by_value(JobCandidate.statuses[:accepted])}"
-                    %button.btn.btn-primary#hire= "Hire"
-                - else
-                  Already Hired
+              - if !job_candidate.accepted?
+                = form_for(job_candidate) do |f|
+                  = f.hidden_field :status, id: 'is_hired', value: "#{get_status_key_by_value(JobCandidate.statuses[:accepted])}"
+                  %button.btn.btn-default#hire= "Hire"
+              - else
+                Already Hired
+          %hr
+
 
 :javascript
   $(function(){
