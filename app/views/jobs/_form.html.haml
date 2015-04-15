@@ -18,11 +18,11 @@
       %br
       = f.collection_select(:job_function_id, JobFunction.all, :id, :name,  {:class => 'form-control'})
     .field
-      = f.label :salary_low
-      = f.number_field :salary_low, class: 'form-control'
-    .field
-      = f.label :salary_high
-      = f.number_field :salary_high, class: 'form-control'
+      = f.label "Salary range"
+      %br
+      %input#salaries
+      = f.hidden_field :salary_low,id: 'salary_low'
+      = f.hidden_field :salary_high, id: 'salary_high'
     .field
       = f.label :city
       = f.text_field :city, class: 'form-control'
@@ -38,4 +38,12 @@
       = f.label :is_remote
       = f.check_box :is_remote, class: 'form-control'
     .actions
-      = f.submit 'Save', class: 'btn btn-primary'
+      = f.submit 'Save', class: 'btn btn-primary', id: 'save-btn'
+
+:javascript
+  $(function(){
+    $('#save-btn').on('click', function(){
+      $('#salary_low').val(salary_slider.slider('getValue')[0]);
+      $('#salary_high').val(salary_slider.slider('getValue')[1]);
+    })
+  })

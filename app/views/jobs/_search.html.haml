@@ -14,7 +14,7 @@
       .col-md-3.text-right
         = link_to "Find Now", jobs_path, class: "btn btn-primary action-btn", id: "find-jobs"
 :javascript
-  $(function(){
+  function ready_this(){
     $('#find-jobs').click(function(){
       var str = $('#find-jobs').attr('href');
       str = str + '?job_function=' + $('#job-function-select').val();
@@ -27,8 +27,8 @@
       str = str + "&salary_high=" + $('#salary_high').val();
       $('#find-jobs').attr('href',  str);
     });
-  });
+  }
 
 
-  $(document).ready(ready);
-  $(document).on('page:load', ready);
+  $(document).ready(ready_this);
+  $(document).on('page:load', ready_this);

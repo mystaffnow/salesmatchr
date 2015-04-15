@@ -35,8 +35,8 @@ function ready(){
 
   // http://www.bootstrap-switch.org/
   $("[name='my-checkbox']").bootstrapSwitch();
-
+  salary_slider = $("#salaries").slider({ min: 0, max: 500000, range: true, step: 5000 });
 }
-
+var salary_slider;
 $(document).ready(ready);
 $(document).on('page:load', ready);
