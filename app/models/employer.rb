@@ -7,4 +7,8 @@ class Employer < ActiveRecord::Base
   has_many :jobs
   has_attached_file :avatar,  :default_url => "/img/missing.png"
   validates_attachment_content_type :avatar, :content_type => /\Aimage\/.*\Z/
+
+  def can_proceed
+    self.state && self.city && self.zip && self.website && self.name
+  end
 end

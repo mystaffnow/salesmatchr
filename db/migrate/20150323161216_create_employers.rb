@@ -7,6 +7,7 @@ class CreateEmployers < ActiveRecord::Migration
       t.string :city
       t.string :zip
       t.string :description
+      t.string :website
       t.string :ziggeo_token
 
       t.timestamps null: false

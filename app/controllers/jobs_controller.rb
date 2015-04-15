@@ -5,6 +5,7 @@ class JobsController < ApplicationController
   # GET /jobs.json
   def index
     h = { }
+    h[:is_active] = true
     @jobs_str = ""
     if params[:job_function] != '' && params[:job_function]
       h[:job_function_id] = params[:job_function]

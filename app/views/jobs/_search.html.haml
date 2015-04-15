@@ -9,12 +9,11 @@
           = select_tag "Distance (miles)", options_for_select([ 10, 25, 100], params[:distance]), { prompt: 'Distance (miles)', class: 'selectpickers', id: 'distance'}
         %span Remote Only
         = check_box_tag "my-checkbox", "", (params[:is_remote] == "true" ? true : false) , id: 'remote-only-check'
-        %input.form-control{:type => "text", :name => "low", id: "salary_low", style: "color:black", placeholder: "Salary(low)", value: (params[:salary_low] ? params[:salary_low] : '')}
-        %input.form-control{:type => "text", :name => "high", id: "salary_high", style: "color:black", placeholder: "Salary(high)", value: (params[:salary_high] ? params[:salary_high] : '')}
+        %input#salaries
       .col-md-3.text-right
         = link_to "Find Now", jobs_path, class: "btn btn-primary action-btn", id: "find-jobs"
 :javascript
-  function ready_this(){
+  function ready_search(){
     $('#find-jobs').click(function(){
       var str = $('#find-jobs').attr('href');
       str = str + '?job_function=' + $('#job-function-select').val();
@@ -23,12 +22,11 @@
       if (typeof($('#distance').val()) != "undefined"){
         str = str + "&distance=" + $('#distance').val();
       }
-      str = str + "&salary_low=" + $('#salary_low').val();
-      str = str + "&salary_high=" + $('#salary_high').val();
+      str = str + "&salary_low=" + salary_slider.slider('getValue')[0];
+      str = str + "&salary_high=" + salary_slider.slider('getValue')[1];
       $('#find-jobs').attr('href',  str);
     });
   }
 
-
-  $(document).ready(ready_this);
-  $(document).on('page:load', ready_this);
+  $(document).ready(ready_search);
+  $(document).on('page:load', ready_search);
