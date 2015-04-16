@@ -5,14 +5,18 @@ class Candidate < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable,:omniauth_providers => [:linkedin]
   has_many :experiences
   has_many :educations
+  has_many :candidate_question_answers
   belongs_to :state
   belongs_to :education_level
+  belongs_to :experience_year
   accepts_nested_attributes_for :experiences, allow_destroy: true
   accepts_nested_attributes_for :educations, allow_destroy: true
+  accepts_nested_attributes_for :candidate_question_answers, allow_destroy: true
   attr_accessor :flash_notice
   attr_accessor :avatar
   has_attached_file :avatar,  :default_url => "/img/missing.png"
   validates_attachment_content_type :avatar, :content_type => /\Aimage\/.*\Z/
+
 
   def self.from_omniauth(auth)
     candidate = Candidate.where(uid: auth.uid).first
@@ -23,6 +27,10 @@ class Candidate < ActiveRecord::Base
       candidate.provider = auth.provider
       candidate.uid = auth.uid
       candidate.email = auth.info.email
+
+      Question.all.each do |question|
+        candidate.candidate_question_answers.build question_id: question.id
+      end
 
       auth[:extra][:raw_info][:positions][:values].each do |raw_experience|
         experience = candidate.experiences.build

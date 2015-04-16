@@ -11,6 +11,7 @@ class CreateCandidates < ActiveRecord::Migration
       t.string :uid
       t.string :provider
       t.boolean :is_incognito
+      t.integer :year_experience_id
 
       t.timestamps null: false
     end

@@ -1,0 +1,10 @@
+%fieldset.account-field
+  = f.object.question.name
+  = f.hidden_field :id, value: f.object.id
+  = f.hidden_field :question_id, value: f.object.question.id
+  - Answer.all.each do |answer|
+    .row
+      .col-md-1
+        = f.radio_button :answer_id, answer.id, style: 'display:inline'
+      .col-md-11
+        = answer.name

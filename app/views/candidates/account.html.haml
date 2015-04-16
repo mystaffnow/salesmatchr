@@ -76,16 +76,11 @@
           .account-header
             %h2 Archetype
           .account-content
-            .row
-              .col-md-3
-                = image_tag "some-img.png"
-              .col-md-3
-                = image_tag "some-img.png"
-              .col-md-3
-                = image_tag "some-img.png"
-              .col-md-3
-                = image_tag "some-img.png"
-            = f.text_field :archetype_score, class: 'form-control'
+            = f.label "Years of experience"
+            %br
+            = f.collection_select(:year_experience_id, YearExperience.all, :id, :name,  {:class => 'form-control selectpickers'})
+            = f.fields_for :candidate_question_answers do |builder|
+              = render 'candidate_question_answer_fields', f: builder
             %br
             %button.btn.btn-default.btn-full
               Submit

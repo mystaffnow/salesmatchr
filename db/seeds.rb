@@ -24,6 +24,40 @@ SalesType.create :name => "Financial"
 SalesType.create :name => "Federal Government"
 SalesType.create :name => "Retail"
 
+YearExperience.create :name => "This is my first sales job!"
+YearExperience.create :name => "Less than a year"
+YearExperience.create :name => "1-3 years"
+YearExperience.create :name => "4-6 years"
+YearExperience.create :name => "7-10 years"
+YearExperience.create :name => "10+"
+
+Answer.create :name => "Strongly Agree", :score => 5
+Answer.create :name => "Agree", :score => 3
+Answer.create :name => "Neutral", :score => 0
+Answer.create :name => "Disagree", :score => -3
+Answer.create :name => "Strongly Disagree", :score => -5
+
+Question.create :name => "You would rather work alone than in a group."
+Question.create :name => "You prefer finding your own solution to using a proven one if your solution might be more efficient, even if it requires extra work."
+Question.create :name => "You would rather be given a goal to work towards than a specific task."
+Question.create :name => "You do not get along easily with others."
+Question.create :name => "You prefer having consistency in most situations as opposed to change."
+Question.create :name => "You are easily distracted."
+Question.create :name => "You have an aggressive personality."
+Question.create :name => "You are willing to compromise and work out conflict."
+Question.create :name => "You prefer a rigid schedule."
+Question.create :name => "You are stubborn and sometimes temperamental."
+Question.create :name => "You consider yourself a natural leader."
+Question.create :name => "You are easily bored."
+Question.create :name => "You favor numbers to images and abstract ideas."
+Question.create :name => "You normally do not like being told what to do."
+Question.create :name => "You often find yourself becoming restless."
+Question.create :name => "You are an innovative thinker."
+Question.create :name => "You generally require little to no guidance after being given a task."
+Question.create :name => "You have a competitive spirit, which occasionally causes conflict."
+Question.create :name => "You like trying to change others' opinions to agree with your own."
+Question.create :name => "You immediately jump for new opportunities, sometimes not thinking them through."
+
 State.create :name => "Alaska"
 State.create :name => "Arizona"
 State.create :name => "Arkansas"
