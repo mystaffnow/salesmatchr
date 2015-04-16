@@ -1,0 +1,7 @@
+%html
+  %head
+    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
+  %body
+    %h2 You have been hired for a job on SalesMatchr!
+    %p
+      You have been accepted for #{@job.title}. Find out more details at #{link_to 'SalesMatchr', job_url(@job)}!

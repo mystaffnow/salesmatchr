@@ -9,6 +9,6 @@ class Employer < ActiveRecord::Base
   validates_attachment_content_type :avatar, :content_type => /\Aimage\/.*\Z/
 
   def can_proceed
-    self.state && self.city && self.zip && self.website && self.name
+    self.state && self.city && self.zip && self.website && self.name && self.email
   end
 end

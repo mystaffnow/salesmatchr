@@ -1,0 +1,7 @@
+%html
+  %head
+    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
+  %body
+    %h2 Someone has withdrawn an application to your job on SalesMatchr!
+    %p
+      Someone has withdrawn an application for #{@job.title}. Find out more details at #{link_to 'SalesMatchr', employer_show_url(@job)}!

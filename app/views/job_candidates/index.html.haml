@@ -47,7 +47,8 @@
           - if !job_candidate.withdrawn?
             = form_for(job_candidate) do |f|
               = f.hidden_field :status, value: "#{get_status_key_by_value(JobCandidate.statuses[:withdrawn])}"
-              %button.btn.btn-info#hire= "Withdraw Application"
+              %button.btn.btn-info#hire{:data => { :confirm => 'Are you sure?' }}= "Withdraw Application"
+
           - else
             Application Withdrawn
       %hr
