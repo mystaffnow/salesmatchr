@@ -1,11 +1,9 @@
 .job-list
-
   .action-bar
     .container
       .row
         .col-md-9
           %h2 My Jobs
-
   .container.padded-container
     - @job_candidates.each do |job_candidate|
       .row
@@ -37,12 +35,6 @@
                   Withdrawn
               - else
                 Withdrawn
-            
-            / .btn-group{"aria-label" => "...", :role => "group"}
-            /   %button.btn.btn-default{:type => "button"} Submitted
-            /   %button.btn.btn-default{:type => "button"} Viewed
-            /   %button.btn.btn-default{:type => "button"} Accepted
-            /   %button.btn.btn-default{:type => "button"} Withdrawn
         .col-md-4.job-actions
           - if !job_candidate.withdrawn?
             = form_for(job_candidate) do |f|

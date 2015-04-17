@@ -8,7 +8,7 @@ class Candidate < ActiveRecord::Base
   has_many :candidate_question_answers
   belongs_to :state
   belongs_to :education_level
-  belongs_to :experience_year
+  belongs_to :year_experience
   accepts_nested_attributes_for :experiences, allow_destroy: true
   accepts_nested_attributes_for :educations, allow_destroy: true
   accepts_nested_attributes_for :candidate_question_answers, allow_destroy: true

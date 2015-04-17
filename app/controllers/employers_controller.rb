@@ -1,9 +1,13 @@
 class EmployersController < ApplicationController
+  skip_before_filter :check_employer, only: [:account, :update]
   def profile
 
   end
   def account
 
+  end
+  def public
+    @employer = Employer.find(params[:id])
   end
   def update
     respond_to do |format|
