@@ -20,7 +20,7 @@ class JobsController < ApplicationController
     if params[:salary_low] != '' && params[:salary_low]
       h[:salary_low] = params[:salary_low]..params[:salary_high]
       h[:salary_high] = params[:salary_low]..params[:salary_high]
-      @jobs_str = @jobs_str + "that have salaries between $" + params[:salary_low] + " and $" + params[:salary_high]
+      @jobs_str = @jobs_str + " that have salaries between $" + params[:salary_low] + " and $" + params[:salary_high]
     end
     if params[:zip] != '' && params[:zip]
       res = Integer(params[:distance]) rescue false

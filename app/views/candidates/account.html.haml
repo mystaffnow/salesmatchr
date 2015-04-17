@@ -25,7 +25,6 @@
             %h2 Archetype
           .account-content
             = f.label "Years of experience"
-            %br
             = f.collection_select(:year_experience_id, YearExperience.all, :id, :name,  {:class => 'form-control selectpickers'})
             = f.fields_for :candidate_question_answers do |builder|
               = render 'candidate_question_answer_fields', f: builder
