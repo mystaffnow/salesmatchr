@@ -31,12 +31,12 @@
             %h2
               Job Details
           .account-content
-            %p
+            .job-detail
               %h4 Salary
               %p= "$#{@job.salary_low} - $#{@job.salary_high}"
-            %p
+            .job-detail
               %h4 Location
               %p= "#{@job.city} #{@job.state.name}, #{@job.zip}"
-            %p
+            .job-detail
               %h4 Is remote
               %p= @job.is_remote ? 'yes' : 'no'

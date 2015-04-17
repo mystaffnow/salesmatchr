@@ -95,8 +95,6 @@ nav.navbar
   color: white !important
   padding: 10px 30px !important
   margin-top: 5px
-  span.caret
-    margin-left: 50px
 .btn-default:hover
   background-color: $secondary-hover !important
 .btn-info
@@ -165,6 +163,8 @@ input.form-control
       padding: 10px 10px
   .account-content
     padding: 40px 40px
+    .job-detail
+      margin-bottom: 40px
     fieldset.account-field
       margin-bottom: 40px
       #answer-choice
@@ -218,8 +218,11 @@ input.form-control
     margin: 10px 0
   .dropdown
     display: inline-block
-    .btn
-      margin-right: 25px
+  input#zip
+    width: 100px
+  .btn.dropdown-toggle
+    width: auto
+
 
 #registration-bar
   background-color: $light-blue
