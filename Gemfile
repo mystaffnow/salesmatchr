@@ -54,3 +54,4 @@ gem 'mixpanel-ruby', '~> 1.7.0'
 gem 'rolify', '~> 3.5.2'
 gem 'omniauth', '~> 1.2.2'
 gem "omniauth-linkedin-oauth2"
+gem 'client_side_validations', github: 'DavyJonesLocker/client_side_validations'

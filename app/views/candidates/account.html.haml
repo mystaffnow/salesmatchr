@@ -17,7 +17,7 @@
 .container.padded-container
   #account
     #new-registration
-      = form_for(current_candidate, url: candidates_account_path, html: { multipart: true, method: :put }) do |f|
+      = form_for(current_candidate, validate: true, url: candidates_account_path, html: { multipart: true, method: :put }) do |f|
 
         // Archetype Page
         #archetype-panel.account-panel
@@ -30,7 +30,7 @@
             = f.fields_for :candidate_question_answers do |builder|
               = render 'candidate_question_answer_fields', f: builder
             %br
-            .btn.btn-default.btn-full.next_button#experience-button
+            .btn.btn-default.btn-full.next_button#accounts-button
               Next
         // Account Page
         #accounts-panel.account-panel{style: 'display:none'}
@@ -44,7 +44,7 @@
             = f.collection_select(:education_level_id, EducationLevel.all, :id, :name,  {:class => 'form-control selectpickers'})
             %br
             = f.label "City"
-            = f.text_field :city, class: 'form-control'
+            = f.text_field :city, class: 'form-control', validate: true
             = f.label "State"
             %br
             = f.collection_select(:state_id, State.all, :id, :name,  {:class => 'form-control selectpickers'})

@@ -15,7 +15,8 @@
   .row
     .col-md-7
       %h2
-        = "About #{@job.employer.company}"
+        = "About "
+        = link_to @job.employer.name, employers_public_path(@job.employer)
       %p
         = @job.employer.description
       %hr

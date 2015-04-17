@@ -30,6 +30,8 @@ Rails.application.routes.draw do
   get 'my_jobs' => 'job_candidates#index'
   get 'candidates/incognito/:is_incognito' => 'candidates#incognito'
 
+  get 'employers/public/:id' => 'employers#public', as: 'employers_public'
+
   get 'employers/account' => 'employers#account'
   put 'employers/account' => 'employers#update'
   get 'employers/profile' => 'employers#profile'
@@ -38,6 +40,7 @@ Rails.application.routes.draw do
   get 'employer_jobs/:id' => 'jobs#employer_show', as: 'employer_show'
   get 'employer_job_actions/:id' => 'jobs#employer_show_actions', as: 'employer_show_actions'
   get 'employer_job_matches/:id' => 'jobs#employer_show_matches', as: 'employer_show_matches'
+
   put 'inactivate_job/:id' => 'jobs#inactivate_job', as: 'inactivate_job'
 
   root to: 'pages#index'

@@ -27,7 +27,7 @@
           .col-md-6
             / = image_tag @candidate.avatar.url, id: 'avatar', style: "display:" + (!@candidate.is_incognito ? 'block' : 'none')
             / %img{src: '/img/incognito.png', style: "display:" + (@candidate.is_incognito ? 'block' : 'none'), id: 'incognito-img'}
-            - if @candidate.ziggeo_token != nil
+            - if @candidate.ziggeo_token != nil && @candidate.ziggeo_token != ''
               %ziggeo{ 'ziggeo-video' => @candidate.ziggeo_token, 'ziggeo-width' => 553, 'ziggeo-height' => 297}
             - elsif ( current_candidate == @candidate ) && ( !@candidate.ziggeo_token )
               = link_to 'Edit your profile to add a video', candidates_account_path
@@ -37,26 +37,19 @@
                 .row
                   .col-md-6
                     %h4 Location
-                    = @candidate.city
-                    = @candidate.state.name
-                    = @candidate.zip
+                    %p
+                      = @candidate.city
+                      = @candidate.state.name
+                      = @candidate.zip
                   .col-md-6
-                    %h4 Base Salary
-                    %p $60k
+                    %h4 Education Level
+                    %p
+                      = @candidate.education_level.name
                 .row
                   .col-md-6
                     %h4 Experience
-                    %p 4 - 7 years
-                  .col-md-6
-                    %h4 On Target Salary
-                    %p $300k
-                .row
-                  .col-md-6
-                    %h4 Education Level
-                    = @candidate.education_level.name
-                  .col-md-6
-                    %h4 Open to Remote?
-                    %p Yes
+                    %p
+                      = @candidate.year_experience.name
 
           
           // Work Experience & Education

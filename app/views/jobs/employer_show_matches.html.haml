@@ -16,7 +16,10 @@
             .row
               .col-md-4
                 %div
-                  = candidate.name
+                  - if candidate.is_incognito
+                    Candidate
+                  - else
+                    = candidate.name
                 %img{src: candidate.avatar_url}
               .col-md-4
                 %h4 Location

@@ -2,11 +2,10 @@
   .account-panel
     .account-header
       %h2 Candidate Sign Up
-      = form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
+      = form_for(resource, as: resource_name,  url: registration_path(resource_name)) do |f|
         = link_to "Are you an employer looking to post jobs? Sign up here", new_employer_registration_path
     .account-content
       = form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
-        = devise_error_messages!
         .actions
           = devise_error_messages!
           = link_to candidate_omniauth_authorize_path(:linkedin) do
@@ -19,7 +18,7 @@
           .field
             = f.label :name
             %br/
-            = f.text_field :name, autofocus: true, class: "form-control"
+            = f.text_field :name, autofocus: true, class: "form-control", validate: true
           .field
             = f.label :email
             %br/
