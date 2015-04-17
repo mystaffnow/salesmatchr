@@ -12,18 +12,22 @@
         %hr
       %table.table.table-responsive
         - @job.job_candidates.each do |job_candidate|
-          = link_to candidates_profile_path(job_candidate.candidate) do
-            .row
+          .row
+            = link_to candidates_profile_path(job_candidate.candidate) do
               .col-md-4
-                %div
-                  = job_candidate.candidate.name
                 %img{src: job_candidate.candidate.avatar_url}
+                %div
+                  - if !job_candidate.candidate.is_incognito
+                    = job_candidate.candidate.name
+                  - else
+                    Applicant
               .col-md-4
                 %h4 Location
                 = get_location job_candidate.candidate
               .col-md-2
                 %h4 Education
                 = job_candidate.candidate.education_level.name
+            .col-md-2
               - if !job_candidate.accepted?
                 = form_for(job_candidate) do |f|
                   = f.hidden_field :status, id: 'is_hired', value: "#{get_status_key_by_value(JobCandidate.statuses[:accepted])}"

@@ -106,7 +106,7 @@ class JobsController < ApplicationController
     @job.job_function_id = job_function.id
     respond_to do |format|
       if @job.save
-        format.html { redirect_to employer_jobs_path, notice: 'Job was successfully created.' }
+        format.html { redirect_to employer_archive_jobs_path, notice: 'Job was successfully created.' }
       else
         format.html { render :new }
         format.json { render json: @job.errors, status: :unprocessable_entity }

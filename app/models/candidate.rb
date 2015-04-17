@@ -50,7 +50,12 @@ class Candidate < ActiveRecord::Base
     candidate.save
     candidate
   end
-
+  def has_applied(job)
+    JobCandidate.where(:job_id => job.id, :candidate_id => self.id).count > 0
+  end
+  def job_status(job)
+    JobCandidate.where(:job_id => job.id, :candidate_id => self.id).first.status
+  end
   def view_job(job)
     CandidateJobAction.create job_id: job.id, candidate_id: self.id, is_saved: false
   end

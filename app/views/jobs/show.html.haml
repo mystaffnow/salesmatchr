@@ -4,7 +4,12 @@
       .col-md-8
         %h2= @job.title
       .col-md-4.text-right
-        = link_to 'Apply Now', create_job_candidates_path(@job), class: 'btn btn-default', :data => { :confirm => 'Are you sure?' }
+        - if candidate_signed_in?
+          - if !current_candidate.has_applied(@job)
+            = link_to 'Apply Now', create_job_candidates_path(@job), class: 'btn btn-default', :data => { :confirm => 'Are you sure?' }
+          - else
+            %h2
+              = current_candidate.job_status @job
 
 .container.padded-container
   .row
