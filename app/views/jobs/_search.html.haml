@@ -4,7 +4,7 @@
       .col-md-9
         .dropdown
           = select_tag "Job Type", options_from_collection_for_select(JobFunction.all, "id", "name", selected: params[:job_function]), { prompt: 'Select Sales Type', class: 'selectpickers', id: 'job-function-select'}
-        %input.form-control{:type => "text", :name => "zip", id: "zip", style: "color:black", placeholder: "zip code", value: params[:zip]}
+        %input.form-control{:type => "text", :name => "zip", id: "zip", style: "color:black;vertical-align:bottom", placeholder: "zip code", value: params[:zip]}
         .dropdown
           = select_tag "Distance (miles)", options_for_select([ 10, 25, 100], params[:distance]), { prompt: 'Distance (miles)', class: 'selectpickers', id: 'distance'}
         %span Remote Only
