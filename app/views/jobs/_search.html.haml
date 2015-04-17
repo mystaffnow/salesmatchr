@@ -9,7 +9,7 @@
           = select_tag "Distance (miles)", options_for_select([ 10, 25, 100], params[:distance]), { prompt: 'Distance (miles)', class: 'selectpickers', id: 'distance'}
         %span Remote Only
         = check_box_tag "my-checkbox", "", (params[:is_remote] == "true" ? true : false) , id: 'remote-only-check'
-        %input#salaries
+        %input#salaries{'data-slider-handle':"triangle"}
       .col-md-3.text-right
         = link_to "Find Now", jobs_path, class: "btn btn-primary action-btn", id: "find-jobs"
 :javascript
