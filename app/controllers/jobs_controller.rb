@@ -14,13 +14,13 @@ class JobsController < ApplicationController
     end
     if params[:is_remote] != '' && params[:is_remote]
       h[:is_remote] = params[:is_remote]
-      @jobs_str = @jobs_str + "that are " + ( params[:is_remote] ? '' : 'not ') + " remote"
+      @jobs_str = @jobs_str + "that are " + ( params[:is_remote] ? '' : 'not ') + " remote "
     end
     #assume if one is set then the other is too.... is using the slider
     if params[:salary_low] != '' && params[:salary_low]
       h[:salary_low] = params[:salary_low]..params[:salary_high]
       h[:salary_high] = params[:salary_low]..params[:salary_high]
-      @jobs_str = @jobs_str + " that have salaries between $" + params[:salary_low] + " and $" + params[:salary_high]
+      @jobs_str = @jobs_str + " and have salaries between $" + params[:salary_low] + " and $" + params[:salary_high]
     end
     if params[:zip] != '' && params[:zip]
       res = Integer(params[:distance]) rescue false
