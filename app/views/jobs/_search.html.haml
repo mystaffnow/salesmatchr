@@ -11,7 +11,7 @@
         = check_box_tag "my-checkbox", "", (params[:is_remote] == "true" ? true : false) , id: 'remote-only-check'
         %input#salaries{'data-slider-handle':"triangle"}
       .col-md-3.text-right
-        = link_to "Find Now", jobs_path, class: "btn btn-primary action-btn", id: "find-jobs"
+        = link_to "Search", jobs_path, class: "btn btn-primary action-btn", id: "find-jobs"
 :javascript
   function ready_search(){
     $('#find-jobs').click(function(){

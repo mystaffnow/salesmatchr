@@ -1,30 +1,33 @@
 %fieldset.account-field
-  = link_to "remove", class: "remove_fields" do
-    %i.fa.fa-trash
+  %b= link_to "Delete Job", class: "btn btn-default remove_fields"
+  %br
+  %br
   = f.hidden_field :id, value: f.object.id
   = f.label "Position"
   = f.text_field :position, class: 'form-control'
   = f.label "Company"
   = f.text_field :company, class: 'form-control'
-  = f.label "Date Started"
-  %br
-  = f.date_select :start_date, { :discard_day => true},  class: 'form-control'
-  %br
-  = f.label "Date Ended"
-  %br
-  = f.date_select :end_date, { :discard_day => true}, class: 'form-control'
+  .row
+    .col-md-6
+      = f.label "Date Started"
+      = f.date_select :start_date, { :discard_day => true},  class: 'form-control experience-date'
+    .col-md-6
+      = f.label "Date Ended"
+      = f.date_select :end_date, { :discard_day => true}, class: 'form-control experience-date'
   %br
   = f.label "Description"
   = f.text_area :description, class: 'form-control', placeholder: 'position description'
-  .col-md-6
-    = f.label "Is this a sales job?"
-    = f.check_box :is_sales, class: 'form-control'
-  .col-md-6
-    = f.label "Sales Type"
-    %br
-    = f.collection_select(:sales_type_id, SalesType.all, :id, :name,  {:class => 'form-control'})
+  .row
+    .col-md-6
+      = f.label "Is this a sales job?"
+      Yes
+      = f.check_box :is_sales
+
+    .col-md-6
+      = f.label "Sales Type"
+      %br
+      = f.collection_select(:sales_type_id, SalesType.all, :id, :name,  {:class => 'form-control'})
   = f.hidden_field :_destroy
-  %hr
 
 
 

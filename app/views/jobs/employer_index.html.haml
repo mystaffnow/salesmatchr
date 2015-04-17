@@ -47,3 +47,7 @@
           %i.fa.fa-trash{title: "inactivate this job"}
           Inactivate
     %hr
+  - if @jobs.count === 0
+    %h3.text-center
+      Looks like you haven't created any jobs yet. <br> Get started by 
+      = link_to "creating your first job.", new_job_path
