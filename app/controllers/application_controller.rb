@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
   before_filter :check_candidate
+  before_filter :check_employer
   before_action :configure_permitted_parameters, if: :devise_controller?
 
   protected
@@ -14,7 +15,14 @@ class ApplicationController < ActionController::Base
   def check_candidate
     if candidate_signed_in?
       if !current_candidate.can_proceed
-        redirect_to candidates_account_path
+        redirect_to candidates_account_path, notice: "Please complete the archetype form before proceeding"
+      end
+    end
+  end
+  def check_employer
+    if employer_signed_in?
+      if !current_employer.can_proceed
+        redirect_to employers_account_path
       end
     end
   end

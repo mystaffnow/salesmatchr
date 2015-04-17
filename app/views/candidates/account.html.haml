@@ -2,7 +2,10 @@
   .container
     .row
       .col-md-3
-        .btn.btn-primary.profile#accounts.btn-active
+        .btn.btn-primary.profile#archetype.btn-active
+          Archetype
+      .col-md-3
+        .btn.btn-primary.profile#accounts
           Profile
       .col-md-3
         .btn.btn-primary.profile#experience
@@ -10,17 +13,27 @@
       .col-md-3
         .btn.btn-primary.profile#education
           Education
-      .col-md-3
-        .btn.btn-primary.profile#archetype
-          Archetype
 
 .container.padded-container
   #account
     #new-registration
       = form_for(current_candidate, url: candidates_account_path, html: { multipart: true, method: :put }) do |f|
 
+        // Archetype Page
+        #archetype-panel.account-panel
+          .account-header
+            %h2 Archetype
+          .account-content
+            = f.label "Years of experience"
+            %br
+            = f.collection_select(:year_experience_id, YearExperience.all, :id, :name,  {:class => 'form-control selectpickers'})
+            = f.fields_for :candidate_question_answers do |builder|
+              = render 'candidate_question_answer_fields', f: builder
+            %br
+            .btn.btn-default.btn-full.next_button#experience-button
+              Next
         // Account Page
-        #accounts-panel.account-panel
+        #accounts-panel.account-panel{style: 'display:none'}
           .account-header
             %h2 Profile Information
           .account-content
@@ -67,20 +80,6 @@
             = f.fields_for :educations do |builder|
               = render 'education_fields', f: builder
             = link_to_add_fields "+ Add Education", f, :educations
-            %br
-            .btn.btn-default.btn-full.next_button#archetype-button
-              Next
-
-        // Archetype Page
-        #archetype-panel.account-panel{style: 'display:none'}
-          .account-header
-            %h2 Archetype
-          .account-content
-            = f.label "Years of experience"
-            %br
-            = f.collection_select(:year_experience_id, YearExperience.all, :id, :name,  {:class => 'form-control selectpickers'})
-            = f.fields_for :candidate_question_answers do |builder|
-              = render 'candidate_question_answer_fields', f: builder
             %br
             %button.btn.btn-default.btn-full
               Submit

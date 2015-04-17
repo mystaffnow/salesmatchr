@@ -15,7 +15,7 @@ Rails.application.routes.draw do
 
   resources :job_candidates
 
-  devise_for :employers
+  devise_for :employers, :controllers => { :sessions => "employers/sessions"}
   devise_for :candidates, :controllers => { :sessions => "candidates/sessions", :omniauth_callbacks => "candidates/omniauth_callbacks", :registrations => "candidates/registrations"}
 
   get 'job_candidates/:id/apply' => "job_candidates#apply", as: "create_job_candidates"
