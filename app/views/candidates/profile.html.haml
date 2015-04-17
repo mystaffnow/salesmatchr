@@ -6,7 +6,7 @@
         = image_tag "rocket.png"
     .text-center
       %h2= @candidate.name
-      %p= get_archetype_from_score @candidate.archetype_score
+      %h4= get_archetype_from_score @candidate.archetype_score
       - if current_candidate && current_candidate.id == @candidate.id
         = link_to "Edit Profile", candidates_account_path, class: "btn btn-default"
         #incognito-panel
