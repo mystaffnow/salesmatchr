@@ -3,44 +3,37 @@
     .account-header
       %h2 Candidate Sign Up
       = form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
-        %span
-          Already a member? Sign in
-          = link_to 'here', new_candidate_session_path
+        = link_to "Are you an employer looking to post jobs? Sign up here", new_employer_registration_path
     .account-content
       = form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
         = devise_error_messages!
         .actions
           = devise_error_messages!
           = link_to candidate_omniauth_authorize_path(:linkedin) do
-            .btn.btn-primary
+            .btn.btn-default
               %i.fa.fa-linkedin
               %span Sign up with LinkedIn
           %br
+          %hr
           %br
           .field
             = f.label :name
             %br/
-            = f.text_field :name, autofocus: true
+            = f.text_field :name, autofocus: true, class: "form-control"
           .field
             = f.label :email
             %br/
-            = f.email_field :email
+            = f.email_field :email, class: "form-control"
           .field
             = f.label :password
             - if @validatable
               %em
                 (#{@minimum_password_length} characters minimum)
             %br/
-            = f.password_field :password, autocomplete: "off"
+            = f.password_field :password, autocomplete: "off", class: "form-control"
           .field
             = f.label :password_confirmation
             %br/
-            = f.password_field :password_confirmation, autocomplete: "off"
-          %br
+            = f.password_field :password_confirmation, autocomplete: "off", class: "form-control"
           .actions
-            = f.submit "Sign up", :class => "btn btn-primary"
-          .field
-            = link_to "Forgot your password?", new_password_path(resource_name)
-      .account-footer
-        %p
-          = link_to "Are you a employer looking to post jobs? Sign up here", new_employer_registration_path
+            = f.submit "Sign up", :class => "btn btn-default"

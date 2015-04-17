@@ -23,6 +23,9 @@
       %input#salaries
       = f.hidden_field :salary_low,id: 'salary_low'
       = f.hidden_field :salary_high, id: 'salary_high'
+      %br
+      %br
+      %br
     .field
       = f.label :city
       = f.text_field :city, class: 'form-control'
@@ -35,10 +38,10 @@
       = f.label :zip
       = f.number_field :zip, class: 'form-control'
     .field
-      = f.label :is_remote
-      = f.check_box :is_remote, class: 'form-control'
+      %h5 Is this a remote job?
+      = f.check_box :is_remote
     .actions
-      = f.submit 'Save', class: 'btn btn-primary', id: 'save-btn'
+      = f.submit 'Save', class: 'btn btn-default', id: 'save-btn'
 
 :javascript
   $(function(){

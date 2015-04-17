@@ -4,17 +4,17 @@
       .col-md-8
         %h2= @job.title
       .col-md-4.text-right
-        = link_to 'Apply', create_job_candidates_path(@job), class: 'btn btn-default', :data => { :confirm => 'Are you sure?' }
+        = link_to 'Apply Now', create_job_candidates_path(@job), class: 'btn btn-default', :data => { :confirm => 'Are you sure?' }
 
 .container.padded-container
   .row
     .col-md-7
-      %h4
+      %h2
         = "About #{@job.employer.company}"
       %p
         = @job.employer.description
       %hr
-      %h4
+      %h2
         = @job.title
       %p
         = @job.description
@@ -26,11 +26,11 @@
               Job Details
           .account-content
             %p
-              %b Salary:
-              = "$#{@job.salary_low} - $#{@job.salary_high}"
+              %h4 Salary
+              %p= "$#{@job.salary_low} - $#{@job.salary_high}"
             %p
-              %b Location:
-              = "#{@job.city} #{@job.state.name}, #{@job.zip}"
+              %h4 Location
+              %p= "#{@job.city} #{@job.state.name}, #{@job.zip}"
             %p
-              %b Is remote:
-              = @job.is_remote ? 'yes' : 'no'
+              %h4 Is remote
+              %p= @job.is_remote ? 'yes' : 'no'
