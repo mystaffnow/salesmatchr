@@ -6,7 +6,7 @@ Rails.application.config.middleware.use OmniAuth::Builder do
   ssl = {}
   ssl[:ssl] =  ssl_options
   provider :linkedin, "78tshtou0dssaz", "1Fq0V4dTUL2ZlzEh", :scope => 'r_fullprofile r_emailaddress',
-           :fields => ["id", "email-address", "first-name", "last-name",
+           :fields => ["id", "email-address", "first-name", "last-name", "picture-url", "public-profile-url",
                        "positions" ],
             client_options: { connection_opts: ssl}
 

@@ -14,7 +14,7 @@ class Candidate < ActiveRecord::Base
   accepts_nested_attributes_for :candidate_question_answers, allow_destroy: true
   attr_accessor :flash_notice
   attr_accessor :avatar
-  has_attached_file :avatar,  :default_url => "/img/missing.png"
+  has_attached_file :avatar,  :default_url => "/img/missing.png", :styles => { :medium => "200x200#" }
   validates_attachment_content_type :avatar, :content_type => /\Aimage\/.*\Z/
 
 
@@ -22,11 +22,15 @@ class Candidate < ActiveRecord::Base
     candidate = Candidate.where(uid: auth.uid).first
     if !candidate
       logger.debug("create new candidate")
+      logger.debug(auth[:extra][:raw_info]['pictureUrl'])
       candidate = Candidate.new
       candidate.name = auth.info.first_name + " " + auth.info.last_name
       candidate.provider = auth.provider
       candidate.uid = auth.uid
       candidate.email = auth.info.email
+      if auth[:extra][:raw_info]['pictureUrl']
+        candidate.linkedin_picture_url = auth[:extra][:raw_info]['pictureUrl']
+      end
 
       Question.all.each do |question|
         candidate.candidate_question_answers.build question_id: question.id
@@ -72,7 +76,11 @@ class Candidate < ActiveRecord::Base
     if is_incognito
       '/img/incognito.png'
     else
-      self.avatar.url
+      if self.avatar.to_s == "/img/missing.png" && self.linkedin_picture_url
+        self.linkedin_picture_url
+      else
+        self.avatar.url(:medium)
+      end
     end
 
   end

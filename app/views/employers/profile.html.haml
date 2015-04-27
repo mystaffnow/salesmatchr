@@ -2,7 +2,7 @@
   .container.padded-container
     .row
       .col-md-12.text-center
-        = image_tag current_employer.avatar.url
+        = image_tag current_employer.avatar.url(:medium)
     .text-center
       %h2= current_employer.company
       %h5= "#{current_employer.city} #{current_employer.state ? current_employer.state.name: ''}, #{current_employer.zip}"

@@ -51,6 +51,7 @@ ActiveRecord::Schema.define(version: 20150416010246) do
     t.string   "provider"
     t.boolean  "is_incognito"
     t.integer  "year_experience_id"
+    t.string   "linkedin_picture_url"
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
     t.string   "email",                  default: "", null: false

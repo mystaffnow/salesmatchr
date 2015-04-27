@@ -12,6 +12,7 @@ class CreateCandidates < ActiveRecord::Migration
       t.string :provider
       t.boolean :is_incognito
       t.integer :year_experience_id
+      t.string :linkedin_picture_url
 
       t.timestamps null: false
     end
