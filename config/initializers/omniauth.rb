@@ -1,4 +1,4 @@
-OmniAuth.config.full_host = (Rails.env.development? ? "http://localhost:3000" : "http://salesmatchr-production.herokuapp.com" )
+OmniAuth.config.full_host = (Rails.env.development? ? "http://localhost:3000" : "https://salesmatchr-production.herokuapp.com" )
 Rails.application.config.middleware.use OmniAuth::Builder do
   ssl_options = {}
   ssl_options[:version] = :TLSv1
