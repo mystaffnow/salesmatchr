@@ -8,7 +8,7 @@ class JobCandidatesController < ApplicationController
     job_candidate = JobCandidate.create job_id: @job.id, candidate_id: current_candidate.id
     job_candidate.submitted!
 
-    EmployerMailer.send_job_application(current_candidate.email, @job).deliver
+    EmployerMailer.send_job_application(@job.employer.email, @job).deliver
     redirect_to ''
   end
   def update
