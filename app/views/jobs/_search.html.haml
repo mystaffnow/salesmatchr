@@ -12,7 +12,7 @@
           = check_box_tag "my-checkbox", "", (params[:is_remote] == "true" ? true : false) , id: 'remote-only-check'
         .salary-slider
           %p Salary Range
-          %input#salaries{'data-slider-handle':"triangle"}
+          %input#salaries{:'data-slider-handle' => 'triangle'}
       .col-md-2.text-right
         = link_to "Search", jobs_path, class: "btn btn-default action-btn", id: "find-jobs"
 :javascript
