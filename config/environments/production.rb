@@ -77,6 +77,15 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
+  config.paperclip_defaults = {
+      :storage => :s3,
+      :s3_credentials => {
+          :bucket => ENV['CREWCIAL_S3_BUCKET'],
+          :access_key_id => ENV['NT_AMAZON_ACCESS_KEY_ID'],
+          :secret_access_key => ENV['NT_AMAZON_SCRET_ACCESS_KEY']
+      }
+  }
+
   ActionMailer::Base.smtp_settings = {
       :user_name => ENV["NT_SEND_GRID_USER_NAME"],
       :password => ENV["NT_SEND_GRID_PASSWORD"],
