@@ -2,11 +2,14 @@
 
   .container.padded-container
     .row
-      .col-md-4.col-md-offset-4
-        = image_tag "rocket.png"
+      .col-md-12
+        .center-img
+          = image_tag get_archetype_image_from_score @candidate.archetype_score
     .text-center
       %h2= @candidate.name
       %h4= get_archetype_from_score @candidate.archetype_score
+      %p
+        = (get_archetype_description_from_score @candidate.archetype_score).html_safe
       - if current_candidate && current_candidate.id == @candidate.id
         = link_to "Edit Profile", candidates_account_path, class: "btn btn-default"
 
