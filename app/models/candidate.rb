@@ -43,7 +43,11 @@ class Candidate < ActiveRecord::Base
         experience.position = raw_experience.title
         logger.debug(raw_experience[:startDate].inspect)
         if raw_experience[:startDate]
-          experience.start_date =  Date.new(raw_experience[:startDate].year, raw_experience[:startDate].month)
+          if raw_experience[:startDate].month
+            experience.start_date =  Date.new(raw_experience[:startDate].year, raw_experience[:startDate].month)
+          else
+            experience.start_date =  Date.new(raw_experience[:startDate].year)
+          end
         end
         if raw_experience[:endDate]
           experience.end_date =  Date.new(raw_experience[:endDate].year, raw_experience[:endDate].month)

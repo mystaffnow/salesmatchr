@@ -29,7 +29,7 @@
             = f.fields_for :candidate_question_answers do |builder|
               = render 'candidate_question_answer_fields', f: builder
             %br
-            .btn.btn-default.btn-full.next_button#accounts-button
+            .btn.btn-default.btn-full.next_button#accounts-button{disabled: true}
               Next
         // Account Page
         #accounts-panel.account-panel{style: 'display:none'}
@@ -99,5 +99,10 @@
     });
     ZiggeoApi.Events.on("submitted", function (data) {
     	$('#ziggeo-token').val(data.video.token);
+    });
+    $('#archetype-panel').find('input').on('click',function(){
+      if ($('#archetype-panel').find('input:checked').length == 20){
+        $('#accounts-button').attr('disabled',false);
+      }
     });
   })

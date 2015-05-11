@@ -14,7 +14,7 @@ class JobCandidatesController < ApplicationController
   def update
     respond_to do |format|
       if @job_candidate.update(job_candidate_params)
-        #super hacky for now, should fix
+        #super should fix
         if current_candidate
           EmployerMailer.send_job_withdrawn(@job_candidate.job.employer.email, @job_candidate.job).deliver
           format.html { redirect_to job_candidates_path, notice: 'Successfully withdrawn.' }
