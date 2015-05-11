@@ -1,46 +1,57 @@
-// Place all the styles related to the pages controller here.
-// They will automatically be included in application.css.
-// You can use Sass here: http://sass-lang.com/
-// Home page
-#mixed-landing-one
+#web-landing-one
   .jumbotron
-    background-image: image-url('travel-bg-blur.png')
-    background-size: cover
+    padding: 70px 0 0 0
+    background-image: image-url('salesmatchr-jumbo-bg.jpg')
     background-position: center
+    background-size: cover
     background-repeat: no-repeat
-    padding: 0
-    margin: 0
+    min-height: 700px
 
     h1
-      margin-top: 80px
-      margin-bottom: 30px
+      margin-bottom: 10px
+      margin-top: 90px
+      font-size: 55px
 
-    a
-      margin-right: 40px
-      &:last-child
-        margin-right: 0
+    p
+      font-size: 18px
 
     h1, p
       color: white
 
-    img
-      display: block
-      margin-top: 50px
+    .app-store-container
+      margin: 30px 0
+
+      a img
+        width: 125px
+        display: inline-block
+        margin-right: 15px
+
+    @media (max-width: 767px)
+      text-align: center
+      padding: 50px 0 0 0
+
+      .app-store-container
+        margin: 30px 0 60px 0
+
 
   .testimonial
     height: 143px
 
-    background-image: url('landing-testimonial.png')
+    background-image: image-url('landing-testimonial.png')
     background-size: cover
     background-position: center
     background-repeat: no-repeat
 
     @media (max-width: 676px)
-      background-image: url('landing-testimonial-responsive.png')
+      background-image: image-url('landing-testimonial-responsive.png')
 
 
   .benefit1, .benefit2, .benefit3, .call-to-action
     padding: 90px 0
+
+    img
+      margin: auto
+      height: 500px
 
     @media (max-width: 767px)
       padding: 90px 20px
@@ -49,14 +60,10 @@
 
 
   .benefit1, .benefit3
+    background-color: white
     img
-      box-shadow: 5px 4px 40px rgba(153, 153, 153, 0.75)
       margin-bottom: 50px
-
-    .feature-container
-      max-width: 820px
-      display: block
-      margin: auto
+      box-shadow: 5px 4px 40px rgba(153, 153, 153, 0.75)
 
 
   .benefit1 
@@ -68,7 +75,8 @@
 
   .benefit2
     background-color: #333333
-
+    p, h2
+      color: white
     p
       padding-right: 30px
 
@@ -81,7 +89,7 @@
 
 
   .call-to-action
-    background-image: url('balloon-bg.png')
+    background-image: image-url('balloon-bg.png')
 
     h1, p
       color: white
@@ -143,4 +151,16 @@
 
       @media (max-width: 676px)
         margin-top: 40px
+
+
+// Footer --------------
+#footer
+  background-color: #2e2e2e
+  padding: 10px 0
+  line-height: 5em
+
+  p
+    color: white
+    line-height: 5em
+    font-size: 14px
 

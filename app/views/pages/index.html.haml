@@ -1,153 +1,154 @@
-/ #mixed-landing-one
-/   .jumbotron.text-center
-/     .container
-/       %h1 Find the best talent for your needs!
-/       = link_to new_employer_registration_path, class: 'btn btn-lg btn-default' do
-/         %i.fa.fa-list
-/         Post A Job
-/       = link_to new_candidate_registration_path, class: 'btn btn-lg btn-default btn-lg' do
-/         %i.fa.fa-search
-/         Find A Job
+#web-landing-one
+  .jumbotron.text-center
+    .container
+      %h1#header Find Your Next Sales Superstar
+      %p{:contenteditable => true} Discover more than 5,000 unique travel destinations around the world and <br> start planning your next adventure.
+      = link_to "Get Started", new_employer_registration_path, class: "btn btn-default btn-lg"
+    .responsive-note
+      %span#responsive
 
-/       .row
-/         .col-md-8.col-md-offset-2
-/           = image_tag "salesmatchr-preview-landing.jpg", class: "img-responsive"
+  / .testimonial
+  /   = link_to 'X', '#', class: "close-testimonial close-btn", id: "optional"
 
-/   .testimonial
+  .benefit1
+    .container
+      .text-center
+        %h2 We curate to find the most experienced and highest calibre talent using technology and data analytics to cut traditional overhead and save you thousands of dollars. 
 
-/   .benefit1
-/     .container
-/       .text-center
-/         %h2 This is a section about the product, something <br> supportive of the benefits, features, or anything else.
+        %hr
 
-/         %hr
+      .row
+        .col-md-7
+          = image_tag "web-screen.png", class: "img-responsive"
+        .col-md-5
+          %h2 Delivered directly to your inbox
+          %p Croissant chocolate cake tart gingerbread jelly ice cream jelly apple pie. Candy canes gummies cheesecake candy canes gummi bears donut. Candy canes gummies jujubes chocolate cake. Applicake biscuit gingerbread lemon drops bonbon icing topping biscuit. Applicake cupcake pie sesame snaps carrot cake cotton candy chocolate cake sesame snaps cupcake. Jelly beans candy carrot cake cotton candy jelly.
 
-/       .feature-container
-/         = image_tag "mac-screen.png", class: "img-responsive"
-/         %h2 This is a section header
-/         %p Croissant chocolate cake tart gingerbread jelly ice cream jelly apple pie. Candy canes gummies cheesecake candy canes gummi bears donut. Candy canes gummies jujubes chocolate cake. Applicake biscuit gingerbread lemon drops bonbon icing topping biscuit. Applicake cupcake pie sesame snaps carrot cake cotton candy chocolate cake sesame snaps cupcake. Jelly beans candy carrot cake cotton candy jelly.
-
-/   .benefit2
-/     .container
-/       .row
-/         .col-md-5
-/           %h2.inverse This is a section header
-/           %p Croissant chocolate cake tart gingerbread jelly ice cream jelly apple pie. Candy canes gummies cheesecake candy canes gummi bears donut. Candy canes gummies jujubes chocolate cake. Applicake biscuit gingerbread lemon drops bonbon icing topping biscuit. Applicake cupcake pie sesame snaps carrot cake cotton candy chocolate cake sesame snaps cupcake. Jelly beans candy carrot cake cotton candy jelly.
-/         .col-md-7
-/           = image_tag "mac-screen.png", class: "img-responsive"
-
-/   .benefit3
-/     .feature-container
-/       = image_tag "mac-screen.png", class: "img-responsive"
-/       %h2 This is a section header
-/       %p Croissant chocolate cake tart gingerbread jelly ice cream jelly apple pie. Candy canes gummies cheesecake candy canes gummi bears donut. Candy canes gummies jujubes chocolate cake. Applicake biscuit gingerbread lemon drops bonbon icing topping biscuit. Applicake cupcake pie sesame snaps carrot cake cotton candy chocolate cake sesame snaps cupcake. Jelly beans candy carrot cake cotton candy jelly.
-
-/   .call-to-action.text-center
-/     .container
-/       %h1 Ready for an adventure?
-/       %p Pie jujubes bonbon sugar plum dragée tart jelly cookie donut. Apple pie sweet roll caramels <br> sweet brownie. Apple pie powder biscuit gummies.
-/       = link_to "Get Started", '#', class: "btn"
-
-/   .pricing
-/     .container.text-center
-/       .pricing-header
-/         %h2 Plans and Pricing
-/         %p Travelist is free to use for public trips. Plan private trips with any of our paid plans.
-/       .row
-/         .col-md-4
-/           .price-container.regular-offer
-/             %h4 Standard Plan
-/             .price
-/               %p $9
-/               %p.month{:contenteditable => true} /album
-/             = link_to 'Choose Plan', '#', class: "btn"
-/         .col-md-4
-/           .popular-header
-/             %h4 Most Popular
-/           .popular-container
-/             %h4 Startup Plan
-/             .price
-/               %p $29
-/               %p.month /album
-/             = link_to 'Choose Plan', '#', class: "btn"
-/         .col-md-4
-/           .price-container.regular-offer
-/             %h4 Enterprise Plan
-/             .price
-/               %p $59
-/               %p.month /album
-/             = link_to 'Choose Plan', '#', class: "btn"
-
-#landing-jumbotron
-  %section.wrapper-lg.bg-custom
+  .benefit2
     .container
       .row
-        .col-md-12
-          .widget.padding-lg
-            %img{src:'/img/beta_logo.png', style:'width:400px'}
+        .col-md-5
+          %h2 This is a section header
+          %p Croissant chocolate cake tart gingerbread jelly ice cream jelly apple pie. Candy canes gummies cheesecake candy canes gummi bears donut. Candy canes gummies jujubes chocolate cake. Applicake biscuit gingerbread lemon drops bonbon icing topping biscuit. Applicake cupcake pie sesame snaps carrot cake cotton candy chocolate cake sesame snaps cupcake. Jelly beans candy carrot cake cotton candy jelly.
+        .col-md-7
+          = image_tag "web-screen.png", class: "img-responsive"
 
-#landing-content
-  .container
-    .row{style:'text-align:center'}
-      .col-md-6.wrapper-sm
-        .col-md-8.col-md-offset-2.card-container
-          %h2
-            %i.fa.fa-list
-          %h2 Post A Job
-          = link_to "Job poster sign up", new_employer_registration_path, class: 'btn btn-lg btn-primary'
-          .small
-            = link_to "Already have an account? Sign in here", new_employer_session_path
-      .col-md-6.wrapper-sm
-        .col-md-8.col-md-offset-2.card-container
-          %h2
-            %i.fa.fa-check
-          %h2 Find A Job
-          = link_to "Candidate Sign up", new_candidate_registration_path, class: 'btn btn-lg btn-primary btn-lg'
-          .small
-            = link_to "Already have an account? Sign in here", new_candidate_session_path
-#section.section-highlight.wrapper-sm
-  .container
-    .row
-      .col-md-12
-        %h2
-          Use SalesMatchr to find the right talent today!
-#section.wrapper-md
-  .container
-    .row
-      .col-md-4{style:'text-align:center'}
-        %img.callout-img{src:'img/Graphic2.png'}
-        %h4
-          We curate to find the most experienced and highest calibre talent
-      .col-md-4{style:'text-align:center'}
-        %img.callout-img{src:'img/Graphic3.png'}
-        %h4
-          We use technology and data analytics to cut traditional overhead and save you thousands of dollars
-      .col-md-4{style:'text-align:center'}
-        %img.callout-img{src:'img/Graphic4.png'}
-        %h4
-          You grow your business because you find your sales hero faster
+  .benefit3
+    .container
+      .row
+        .col-md-7
+          = image_tag "web-screen.png", class: "img-responsive"
+        .col-md-5
+          %h2 Hire the right salespeople
+          %p Croissant chocolate cake tart gingerbread jelly ice cream jelly apple pie. Candy canes gummies cheesecake candy canes gummi bears donut. Candy canes gummies jujubes chocolate cake. Applicake biscuit gingerbread lemon drops bonbon icing topping biscuit. Applicake cupcake pie sesame snaps carrot cake cotton candy chocolate cake sesame snaps cupcake. Jelly beans candy carrot cake cotton candy jelly.
 
-#section.section-highlight.wrapper-sm
-  .container
-    .row
-      .col-md-4
-        %h4
-          Newsletter
-      .col-md-4
-        %h4
-          Contact at
-        %p{style: 'text-align:left'}
-          %br
-            p(703) 224-8088
-          %br
-            f(703) 224-8089
-          %br
-            team@jobmatchr.co
-      .col-md-4
-        %h4
-          SalesMatchr
-        %p{style: 'text-align:left'}
-          1900 Campus Commons Dr
-          %br
-            Reston, VA 20191
-            Suite 100
+  .call-to-action.text-center
+    .container
+      %h1{:contenteditable => true} Ready for an adventure?
+      %p{:contenteditable => true} Pie jujubes bonbon sugar plum dragée tart jelly cookie donut. Apple pie sweet roll caramels <br> sweet brownie. Apple pie powder biscuit gummies.
+      = link_to "Get Started", new_employer_registration_path, class: "btn btn-default btn-lg"
+
+  .pricing
+    = link_to "X", '#', class: "close-pricing close-btn"
+    .container.text-center
+      .pricing-header
+        %h2{:contenteditable => true} Plans and Pricing
+        %p{:contenteditable => true} Travelist is free to use for public trips. Plan private trips with any of our paid plans.
+      .row
+        .col-md-4
+          .price-container.regular-offer
+            %h4{:contenteditable => true} Standard Plan
+            .price
+              %p{:contenteditable => true} $9
+              %p.month{:contenteditable => true} /album
+            = link_to 'Choose Plan', '#', class: "btn"
+        .col-md-4
+          .popular-header
+            %h4{:contenteditable => true} Most Popular
+          .popular-container
+            %h4{:contenteditable => true} Startup Plan
+            .price
+              %p{:contenteditable => true} $29
+              %p.month{:contenteditable => true} /album
+            = link_to 'Choose Plan', '#', class: "btn"
+        .col-md-4
+          .price-container.regular-offer
+            %h4{:contenteditable => true} Enterprise Plan
+            .price
+              %p{:contenteditable => true} $59
+              %p.month{:contenteditable => true} /album
+            = link_to 'Choose Plan', '#', class: "btn"
+
+/ #landing-jumbotron
+/   %section.wrapper-lg.bg-custom
+/     .container
+/       .row
+/         .col-md-12
+/           .widget.padding-lg
+/             %img{src:'/img/beta_logo.png', style:'width:400px'}
+
+/ #landing-content
+/   .container
+/     .row{style:'text-align:center'}
+/       .col-md-6.wrapper-sm
+/         .col-md-8.col-md-offset-2.card-container
+/           %h2
+/             %i.fa.fa-list
+/           %h2 Post A Job
+/           = link_to "Job poster sign up", new_employer_registration_path, class: 'btn btn-lg btn-primary'
+/           .small
+/             = link_to "Already have an account? Sign in here", new_employer_session_path
+/       .col-md-6.wrapper-sm
+/         .col-md-8.col-md-offset-2.card-container
+/           %h2
+/             %i.fa.fa-check
+/           %h2 Find A Job
+/           = link_to "Candidate Sign up", new_candidate_registration_path, class: 'btn btn-lg btn-primary btn-lg'
+/           .small
+/             = link_to "Already have an account? Sign in here", new_candidate_session_path
+/ #section.section-highlight.wrapper-sm
+/   .container
+/     .row
+/       .col-md-12
+/         %h2
+/           Use SalesMatchr to find the right talent today!
+/ #section.wrapper-md
+/   .container
+/     .row
+/       .col-md-4{style:'text-align:center'}
+/         %img.callout-img{src:'img/Graphic2.png'}
+/         %h4
+/           We curate to find the most experienced and highest calibre talent
+/       .col-md-4{style:'text-align:center'}
+/         %img.callout-img{src:'img/Graphic3.png'}
+/         %h4
+/           We use technology and data analytics to cut traditional overhead and save you thousands of dollars
+/       .col-md-4{style:'text-align:center'}
+/         %img.callout-img{src:'img/Graphic4.png'}
+/         %h4
+/           You grow your business because you find your sales hero faster
+
+/ #section.section-highlight.wrapper-sm
+/   .container
+/     .row
+/       .col-md-4
+/         %h4
+/           Newsletter
+/       .col-md-4
+/         %h4
+/           Contact at
+/         %p{style: 'text-align:left'}
+/           %br
+/             p(703) 224-8088
+/           %br
+/             f(703) 224-8089
+/           %br
+/             team@jobmatchr.co
+/       .col-md-4
+/         %h4
+/           SalesMatchr
+/         %p{style: 'text-align:left'}
+/           1900 Campus Commons Dr
+/           %br
+/             Reston, VA 20191
+/             Suite 100

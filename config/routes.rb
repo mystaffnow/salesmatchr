@@ -46,10 +46,10 @@ Rails.application.routes.draw do
   root to: 'pages#index'
   get 'contact' => 'pages#contact'
   get 'about' => 'pages#about'
+  get 'hustlers' => 'pages#hustlers'
   get 'pages/index'
-
+  get 'pages/hustlers'
   get 'pages/about'
-
   get 'pages/contact'
 
 
