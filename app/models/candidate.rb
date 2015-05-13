@@ -17,6 +17,9 @@ class Candidate < ActiveRecord::Base
   has_attached_file :avatar,  :default_url => "/img/missing.png", :styles => { :medium => "200x200#" }
   validates_attachment_content_type :avatar, :content_type => /\Aimage\/.*\Z/
 
+  def name
+    return self.first_name + " " + self.last_name
+  end
 
   def self.from_omniauth(auth)
     candidate = Candidate.where(uid: auth.uid).first
@@ -24,7 +27,8 @@ class Candidate < ActiveRecord::Base
       logger.debug("create new candidate")
       logger.debug(auth[:extra][:raw_info]['pictureUrl'])
       candidate = Candidate.new
-      candidate.name = auth.info.first_name + " " + auth.info.last_name
+      candidate.first_name = auth.info.first_name
+      candidate.last_name = auth.info.last_name
       candidate.provider = auth.provider
       candidate.uid = auth.uid
       candidate.email = auth.info.email

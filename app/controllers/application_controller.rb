@@ -15,7 +15,7 @@ class ApplicationController < ActionController::Base
   def check_candidate
     if candidate_signed_in?
       if !current_candidate.can_proceed
-        redirect_to candidates_account_path, notice: "Please complete the archetype form before proceeding"
+        redirect_to candidates_archetype_path, notice: "Please complete the archetype form before proceeding"
       end
     end
   end

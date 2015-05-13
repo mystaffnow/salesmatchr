@@ -1,5 +1,8 @@
 class CandidatesController < ApplicationController
-  skip_before_filter :check_candidate, only: [:account, :update, :incognito]
+  skip_before_filter :check_candidate, only: [:archetype, :update_archetype, :update, :incognito]
+  def archetype
+
+  end
   def profile
     if params[:id]
       @candidate = Candidate.find(params.permit(:id)[:id])
@@ -9,10 +12,20 @@ class CandidatesController < ApplicationController
   end
   def account
   end
-  def update
+  def update_archetype
     respond_to do |format|
       if current_candidate.update(candidate_params)
         current_candidate.archetype_score = CandidateQuestionAnswer.joins(:answer).where("candidate_question_answers.candidate_id = ?",1).sum :"answers.score"
+        current_candidate.save
+        format.html { redirect_to candidates_account_path, notice: 'Please fill out the reset of your profile.' }
+      else
+        format.html { render :account }
+      end
+    end
+  end
+  def update
+    respond_to do |format|
+      if current_candidate.update(candidate_params)
         current_candidate.save
         format.html { redirect_to candidates_profile_path(current_candidate), notice: 'Profile was successfully updated.' }
       else

@@ -1,4 +1,4 @@
-%fieldset.account-field
+%fieldset.account-field{id: 'account-field-'+f.object.question.id.to_s, style: (f.object.question.id == 1 ? '' : 'display:none')}
   %h4= f.object.question.name
   = f.hidden_field :id, value: f.object.id
   = f.hidden_field :question_id, value: f.object.question.id
@@ -8,3 +8,6 @@
         = f.radio_button :answer_id, answer.id, style: 'display:inline'
       .col-md-11
         = answer.name
+  -if f.object.question.id != 20
+    .btn.btn-default.btn-full.next_button{disabled: true}
+      Next

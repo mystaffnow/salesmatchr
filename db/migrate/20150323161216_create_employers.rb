@@ -1,7 +1,8 @@
 class CreateEmployers < ActiveRecord::Migration
   def change
     create_table :employers do |t|
-      t.string :name
+      t.string :first_name
+      t.string :last_name
       t.string :company
       t.integer :state_id
       t.string :city

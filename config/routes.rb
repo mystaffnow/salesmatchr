@@ -15,13 +15,15 @@ Rails.application.routes.draw do
 
   resources :job_candidates
 
-  devise_for :employers, :controllers => { :sessions => "employers/sessions"}
+  devise_for :employers, :controllers => { :sessions => "employers/sessions", :registrations => "employers/registrations"}
   devise_for :candidates, :controllers => { :sessions => "candidates/sessions", :omniauth_callbacks => "candidates/omniauth_callbacks", :registrations => "candidates/registrations"}
 
   get 'job_candidates/:id/apply' => "job_candidates#apply", as: "create_job_candidates"
 
   get 'candidates/account' => 'candidates#account'
   put 'candidates/account' => 'candidates#update'
+  get 'candidates/archetype' => 'candidates#archetype'
+  put 'candidates/archetype' => 'candidates#update_archetype'
   get 'candidates/profile/:id' => 'candidates#profile', as: 'candidates_profile'
   get 'candidates/jobs_saved' => 'candidate_job_actions#candidate_job_saved', as: 'candidate_job_saved'
   get 'candidates/jobs_viewed' => 'candidate_job_actions#candidate_job_viewed', as: 'candidate_job_viewed'

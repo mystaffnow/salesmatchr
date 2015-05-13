@@ -10,10 +10,10 @@
   .row
     .col-md-6
       = f.label "Date Started"
-      = f.date_select :start_date, { :discard_day => true},  class: 'form-control experience-date'
+      = f.date_select :start_date, { :discard_day => true, :start_year => 1920, :end_year => DateTime.now.year},  class: 'form-control experience-date'
     .col-md-6
       = f.label "Date Ended"
-      = f.date_select :end_date, { :discard_day => true}, class: 'form-control experience-date'
+      = f.date_select :end_date, { :discard_day => true, :start_year => 1920, :end_year => DateTime.now.year}, class: 'form-control experience-date'
   %br
   = f.label "Description"
   = f.text_area :description, class: 'form-control', placeholder: 'position description'

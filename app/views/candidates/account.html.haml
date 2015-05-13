@@ -1,16 +1,13 @@
 #registration-bar
   .container
     .row
-      .col-md-3
-        .btn.btn-primary.profile#archetype.btn-active
-          Archetype
-      .col-md-3
+      .col-md-4
         .btn.btn-primary.profile#accounts
           Profile
-      .col-md-3
+      .col-md-4
         .btn.btn-primary.profile#experience
           Experience
-      .col-md-3
+      .col-md-4
         .btn.btn-primary.profile#education
           Education
 
@@ -19,20 +16,8 @@
     #new-registration
       = form_for(current_candidate, validate: true, url: candidates_account_path, html: { multipart: true, method: :put }) do |f|
 
-        // Archetype Page
-        #archetype-panel.account-panel
-          .account-header
-            %h2 Archetype
-          .account-content
-            = f.label "Years of experience"
-            = f.collection_select(:year_experience_id, YearExperience.all, :id, :name,  {:class => 'form-control selectpickers'})
-            = f.fields_for :candidate_question_answers do |builder|
-              = render 'candidate_question_answer_fields', f: builder
-            %br
-            .btn.btn-default.btn-full.next_button#accounts-button{disabled: true}
-              Next
         // Account Page
-        #accounts-panel.account-panel{style: 'display:none'}
+        #accounts-panel.account-panel
           .account-header
             %h2 Profile Information
           .account-content
@@ -84,7 +69,7 @@
               Submit
 
 :javascript
-  $(function(){
+  function account(){
     $('.profile').on('click',function(){
       $('.profile').removeClass('btn-active');
       $('.account-panel').hide();
@@ -105,4 +90,8 @@
         $('#accounts-button').attr('disabled',false);
       }
     });
-  })
+  }
+
+
+  $(document).on('page:load', account);
+  $(document).ready(account);

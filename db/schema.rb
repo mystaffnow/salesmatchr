@@ -40,7 +40,8 @@ ActiveRecord::Schema.define(version: 20150416010246) do
   end
 
   create_table "candidates", force: :cascade do |t|
-    t.string   "name"
+    t.string   "first_name"
+    t.string   "last_name"
     t.string   "city"
     t.integer  "state_id"
     t.string   "zip"
@@ -91,7 +92,8 @@ ActiveRecord::Schema.define(version: 20150416010246) do
   end
 
   create_table "employers", force: :cascade do |t|
-    t.string   "name"
+    t.string   "first_name"
+    t.string   "last_name"
     t.string   "company"
     t.integer  "state_id"
     t.string   "city"

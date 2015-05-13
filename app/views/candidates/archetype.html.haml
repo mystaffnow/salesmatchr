@@ -1,0 +1,44 @@
+.container.padded-container
+  #account
+    #new-registration
+      = form_for(current_candidate, validate: true, url: candidates_archetype_path, html: { multipart: true, method: :put }) do |f|
+
+        // Archetype Page
+        #archetype-panel.account-panel
+          .account-header
+            %h2 Archetype
+          .account-content
+            #archetype-pre
+              = f.label "Years of experience"
+              = f.collection_select(:year_experience_id, YearExperience.all, :id, :name,  {:class => 'form-control selectpickers'})
+              %br
+              %button.btn.btn-default.btn-full#start-survey
+                Start Survey
+            #archetype-survey{style: 'display:none'}
+              = f.fields_for :candidate_question_answers do |builder|
+                = render 'candidate_question_answer_fields', f: builder
+
+            %button.btn.btn-default#accounts-button{style: 'display:none'}
+              Submit
+
+:javascript
+  function archetype_ready(){
+    $('#archetype-panel').find('input').on('click',function(){
+      $(this).parents('.account-field').find('.next_button').attr('disabled',false);
+      if ($('#archetype-panel').find('input:checked').length == 20){
+        $('#accounts-button').css('display','inline');
+      }
+    });
+    $('.next_button').on('click', function(){
+      current_id = $(this).parents('.account-field')[0].id.split('-')[2]
+      $(this).parents('.account-field').hide();
+      $('#account-field-'+(parseInt(current_id)+1)).show();
+    });
+    $('#start-survey').on('click', function(evt){
+      $('#archetype-pre').hide();
+      $('#archetype-survey').show();
+      return false;
+    });
+  }
+  $(document).ready(archetype_ready);
+  $(document).on('page:load', archetype_ready);

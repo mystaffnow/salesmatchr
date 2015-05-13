@@ -16,9 +16,13 @@
           %hr
           %br
           .field
-            = f.label :name
+            = f.label :first_name
             %br/
-            = f.text_field :name, autofocus: true, class: "form-control", validate: true
+            = f.text_field :first_name, autofocus: true, class: "form-control", validate: true
+          .field
+            = f.label :last_name
+            %br/
+            = f.text_field :last_name, class: "form-control", validate: true
           .field
             = f.label :email
             %br/
