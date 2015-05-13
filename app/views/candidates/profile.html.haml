@@ -1,17 +1,20 @@
 .profile
 
   .container.padded-container
-    .row
-      .col-md-12
-        .center-img
-          = image_tag get_archetype_image_from_score @candidate.archetype_score
-    .text-center
-      %h2= @candidate.name
-      %h4= get_archetype_from_score @candidate.archetype_score
-      %p
-        = (get_archetype_description_from_score @candidate.archetype_score).html_safe
-      - if current_candidate && current_candidate.id == @candidate.id
-        = link_to "Edit Profile", candidates_account_path, class: "btn btn-default"
+    - if current_candidate && current_candidate.id == @candidate.id
+      .row
+        .col-md-12
+          .center-img
+            = image_tag get_archetype_image_from_score @candidate.archetype_score
+      .text-center
+        %h2= @candidate.name
+        %h4= get_archetype_from_score @candidate.archetype_score
+        %p
+          = (get_archetype_description_from_score @candidate.archetype_score).html_safe
+          = link_to "Edit Profile", candidates_account_path, class: "btn btn-default"
+    - else
+      .text-center
+        %h2= @candidate.name
 
     %hr
     
@@ -35,7 +38,7 @@
             / = image_tag @candidate.avatar.url, id: 'avatar', style: "display:" + (!@candidate.is_incognito ? 'block' : 'none')
             / %img{src: '/img/incognito.png', style: "display:" + (@candidate.is_incognito ? 'block' : 'none'), id: 'incognito-img'}
             - if @candidate.ziggeo_token != nil && @candidate.ziggeo_token != ''
-              %ziggeo{ 'ziggeo-video' => @candidate.ziggeo_token, 'ziggeo-width' => 553, 'ziggeo-height' => 297}
+              %ziggeo{ 'ziggeo-video' => @candidate.ziggeo_token, 'ziggeo-width' => 538, 'ziggeo-height' => 288}
               %br
             - elsif ( current_candidate == @candidate ) && ( !@candidate.ziggeo_token )
               = link_to 'Edit your profile to add a video', candidates_account_path

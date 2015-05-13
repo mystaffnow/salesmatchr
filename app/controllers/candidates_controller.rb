@@ -17,11 +17,14 @@ class CandidatesController < ApplicationController
       if current_candidate.update(candidate_params)
         current_candidate.archetype_score = CandidateQuestionAnswer.joins(:answer).where("candidate_question_answers.candidate_id = ?",1).sum :"answers.score"
         current_candidate.save
-        format.html { redirect_to candidates_account_path, notice: 'Please fill out the reset of your profile.' }
+        format.html { redirect_to candidates_archetype_result_path }
       else
         format.html { render :account }
       end
     end
+  end
+  def archetype_result
+
   end
   def update
     respond_to do |format|

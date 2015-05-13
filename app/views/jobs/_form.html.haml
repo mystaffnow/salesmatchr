@@ -20,7 +20,7 @@
     .field
       = f.label "Salary range"
       %br
-      %input#salaries
+      %input#salaries{:'data-slider-handle' => 'triangle'}
       = f.hidden_field :salary_low,id: 'salary_low'
       = f.hidden_field :salary_high, id: 'salary_high'
       %br
@@ -40,7 +40,9 @@
     .field
       %h5 Is this a remote job?
       Yes
-      = f.check_box :is_remote
+      = f.check_box :is_remote, style: 'width:15px'
+      %br
+      %br
     .actions
       = f.submit 'Save', class: 'btn btn-default', id: 'save-btn'
 

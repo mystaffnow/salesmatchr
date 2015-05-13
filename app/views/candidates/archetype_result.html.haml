@@ -1,0 +1,13 @@
+.profile
+
+  .container.padded-container
+    .row
+      .col-md-12
+        .center-img
+          = image_tag get_archetype_image_from_score current_candidate.archetype_score
+    .text-center
+      %h4= get_archetype_from_score current_candidate.archetype_score
+      %p
+        = (get_archetype_description_from_score current_candidate.archetype_score).html_safe
+      %p
+        = link_to "Complete your profile", candidates_account_path, class: "btn btn-default"
