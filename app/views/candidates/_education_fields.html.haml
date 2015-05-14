@@ -3,7 +3,9 @@
     %i.fa.fa-trash
   = f.hidden_field :id, value: f.object.id
   = f.label "School"
-  = f.text_field :school, class: 'form-control', placeholder: 'school'
+  = f.collection_select(:college_id, College.all, :id, :name, {},  {:class => 'form-control college-select'})
+  = f.label "Other"
+  = f.text_field :college_other, disabled: true, class: 'college-other'
   = f.label "Degree"
   %br
   = f.collection_select(:education_level_id, EducationLevel.all, :id, :name,  {:class => 'form-control'})
@@ -12,3 +14,12 @@
   = f.text_area :description, class: 'form-control'
   = f.hidden_field :_destroy
   %hr
+:javascript
+  $('.college-select').on("change", function(){
+    if ($($(this).find('option:selected')).text() == "Other"){
+      $(this).parent().find(".college-other").attr("disabled", false);
+    }else{
+      $(this).parent().find(".college-other").attr("disabled", true);
+      $(this).parent().find(".college-other").val('');
+    }
+  });

@@ -1,5 +1,6 @@
 %h4
-  = education.school
+  - if education.college
+    = education.college.name
 %p
   = education.education_level.name
 %small

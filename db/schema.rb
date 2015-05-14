@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150416010246) do
+ActiveRecord::Schema.define(version: 20150514011519) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -74,6 +74,12 @@ ActiveRecord::Schema.define(version: 20150416010246) do
   add_index "candidates", ["email"], name: "index_candidates_on_email", unique: true, using: :btree
   add_index "candidates", ["reset_password_token"], name: "index_candidates_on_reset_password_token", unique: true, using: :btree
 
+  create_table "colleges", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "education_levels", force: :cascade do |t|
     t.string   "name"
     t.datetime "created_at", null: false
@@ -81,7 +87,8 @@ ActiveRecord::Schema.define(version: 20150416010246) do
   end
 
   create_table "educations", force: :cascade do |t|
-    t.string   "school"
+    t.integer  "college_id"
+    t.string   "college_other"
     t.integer  "education_level_id"
     t.string   "description"
     t.date     "start_date"
