@@ -1,6 +1,9 @@
 %h4
   - if education.college
-    = education.college.name
+    - if education.college_other || education.college_other != ''
+      = education.college_other
+    - else
+      = education.college.name
 %p
   = education.education_level.name
 %small

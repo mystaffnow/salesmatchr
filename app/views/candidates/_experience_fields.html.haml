@@ -19,11 +19,6 @@
   = f.text_area :description, class: 'form-control', placeholder: 'position description'
   .row
     .col-md-6
-      = f.label "Is this a sales job?"
-      Yes
-      = f.check_box :is_sales
-
-    .col-md-6
       = f.label "Sales Type"
       %br
       = f.collection_select(:sales_type_id, SalesType.all, :id, :name,  {:class => 'form-control'})
