@@ -13,12 +13,13 @@
   .benefit1
     .container
       .text-center
-        %h2 We curate to find the most experienced and highest calibre talent using technology and data analytics to cut traditional overhead and save you thousands of dollars. 
+        %h2 See only the most experienced and highest caliber talent from our curated pool of applicants.
 
         %hr
 
       .row
         .col-md-7
+          / icon will be placed here
           = image_tag "web-screen.png", class: "img-responsive"
         .col-md-5
           %h2 Increased Sales Productivity
@@ -31,12 +32,14 @@
           %h2 Qualified applicants delivered directly to your inbox.
           %p One of the biggest problems in hiring sales talent is maintaining an active talent pool. Without anyone in queue, there is a rush to hire each and every time a position opens up. SalesMatchr consistently delivers high quality candidates that fit your needs.
         .col-md-7
+          / Applied candidates screen
           = image_tag "web-screen.png", class: "img-responsive"
 
   .benefit3
     .container
       .row
         .col-md-7
+          / Image pertaining to the Archetype
           = image_tag "web-screen.png", class: "img-responsive"
         .col-md-5
           %h2 Hire the right salespeople
@@ -48,85 +51,7 @@
       %p{:contenteditable => true} Pie jujubes bonbon sugar plum dragée tart jelly cookie donut. Apple pie sweet roll caramels <br> sweet brownie. Apple pie powder biscuit gummies.
       = link_to "Get Started", new_employer_registration_path, class: "btn btn-default btn-lg"
 
-  .pricing
-    = link_to "X", '#', class: "close-pricing close-btn"
-    .container.text-center
-      .pricing-header
-        %h2{:contenteditable => true} Plans and Pricing
-        %p{:contenteditable => true} Travelist is free to use for public trips. Plan private trips with any of our paid plans.
-      .row
-        .col-md-4
-          .price-container.regular-offer
-            %h4{:contenteditable => true} Standard Plan
-            .price
-              %p{:contenteditable => true} $9
-              %p.month{:contenteditable => true} /album
-            = link_to 'Choose Plan', '#', class: "btn"
-        .col-md-4
-          .popular-header
-            %h4{:contenteditable => true} Most Popular
-          .popular-container
-            %h4{:contenteditable => true} Startup Plan
-            .price
-              %p{:contenteditable => true} $29
-              %p.month{:contenteditable => true} /album
-            = link_to 'Choose Plan', '#', class: "btn"
-        .col-md-4
-          .price-container.regular-offer
-            %h4{:contenteditable => true} Enterprise Plan
-            .price
-              %p{:contenteditable => true} $59
-              %p.month{:contenteditable => true} /album
-            = link_to 'Choose Plan', '#', class: "btn"
 
-/ #landing-jumbotron
-/   %section.wrapper-lg.bg-custom
-/     .container
-/       .row
-/         .col-md-12
-/           .widget.padding-lg
-/             %img{src:'/img/beta_logo.png', style:'width:400px'}
-
-/ #landing-content
-/   .container
-/     .row{style:'text-align:center'}
-/       .col-md-6.wrapper-sm
-/         .col-md-8.col-md-offset-2.card-container
-/           %h2
-/             %i.fa.fa-list
-/           %h2 Post A Job
-/           = link_to "Job poster sign up", new_employer_registration_path, class: 'btn btn-lg btn-primary'
-/           .small
-/             = link_to "Already have an account? Sign in here", new_employer_session_path
-/       .col-md-6.wrapper-sm
-/         .col-md-8.col-md-offset-2.card-container
-/           %h2
-/             %i.fa.fa-check
-/           %h2 Find A Job
-/           = link_to "Candidate Sign up", new_candidate_registration_path, class: 'btn btn-lg btn-primary btn-lg'
-/           .small
-/             = link_to "Already have an account? Sign in here", new_candidate_session_path
-/ #section.section-highlight.wrapper-sm
-/   .container
-/     .row
-/       .col-md-12
-/         %h2
-/           Use SalesMatchr to find the right talent today!
-/ #section.wrapper-md
-/   .container
-/     .row
-/       .col-md-4{style:'text-align:center'}
-/         %img.callout-img{src:'img/Graphic2.png'}
-/         %h4
-/           We curate to find the most experienced and highest calibre talent
-/       .col-md-4{style:'text-align:center'}
-/         %img.callout-img{src:'img/Graphic3.png'}
-/         %h4
-/           We use technology and data analytics to cut traditional overhead and save you thousands of dollars
-/       .col-md-4{style:'text-align:center'}
-/         %img.callout-img{src:'img/Graphic4.png'}
-/         %h4
-/           You grow your business because you find your sales hero faster
 
 / #section.section-highlight.wrapper-sm
 /   .container
