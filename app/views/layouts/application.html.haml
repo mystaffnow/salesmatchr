@@ -38,14 +38,14 @@
             %li
               = link_to "My Jobs", job_candidates_path
             %li
-              = link_to "Profile", candidates_profile_path(current_candidate)
+              = link_to current_candidate.name, candidates_profile_path(current_candidate)
             %li
               = link_to "Sign out", destroy_candidate_session_path, :method => :delete
           - elsif employer_signed_in?
             %li
               = link_to "My Jobs", employer_jobs_path
             %li
-              = link_to "Profile", employers_profile_path
+              = link_to current_employer.name, employers_profile_path
             %li
               = link_to "Sign out", destroy_employer_session_path, :method => :delete
           - else
