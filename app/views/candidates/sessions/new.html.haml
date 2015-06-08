@@ -6,13 +6,13 @@
         = link_to "Are you an employer looking to post jobs? Sign in here", new_employer_session_path
     .account-content
       = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
-        .actions
-          = link_to candidate_omniauth_authorize_path(:linkedin) do
-            .btn.btn-default
-              %i.fa.fa-linkedin
-              %span Sign in with LinkedIn
-        %br
-        %hr
+        / .actions
+        /   = link_to candidate_omniauth_authorize_path(:linkedin) do
+        /     .btn.btn-default
+        /       %i.fa.fa-linkedin
+        /       %span Sign in with LinkedIn
+        / %br
+        / %hr
         %br
         .field
           = f.label :email

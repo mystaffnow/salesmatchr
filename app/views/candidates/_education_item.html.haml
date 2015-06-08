@@ -1,12 +1,12 @@
 %h4
   - if education.college
-    - if education.college_other || education.college_other != ''
+    - if education.college_other && education.college_other != ''
       = education.college_other
     - else
       = education.college.name
 %p
   = education.education_level.name
-%small
+%p
   = format_date education.start_date
   \-
   = format_date education.end_date

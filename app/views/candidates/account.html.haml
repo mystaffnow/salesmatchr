@@ -21,6 +21,11 @@
           .account-header
             %h2 Profile Information
           .account-content
+            .text-center 
+              In a minute-length video below, please introduce yourself, tell us about your sales background and share what makes you a valuable asset to an organization. Sell yourself!
+            %br
+            %hr
+            %br
             = f.label "Profile Image"
             = f.file_field :avatar
             = f.label "Education Level"
@@ -47,10 +52,16 @@
             %h2 Work Experience
             %i.fa.fa-info-circle.info{title: "add your work experience"}
           .account-content
+            .text-center 
+              Please list any previous sales positions you’ve held, starting with your most recent job.
+            %br
+            %hr
+            %br
             = f.fields_for :experiences do |builder|
               = render 'experience_fields', f: builder
               %hr
             = link_to_add_fields "+ Add Experience", f, :experiences
+            %br
             %br
             .btn.btn-default.btn-full.next_button#education-button
               Next
@@ -61,9 +72,15 @@
             %h2 Education Experience
             %i.fa.fa-info-circle.info{title: "add your education experience"}
           .account-content
+            .text-center 
+              Now, let's work on your education history. Start by listing your highest degree obtained, and then work down to your high school education.
+            %br
+            %hr
+            %br
             = f.fields_for :educations do |builder|
               = render 'education_fields', f: builder
             = link_to_add_fields "+ Add Education", f, :educations
+            %br
             %br
             %button.btn.btn-default.btn-full
               Submit

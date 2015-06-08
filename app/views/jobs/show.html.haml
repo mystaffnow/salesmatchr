@@ -3,7 +3,7 @@
     .row
       .col-md-8
         %h2= @job.title
-      .col-md-4.text-right
+      .col-md-4.action-bar-actions
         - if candidate_signed_in?
           - if !current_candidate.has_applied(@job)
             = link_to 'Apply Now', create_job_candidates_path(@job), class: 'btn btn-default', :data => { :confirm => 'Are you sure?' }
@@ -25,18 +25,17 @@
       %p
         = @job.description
     .col-md-4.col-md-offset-1
-      #account
-        .account-panel
-          .account-header
-            %h2
-              Job Details
-          .account-content
-            .job-detail
-              %h4 Salary
-              %p= "$#{@job.salary_low} - $#{@job.salary_high}"
-            .job-detail
-              %h4 Location
-              %p= "#{@job.city} #{@job.state.name}, #{@job.zip}"
-            .job-detail
-              %h4 Is remote
-              %p= @job.is_remote ? 'yes' : 'no'
+      #job-panel.account-panel
+        .account-header
+          %h2
+            Job Details
+        .account-content
+          .job-detail
+            %h4 Salary
+            %p= "$#{@job.salary_low} - $#{@job.salary_high}"
+          .job-detail
+            %h4 Location
+            %p= "#{@job.city} #{@job.state.name}, #{@job.zip}"
+          .job-detail
+            %h4 Telecommuting Position
+            %p= @job.is_remote ? 'yes' : 'no'

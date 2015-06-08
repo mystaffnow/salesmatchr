@@ -34,22 +34,24 @@ h1, h2, h3, h4, h5, p
 
 h1
   font-weight: 700
-  font-size: 61px
+  font-size: 61px !important
 
 h2
   font-weight: 400
-  font-size: 40px
+  font-size: 40px !important
 
 h3
   font-weight: 400
-  font-size: 28px
+  font-size: 28px !important
 
 h4
   font-weight: 400
-  font-size: 22px
+  font-size: 22px !important
 
 p
-  font-weight: 300
+  font-weight: 400
+  font-size: 16px !important
+  color: #5b5e60
 
 #flash-display
   background-color: $gray-light
@@ -69,6 +71,9 @@ nav.navbar
   border: none
   border-radius: 0
   margin-bottom: 0
+  .navbar-header
+    span.icon-bar
+      background-color: white
   li.dropdown
     ul.dropdown-menu
       padding: 0
@@ -85,6 +90,20 @@ nav.navbar
       padding: 20px 20px
       &:hover
         background-color: $secondary-color !important
+  li.dropdown
+    button
+      padding: 18px 20px
+      border: none
+      border-radius: 0
+      background-color: $primary-color
+      color: white
+      font-weight: 900
+      font-size: 1.2em
+    @media (max-width: 800px)
+      .dropdown-menu li a
+        color: white !important  
+
+
 
 .navbar-brand
   padding-top: 8px !important
@@ -122,12 +141,15 @@ nav.navbar
   color: #fff
 #accounts-button, #experience-button, #education-button, #education-panel .btn-default
   width: 100%
+.video-recorder
+  button
+    margin: 8px 10px 0 0
+    background-color: $secondary-color
 
 
 
 
 // Forms
-
 .account-panel
   input, select, textarea, input.form-control
     margin-bottom: 30px
@@ -145,12 +167,12 @@ input.form-control
 
 
 // Account & Registration Views
-
 .account-panel
   border: 1px solid $gray
   border-radius: 4px
   max-width: 700px
-  margin: auto
+  margin-left: auto
+  margin-right: auto
   .account-header
     background-color: $primary-color
     border-bottom: 1px solid $gray
@@ -204,6 +226,13 @@ input.form-control
         &:hover
           text-decoration: underline
 
+#job-panel
+  @media (max-width: 991px)
+    margin-top: 30px
+
+.slider.slider-horizontal
+  margin-left: 1.5%
+
 #experience-panel
   hr
     margin-bottom: 50px
@@ -245,6 +274,10 @@ input.form-control
       font-weight: bold
       text-align: center
       margin-bottom: 0
+  .action-bar-actions
+    text-align: right
+    @media (max-width: 991px)
+      text-align: center
 
 
 #registration-bar

@@ -8,12 +8,12 @@
       = form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
         .actions
           = devise_error_messages!
-          = link_to candidate_omniauth_authorize_path(:linkedin) do
-            .btn.btn-default
-              %i.fa.fa-linkedin
-              %span Sign up with LinkedIn
-          %br
-          %hr
+          / = link_to candidate_omniauth_authorize_path(:linkedin) do
+          /   .btn.btn-default
+          /     %i.fa.fa-linkedin
+          /     %span Sign up with LinkedIn
+          / %br
+          / %hr
           %br
           .field
             = f.label :first_name

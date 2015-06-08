@@ -8,6 +8,11 @@
           .account-header
             %h2 Archetype
           .account-content
+            .text-center 
+              We are excited to have you joining us here at Salesmatchr. So we can make the best job match for your personality and expertise, we will need you to complete a brief survey. Please be as honest as possible. 
+            %br
+            %hr
+            %br
             #archetype-pre
               = f.label "Years of experience"
               = f.collection_select(:year_experience_id, YearExperience.all, :id, :name,  {:class => 'form-control selectpickers'})

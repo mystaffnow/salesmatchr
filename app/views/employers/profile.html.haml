@@ -1,22 +1,18 @@
-.profile
+.employer-profile
   .container.padded-container
     .row
-      .col-md-12.text-center
+      .col-md-3
         = image_tag current_employer.avatar.url(:medium)
-    .text-center
-      %h2= current_employer.company
-      %h5= "#{current_employer.city} #{current_employer.state ? current_employer.state.name: ''}, #{current_employer.zip}"
-      = link_to "Edit Profile", employers_account_path, class: "btn btn-default"
-      = link_to "Account Settings", edit_employer_registration_path, class: "btn btn-default"
-    .text-center
-      = link_to 'Create New Job', new_job_path, class: 'btn btn-default'
-
-    %hr
-
-    .row
-      .col-md-6
-        %h2= "About #{current_employer.company}"
-        = current_employer.description
-      .col-md-6
-        - if current_employer.ziggeo_token != nil
+      .col-md-9
+        %h2= current_employer.company
+        %h5= "#{current_employer.city} #{current_employer.state ? current_employer.state.name: ''}, #{current_employer.zip}"
+        %br
+        %p= current_employer.description
+        %br
+        = link_to "Edit Profile", employers_account_path, class: "btn btn-default"
+        = link_to 'Create New Job', new_job_path, class: 'btn btn-default'
+    - if current_employer.ziggeo_token != nil
+      %hr
+      .row
+        .col-md-6.col-md-offset-3
           %ziggeo{ 'ziggeo-video' => current_employer.ziggeo_token, 'ziggeo-width' => 538, 'ziggeo-height' => 288}

@@ -9,9 +9,14 @@
                 %h2
                   Edit Your Profile
               .account-content
+                .text-center 
+                  In a minute-length video below, please introduce yourself, tell us about your company and what type of salesperson you are looking for. Please be as specific as possible.
+                %br
+                %hr
+                %br
                 = f.label "Company Website"
                 = f.text_field :website, class: 'form-control'
-                = f.label "Profile Image"
+                = f.label "Company Logo"
                 = f.file_field :avatar
                 = f.label "City"
                 = f.text_field :city, class: 'form-control'

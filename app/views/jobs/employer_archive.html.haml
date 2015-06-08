@@ -43,7 +43,7 @@
         = link_to edit_job_path(job), class: "btn btn-info" do
           %i.fa.fa-edit{title: "edit this job"}
           Edit
-        = link_to inactivate_job_path(job), class: "btn btn-info", :method => :put, :data => { :confirm => 'Are you sure?' } do
+        = link_to inactivate_job_path(job), class: "btn btn-info", :method => :put, :data => { :confirm => "Ready to spread the word about this job? Click 'OK' if you're ready!" } do
           %i.fa.fa-rocket{title: "activate this job"}
           Activate
     %hr

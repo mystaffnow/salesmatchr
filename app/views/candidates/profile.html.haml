@@ -3,15 +3,17 @@
   .container.padded-container
     - if current_candidate && current_candidate.id == @candidate.id
       .row
-        .col-md-12
-          .center-img
+        .col-md-4
+          .archetype-img
             = image_tag get_archetype_image_from_score @candidate.archetype_score
-      .text-center
-        %h2= @candidate.name
-        %h4= get_archetype_from_score @candidate.archetype_score
-        %p
-          = (get_archetype_description_from_score @candidate.archetype_score).html_safe
-          = link_to "Edit Profile", candidates_account_path, class: "btn btn-default"
+        .col-md-8
+          %h2= @candidate.name
+          %h4= get_archetype_from_score @candidate.archetype_score
+          %p
+            = (get_archetype_description_from_score @candidate.archetype_score).html_safe
+            %br
+            %br
+            = link_to "Edit Profile", candidates_account_path, class: "btn btn-default"
     - else
       .text-center
         %h2= @candidate.name
@@ -29,8 +31,12 @@
                 #incognito-content
                   %input{:checked => "", :name => "my-checkbox", :type => "checkbox", :id => 'incognito', checked: @candidate.is_incognito}/
                   - if @candidate.is_incognito
+                    %br
+                    %br
                     %p Your profile is currently hidden. Turn off incognito to make your profile public.
                   - else
+                    %br
+                    %br
                     %p Your profile is currently visible. Turn on incognito to hide your profile.
         %br
         %br
@@ -66,7 +72,7 @@
           
           // Work Experience & Education
           .col-md-6
-            %div{:role => "tabpanel"}
+            %div.tabpanel{:role => "tabpanel"}
               / Nav tabs
               %ul.nav.nav-tabs{:role => "tablist"}
                 %li.active{:role => "presentation"}
@@ -77,13 +83,14 @@
               .tab-content.account-panel
                 #work.tab-pane.active{:role => "tabpanel"}
                   .account-content
-                    %h2 Work History
-                    - @candidate.experiences.each do |experience|
-                      = render 'candidates/experience_item', experience: experience
+                    - if @candidate.experiences == 0
+                      %h2 hi
+                    - else
+                      - @candidate.experiences.each do |experience|
+                        = render 'candidates/experience_item', experience: experience
 
                 #education.tab-pane{:role => "tabpanel"}
                   .account-content
-                    %h2 Education
                     - @candidate.educations.each do |education|
                       = render 'candidates/education_item', education: education
 :javascript

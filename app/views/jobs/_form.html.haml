@@ -18,12 +18,11 @@
       %br
       = f.collection_select(:job_function_id, JobFunction.all, :id, :name,  {:class => 'form-control'})
     .field
-      = f.label "Salary range"
+      = f.label "Salary range (Drag each triangle to create the range for this position)"
       %br
       %input#salaries{:'data-slider-handle' => 'triangle'}
       = f.hidden_field :salary_low,id: 'salary_low'
       = f.hidden_field :salary_high, id: 'salary_high'
-      %br
       %br
       %br
     .field
@@ -38,7 +37,7 @@
       = f.label :zip
       = f.number_field :zip, class: 'form-control'
     .field
-      %h5 Is this a remote job?
+      %h5 Is this a telecommuting position?
       Yes
       = f.check_box :is_remote, style: 'width:15px'
       %br
