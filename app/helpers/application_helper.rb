@@ -79,7 +79,9 @@ module ApplicationHelper
     date.strftime("%I:%M%P")
   end
   def get_location(resource)
-    resource.city + " " + resource.state.name + ", " + resource.zip
+    if resource.state != nil
+      resource.city + " " + resource.state.name + ", " + resource.zip
+    end
   end
   def get_status_key_by_value(value)
     JobCandidate.statuses.keys[value]

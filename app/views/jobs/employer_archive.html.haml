@@ -18,7 +18,7 @@
     .row
       .col-md-8
         %h3= job.title
-        %p= job.description
+        %p= strip_tags(truncate(job.description, length: 600, omission: "...", escape: false))
         .stat
           = link_to employer_show_actions_path(job) do
             %i.fa.fa-inbox

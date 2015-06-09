@@ -59,6 +59,8 @@ GEM
     bootstrap-sass (3.3.4.1)
       autoprefixer-rails (>= 5.0.0.1)
       sass (>= 3.2.19)
+    bootstrap-wysihtml5-rails (0.3.3.6)
+      railties (>= 3.0)
     builder (3.2.2)
     byebug (4.0.3)
       columnize (= 0.9.0)
@@ -231,6 +233,7 @@ PLATFORMS
 DEPENDENCIES
   aws-sdk (< 2.0)
   bootstrap-sass
+  bootstrap-wysihtml5-rails
   byebug
   client_side_validations!
   coffee-rails (~> 4.1.0)

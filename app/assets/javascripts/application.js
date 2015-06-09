@@ -13,7 +13,9 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
-//= requier bootstrap-sprockets
+//= require bootstrap-sprockets
+//= require bootstrap-wysihtml5
+//= require bootstrap-wysihtml5/locales
 //= require rails.validations
 //= require_tree .
 

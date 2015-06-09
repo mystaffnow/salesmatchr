@@ -23,7 +23,8 @@
                 = get_location candidate_job_action.candidate
               .col-md-4
                 %h4 Education
-                = candidate_job_action.candidate.education_level.name
+                - if candidate_job_action.candidate.education_level != nil 
+                  = candidate_job_action.candidate.education_level.name
           %hr
 
 

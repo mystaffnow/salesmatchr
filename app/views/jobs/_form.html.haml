@@ -11,7 +11,7 @@
       = f.text_field :title, class: 'form-control'
     .field
       = f.label :description
-      = f.text_area :description, class: 'form-control'
+      = f.text_area :description, class: "wysihtml5", rows: 20
     .field
       %label
         Job Function
@@ -51,4 +51,7 @@
       $('#salary_low').val(salary_slider.slider('getValue')[0]);
       $('#salary_high').val(salary_slider.slider('getValue')[1]);
     })
+    $('.wysihtml5').each(function(i, elem) {
+      $(elem).wysihtml5();
+    });
   })
