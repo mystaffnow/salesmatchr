@@ -47,7 +47,6 @@ group :development, :test do
 end
 gem 'rmagick', '2.13.2'
 gem 'geocoder'
-gem "paperclip", "~> 4.2"
 gem 'devise', '~> 3.4.1'
 gem 'pg', '~> 0.17.1'
 gem 'haml', '~> 4.0.5'
