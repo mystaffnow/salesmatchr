@@ -26,7 +26,8 @@
                 = get_location job_candidate.candidate
               .col-md-2
                 %h4 Education
-                = job_candidate.candidate.education_level.name
+                - if job_candidate.candidate.education_level != nil
+                  = job_candidate.candidate.education_level.name
             .col-md-2
               - if !job_candidate.accepted?
                 = form_for(job_candidate) do |f|
