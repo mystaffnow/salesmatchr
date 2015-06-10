@@ -119,7 +119,7 @@ class JobsController < ApplicationController
   def update
     respond_to do |format|
       if @job.update(job_params)
-        format.html { redirect_to employers_job_path, notice: 'Job was successfully updated.' }
+        format.html { redirect_to employer_jobs_path, notice: 'Job was successfully updated.' }
         format.json { render :show, status: :ok, location: @job }
       else
         format.html { render :edit }
