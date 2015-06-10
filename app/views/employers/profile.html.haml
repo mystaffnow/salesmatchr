@@ -11,7 +11,7 @@
         %br
         = link_to "Edit Profile", employers_account_path, class: "btn btn-default"
         = link_to 'Create New Job', new_job_path, class: 'btn btn-default'
-    - if current_employer.ziggeo_token != nil
+    - if current_employer.ziggeo_token?
       %hr
       .row
         .col-md-6.col-md-offset-3
