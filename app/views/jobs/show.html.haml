@@ -16,14 +16,14 @@
     .col-md-7
       %h2
         = "About "
-        = link_to @job.employer.name, employers_public_path(@job.employer)
+        = link_to @job.employer.company, employers_public_path(@job.employer)
       %p
         = @job.employer.description
       %hr
       %h2
         = @job.title
       %p
-        = @job.description
+        = raw(@job.description)
     .col-md-4.col-md-offset-1
       #job-panel.account-panel
         .account-header
