@@ -35,7 +35,11 @@
             %p= "$#{@job.salary_low} - $#{@job.salary_high}"
           .job-detail
             %h4 Location
-            %p= "#{@job.city} #{@job.state.name}, #{@job.zip}"
+            %p
+              - if @job.state
+                = "#{@job.city} #{@job.state.name}, #{@job.zip}"
+              - else
+                = "#{@job.city} #{@job.zip}"
           .job-detail
             %h4 Telecommuting Position
             %p= @job.is_remote ? 'yes' : 'no'

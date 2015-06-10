@@ -13,7 +13,6 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
-//= require bootstrap-sprockets
 //= require bootstrap-wysihtml5
 //= require bootstrap-wysihtml5/locales
 //= require rails.validations
@@ -41,8 +40,8 @@ function ready(){
   salary_slider = $("#salaries").slider({ min: 0, max: 500000, range: true, step: 5000, formatter: format_slider });
 }
 var salary_slider;
-$(document).ready(ready);
 $(document).on('page:load', ready);
+$(document).ready(ready);
 
 function format_slider(val){
   return "$" + val[0] + " - $" + val[1];

@@ -26,7 +26,8 @@
                   = get_location candidate
                 .col-md-4
                   %h4 Education
-                  = candidate.education_level.name
+                  - if candidate.education_level
+                    = candidate.education_level.name
             %hr
 
 :javascript

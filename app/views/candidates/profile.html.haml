@@ -62,12 +62,14 @@
                   .col-md-6
                     %h4 Education Level
                     %p
-                      = @candidate.education_level.name
+                      - if @candidate.education_level
+                        = @candidate.education_level.name
                 .row
                   .col-md-6
                     %h4 Experience
                     %p
-                      = @candidate.year_experience.name
+                      - if @candidate.year_experience
+                        = @candidate.year_experience.name
 
           
           // Work Experience & Education
