@@ -6,6 +6,7 @@ class Candidate < ActiveRecord::Base
   has_many :experiences
   has_many :educations
   has_many :candidate_question_answers
+  has_many :job_candidates
   belongs_to :state
   belongs_to :education_level
   belongs_to :year_experience

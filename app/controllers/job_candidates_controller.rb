@@ -25,11 +25,24 @@ class JobCandidatesController < ApplicationController
       end
     end
   end
+  def remove_candidate
+    job_candidate = JobCandidate.where(:job_id => params[:job_id], :candidate_id => params[:candidate_id]).first
+    job_candidate.status = JobCandidate.statuses[:deleted]
+    job_candidate.save
+    redirect_to employer_show_path(params[:job_id]), notice: 'Candidate removed'
+  end
+  def shortlist_candidate
+    job_candidate = JobCandidate.where(:job_id => params[:job_id], :candidate_id => params[:candidate_id]).first
+    job_candidate.status = JobCandidate.statuses[:shortlist]
+    job_candidate.save
+
+    redirect_to employer_show_path(params[:job_id]), notice: 'Candidate shortlisted'
+  end
   private
     def set_job_candidate
       @job_candidate = JobCandidate.find(params[:id])
     end
     def job_candidate_params
-      params.require(:job_candidate).permit(:is_hired, :status)
+      params.require(:job_candidate).permit(:is_hired, :status, :job_id, :candidate_id)
     end
 end

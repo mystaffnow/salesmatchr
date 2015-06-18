@@ -8,7 +8,11 @@ class Job < ActiveRecord::Base
   attr_accessor :job_function_id
 
   def matches
-    Candidate.where("archetype_score >= ? and archetype_score <= ?", self.archetype_low, self.archetype_high)
+    matches = Candidate.where("candidates.archetype_score >= ? and candidates.archetype_score <= ? ", self.archetype_low, self.archetype_high).to_a
+    matches
+  end
+  def shortlist
+    Candidate.joins(:job_candidates).where("job_candidates.job_id = ? and job_candidates.status = ?", self.id, JobCandidate.statuses[:shortlist])
   end
   def full_street_address
     self.city + " " + self.state.name + " " + self.zip

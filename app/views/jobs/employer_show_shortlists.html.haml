@@ -9,10 +9,10 @@
     .row
       .col-md-12
         %h2{style: 'padding-bottom:5px'}
-          Applicants
+          Candidate Shortlist
           %hr
         %table.table.table-responsive
-          - @job_candidates.each do |job_candidate|
+          - @shortlists.each do |job_candidate|
             = link_to candidates_profile_path(job_candidate.candidate) do
               .row
                 .col-md-2
@@ -29,7 +29,7 @@
                   - if job_candidate.candidate.education_level
                     = job_candidate.candidate.education_level.name
             .row
-              .col-md-6
+              .col-md-8
               - if !job_candidate.accepted?
                 .col-md-2
                   = form_for(job_candidate) do |f|
@@ -42,17 +42,11 @@
                     %button.btn.btn-default
                       %i.fa.fa-close
                       Remove
-                .col-md-2
-                  = form_tag(shortlist_candidate_path(@job, job_candidate.candidate), method: 'post') do
-                    %button.btn.btn-default
-                      %i.fa.fa-list-ol
-                      Shortlist
               - else
                 .col-md-4
                 .col-md-2
                   Already Hired
             %hr
-
 
 :javascript
   $(function(){

@@ -43,6 +43,10 @@ Rails.application.routes.draw do
   get 'employer_jobs/:id' => 'jobs#employer_show', as: 'employer_show'
   get 'employer_job_actions/:id' => 'jobs#employer_show_actions', as: 'employer_show_actions'
   get 'employer_job_matches/:id' => 'jobs#employer_show_matches', as: 'employer_show_matches'
+  get 'employer_job_shortlists/:id' => 'jobs#employer_show_shortlists', as: 'employer_show_shortlists'
+
+  post 'shortlist_candidate/:job_id/:candidate_id' => 'job_candidates#shortlist_candidate', as: 'shortlist_candidate'
+  post 'remove_candidate/:job_id/:candidate_id' => 'job_candidates#remove_candidate', as: 'remove_candidate'
 
   put 'inactivate_job/:id' => 'jobs#inactivate_job', as: 'inactivate_job'
 

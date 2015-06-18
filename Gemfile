@@ -57,4 +57,5 @@ gem 'omniauth', '~> 1.2.2'
 gem "omniauth-linkedin-oauth2"
 gem "paperclip", "~> 4.2"
 gem 'aws-sdk', '< 2.0'
+gem 'stripe'
 gem 'client_side_validations', github: 'DavyJonesLocker/client_side_validations'

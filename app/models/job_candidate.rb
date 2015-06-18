@@ -2,5 +2,5 @@ class JobCandidate < ActiveRecord::Base
   belongs_to :job
   belongs_to :candidate
 
-  enum status: [ :submitted, :viewed, :accepted, :withdrawn]
+  enum status: [ :submitted, :viewed, :accepted, :withdrawn, :shortlist, :deleted, :purposed]
 end

@@ -36,6 +36,11 @@
             %i.fa.fa-inbox
             = job.job_candidates.count
             applicants
+        .stat
+          = link_to employer_show_shortlists_path(job) do
+            %i.fa.fa-list-ol
+            = job.shortlist.count
+            shortlist
       .col-md-4.job-actions
         = link_to new_job_path(:copy_id => job.id), class: "btn btn-info" do
           %i.fa.fa-plus{title: "copy to a new job"}

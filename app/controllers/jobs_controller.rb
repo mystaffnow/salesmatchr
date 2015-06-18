@@ -1,5 +1,5 @@
 class JobsController < ApplicationController
-  before_action :set_job, only: [:show, :edit, :update, :destroy, :inactivate_job, :employer_show, :employer_show_actions, :employer_show_matches]
+  before_action :set_job, only: [:show, :edit, :update, :destroy, :inactivate_job, :employer_show, :employer_show_actions, :employer_show_matches, :employer_show_shortlists]
 
   # GET /jobs
   # GET /jobs.json
@@ -71,12 +71,21 @@ class JobsController < ApplicationController
         job_candidate.viewed!
       end
     end
+    @job_candidates = @job.job_candidates.to_a
+    @job_candidates.each do |job_candidate|
+      if job_candidate.shortlist? || job_candidate.deleted?
+        @job_candidates.delete job_candidate
+      end
+    end
   end
   def employer_show_actions
 
   end
   def employer_show_matches
 
+  end
+  def employer_show_shortlists
+    @shortlists = JobCandidate.where(:job_id => params[:id], :status => JobCandidate.statuses[:shortlist])
   end
   def employer_index
     @jobs = Job.where(employer_id: current_employer.id, is_active: true )

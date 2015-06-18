@@ -27,7 +27,7 @@ class CandidateJobActionsController < ApplicationController
     @candidate_job_action = CandidateJobAction.where(candidate_id: current_candidate.id).order('created_at DESC')
   end
   def candidate_matches
-    @jobs = Job.where("archetype_low < ? and archetype_high > ?", current_candidate.archetype_score, current_candidate.archetype_score)
+    @jobs = Job.where("archetype_low <= ? and archetype_high >= ?", current_candidate.archetype_score, current_candidate.archetype_score)
   end
 
   # POST /candidate_job_actions

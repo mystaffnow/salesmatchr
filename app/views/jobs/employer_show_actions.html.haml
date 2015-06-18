@@ -1,32 +1,34 @@
-.action-bar
-  .container
+.candidate-matches
+  .action-bar
+    .container
+      .row
+        .col-md-12
+          %h2= @job.title
+
+  .container.padded-container
     .row
       .col-md-12
-        %h2= @job.title
-
-.container.padded-container
-  .row
-    .col-md-12
-      %h2{style: 'padding-bottom:5px'}
-        Candidate Views
-        %hr
-      %table.table.table-responsive
-        - @job.candidate_job_actions.each do |candidate_job_action|
-          = link_to candidates_profile_path(candidate_job_action.candidate) do
-            .row
-              .col-md-4
-                %div
-                  = candidate_job_action.candidate.name
-                %img{src: candidate_job_action.candidate.avatar_url}
-              .col-md-4
-                %h4 Location
-                = get_location candidate_job_action.candidate
-              .col-md-4
-                %h4 Education
-                - if candidate_job_action.candidate.education_level != nil 
-                  = candidate_job_action.candidate.education_level.name
+        %h2{style: 'padding-bottom:5px'}
+          Candidate Views
           %hr
-
+        %table.table.table-responsive
+          - @job.candidate_job_actions.each do |candidate_job_action|
+            = link_to candidates_profile_path(candidate_job_action.candidate) do
+              .row
+                .col-md-2
+                  %img{src: candidate_job_action.candidate.avatar_url}
+                .col-md-6
+                  %h3
+                    - if candidate_job_action.candidate.is_incognito
+                      Candidate
+                    - else
+                      = candidate_job_action.candidate.name
+                  = get_location candidate_job_action.candidate
+                .col-md-4
+                  %h4 Education
+                  - if candidate_job_action.candidate.education_level
+                    = candidate_job_action.candidate.education_level.name
+              %hr
 
 
 :javascript

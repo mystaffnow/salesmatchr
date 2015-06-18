@@ -17,7 +17,8 @@ class CreateJobs < ActiveRecord::Migration
       t.integer :job_function_id
       t.float :latitude
       t.float :longitude
-
+      t.string :stripe_customer_token
+      t.integer :experience_years
 
       t.timestamps null: false
     end

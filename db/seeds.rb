@@ -24,12 +24,12 @@ SalesType.create :name => "Financial"
 SalesType.create :name => "Federal Government"
 SalesType.create :name => "Retail"
 
-YearExperience.create :name => "This is my first sales job!"
-YearExperience.create :name => "Less than a year"
-YearExperience.create :name => "1-3 years"
-YearExperience.create :name => "4-6 years"
-YearExperience.create :name => "7-10 years"
-YearExperience.create :name => "10+"
+YearExperience.create :name => "Less than a year", :low => 0, :high => 2
+YearExperience.create :name => "1-3 years", :low => 0, :high => 5
+YearExperience.create :name => "4-6 years", :low => 2, :high => 8
+YearExperience.create :name => "7-10 years", :low => 5, :high => 12
+YearExperience.create :name => "11-15 years", :low => 9, :high => 17
+YearExperience.create :name => "15+", :low => 13, :high => 50
 
 Answer.create :name => "Strongly Agree", :score => 5
 Answer.create :name => "Agree", :score => 3
