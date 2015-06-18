@@ -59,6 +59,11 @@ class JobsController < ApplicationController
       @job.assign_attributes(attributes)
       @job.id = nil
     end
+    if current_employer.jobs.count >= 3
+      @should_pay = true
+    else
+      @should_pay = false
+    end
   end
 
   # GET /jobs/1/edit
@@ -113,6 +118,15 @@ class JobsController < ApplicationController
     @job.archetype_high = job_function.high
     @job.employer_id = current_employer.id
     @job.job_function_id = job_function.id
+
+    if @job.stripe_token
+      charge = Stripe::Charge.create(
+          :amount => 1000, # amount in cents, again
+          :currency => "usd",
+          :source => @job.stripe_token,
+          :description => current_employer.company
+        )
+    end
     respond_to do |format|
       if @job.save
         format.html { redirect_to employer_archive_jobs_path, notice: 'Job was successfully created.' }
@@ -121,6 +135,10 @@ class JobsController < ApplicationController
         format.json { render json: @job.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  def employer_job_checkout
+
   end
 
   # PATCH/PUT /jobs/1
@@ -155,6 +173,6 @@ class JobsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def job_params
-      params.require(:job).permit(:distance, :job_function_id,:employer_id, :city, :state_id, :archetype_low, :archetype_high, :salary_low, :salary_high, :zip, :is_remote, :title, :description, :is_active)
+      params.require(:job).permit(:distance, :job_function_id,:employer_id, :city, :state_id, :archetype_low, :archetype_high, :salary_low, :salary_high, :zip, :is_remote, :title, :description, :is_active, :experience_years, :stripe_token)
     end
 end

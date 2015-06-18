@@ -46,8 +46,34 @@
     = f.check_box :is_remote, style: 'width:15px'
     %br
     %br
-  .actions
-    = f.submit 'Save', class: 'btn btn-default', id: 'save-btn'
+  - if @should_pay
+    %hr
+      .account-content
+        .text-center
+          The first three job postings are free, each additional posting is only $10.  After purchasing the job, you can edit it at anytime!
+      %hr
+      %br
+      #cc-fields
+        .field
+          = label_tag :card_number, "Credit Card Number "
+          = text_field_tag :card_number, nil, name: nil, value: '4242424242424242', class: 'form-control'
+        .field
+          = label_tag :card_code, "Security Code on Card (CVV)"
+          = text_field_tag :card_code, nil, name: nil, value: '1234', class: 'form-control'
+        .field
+          = label_tag :card_month, "Card Expiration"
+          = select_month nil, {add_month_numbers_true: true}, {name: nil, id: "card_month"}
+          = select_year nil, {start_year: Date.today.year, end_year: Date.today.year+15}, {name: nil, id: "card_year"}
+          = hidden_field_tag :stripe_card_token, id: 'stripe_card_token'
+        #waiting{style: 'display:none;text-align:center'}
+          %h3
+            Your credit card is being processed, this could take up to 3 minutes, please don't leave this page and wait for the request to finish.
+    .actions
+      = f.hidden_field :stripe_token, id: 'stripe-token'
+      = f.submit 'Pay and Submit', class: 'btn btn-default', id: 'pay-btn'
+  - else
+    .actions
+      = f.submit 'Submit', class: 'btn btn-default', id: 'save-btn'
 
 :javascript
   $(function(){
@@ -58,4 +84,36 @@
     $('.wysihtml5').each(function(i, elem) {
       $(elem).wysihtml5();
     });
-  })
+    Stripe.setPublishableKey($('meta[name="stripe-key"]').attr('content'));
+    $('#pay-btn').click(function(e) {
+      $('#salary_low').val(salary_slider.slider('getValue')[0]);
+      $('#salary_high').val(salary_slider.slider('getValue')[1]);
+      $('input[type=submit]').attr('disabled', true);
+      $('#cc-fields').hide();
+      $('#waiting').show();
+      processCard();
+      e.preventDefault();
+    });
+  });
+  function processCard(){
+      card = {
+        number: $('#card_number').val(),
+        cvc: $('#card_code').val(),
+        expMonth: $('#card_month').val(),
+        expYear: $('#card_year').val(),
+        amount: 1000
+       };
+      Stripe.card.createToken(card, handleStripeResponse);
+    }
+  function handleStripeResponse(status, response){
+    if (status == 200){
+      $('#stripe-token').val(response.id)
+      $('form').submit();
+      //$('#new_order')[0].submit();
+    }else{
+      alert(response.error.message);
+      $('#cc-fields').show();
+      $('#waiting').hide();
+      $('input[type=submit]').attr('disabled', false);
+    }
+  }
