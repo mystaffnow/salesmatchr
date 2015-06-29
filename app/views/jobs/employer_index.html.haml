@@ -34,7 +34,7 @@
         .stat
           = link_to employer_show_path(job) do
             %i.fa.fa-inbox
-            = job.job_candidates.count
+            = job.applicants.count
             applicants
         .stat
           = link_to employer_show_shortlists_path(job) do

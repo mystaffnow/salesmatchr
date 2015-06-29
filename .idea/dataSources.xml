@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DataSourceManagerImpl" format="xml" hash="2258756796">
+  <component name="DataSourceManagerImpl" format="xml" hash="2741138535">
     <data-source source="LOCAL" name="Rails salesmatchr: development" uuid="f9332859-80b5-42a4-a139-9db5e949461c">
       <driver-ref>sqlite.xerial</driver-ref>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
