@@ -11,51 +11,43 @@
         %h2{style: 'padding-bottom:5px'}
           Applicants
           %hr
-        %table.table.table-responsive
-          - @job_candidates.each do |job_candidate|
-            = link_to candidates_profile_path(job_candidate.candidate) do
-              .row
-                .col-md-2
-                  %img{src: job_candidate.candidate.avatar_url}
-                .col-md-6
-                  %h3
-                    - if job_candidate.candidate.is_incognito
-                      Candidate
-                    - else
-                      = job_candidate.candidate.name
-                  = get_location job_candidate.candidate
-                .col-md-4
-                  %h4 Education
-                  - if job_candidate.candidate.education_level
-                    = job_candidate.candidate.education_level.name
+        - @job_candidates.each do |job_candidate|
+          = link_to candidates_profile_path(job_candidate.candidate) do
             .row
+              .col-md-2
+                %img{src: job_candidate.candidate.avatar_url}
               .col-md-6
-              - if !job_candidate.accepted?
-                .col-md-2
-                  = form_for(job_candidate) do |f|
-                    = f.hidden_field :status, id: 'is_hired', value: "#{get_status_key_by_value(JobCandidate.statuses[:accepted])}"
-                    %button.btn.btn-default#hire{style: 'width: 128px'}
-                      %i.fa.fa-check
-                      Hire
-                .col-md-2
-                  = form_tag(remove_candidate_path(@job, job_candidate.candidate), method: 'post') do
-                    %button.btn.btn-default
-                      %i.fa.fa-close
-                      Remove
-                .col-md-2
-                  = form_tag(shortlist_candidate_path(@job, job_candidate.candidate), method: 'post') do
-                    %button.btn.btn-default
-                      %i.fa.fa-list-ol
-                      Shortlist
-              - else
-                .col-md-4
-                .col-md-2
-                  %h4
-                    Already Hired
-            %hr
-
-
-:javascript
-  $(function(){
-
-  })
+                %h3
+                  - if job_candidate.candidate.is_incognito
+                    Candidate
+                  - else
+                    = job_candidate.candidate.name
+                = get_location job_candidate.candidate
+              .col-md-4
+                %h4 Education
+                - if job_candidate.candidate.education_level
+                  = job_candidate.candidate.education_level.name
+          .row
+            .col-md-6
+            - if !job_candidate.accepted?
+              .col-md-2
+                = form_for job_candidate do |f|
+                  = f.hidden_field :status, id: 'is_hired', value: "#{get_status_key_by_value(JobCandidate.statuses[:accepted])}"
+                  %button.btn.btn-default.force-form-button#hire{style: 'width: 128px'}
+                    %i.fa.fa-check
+                    Hire
+              .col-md-2
+                = form_tag(remove_candidate_path(@job, job_candidate.candidate), method: 'post') do
+                  %button.btn.btn-default.force-form-button
+                    %i.fa.fa-close
+                    Remove
+              .col-md-2
+                = form_tag(shortlist_candidate_path(@job, job_candidate.candidate), method: 'post') do
+                  %button.btn.btn-default.force-form-button
+                    %i.fa.fa-list-ol
+                    Shortlist
+            - else
+              .col-md-4
+              .col-md-2
+                %h4
+                  Already Hired
