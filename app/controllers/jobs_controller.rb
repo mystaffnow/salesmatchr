@@ -64,6 +64,8 @@ class JobsController < ApplicationController
     else
       @should_pay = false
     end
+    #remove this to put in payments
+    @should_pay = false
   end
 
   # GET /jobs/1/edit
@@ -121,7 +123,7 @@ class JobsController < ApplicationController
 
     if @job.stripe_token
       charge = Stripe::Charge.create(
-          :amount => 1000, # amount in cents, again
+          :amount => 15000, # amount in cents, again
           :currency => "usd",
           :source => @job.stripe_token,
           :description => current_employer.company
