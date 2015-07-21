@@ -15,7 +15,7 @@ class CandidatesController < ApplicationController
   def update_archetype
     respond_to do |format|
       if current_candidate.update(candidate_params)
-        current_candidate.archetype_score = CandidateQuestionAnswer.joins(:answer).where("candidate_question_answers.candidate_id = ?",1).sum :"answers.score"
+        current_candidate.archetype_score = CandidateQuestionAnswer.joins(:answer).where("candidate_question_answers.candidate_id = ?",current_candidate.id).sum :"answers.score"
         current_candidate.save
         format.html { redirect_to candidates_archetype_result_path }
       else
