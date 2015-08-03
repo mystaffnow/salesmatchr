@@ -3,11 +3,11 @@
     .container
       .row
         .col-md-9
-          %h2 My Jobs
+          %h2 My Matches
   .container.padded-container
     - if @job_candidates.count === 0
       %h3.text-center
-        Looks like you haven't applied for any jobs yet. <br> Get started by 
+        Looks like you haven't applied for any jobs yet. <br> Get started by
         = link_to "searching for available jobs.", jobs_path
 
     - @job_candidates.each do |job_candidate|
