@@ -10,4 +10,11 @@ class PagesController < ApplicationController
 
   def hustlers
   end
+
+  def hirers_faq
+  end
+
+  def hustlers_faq
+  end
+
 end

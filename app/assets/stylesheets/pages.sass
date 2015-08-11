@@ -1,159 +1,159 @@
-#web-landing-one
-  .jumbotron
-    padding: 70px 0 0 0
-    background-image: image-url('jumbo-bg.jpg')
-    background-position: center
-    background-size: cover
-    background-repeat: no-repeat
-    min-height: 700px
+.jumbotron
+  padding: 70px 0 0 0
+  background-image: image-url('jumbo-bg.jpg')
+  background-position: center
+  background-size: cover
+  background-repeat: no-repeat
+  min-height: 700px
 
-    h1
-      margin-bottom: 10px
-      margin-top: 90px
-      font-size: 55px
+  h1
+    margin-bottom: 20px
+    margin-top: 90px
+    font-size: 65px !important
 
-    p
-      font-size: 18px
+  p
+    font-size: 18px !important
+    margin-bottom: 40px !important
 
-    h1, p
-      color: white
+  h1, p
+    color: white !important
+
+  .app-store-container
+    margin: 30px 0
+
+    a img
+      width: 125px
+      display: inline-block
+      margin-right: 15px
+
+  @media (max-width: 767px)
+    text-align: center
+    padding: 50px 0 0 0
 
     .app-store-container
-      margin: 30px 0
+      margin: 30px 0 60px 0
 
-      a img
-        width: 125px
+
+.testimonial
+  height: 143px
+
+  background-image: image-url('landing-testimonial.png')
+  background-size: cover
+  background-position: center
+  background-repeat: no-repeat
+
+  @media (max-width: 676px)
+    background-image: image-url('landing-testimonial-responsive.png')
+
+
+.benefit1, .benefit2, .benefit3, .call-to-action
+  padding: 90px 0
+
+  img
+    margin: auto
+    height: 500px
+
+  @media (max-width: 767px)
+    padding: 90px 20px
+    h2
+      margin-bottom: 25px
+
+
+.benefit1, .benefit3
+  background-color: white
+  img
+    margin-bottom: 50px
+    // box-shadow: 5px 4px 40px rgba(153, 153, 153, 0.75)
+    height: 300px
+
+
+.benefit1
+  hr
+    width: 25%
+    margin: 70px auto
+    border-color: #e4e4e4
+
+
+.benefit2
+  background-color: #333333
+  p, h2
+    color: white
+  p
+    padding-right: 30px
+  img
+    height: 300px
+
+  @media (max-width: 767px)
+    p
+      padding: 0
+
+    img
+      margin-top: 50px
+
+
+.call-to-action
+  background-image: image-url('balloon-bg.png')
+
+  h1, p
+    color: white
+
+  h1
+    margin-bottom: 30px
+
+  p
+    font-size: 18px
+    margin-bottom: 50px
+
+
+.pricing
+  padding: 90px 0
+
+  .pricing-header
+    margin-bottom: 70px
+
+  .popular-container, .price-container
+    background-color: #f7f7f7
+    padding: 20px 0 40px 0
+    margin: 0 30px
+
+    .price
+      p
         display: inline-block
-        margin-right: 15px
 
-    @media (max-width: 767px)
-      text-align: center
-      padding: 50px 0 0 0
+        font-size: 50px
+        font-weight: 600
+        font-family: 'Open Sans', sans-serif
 
-      .app-store-container
-        margin: 30px 0 60px 0
-
-
-  .testimonial
-    height: 143px
-
-    background-image: image-url('landing-testimonial.png')
-    background-size: cover
-    background-position: center
-    background-repeat: no-repeat
+      p.month
+        font-size: 14px
+        font-family: 'Roboto', sans-serif
+        font-weight: 300
 
     @media (max-width: 676px)
-      background-image: image-url('landing-testimonial-responsive.png')
+      margin: 0 50px
 
+  .regular-offer
+    margin-top: 37px
 
-  .benefit1, .benefit2, .benefit3, .call-to-action
-    padding: 90px 0
+  .popular-container
+    border: 2px solid #1caeeb
 
-    img
-      margin: auto
-      height: 500px
+  .price-container
+    border: 1px solid #efefef
 
-    @media (max-width: 767px)
-      padding: 90px 20px
-      h2
-        margin-bottom: 25px
-
-
-  .benefit1, .benefit3
-    background-color: white
-    img
-      margin-bottom: 50px
-      // box-shadow: 5px 4px 40px rgba(153, 153, 153, 0.75)
-      height: 300px
-
-
-  .benefit1 
-    hr
-      width: 25%
-      margin: 70px auto
-      border-color: #e4e4e4
-
-
-  .benefit2
-    background-color: #333333
-    p, h2
-      color: white
-    p
-      padding-right: 30px
-    img
-      height: 300px
-
-    @media (max-width: 767px)
-      p
-        padding: 0
-
-      img
-        margin-top: 50px
-
-
-  .call-to-action
-    background-image: image-url('balloon-bg.png')
-
-    h1, p
+  .popular-header
+    h4
+      background-color: #1caeeb
       color: white
 
-    h1
-      margin-bottom: 30px
+      font-size: 16px
+      font-family: 'Roboto', sans-serif
 
-    p
-      font-size: 18px
-      margin-bottom: 50px
+      margin: 0 80px
+      padding: 10px 0
 
-
-  .pricing
-    padding: 90px 0
-
-    .pricing-header
-      margin-bottom: 70px
-
-    .popular-container, .price-container
-      background-color: #f7f7f7
-      padding: 20px 0 40px 0
-      margin: 0 30px
-
-      .price
-        p
-          display: inline-block
-
-          font-size: 50px
-          font-weight: 600
-          font-family: 'Open Sans', sans-serif
-
-        p.month
-          font-size: 14px
-          font-family: 'Roboto', sans-serif
-          font-weight: 300
-
-      @media (max-width: 676px)
-        margin: 0 50px
-
-    .regular-offer
-      margin-top: 37px
-
-    .popular-container
-      border: 2px solid #1caeeb
-
-    .price-container
-      border: 1px solid #efefef
-
-    .popular-header
-      h4
-        background-color: #1caeeb
-        color: white
-
-        font-size: 16px
-        font-family: 'Roboto', sans-serif
-
-        margin: 0 80px
-        padding: 10px 0
-
-      @media (max-width: 676px)
-        margin-top: 40px
+    @media (max-width: 676px)
+      margin-top: 40px
 
 
 // Footer --------------
@@ -166,4 +166,3 @@
     color: white
     line-height: 5em
     font-size: 14px
-

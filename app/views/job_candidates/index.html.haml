@@ -3,8 +3,9 @@
     .container
       .row
         .col-md-9
-          %h2 My Jobs
+          %h2 My Matches
   .container.padded-container
+<<<<<<< HEAD
     .row
       .col-md-2
         %p
@@ -58,8 +59,12 @@
                     %p= job_candidate.job.description
                 .col-md-4.job-actions
               %hr
-:javascript
+    - if @job_candidates.count === 0
+      %h3.text-center
+        Looks like you haven't applied for any jobs yet. <br> Get started by
+        = link_to "searching for available jobs.", jobs_path
 
+:javascript
   function page_ready(){
     $('#open-jobs').on('click', function(){
       $('.open-jobs').removeClass('hidden');

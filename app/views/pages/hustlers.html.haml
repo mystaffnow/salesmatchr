@@ -1,51 +1,50 @@
-#web-landing-one
-  .jumbotron.text-center
-    .container
-      %h1#header Find Your Dream Sales Job
-      %p SalesMatchr finds the best new opportunities for you based on your experience and unique sales style.
-      = link_to "Get Started", new_candidate_registration_path, class: "btn btn-default btn-lg"
-    .responsive-note
-      %span#responsive
+.jumbotron.text-center
+  .container
+    %h1 Find Your Dream Sales Job
+    %p SalesMatchr finds the best new opportunities for you based on your experience and unique sales style.
+    = link_to "Get Started", new_candidate_registration_path, class: "btn btn-default btn-lg"
+  .responsive-note
+    %span#responsive
 
-  / .testimonial
-  /   = link_to 'X', '#', class: "close-testimonial close-btn", id: "optional"
+/ .testimonial
+/   = link_to 'X', '#', class: "close-testimonial close-btn", id: "optional"
 
-  .benefit1
-    .container
-      .text-center
-        %h2 Stop wasting time browsing job boards, SalesMatchr brings the employers to you.
+.benefit1
+  .container
+    .text-center
+      %h2 Stop wasting time browsing job boards, SalesMatchr brings the employers to you.
 
-        %hr
+      %hr
 
-      .row
-        .col-md-7
-          / Archetype image
-          = image_tag "productivity.svg", class: "img-responsive"
-        .col-md-5
-          %h2 Opportunities Customized to You
-          %p Learn which type of sales personality you are by using our quick assessment tool. Sales jobs can vary; figure out where you’ll fit best!
+    .row
+      .col-md-7
+        / Archetype image
+        = image_tag "productivity.svg", class: "img-responsive"
+      .col-md-5
+        %h2 Opportunities Customized to You
+        %p Learn which type of sales personality you are by using our quick assessment tool. Sales jobs can vary; figure out where you’ll fit best!
 
-  .benefit2
-    .container
-      .row
-        .col-md-5
-          %h2 Stay Anonymous
-          %p With SalesMatchr, you can choose whether to make your profile public or private. We ensure that your current employer will never know that you’re looking for a job and we’ll never post any of your activity to any social media platform.
-        .col-md-7
-          / Profile with incognito
-          = image_tag "travel.svg", class: "img-responsive"
+.benefit2
+  .container
+    .row
+      .col-md-5
+        %h2 Stay Anonymous
+        %p With SalesMatchr, you can choose whether to make your profile public or private. We ensure that your current employer will never know that you’re looking for a job and we’ll never post any of your activity to any social media platform.
+      .col-md-7
+        / Profile with incognito
+        = image_tag "travel.svg", class: "img-responsive"
 
-  .benefit3
-    .container
-      .row
-        .col-md-7
-          = image_tag "person.svg", class: "img-responsive"
-        .col-md-5
-          %h2 Hire the right salespeople
-          %p Croissant chocolate cake tart gingerbread jelly ice cream jelly apple pie. Candy canes gummies cheesecake candy canes gummi bears donut. Candy canes gummies jujubes chocolate cake. Applicake biscuit gingerbread lemon drops bonbon icing topping biscuit. Applicake cupcake pie sesame snaps carrot cake cotton candy chocolate cake sesame snaps cupcake. Jelly beans candy carrot cake cotton candy jelly.
+.benefit3
+  .container
+    .row
+      .col-md-7
+        = image_tag "person.svg", class: "img-responsive"
+      .col-md-5
+        %h2 Hire the right salespeople
+        %p Croissant chocolate cake tart gingerbread jelly ice cream jelly apple pie. Candy canes gummies cheesecake candy canes gummi bears donut. Candy canes gummies jujubes chocolate cake. Applicake biscuit gingerbread lemon drops bonbon icing topping biscuit. Applicake cupcake pie sesame snaps carrot cake cotton candy chocolate cake sesame snaps cupcake. Jelly beans candy carrot cake cotton candy jelly.
 
-  .call-to-action.text-center
-    .container
-      %h1 Ready to check out some great opportunities?
-      %p Salesmatchr presents you with jobs that are the right fit.  Get started today!
-      = link_to "Get Started", new_candidate_registration_path, class: "btn btn-default btn-lg"
+.call-to-action.text-center
+  .container
+    %h1 Ready to check out some great opportunities?
+    %p Salesmatchr presents you with jobs that are the right fit.  Get started today!
+    = link_to "Get Started", new_candidate_registration_path, class: "btn btn-default btn-lg"

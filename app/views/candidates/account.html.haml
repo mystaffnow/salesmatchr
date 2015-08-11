@@ -21,7 +21,7 @@
           .account-header
             %h2 Profile Information
           .account-content
-            .text-center 
+            .text-center
               In a minute-length video below, please introduce yourself, tell us about your sales background and share what makes you a valuable asset to an organization. Sell yourself!
             %br
             %hr
@@ -41,19 +41,21 @@
             = f.label "Zipcode"
             = f.text_field :zip, class: 'form-control'
             = f.hidden_field :ziggeo_token, id: 'ziggeo-token'
-            %ziggeo{ 'ziggeo-width' => 320, 'ziggeo-height' => 240 }
+            .video-container
+              %ziggeo{ 'ziggeo-width' => 320, 'ziggeo-height' => 240 }
+              %i.fa.fa-info-circle{title: "Please introduce yourself and talk about your sales experience, tell us about your top three accomplishments and why are you in sales.  Let your passion come through!  Your video should be no more than a one minute long with 20-30 seconds being ideal so keep it concise.  Feel free to re-record as many times as you need to!"}
             %br
             .btn.btn-default.btn-full.next_button#experience-button
               Next
-        
+
         // Experience Page
         #experience-panel.account-panel{style: 'display:none'}
           .account-header
             %h2 Work Experience
             %i.fa.fa-info-circle.info{title: "add your work experience"}
           .account-content
-            .text-center 
-              Please list any previous sales positions you’ve held, starting with your most recent job.
+            .text-center
+              Please list any previous positions you’ve held, starting with your most recent job.
             %br
             %hr
             %br
@@ -72,7 +74,7 @@
             %h2 Education Experience
             %i.fa.fa-info-circle.info{title: "add your education experience"}
           .account-content
-            .text-center 
+            .text-center
               Now, let's work on your education history. Start by listing your highest degree obtained, and then work down to your high school education.
             %br
             %hr

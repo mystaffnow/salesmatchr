@@ -56,10 +56,14 @@ Rails.application.routes.draw do
   get 'contact' => 'pages#contact'
   get 'about' => 'pages#about'
   get 'hustlers' => 'pages#hustlers'
+  get 'hirers_faq' => 'pages#hirers_faq'
+  get 'hustlers_faq' => 'pages#hustlers_faq'
   get 'pages/index'
   get 'pages/hustlers'
   get 'pages/about'
   get 'pages/contact'
+  get 'pages/hirers_faq'
+  get 'pages/hustlers_faq'
 
 
   # The priority is based upon order of creation: first created -> highest priority.
