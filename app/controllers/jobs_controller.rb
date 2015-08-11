@@ -4,37 +4,8 @@ class JobsController < ApplicationController
   # GET /jobs
   # GET /jobs.json
   def index
-    h = { }
-    h[:is_active] = true
-    @jobs_str = ""
-    if params[:job_function] && params[:job_function] != ''
-      h[:job_function_id] = params[:job_function]
-      job_function = JobFunction.find(params[:job_function])
-      @jobs_str = @jobs_str + "for " + job_function.name + " "
-    end
-    if params[:is_remote] && params[:is_remote] != ''
-      h[:is_remote] = params[:is_remote]
-      @jobs_str = @jobs_str + "that are " + ( params[:is_remote] ? '' : 'not ') + " remote "
-    end
-    #assume if one is set then the other is too.... is using the slider
-    if params[:salary_low] && params[:salary_low] != ''
-      h[:salary_low] = params[:salary_low]..params[:salary_high]
-      h[:salary_high] = params[:salary_low]..params[:salary_high]
-      @jobs_str = @jobs_str + " and have salaries between $" + params[:salary_low] + " and $" + params[:salary_high]
-    end
-    if params[:zip] && params[:zip] != ''
-      res = Integer(params[:distance]) rescue false
-      if res
-        distance = params[:distance]
-      else
-        distance = 10
-      end
-      @jobs_str = @jobs_str + " within " + distance.to_s + " miles of " + params[:zip]
-      @jobs = Job.near(params[:zip], distance.to_i).where(h)
-    else
-      @jobs = Job.where(h)
-    end
-    @jobs_str = "Displaying " + @jobs.count(:all).to_s + " results " + @jobs_str
+    # :(
+    redirect_to candidate_matches_path
   end
 
   # GET /jobs/1
@@ -64,8 +35,6 @@ class JobsController < ApplicationController
     else
       @should_pay = false
     end
-    #remove this to put in payments
-    @should_pay = false
   end
 
   # GET /jobs/1/edit
@@ -129,6 +98,10 @@ class JobsController < ApplicationController
           :description => current_employer.company
         )
     end
+
+    tracker = Mixpanel::Tracker.new(ENV["NT_MIXPANEL_TOKEN"])
+    tracker.track('employer-'+@job.employer.email, 'job created')
+
     respond_to do |format|
       if @job.save
         format.html { redirect_to employer_archive_jobs_path, notice: 'Job was successfully created.' }
@@ -146,6 +119,10 @@ class JobsController < ApplicationController
   # PATCH/PUT /jobs/1
   # PATCH/PUT /jobs/1.json
   def update
+    job_function = JobFunction.find(job_params[:job_function_id])
+    @job.archetype_low = job_function.low
+    @job.archetype_high = job_function.high
+    @job.job_function_id = job_function.id
     respond_to do |format|
       if @job.update(job_params)
         format.html { redirect_to employer_jobs_path, notice: 'Job was successfully updated.' }

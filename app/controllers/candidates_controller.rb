@@ -13,6 +13,10 @@ class CandidatesController < ApplicationController
   def account
   end
   def update_archetype
+
+    tracker = Mixpanel::Tracker.new(ENV["NT_MIXPANEL_TOKEN"])
+    tracker.track('candidate-'+current_candidate.email, 'updated archetype')
+
     respond_to do |format|
       if current_candidate.update(candidate_params)
         current_candidate.archetype_score = CandidateQuestionAnswer.joins(:answer).where("candidate_question_answers.candidate_id = ?",current_candidate.id).sum :"answers.score"
@@ -38,6 +42,10 @@ class CandidatesController < ApplicationController
   end
   #should make a put but tired
   def incognito
+
+    tracker = Mixpanel::Tracker.new(ENV["NT_MIXPANEL_TOKEN"])
+    tracker.track('candidate-'+current_candidate.email, 'incognito toggle')
+
     current_candidate.is_incognito = params[:is_incognito]
     current_candidate.save
   end

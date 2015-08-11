@@ -5,47 +5,72 @@
         .col-md-9
           %h2 My Jobs
   .container.padded-container
-    - if @job_candidates.count === 0
-      %h3.text-center
-        Looks like you haven't applied for any jobs yet. <br> Get started by 
-        = link_to "searching for available jobs.", jobs_path
+    .row
+      .col-md-2
+        %p
+          = link_to "Open Jobs", '#', id: 'open-jobs'
+        %p
+          = link_to "Withdrawn Jobs", '#', id: 'withdrawn-jobs'
+      .col-md-10
+        - if @job_candidates.count === 0
+          %h3.text-center
+            Looks like you haven't applied for any jobs yet. <br> Get started by
+            = link_to "searching for available jobs.", jobs_path
+        .open-jobs
+          - @job_candidates.each do |job_candidate|
+            - if !job_candidate.withdrawn?
+              .row
+                = link_to job_path(job_candidate.job) do
+                  .col-md-8
+                    %h3= job_candidate.job.title
+                    %p= job_candidate.job.description
+                    %p
+                      - if job_candidate.submitted?
+                        %b.secondary-color
+                          Submitted
+                      - else
+                        Submitted
+                      |
+                      - if job_candidate.viewed?
+                        %b.secondary-color
+                          Viewed
+                      - else
+                        Viewed
+                      |
+                      - if job_candidate.accepted?
+                        %b.secondary-color
+                          Accepted
+                      - else
+                        Accepted
+                .col-md-4.job-actions
+                  - if !job_candidate.withdrawn?
+                    = form_for(job_candidate) do |f|
+                      = f.hidden_field :status, value: "#{get_status_key_by_value(JobCandidate.statuses[:withdrawn])}"
+                      %button.btn.btn-info#hire{:data => { :confirm => 'Are you sure?' }}= "Withdraw Application"
+              %hr
+        .withdrawn-jobs.hidden
+          - @job_candidates.each do |job_candidate|
+            - if job_candidate.withdrawn?
+              .row
+                = link_to job_path(job_candidate.job) do
+                  .col-md-8
+                    %h3= job_candidate.job.title
+                    %p= job_candidate.job.description
+                .col-md-4.job-actions
+              %hr
+:javascript
 
-    - @job_candidates.each do |job_candidate|
-      .row
-        = link_to job_path(job_candidate.job) do
-          .col-md-8
-            %h3= job_candidate.job.title
-            %p= job_candidate.job.description
-            %p
-              - if job_candidate.submitted?
-                %b.secondary-color
-                  Submitted
-              - else
-                Submitted
-              |
-              - if job_candidate.viewed?
-                %b.secondary-color
-                  Viewed
-              - else
-                Viewed
-              |
-              - if job_candidate.accepted?
-                %b.secondary-color
-                  Accepted
-              - else
-                Accepted
-              |
-              - if job_candidate.withdrawn?
-                %b.secondary-color
-                  Withdrawn
-              - else
-                Withdrawn
-        .col-md-4.job-actions
-          - if !job_candidate.withdrawn?
-            = form_for(job_candidate) do |f|
-              = f.hidden_field :status, value: "#{get_status_key_by_value(JobCandidate.statuses[:withdrawn])}"
-              %button.btn.btn-info#hire{:data => { :confirm => 'Are you sure?' }}= "Withdraw Application"
+  function page_ready(){
+    $('#open-jobs').on('click', function(){
+      $('.open-jobs').removeClass('hidden');
+      $('.withdrawn-jobs').addClass('hidden');
+    });
 
-          - else
-            Application Withdrawn
-      %hr
+    $('#withdrawn-jobs').on('click', function(){
+      $('.withdrawn-jobs').removeClass('hidden');
+      $('.open-jobs').addClass('hidden');
+    });
+  }
+
+  $(document).on('page:load', page_ready);
+  $(document).ready(page_ready);

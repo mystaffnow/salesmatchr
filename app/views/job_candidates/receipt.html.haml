@@ -1,0 +1,15 @@
+.padded-container.container
+  .row
+    .col-md-12.text-center
+      %h2
+        You have successfully applied to
+        = @job.title
+        %br
+      %h4
+        Someone will be in contact regarding future employment
+      %br
+      %br
+      %br
+      %h4
+        Discover more matches
+        = link_to "here", candidate_matches_path

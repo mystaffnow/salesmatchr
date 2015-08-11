@@ -41,8 +41,8 @@
         %br
         %br
           .col-md-6
-            / = image_tag @candidate.avatar.url, id: 'avatar', style: "display:" + (!@candidate.is_incognito ? 'block' : 'none')
-            / %img{src: '/img/incognito.png', style: "display:" + (@candidate.is_incognito ? 'block' : 'none'), id: 'incognito-img'}
+            = image_tag @candidate.avatar.url(:medium), id: 'avatar', style: "display:" + (!@candidate.is_incognito ? 'block' : 'none'), class: 'profile-image'
+            %img{src: '/img/incognito.png', style: "display:" + (@candidate.is_incognito ? 'block' : 'none'), id: 'incognito-img', class: 'profile-image'}
             - if @candidate.ziggeo_token != nil && @candidate.ziggeo_token != ''
               %ziggeo{ 'ziggeo-video' => @candidate.ziggeo_token, 'ziggeo-width' => 538, 'ziggeo-height' => 288}
               %br

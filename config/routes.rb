@@ -31,6 +31,7 @@ Rails.application.routes.draw do
   get 'candidates/candidate_matches' => 'candidate_job_actions#candidate_matches', as: 'candidate_matches'
 
   get 'my_jobs' => 'job_candidates#index'
+  get 'job_receipt/:id' => 'job_candidates#receipt', as: 'job_receipt'
   get 'candidates/incognito/:is_incognito' => 'candidates#incognito'
 
   get 'employers/public/:id' => 'employers#public', as: 'employers_public'

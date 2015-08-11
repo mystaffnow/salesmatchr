@@ -11,6 +11,13 @@ class Candidates::RegistrationsController < Devise::RegistrationsController
       end
       current_candidate.save
     end
+
+    tracker = Mixpanel::Tracker.new(ENV["NT_MIXPANEL_TOKEN"])
+    tracker.people.set('candidate-'+resource.email, {
+                                                   '$email'            => resource.email,
+                                                   '$first_name'       => resource.first_name
+                                               });
+    tracker.track('candidate-'+resource.email, 'candidate sign up')
   end
   def update
     super
