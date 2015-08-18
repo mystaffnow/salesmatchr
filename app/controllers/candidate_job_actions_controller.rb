@@ -36,7 +36,7 @@ class CandidateJobActionsController < ApplicationController
     @jobs = Job.where("archetype_low <= ? and archetype_high >= ? and jobs.is_active = TRUE", current_candidate.archetype_score, current_candidate.archetype_score)
 
     tracker = Mixpanel::Tracker.new(ENV["NT_MIXPANEL_TOKEN"])
-    tracker.track('candidate-'+@candidate_job_action.candidate.email, 'viewed matches')
+    tracker.track('candidate-'+current_candidate.email, 'viewed matches')
   end
 
   # POST /candidate_job_actions
