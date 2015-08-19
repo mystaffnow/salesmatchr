@@ -17,6 +17,9 @@
                 = f.label "Company Website"
                 = f.text_field :website, class: 'form-control'
                 = f.label "Company Logo"
+                %br
+                %i.small
+                  *images will be cropped to 200x200 resolution
                 = f.file_field :avatar
                 = f.label "City"
                 = f.text_field :city, class: 'form-control'
