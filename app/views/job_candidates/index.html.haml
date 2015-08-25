@@ -58,10 +58,6 @@
                     %p= job_candidate.job.description
                 .col-md-4.job-actions
               %hr
-    - if @job_candidates.count === 0
-      %h3.text-center
-        Looks like you haven't applied for any jobs yet. <br> Get started by
-        = link_to "searching for available jobs.", jobs_path
 
 :javascript
   function page_ready(){

@@ -1,15 +1,37 @@
 #footer
   .container
     .row
-      .col-md-6
-        %p © 2014 Salesmatchr. All rights reserved.
-      .col-md-6
-        .text-right
-          / %h2 Contact at
-          / %span phone // (703) 224-8088
-          / %span fax // (703) 224-8089
-          / %span email // team@jobmatchr.co
-          = link_to 'https://www.facebook.com/salesmatchr' do
-            = image_tag 'facebook-48.png'
-          = link_to 'https://twitter.com/salesmatchr' do
-            = image_tag 'twitter-48.png'
+      .col-md-4
+        %h4 SALESMATCHR
+        %ul
+          %li
+            Salesmatchr Inc.<br>
+            1900 Campus Commons Drive, Suite 100<br>
+            Reston,  VA  20191
+          %li
+            %i.fa.fa-envelope
+            team@jobmatchr.co
+          %li
+            %i.fa.fa-phone
+            (703) 224-8088
+          %li.social
+            = link_to 'https://www.facebook.com/salesmatchr' do
+              %i.fa.fa-facebook
+            = link_to 'https://twitter.com/salesmatchr' do
+              %i.fa.fa-twitter
+      .col-md-4
+        %h4 MORE SALESMATCHR
+        %ul
+          %li
+            = link_to "Blog", 'https://salesmatchrblog.wordpress.com/'
+          %li
+            = link_to "Contact Us", "mailto:support@salesmatchr.com"
+      .col-md-4
+        %h4 RESOURCES
+        %ul
+          %li Terms of Service
+          %li Privacy Policy
+          %li
+            = link_to "Hustler FAQ", pages_hustlers_faq_path
+          %li
+            = link_to "Hirer FAQ", pages_hirers_faq_path
