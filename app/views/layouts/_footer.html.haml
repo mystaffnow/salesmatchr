@@ -1,7 +1,7 @@
 #footer
   .container
     .row
-      .col-md-4
+      .col-md-3
         %h4 SALESMATCHR
         %ul
           %li
@@ -19,14 +19,14 @@
               %i.fa.fa-facebook
             = link_to 'https://twitter.com/salesmatchr' do
               %i.fa.fa-twitter
-      .col-md-4
+      .col-md-3
         %h4 MORE SALESMATCHR
         %ul
           %li
             = link_to "Blog", 'https://salesmatchrblog.wordpress.com/'
           %li
             = link_to "Contact Us", "mailto:support@salesmatchr.com"
-      .col-md-4
+      .col-md-3
         %h4 RESOURCES
         %ul
           %li Terms of Service
@@ -35,3 +35,8 @@
             = link_to "Hustler FAQ", pages_hustlers_faq_path
           %li
             = link_to "Hirer FAQ", pages_hirers_faq_path
+      .col-md-3
+        %a.twitter-timeline{"data-widget-id" => "636603275060604928", :href => "https://twitter.com/salesmatchr"} Tweets by @salesmatchr
+
+:javascript
+  !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
