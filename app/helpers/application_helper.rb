@@ -52,7 +52,7 @@ module ApplicationHelper
       return "n/a"
     end
     if score > 71
-      return "Your SalesMatchr™ assessment shows that you are an Aggressive Hunter. <br/>An Aggressive Hunter is constantly burning through tasks and objectives, but sometimes fails to think things through all the details.  Aggressive Hunters are CLOSERS, inside or outside, enough said!"
+      return "Your SalesMatchr™ assessment shows that you are an Aggressive Hunter. <br/>An Aggressive Hunter is constantly burning through tasks and objectives, but sometimes he fails to think through all the details. Aggressive Hunters are CLOSERS, inside or outside - enough said!"
     elsif score > 31
       return 'Your SalesMatchr™ assessment shows that you are a Relaxed Hunter. <br/>A Relaxed Hunter quickly completes tasks and objectives and is collaborative in nature and thrives in both sales "hunting" and Account Management roles, but can fall short with the little details since they are more hungry for the thrill of the hunt!'
     elsif score > 11
