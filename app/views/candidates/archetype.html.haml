@@ -9,16 +9,18 @@
             %h2 Sales Personality Assessment
           .account-content
             .text-center
-              We are excited to have you joining us here at Salesmatchr. So we can make the best job match for your personality and expertise, we will need you to complete a brief survey. Only YOU can see this, employer cannot see this but understanding you sales personality aids in matching to the right type of job. Please be honest. 
+              We are excited to have you joining us here at Salesmatchr. So we can make the best job match for your personality and expertise, we will need you to complete a brief survey. Only YOU can see this, employer cannot see this but understanding you sales personality aids in matching to the right type of job. Please be honest.
             %br
             %hr
             %br
             #archetype-pre
-              = f.label "Years of experience"
+              = f.label "How much sales experience do you have?"
               = f.collection_select(:year_experience_id, YearExperience.all, :id, :name,  {:class => 'form-control selectpickers'})
               %br
               %button.btn.btn-default.btn-full#start-survey
-                Start Survey
+                Start Assessment
+              %br
+              %i This will only take five minutes.
             #archetype-survey{style: 'display:none'}
               = f.fields_for :candidate_question_answers do |builder|
                 = render 'candidate_question_answer_fields', f: builder
