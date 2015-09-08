@@ -65,6 +65,8 @@ Rails.application.routes.draw do
   get 'pages/hirers_faq'
   get 'pages/hustlers_faq'
 
+  get 'jobs/:id/send_candidate_intro/:candidate_id' => 'jobs#send_intro', as: 'send_job_candidate_intro'
+
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

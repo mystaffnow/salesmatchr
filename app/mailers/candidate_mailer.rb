@@ -7,4 +7,11 @@ class CandidateMailer < ApplicationMailer
       format.html { render layout: false }
     end
   end
+  def send_job_intro(email, job)
+    @job = job
+    mail( :to => email,
+          :subject => 'Someone is interested in you on SalesMatchr' ) do |format|
+      format.html { render layout: false }
+    end
+  end
 end

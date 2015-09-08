@@ -1,0 +1,27 @@
+- if candidate.is_incognito
+  .row
+    .col-md-2
+      %img{src: candidate.avatar_url, style: 'width: 100%'}
+    .col-md-6
+      %h3
+        = candidate.first_name
+      = get_location candidate
+      %p
+        = link_to "Send candidate a message", send_job_candidate_intro_path(job, candidate), :remote => true, data: {:confirm => "This will send the candidate a message that you are interested in them for this job.  Press ok to confirm."}
+    .col-md-4
+      %h4 Education
+      - if candidate.education_level
+        = candidate.education_level.name
+- else
+  = link_to candidates_profile_path(candidate) do
+    .row
+      .col-md-2
+        %img{src: candidate.avatar_url}
+      .col-md-6
+        %h3
+          = candidate.name
+        = get_location candidate
+      .col-md-4
+        %h4 Education
+        - if candidate.education_level
+          = candidate.education_level.name

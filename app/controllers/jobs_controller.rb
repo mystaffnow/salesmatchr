@@ -30,11 +30,18 @@ class JobsController < ApplicationController
       @job.assign_attributes(attributes)
       @job.id = nil
     end
-    if current_employer.jobs.count >= 3
+    if current_employer.jobs.count >= 2
       @should_pay = true
     else
       @should_pay = false
     end
+  end
+
+  def send_intro
+    @job = Job.find(params[:id])
+    @candidate = Candidate.find(params[:candidate_id])
+
+    CandidateMailer.send_job_intro(@candidate.email, @job).deliver
   end
 
   # GET /jobs/1/edit

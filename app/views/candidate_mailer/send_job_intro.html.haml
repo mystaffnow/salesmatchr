@@ -1,0 +1,7 @@
+%html
+  %head
+    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
+  %body
+    %h2 #{@job.employer.name} is interested in you for their job, #{@job.title}, on SalesMatchr
+    %p
+      Find out more details at #{link_to 'SalesMatchr', job_url(@job)}!
