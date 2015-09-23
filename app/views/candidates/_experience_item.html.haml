@@ -7,8 +7,11 @@
   = experience.company
 %small
   = format_date experience.start_date
-  \-
-  = format_date experience.end_date
+  - if !experience.is_current
+    \-
+    = format_date experience.end_date
+  - else
+    \- currently employed
 %p
   = experience.description
 

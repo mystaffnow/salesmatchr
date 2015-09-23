@@ -9,9 +9,12 @@
   = f.text_field :company, class: 'form-control'
   .row
     .col-md-6
-      = f.label "Date Started"
+      = f.label "Date Started", class: 'inline'
+      = f.label "(is current: ", class: 'inline'
+      = f.check_box :is_current, class: 'is-current inline'
+      )
       = f.date_select :start_date, { :discard_day => true, :start_year => 1920, :end_year => DateTime.now.year},  class: 'form-control experience-date'
-    .col-md-6
+    .col-md-6.end-date{style: f.object.is_current ? 'display: none' : ''}
       = f.label "Date Ended"
       = f.date_select :end_date, { :discard_day => true, :start_year => 1920, :end_year => DateTime.now.year}, class: 'form-control experience-date'
   %br
@@ -25,5 +28,13 @@
   = f.hidden_field :_destroy
 
 
+
+:javascript
+  $('.is-current').on("click", function(){
+    if ($(this).is(':checked'))
+      $(this).parents('.row:first').find('.end-date').hide();
+    else
+      $(this).parents('.row:first').find('.end-date').show();
+  });
 
 
