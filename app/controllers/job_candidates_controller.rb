@@ -27,10 +27,10 @@ class JobCandidatesController < ApplicationController
         elsif current_employer
 
           tracker = Mixpanel::Tracker.new(ENV["NT_MIXPANEL_TOKEN"])
-          tracker.track('employer-'+current_employer.email, 'hired candidate')
+          tracker.track('employer-'+current_employer.email, 'accepted candidate')
 
           CandidateMailer.send_job_hire(@job_candidate.candidate.email, @job_candidate.job).deliver
-          format.html { redirect_to employer_jobs_path, notice: 'Successfully hired, an email was sent to the candidate.' }
+          format.html { redirect_to employer_jobs_path, notice: 'Successfully accepted, an email was sent to the candidate.' }
         end
       end
     end

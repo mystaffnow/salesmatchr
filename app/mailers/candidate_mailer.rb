@@ -3,7 +3,7 @@ class CandidateMailer < ApplicationMailer
   def send_job_hire(email, job)
     @job = job
     mail( :to => email,
-          :subject => 'You have been hired for a job on SalesMatchr' ) do |format|
+          :subject => 'You have been accepted for a job on SalesMatchr' ) do |format|
       format.html { render layout: false }
     end
   end

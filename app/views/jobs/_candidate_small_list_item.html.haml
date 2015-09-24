@@ -13,15 +13,20 @@
       - if candidate.education_level
         = candidate.education_level.name
 - else
-  = link_to candidates_profile_path(candidate) do
-    .row
-      .col-md-2
+  .row
+    .col-md-2
+      = link_to candidates_profile_path(candidate) do
         %img{src: candidate.avatar_url}
-      .col-md-6
+    .col-md-6
+      = link_to candidates_profile_path(candidate) do
         %h3
           = candidate.name
         = get_location candidate
-      .col-md-4
-        %h4 Education
-        - if candidate.education_level
-          = candidate.education_level.name
+      %br
+      %br
+      %p
+        = mail_to candidate.email, "Email Candidate"
+    .col-md-4
+      %h4 Education
+      - if candidate.education_level
+        = candidate.education_level.name

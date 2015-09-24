@@ -53,6 +53,9 @@
           The first three job postings are free, each additional posting is only $150.  After purchasing the job, you can edit it at anytime!
       %hr
       %br
+      #waiting{style: 'display:none;text-align:center'}
+        %h3
+          Your credit card is being processed, this could take up to 3 minutes, please don't leave this page and wait for the request to finish.
       #cc-fields
         .field
           = label_tag :card_number, "Credit Card Number "
@@ -65,9 +68,6 @@
           = select_month nil, {add_month_numbers_true: true}, {name: nil, id: "card_month"}
           = select_year nil, {start_year: Date.today.year, end_year: Date.today.year+15}, {name: nil, id: "card_year"}
           = hidden_field_tag :stripe_card_token, id: 'stripe_card_token'
-        #waiting{style: 'display:none;text-align:center'}
-          %h3
-            Your credit card is being processed, this could take up to 3 minutes, please don't leave this page and wait for the request to finish.
     .actions
       = f.hidden_field :stripe_token, id: 'stripe-token'
       = f.submit 'Pay and Submit', class: 'btn btn-default', id: 'pay-btn'
