@@ -14,6 +14,7 @@
   .field
     %label
       Job Function
+    %p Select from the pull down menu to the left the PRIMARY Function for this position.  It is important you choose the best selection for this specific role so that SalesMatchr can make the best matches!
     %br
     = f.collection_select(:job_function_id, JobFunction.all, :id, :name,  {:class => 'form-control'})
   .field

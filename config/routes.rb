@@ -58,12 +58,14 @@ Rails.application.routes.draw do
   get 'hustlers' => 'pages#hustlers'
   get 'hirers_faq' => 'pages#hirers_faq'
   get 'hustlers_faq' => 'pages#hustlers_faq'
+  get 'privacy_policy' => 'pages#privacy_policy'
   get 'pages/index'
   get 'pages/hustlers'
   get 'pages/about'
   get 'pages/contact'
   get 'pages/hirers_faq'
   get 'pages/hustlers_faq'
+  get 'pages/privacy_policy'
 
   get 'jobs/:id/send_candidate_intro/:candidate_id' => 'jobs#send_intro', as: 'send_job_candidate_intro'
 

@@ -17,4 +17,7 @@ class PagesController < ApplicationController
   def hustlers_faq
   end
 
+  def privacy_policy
+  end
+
 end
