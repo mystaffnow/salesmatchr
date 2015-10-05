@@ -60,10 +60,10 @@
       #cc-fields
         .field
           = label_tag :card_number, "Credit Card Number "
-          = text_field_tag :card_number, nil, name: nil, value: '4242424242424242', class: 'form-control'
+          = text_field_tag :card_number, nil, name: nil, value: '', class: 'form-control'
         .field
           = label_tag :card_code, "Security Code on Card (CVV)"
-          = text_field_tag :card_code, nil, name: nil, value: '1234', class: 'form-control'
+          = text_field_tag :card_code, nil, name: nil, value: '', class: 'form-control'
         .field
           = label_tag :card_month, "Card Expiration"
           = select_month nil, {add_month_numbers_true: true}, {name: nil, id: "card_month"}
