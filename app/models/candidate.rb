@@ -93,4 +93,25 @@ class Candidate < ActiveRecord::Base
     end
 
   end
+  def archetype_string
+    if !self.archetype_score
+      return 'n/a'
+    end
+    if self.archetype_score > 71
+      return "Aggressive Hunter"
+    elsif self.archetype_score > 31
+      return "Relaxed Hunter"
+    elsif self.archetype_score > 11
+      return "Aggressive Fisherman"
+    elsif self.archetype_score > -10
+      return "Balanced Fisherman"
+    elsif self.archetype_score > -30
+      return "Relaxed Fisherman"
+    elsif self.archetype_score > -70
+      return "Aggressive Farmer"
+    else
+      return "Relaxed Farmer"
+    end
+  end
+
 end
