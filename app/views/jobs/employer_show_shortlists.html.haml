@@ -36,7 +36,7 @@
                     = f.hidden_field :status, id: 'is_hired', value: "#{get_status_key_by_value(JobCandidate.statuses[:accepted])}"
                     %button.btn.btn-default#hire{style: 'width: 128px'}
                       %i.fa.fa-check
-                      Hire
+                      Connect
                 .col-md-2
                   = form_tag(remove_candidate_path(@job, job_candidate.candidate), method: 'post') do
                     %button.btn.btn-default
