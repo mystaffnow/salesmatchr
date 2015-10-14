@@ -21,7 +21,7 @@
 function ready(){
   ZiggeoApi.token = "f2b7325a17fc847dbabf556c596170d8";
   $('.account-panel').on('click', '.remove_fields', function(event) {
-    $(this).prev('input[type=hidden]').val('1');
+    $(this).parent().find('.remove-object').val('1');
     $(this).closest('fieldset').hide();
     return event.preventDefault();
   });

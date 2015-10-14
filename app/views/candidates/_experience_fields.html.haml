@@ -1,5 +1,4 @@
 %fieldset.account-field
-  %b= link_to "Delete Job", class: "btn btn-default remove_fields"
   %br
   %br
   = f.hidden_field :id, value: f.object.id
@@ -25,7 +24,14 @@
       = f.label "Sales Type"
       %br
       = f.collection_select(:sales_type_id, SalesType.all, :id, :name,  {:class => 'form-control'})
-  = f.hidden_field :_destroy
+  = f.hidden_field :_destroy, class: 'remove-object'
+  = link_to "remove", class: "remove_fields btn btn-primary pull-right" do
+    %i.fa.fa-trash
+    Remove
+  %br
+  %br
+  %br
+  %hr
 
 
 
