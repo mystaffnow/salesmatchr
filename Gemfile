@@ -45,6 +45,7 @@ group :development, :test do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
 end
+
 gem 'rmagick', '2.13.2'
 gem 'geocoder'
 gem 'devise', '~> 3.4.1'
@@ -60,3 +61,8 @@ gem 'aws-sdk', '< 2.0'
 gem 'stripe'
 gem 'activeadmin', github: 'activeadmin'
 gem 'client_side_validations', github: 'DavyJonesLocker/client_side_validations'
+
+# manage env variables
+gem 'figaro'
+# debugger
+gem 'pry-byebug'
