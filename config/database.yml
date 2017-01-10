@@ -6,15 +6,17 @@
 #
 default: &default
  adapter: postgresql
- database: salesmatchr
- username: pguser
- password: password
- encoding: unicode
- pool: 5
- timeout: 5000
+ username: <%= ENV["PG_USERNAME"] %>
+ password: <%= ENV["PG_PASSWORD"] %>
+ encoding: unicode 
 
 development:
   <<: *default
+  database: salesmatchr_development
+
+test:
+  <<: *default
+  database: salesmatchr_test
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
