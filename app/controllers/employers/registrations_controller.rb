@@ -3,14 +3,14 @@ class Employers::RegistrationsController < Devise::RegistrationsController
 
   def create
     super
-    #binding.pry
-    EmployerMailer.register(resource.email).deliver_now
+    # binding.pry
     # tracker = Mixpanel::Tracker.new(ENV["NT_MIXPANEL_TOKEN"])
     # tracker.people.set('employer-'+current_employer.email, {
     #                                                            '$email'            => current_employer.email,
     #                                                            '$first_name'       => current_employer.company
     #                                                        });
     # tracker.track('employer-'+current_employer.email, 'employer sign up')
+    EmployerMailer.register(resource.email).deliver_now
   end
 
   protected
