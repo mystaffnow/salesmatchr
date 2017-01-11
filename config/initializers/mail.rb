@@ -1,6 +1,6 @@
 ActionMailer::Base.register_interceptor(SendGrid::MailInterceptor)
 
-if Rails.env.production?
+if Rails.env.production? || Rails.env.development?
 	ActionMailer::Base.smtp_settings = {
 	     :user_name => ENV["NT_SEND_GRID_USER_NAME"],
 	     :password => ENV["NT_SEND_GRID_PASSWORD"],
@@ -11,4 +11,3 @@ if Rails.env.production?
 	     :enable_starttls_auto => true
 	 }
 end
-
