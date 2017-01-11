@@ -14,8 +14,4 @@ class EmployerMailer < ApplicationMailer
       format.html { render layout: false }
     end
   end
-  def register(email)
-    mail( :to => email,
-          :subject => 'Thanks for registration!' )
-  end
 end
