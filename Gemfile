@@ -69,3 +69,4 @@ gem 'pry-byebug'
 # Mail send by sendgrid
 gem 'sendgrid'
 gem 'sendgrid-rails', '~> 2.0'
+gem 'bootstrap-glyphicons'
