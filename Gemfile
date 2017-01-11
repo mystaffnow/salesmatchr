@@ -52,7 +52,7 @@ gem 'devise', '~> 3.4.1'
 gem 'pg', '~> 0.17.1'
 gem 'haml', '~> 4.0.5'
 gem 'haml-rails', '~> 0.9.0'
-gem 'mixpanel-ruby', '~> 1.7.0'
+gem 'mixpanel-ruby', '~> 2.2.0'
 gem 'rolify', '~> 3.5.2'
 gem 'omniauth', '~> 1.2.2'
 gem "omniauth-linkedin-oauth2"
@@ -66,3 +66,6 @@ gem 'client_side_validations', github: 'DavyJonesLocker/client_side_validations'
 gem 'figaro'
 # debugger
 gem 'pry-byebug'
+# Mail send by sendgrid
+gem 'sendgrid'
+gem 'sendgrid-rails', '~> 2.0'

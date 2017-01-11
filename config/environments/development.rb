@@ -15,8 +15,8 @@ Rails.application.configure do
   config.action_controller.perform_caching = false
 
   # Don't care if the mailer can't send.
-  config.action_mailer.raise_delivery_errors = true
-  config.action_mailer.perform_deliveries = true
+  config.action_mailer.raise_delivery_errors = false
+  # config.action_mailer.perform_deliveries = true
 
 
   # Print deprecation notices to the Rails logger.
@@ -39,8 +39,7 @@ Rails.application.configure do
   # Raises helpful error messages.
   config.assets.raise_runtime_errors = true
 
-  config.action_mailer.delivery_method = :smtp
-
+  config.action_mailer.default_url_options = { :host => "http://localhost:3000" }
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
  config.paperclip_defaults = {
@@ -51,15 +50,4 @@ Rails.application.configure do
          :secret_access_key => ENV['NT_AMAZON_SCRET_ACCESS_KEY']
      }
  }
-
- ActionMailer::Base.smtp_settings = {
-     :user_name => ENV["NT_SEND_GRID_USER_NAME"],
-     :password => ENV["NT_SEND_GRID_PASSWORD"],
-     :domain => 'localhost:3000',
-     :address => 'smtp.sendgrid.net',
-     :port => 587,
-     :authentication => :plain,
-     :enable_starttls_auto => true
- }
- config.action_mailer.default_url_options = { :host => "http://localhost:3000" }
 end
