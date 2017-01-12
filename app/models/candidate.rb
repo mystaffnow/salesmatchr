@@ -2,7 +2,7 @@ class Candidate < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable, :omniauthable,
-         :recoverable, :rememberable, :trackable, :validatable,:omniauth_providers => [:linkedin]
+  :recoverable, :rememberable, :trackable, :validatable,:omniauth_providers => [:linkedin]
   has_many :experiences
   has_many :educations
   has_many :candidate_question_answers
