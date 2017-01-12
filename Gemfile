@@ -44,6 +44,11 @@ group :development, :test do
 
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
+
+  # manage env variables
+	gem 'figaro'
+	# debugger
+	gem 'pry-byebug'
 end
 
 gem 'rmagick', '2.13.2'
@@ -62,10 +67,6 @@ gem 'stripe'
 gem 'activeadmin', github: 'activeadmin'
 gem 'client_side_validations', github: 'DavyJonesLocker/client_side_validations'
 
-# manage env variables
-gem 'figaro'
-# debugger
-gem 'pry-byebug'
 # Mail send by sendgrid
 gem 'sendgrid'
 gem 'sendgrid-rails', '~> 2.0'
