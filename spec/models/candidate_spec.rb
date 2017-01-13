@@ -92,4 +92,138 @@ RSpec.describe Candidate do
 			expect(@job_candidate.status).to eq("purposed")
 		end
 	end
+
+	context 'view_job-job' do
+		before(:each) do
+			@candidate_job_action =	candidate.view_job(job)
+		end
+
+		it 'should create record of candidate_job_action' do
+			expect(CandidateJobAction.count).to eq(1)
+		end
+
+		it 'should match candidate_id' do
+			expect(@candidate_job_action.candidate_id).to eq(candidate.id)
+		end
+
+		it 'should match job_id' do
+			expect(@candidate_job_action.job_id).to eq(job.id)
+		end
+
+		it 'should have is_saved value false' do
+			expect(@candidate_job_action.is_saved).to eq(false)
+		end
+
+		it 'should not have is_saved value true' do
+			expect(@candidate_job_action.is_saved).not_to eq(true)
+		end
+	end
+
+	context 'can_proceed. archetype_score value' do
+		it 'can return nil' do
+			candidate.archetype_score = nil
+			expect(candidate.archetype_score).to be(nil)
+		end
+
+		it 'should return integer' do
+			candidate.archetype_score = 30
+			expect(candidate.archetype_score).to be_kind_of(Integer)
+			expect(candidate.archetype_score).to be_instance_of(Fixnum)
+		end
+	end
+
+	context 'password_required?' do
+		it 'should return false' do
+			candidate.provider = 'linkedin'
+			expect(candidate.password_required?).to eq(false)
+		end
+
+		it 'should return true' do
+			candidate.provider = nil
+			expect(candidate.password_required?).to eq(true)
+		end
+	end
+
+	context 'email_required?' do
+		it 'should return false' do
+			candidate.provider = 'linkedin'
+			expect(candidate.email_required?).to eq(false)
+		end
+
+		it 'should return true' do
+			candidate.provider = nil
+			expect(candidate.email_required?).to eq(true)
+		end
+	end
+
+	context 'avatar_url.' do
+		before(:each) do
+			@path = File.open("#{Rails.root}/public/img/incognito.png", "rb+")
+			@candidate = create(:candidate, :first_name => "test", :last_name => "candidate", avatar: @path )
+		end
+
+		it 'should display incognito.png' do
+			candidate.is_incognito = true
+			expect(@candidate.avatar_url).to match(/incognito.png/)
+		end
+
+		it 'should display missing.png' do
+			candidate.is_incognito = nil
+			expect(candidate.avatar_url).to eq("/img/missing.png")
+		end
+		
+		it 'should display profile.jpg' do
+			candidate.is_incognito = false
+		  candidate.linkedin_picture_url = "profile.jpg"
+			expect(candidate.avatar_url).to eq("profile.jpg")
+		end
+
+		it 'should display incognito.png' do
+			candidate.is_incognito = false
+			candidate.linkedin_picture_url = nil
+			expect(@candidate.avatar_url).to match(/incognito.png/)
+		end
+	end
+
+	context 'archetype_string.' do
+		it 'should return n/a' do
+		  candidate.archetype_score = nil
+			expect(candidate.archetype_string).to eq('n/a')
+		end
+
+		it 'should return Aggressive Hunter' do
+		  candidate.archetype_score = 75
+			expect(candidate.archetype_string).to eq('Aggressive Hunter')
+		end
+
+		it 'should return Relaxed Hunter' do
+		  candidate.archetype_score = 40
+			expect(candidate.archetype_string).to eq('Relaxed Hunter')
+		end
+
+		it 'should return Aggressive Fisherman' do
+		  candidate.archetype_score = 25
+			expect(candidate.archetype_string).to eq('Aggressive Fisherman')
+		end
+
+		it 'should return Balanced Fisherman' do
+		  candidate.archetype_score = 2
+			expect(candidate.archetype_string).to eq('Balanced Fisherman')
+		end
+
+		it 'should return Relaxed Fisherman' do
+		  candidate.archetype_score = -25
+			expect(candidate.archetype_string).to eq('Relaxed Fisherman')
+		end
+
+		it 'should return Aggressive Farmer' do
+		  candidate.archetype_score = -60
+			expect(candidate.archetype_string).to eq('Aggressive Farmer')
+		end
+
+		it 'should return Relaxed Farmer' do
+		  candidate.archetype_score = -70
+			expect(candidate.archetype_string).to eq('Relaxed Farmer')
+		end
+	end
 end
