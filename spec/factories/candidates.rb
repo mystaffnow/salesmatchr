@@ -24,4 +24,9 @@ FactoryGirl.define do
 		job_id 1
 		candidate_id 1
 	end
+
+	factory :candidate_job_action do
+		candidate_id 1
+		job_id 1
+	end
 end
