@@ -16,11 +16,13 @@ RSpec.describe Candidate do
 		it {should belong_to :year_experience}
 	end
 
-	describe "Paperclip avatar" do
+	context 'nested attributes' do
 		it{ should accept_nested_attributes_for(:experiences).allow_destroy(true) }
 		it{ should accept_nested_attributes_for(:educations).allow_destroy(true) }
 		it{ should accept_nested_attributes_for(:candidate_question_answers).allow_destroy(true) }
-		
+	end
+
+	describe "Paperclip avatar" do
 		it { should have_attached_file(:avatar) }
 	  # it { should validate_attachment_presence(:avatar) }
 	  it { should validate_attachment_content_type(:avatar).
