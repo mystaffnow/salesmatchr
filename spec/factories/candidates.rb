@@ -9,6 +9,8 @@ FactoryGirl.define do
 	factory :job do
 		title "Urgent need Sales Manager"
 		description "Select from the pull down menu to the left the"
+		city 'Witchia'
+		zip 10740
 	end
 
 	factory :employer do
@@ -28,5 +30,11 @@ FactoryGirl.define do
 	factory :candidate_job_action do
 		candidate_id 1
 		job_id 1
+	end
+
+	factory :job_function do
+		name "Outside Sales"
+	  low 31
+		high 100
 	end
 end
