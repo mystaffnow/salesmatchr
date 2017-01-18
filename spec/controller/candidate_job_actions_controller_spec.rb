@@ -285,6 +285,9 @@ RSpec.describe CandidateJobActionsController, :type => :controller do
           candidate_job_action = create(:candidate_job_action, valid_attributes)
           put :update, {id: candidate_job_action.to_param, candidate_job_action: new_attributes}
           candidate_job_action.reload
+          expect(candidate_job_action.is_saved).to eq(false)
+          expect(candidate_job_action.candidate_id).to eq(@candidate.id)
+          expect(candidate_job_action.job_id).to eq(@job.id)
         end
 
         it "should correctly assign @candidate_job_action" do
