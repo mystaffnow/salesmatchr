@@ -116,7 +116,7 @@ RSpec.describe CandidateJobActionsController, :type => :controller do
 
       it 'should redirect to candidates_archetype_path' do
         @candidate.update(archetype_score: nil)
-        get :show, id: @candidate_job_action.id
+        get :new
         expect(response).to redirect_to(candidates_archetype_path)
       end
     end
@@ -131,7 +131,7 @@ RSpec.describe CandidateJobActionsController, :type => :controller do
 
       it 'should redirect to /employers/account' do
         @employer.update(first_name: nil, last_name: nil, zip: nil, state_id: nil, city: nil, website: nil)
-        get :show, id: @candidate_job_action.id
+        get :new
         expect(response).to redirect_to("/employers/account")
       end
     end
@@ -154,7 +154,7 @@ RSpec.describe CandidateJobActionsController, :type => :controller do
 
       it 'should redirect to candidates_archetype_path' do
         @candidate.update(archetype_score: nil)
-        get :show, id: @candidate_job_action.id
+        get :edit, id: @candidate_job_action.id
         expect(response).to redirect_to(candidates_archetype_path)
       end
     end
@@ -174,7 +174,7 @@ RSpec.describe CandidateJobActionsController, :type => :controller do
 
       it 'should redirect to /employers/account' do
         @employer.update(first_name: nil, last_name: nil, zip: nil, state_id: nil, city: nil, website: nil)
-        get :show, id: @candidate_job_action.id
+        get :edit, id: @candidate_job_action.id
         expect(response).to redirect_to("/employers/account")
       end
     end
@@ -218,7 +218,7 @@ RSpec.describe CandidateJobActionsController, :type => :controller do
 
       it 'should redirect to candidates_archetype_path' do
         @candidate.update(archetype_score: nil)
-        get :show, id: @candidate_job_action.id
+        post :create, {candidate_job_action: valid_attributes}
         expect(response).to redirect_to(candidates_archetype_path)
       end
     end
@@ -256,11 +256,11 @@ RSpec.describe CandidateJobActionsController, :type => :controller do
             expect(response).to render_template("new")
           end
         end
-      end  
+      end
 
       it 'should redirect to /employers/account' do
         @employer.update(first_name: nil, last_name: nil, zip: nil, state_id: nil, city: nil, website: nil)
-        get :show, id: @candidate_job_action.id
+        post :create, {candidate_job_action: valid_attributes}
         expect(response).to redirect_to("/employers/account")
       end      
     end
@@ -316,20 +316,6 @@ RSpec.describe CandidateJobActionsController, :type => :controller do
         end
       end
 
-      context "with invalid params" do
-        pending("Pending Validation") do
-          it "should correctly assign @candidate_job_action" do
-            post :create, {candidate_job_action: invalid_attributes}
-            expect(assigns(:candidate_job_action)).to be_a_new(CandidateJobAction)
-          end
-
-          it "re-renders the 'new' template" do
-            post :create, {candidate_job_action: invalid_attributes}
-            expect(response).to render_template("new")
-          end
-       end
-      end
-
       it 'should redirect to candidates_archetype_path' do
         @candidate.update(archetype_score: nil)
         get :show, id: @candidate_job_action.id
@@ -382,20 +368,6 @@ RSpec.describe CandidateJobActionsController, :type => :controller do
               expect(response).to render_template("edit")
             end
           end
-        end
-
-        context "with invalid params" do
-          pending("Pending Validation") do
-            it "should correctly assign @candidate_job_action" do
-              post :create, {candidate_job_action: invalid_attributes}
-              expect(assigns(:candidate_job_action)).to be_a_new(CandidateJobAction)
-            end
-
-            it "re-renders the 'new' template" do
-              post :create, {candidate_job_action: invalid_attributes}
-              expect(response).to render_template("new")
-            end
-         end
         end
 
       it 'should redirect to /employers/account' do
