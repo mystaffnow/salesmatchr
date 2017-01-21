@@ -275,6 +275,12 @@ RSpec.describe EducationLevelsController, :type => :controller do
           expect(assigns(:education_level)).to eq(@education_level)
         end
 
+        it 'should call set_education_level method' do
+          expect(controller).to receive(:set_education_level).once.and_call_original
+
+          put :update, {id: @education_level.id, education_level: new_attributes}
+        end
+
         it 'should update requested education_level' do
           put :update, {id: @education_level.id, education_level: new_attributes}
           @education_level.reload
