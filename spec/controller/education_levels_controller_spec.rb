@@ -4,7 +4,7 @@ RSpec.describe EducationLevelsController, :type => :controller do
   before(:each) do
     @candidate = create(:candidate, archetype_score: 200)
     @state = create(:state)
-    @employer = create(:employer, state_id: @state.id, city: 'Witchia', zip: 5520, website: 'www.mywebsite.org', first_name: 'user', last_name: 'test')
+    @employer = create(:employer, state_id: @state.id, city: 'Wichita', zip: 5520, website: 'www.mywebsite.org', first_name: 'user', last_name: 'test')
   end
 
   let(:valid_attributes) {

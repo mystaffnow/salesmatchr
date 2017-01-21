@@ -5,7 +5,7 @@ RSpec.describe CandidatesController, :type => :controller do
     @path = File.open("#{Rails.root}/public/img/incognito.png", "rb+")
     @candidate = create(:candidate, archetype_score: 200, avatar: @path)
     @state = create(:state)
-    @employer = create(:employer, state_id: @state.id, city: 'Witchia', zip: 5520, website: 'www.mywebsite.org', first_name: 'user', last_name: 'test')
+    @employer = create(:employer, state_id: @state.id, city: 'Wichita', zip: 5520, website: 'www.mywebsite.org', first_name: 'user', last_name: 'test')
   
     @year_experience = create(:year_experience)
     @sales_type = create(:sales_type)

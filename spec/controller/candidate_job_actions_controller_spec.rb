@@ -5,7 +5,7 @@ RSpec.describe CandidateJobActionsController, :type => :controller do
     @candidate = create(:candidate, archetype_score: 200)
     @job_function = create(:job_function)
     @state = create(:state)
-    @employer = create(:employer, state_id: @state.id, city: 'Witchia', zip: 5520, website: 'www.mywebsite.org', first_name: 'user', last_name: 'test')
+    @employer = create(:employer, state_id: @state.id, city: 'Wichita', zip: 5520, website: 'www.mywebsite.org', first_name: 'user', last_name: 'test')
     @job = create(:job, employer_id: @employer.id, salary_low: 50000, salary_high: 150000, state_id: @state.id, job_function_id: @job_function.id)
     @candidate_job_action = create(:candidate_job_action, candidate_id: @candidate.id, job_id: @job.id)
   end
