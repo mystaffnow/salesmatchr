@@ -356,4 +356,69 @@ RSpec.describe EducationLevelsController, :type => :controller do
       end
     end
   end
+
+  describe '#destroy' do
+    before(:each) do
+      @education_level = create(:education_level)
+    end
+    context '.when candidate is sign_in' do
+      before {sign_in(@candidate)}
+
+      it 'should call set_education_level method' do
+        expect(controller).to receive(:set_education_level).once.and_call_original
+
+        delete :destroy, id: @education_level.id
+      end
+
+      it 'should correctly assign @education_level' do
+        delete :destroy, id: @education_level.id
+        expect(assigns(:education_level)).to eq(@education_level)
+      end
+
+      it 'should delete requested education_level record' do
+        expect{delete :destroy, id: @education_level.id}.to change(EducationLevel, :count).by(-1)
+      end
+
+      it 'should redirect to education_levels_url' do
+        delete :destroy, id: @education_level.id
+        expect(response).to redirect_to(education_levels_url)
+      end
+
+      it 'should redirect to candidates_archetype_path' do
+        @candidate.update(archetype_score: nil)
+        delete :destroy, id: @education_level.id
+        expect(response).to redirect_to(candidates_archetype_path)
+      end
+    end
+
+    context '.when employer is sign_in' do
+      before {sign_in(@employer)}
+
+      it 'should call set_education_level method' do
+        expect(controller).to receive(:set_education_level).once.and_call_original
+
+        delete :destroy, id: @education_level.id
+      end
+
+      it 'should correctly assign @education_level' do
+        delete :destroy, id: @education_level.id
+        expect(assigns(:education_level)).to eq(@education_level)
+      end
+
+      it 'should delete requested education_level record' do
+        expect{delete :destroy, id: @education_level.id}.to change(EducationLevel, :count).by(-1)
+      end
+
+      it 'should redirect to education_levels_url' do
+        delete :destroy, id: @education_level.id
+        expect(response).to redirect_to(education_levels_url)
+      end
+
+      it 'should redirect to /employers/account' do
+        @employer.update(first_name: nil, last_name: nil, zip: nil, state_id: nil, city: nil, website: nil)
+        delete :destroy, id: @education_level.id
+        expect(response).to redirect_to("/employers/account")
+      end
+    end
+  end
 end
