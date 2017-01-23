@@ -196,8 +196,12 @@ RSpec.describe CandidatesController, :type => :controller do
 
       it 'should redirect to /employers/account' do
         @employer.update(first_name: nil, last_name: nil, zip: nil, state_id: nil, city: nil, website: nil)
-        put :update_archetype
+        put :update_archetype, { candidate: valid_attributes }
         expect(response).to redirect_to("/employers/account")
+      end
+
+      it 'should raise error when current_candidate not found' do
+        expect {put :update_archetype, { candidate: valid_attributes }}.to raise_error("undefined method `email' for nil:NilClass")
       end
     end
   end
@@ -283,6 +287,10 @@ RSpec.describe CandidatesController, :type => :controller do
         put :update, {candidate: valid_attributes}
         expect(response).to redirect_to("/employers/account")
       end
+
+      it 'should raise error when current_candidate not found' do
+        expect {put :update_archetype, { candidate: valid_attributes }}.to raise_error("undefined method `email' for nil:NilClass")
+      end
     end
   end
 
@@ -310,6 +318,10 @@ RSpec.describe CandidatesController, :type => :controller do
         @employer.update(first_name: nil, last_name: nil, zip: nil, state_id: nil, city: nil, website: nil)
         get :incognito, { is_incognito: "true" }
         expect(response).to redirect_to("/employers/account")
+      end
+
+      it 'should raise error when current_candidate not found' do
+        expect {put :update_archetype, { candidate: valid_attributes }}.to raise_error("undefined method `email' for nil:NilClass")
       end
     end
   end
