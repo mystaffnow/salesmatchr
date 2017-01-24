@@ -180,6 +180,67 @@ RSpec.describe CandidateJobActionsController, :type => :controller do
     end
   end
 
+  describe "#candidate_job_saved" do
+    context '.when candidate is signed_in' do
+      before{ sign_in(@candidate) }
+
+      it 'should assign @candidate_job_action' do
+        @candidate_job_action.update(is_saved: true)
+        @candidate_job_action.reload
+        get :candidate_job_saved
+        expect(assigns(:candidate_job_action)).to eq([@candidate_job_action])
+      end
+    end
+
+    context '.when employer is signed_in' do
+      before{ sign_in(@employer) }
+
+      it 'should throw error when current_candidate not found' do
+        expect{get :candidate_job_saved }.to raise_error("undefined method `id' for nil:NilClass")
+      end
+    end
+  end
+
+  describe "#candidate_job_viewed" do
+    context '.when candidate is signed_in' do
+      before{ sign_in(@candidate) }
+
+      it 'should assign @candidate_job_action' do
+        get :candidate_job_viewed
+        expect(assigns(:candidate_job_action)).to eq([@candidate_job_action])
+      end
+    end
+
+    context '.when employer is signed_in' do
+      before{ sign_in(@employer) }
+
+      it 'should throw error when current_candidate not found' do
+        expect{get :candidate_job_viewed }.to raise_error("undefined method `id' for nil:NilClass")
+      end
+    end
+  end
+
+  describe "#candidate_matches" do
+    context '.when candidate is signed_in' do
+      before{ sign_in(@candidate) }
+
+      it 'should assign @jobs' do
+        @job.update_attributes(archetype_low: 10, archetype_high: 201, is_active: true)
+        @job.reload
+        get :candidate_matches
+        expect(assigns(:jobs)).to eq([@job])
+      end
+    end
+
+    context '.when employer is signed_in' do
+      before{ sign_in(@employer) }
+
+      it 'should throw error when current_candidate not found' do
+        expect{get :candidate_matches }.to raise_error("undefined method `archetype_score' for nil:NilClass")
+      end
+    end
+  end
+
   describe "#save" do
     context '.when candidate is signed in' do
       before { sign_in(@candidate)}
