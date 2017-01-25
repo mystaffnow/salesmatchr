@@ -33,8 +33,8 @@ RSpec.describe JobsController, :type => :controller do
 
   let(:invalid_attributes) {
     {
-        id: 1,
-        job_function_id: @job_function.id
+      id: 1,
+      job_function_id: @job_function.id
     }
   }
 
@@ -55,9 +55,8 @@ RSpec.describe JobsController, :type => :controller do
 
     context '.when employer is sign_in' do
       before {sign_in(@employer)}
-      it 'should redirect_to candidate_matches_path' do
-        get :index
-        expect(response).to redirect_to(candidate_matches_path)
+      it 'unauthorized access' do
+        expect{get :index}.to raise_error("Unauthorized access")
       end
 
       it 'should redirect to /employers/account' do
@@ -125,6 +124,10 @@ RSpec.describe JobsController, :type => :controller do
   describe '#new' do
     context '.when candidate is sign_in' do
       before{ sign_in(@candidate) }
+
+      it 'Unauthorized access' do
+        expect{get :new}.to raise_error("Unauthorized Access")
+      end
 
       it 'should raise error when current_employer not found' do
         expect{ get :new }.to raise_error("undefined method `jobs' for nil:NilClass")
@@ -224,14 +227,8 @@ RSpec.describe JobsController, :type => :controller do
     context '.when candidate is sign_in' do
       before{ sign_in(@candidate) }
 
-      it 'should correctly assign @job' do
-        get :edit, id: @job.id
-        expect(assigns(:job)).to eq(@job)
-      end
-
-      it 'should call set_job method' do
-        expect(controller).to receive(:set_job).once.and_call_original
-        get :edit, id: @job.id
+      it '#unauthorized access' do
+        expect{get :edit, id: @job.id}.to raise_error("Unauthorized access")
       end
 
       it 'should redirect to candidates_archetype_path' do
@@ -242,22 +239,32 @@ RSpec.describe JobsController, :type => :controller do
     end
 
     context '.when employer is sign_in' do
-      before{ sign_in(@employer) }
-
-      it 'should correctly assign @job' do
-        get :edit, id: @job.id
-        expect(assigns(:job)).to eq(@job)
+      context 'and job does not belongs to signed in employer' do
+        it 'should raise unauthorized acess' do
+          @fake_employer = create(:employer)
+          sign_in(@fake_employer)
+          expect{get :edit, id: @job.id}.to raise("Unauthorized access")
+        end
       end
 
-      it 'should call set_job method' do
-        expect(controller).to receive(:set_job).once.and_call_original
-        get :edit, id: @job.id
-      end
+      context 'job belongs to signed in employer' do
+        before{ sign_in(@employer) }
 
-      it 'should redirect to /employers/account' do
-        @employer.update(first_name: nil, last_name: nil, zip: nil, state_id: nil, city: nil, website: nil)
-        get :edit, id: @job.id
-        expect(response).to redirect_to("/employers/account")
+        it 'should correctly assign @job' do
+          get :edit, id: @job.id
+          expect(assigns(:job)).to eq(@job)
+        end
+
+        it 'should call set_job method' do
+          expect(controller).to receive(:set_job).once.and_call_original
+          get :edit, id: @job.id
+        end
+
+        it 'should redirect to /employers/account' do
+          @employer.update(first_name: nil, last_name: nil, zip: nil, state_id: nil, city: nil, website: nil)
+          get :edit, id: @job.id
+          expect(response).to redirect_to("/employers/account")
+        end
       end
     end
   end
@@ -695,114 +702,78 @@ RSpec.describe JobsController, :type => :controller do
 
     context '.when candidate is sign_in' do
       before{sign_in(@candidate)}
-      # candidate should not allow to update employer's job
 
-      context '.with valid attributes' do
-        it 'should correctly assign @job' do
-          put :update, {id: @job.id, job: new_attributes}
-          expect(assigns(:job)).to eq(@job)
-        end
-
-        it 'should call set_job' do
-          expect(controller).to receive(:set_job).once.and_call_original
-          put :update, {id: @job.id, job: new_attributes}
-        end
-
-        it 'should update the job with new_attributes' do
-          put :update, {id: @job.id, job: new_attributes}
-          @job.reload
-          expect(@job.city).to eq( "New York")
-          expect(@job.zip).to eq("58001")
-        end
-
-        it 'should redirect to candidates_archetype_path' do
-          @candidate.update(archetype_score: nil)
-          put :update, {id: @job.id, job: new_attributes}
-          expect(response).to redirect_to(candidates_archetype_path)
-        end
+      it '#unauthorized access' do
+        expect{put :update, {id: @job.id, job: valid_attributes}}.to raise_error("Unauthorized access")
       end
 
-      context '.with invalid_attributes' do
-        pending("Pending Validation") do
-          it 'should correctly assign @job' do
-            put :update, {id: @job.id, job: invalid_attributes}
-            expect(assigns(:job)).to eq(@job)
-          end
-
-          it "re-renders the 'edit' template" do
-            job = create(:job, valid_attributes)
-            put :update, {id: job.to_param, job: invalid_attributes}
-            expect(response).to render_template("edit")
-          end
-        end
+      it 'should redirect to candidates_archetype_path' do
+        @candidate.update(archetype_score: nil)
+        put :update, {id: @job.id, job: new_attributes}
+        expect(response).to redirect_to(candidates_archetype_path)
+      end
     end
 
     context '.when employer is sign_in' do
-      before{sign_in(@employer)}
-
-      context '.with valid attributes' do
-        it 'should correctly assign @job' do
-          put :update, {id: @job.id, job: new_attributes}
-          expect(assigns(:job)).to eq(@job)
-        end
-
-        it 'should call set_job' do
-          expect(controller).to receive(:set_job).once.and_call_original
-          put :update, {id: @job.id, job: new_attributes}
-        end
-
-        it 'should update the job with new_attributes' do
-          put :update, {id: @job.id, job: new_attributes}
-          @job.reload
-          expect(@job.city).to eq( "New York")
-          expect(@job.zip).to eq("58001")
-        end
-
-        it 'should redirect_to employer_jobs_path' do
-          put :update, {id: @job.id, job: new_attributes}
-          expect(response).to redirect_to(employer_jobs_path)
+      context 'and job does not belongs to signed in employer' do
+        it 'should raise unauthorized acess' do
+          @fake_employer = create(:employer)
+          sign_in(@fake_employer)
+          expect{put :update, {id: @job.id, job: new_attributes}}.to raise("Unauthorized access")
         end
       end
 
-      context '.with invalid_attributes' do
-        pending("Pending Validation") do
+      context 'and job belongs to signed in employer' do
+        before{sign_in(@employer)}
+
+        context '.with valid attributes' do
           it 'should correctly assign @job' do
-            put :update, {id: @job.id, job: invalid_attributes}
+            put :update, {id: @job.id, job: new_attributes}
             expect(assigns(:job)).to eq(@job)
           end
 
-          it "re-renders the 'edit' template" do
-            job = create(:job, valid_attributes)
-            put :update, {id: job.to_param, job: invalid_attributes}
-            expect(response).to render_template("edit")
+          it 'should call set_job' do
+            expect(controller).to receive(:set_job).once.and_call_original
+            put :update, {id: @job.id, job: new_attributes}
+          end
+
+          it 'should update the job with new_attributes' do
+            put :update, {id: @job.id, job: new_attributes}
+            @job.reload
+            expect(@job.city).to eq( "New York")
+            expect(@job.zip).to eq("58001")
+          end
+
+          it 'should redirect_to employer_jobs_path' do
+            put :update, {id: @job.id, job: new_attributes}
+            expect(response).to redirect_to(employer_jobs_path)
+          end
+        end
+
+        context '.with invalid_attributes' do
+          pending("Pending Validation") do
+            it 'should correctly assign @job' do
+              put :update, {id: @job.id, job: invalid_attributes}
+              expect(assigns(:job)).to eq(@job)
+            end
+
+            it "re-renders the 'edit' template" do
+              job = create(:job, valid_attributes)
+              put :update, {id: job.to_param, job: invalid_attributes}
+              expect(response).to render_template("edit")
+            end
           end
         end
       end
     end
-   end
   end
 
   describe '#destroy' do
     context '.when candidate is sign_in' do
-      # candidate should not allow to remove employers job
       before{ sign_in(@candidate) }
-      it 'should assign @job' do
-        delete :destroy, id: @job.id
-        expect(assigns(:job)).to eq(@job)
-      end
 
-      it 'should call set_job' do
-        expect(controller).to receive(:set_job).once.and_call_original
-        delete :destroy, id: @job.id
-      end
-
-      it 'should delete the record' do
-         expect{delete :destroy, id: @job.id}.to change(Job, :count).by(-1)
-      end
-
-      it 'should redirect_to jobs_url' do
-        delete :destroy, id: @job.id
-        expect(response).to redirect_to(jobs_url)
+      it '#unauthorized access' do
+        expect{delete :destroy, id: @job.id}.to raise_error("Unauthorized access")
       end
 
       it 'should redirect to candidates_archetype_path' do
@@ -812,31 +783,42 @@ RSpec.describe JobsController, :type => :controller do
       end
     end
 
-    context '.when employer is sign_in' do
-      before{ sign_in(@employer) }
-      it 'should assign @job' do
-        delete :destroy, id: @job.id
-        expect(assigns(:job)).to eq(@job)
+    describe '.when employer is sign_in' do
+      context 'and job does not belongs to signed in employer' do
+        it 'should raise unauthorized acess' do
+          @fake_employer = create(:employer)
+          sign_in(@fake_employer)
+          expect{delete :destroy, id: @job.id}.to raise("Unauthorized access")
+        end
       end
 
-      it 'should call set_job' do
-        expect(controller).to receive(:set_job).once.and_call_original
-        delete :destroy, id: @job.id
-      end
+      context 'job belongs to signed in employer' do
+        before{ sign_in(@employer) }
 
-      it 'should delete the record' do
-         expect{delete :destroy, id: @job.id}.to change(Job, :count).by(-1)
-      end
+        it 'should assign @job' do
+          delete :destroy, id: @job.id
+          expect(assigns(:job)).to eq(@job)
+        end
 
-      it 'should redirect_to jobs_url' do
-        delete :destroy, id: @job.id
-        expect(response).to redirect_to(jobs_url)
-      end
+        it 'should call set_job' do
+          expect(controller).to receive(:set_job).once.and_call_original
+          delete :destroy, id: @job.id
+        end
 
-      it 'should redirect to /employers/account' do
-        @employer.update(first_name: nil, last_name: nil, zip: nil, state_id: nil, city: nil, website: nil)
-        get :index
-        expect(response).to redirect_to("/employers/account")
+        it 'should delete the record' do
+          expect{delete :destroy, id: @job.id}.to change(Job, :count).by(-1)
+        end
+
+        it 'should redirect_to jobs_url' do
+          delete :destroy, id: @job.id
+          expect(response).to redirect_to(jobs_url)
+        end
+
+        it 'should redirect to /employers/account' do
+          @employer.update(first_name: nil, last_name: nil, zip: nil, state_id: nil, city: nil, website: nil)
+          get :index
+          expect(response).to redirect_to("/employers/account")
+        end
       end
     end
   end
