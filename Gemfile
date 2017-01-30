@@ -58,7 +58,7 @@ group :development, :test do
   gem 'database_cleaner'
 end
 
-gem 'rmagick', '2.13.2'
+gem 'rmagick', '~> 2.16.0'
 gem 'geocoder'
 gem 'devise', '~> 3.4.1'
 gem 'pg', '~> 0.17.1'
