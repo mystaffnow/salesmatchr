@@ -34,6 +34,10 @@ class Job < ActiveRecord::Base
   has_many :candidate_job_actions
   attr_accessor :job_function_id
 
+  # validation
+  validates :employer_id, :title, :description, :city, :zip, presence: true
+  # validation
+
   def matches
     matches = Candidate.where("candidates.archetype_score >= ? and candidates.archetype_score <= ? ", self.archetype_low, self.archetype_high).to_a
     matches
