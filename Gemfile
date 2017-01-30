@@ -79,3 +79,5 @@ gem 'sendgrid'
 gem 'sendgrid-rails', '~> 2.0'
 # need to use bootstrap glyphicons
 gem 'bootstrap-glyphicons'
+# Authorization management
+gem 'pundit'
