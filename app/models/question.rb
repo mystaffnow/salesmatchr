@@ -1,3 +1,14 @@
+# == Schema Information
+#
+# Table name: questions
+#
+#  id         :integer          not null, primary key
+#  name       :string
+#  answer_id  :integer
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+
 class Question < ActiveRecord::Base
   has_many :candidate_question_answers
   has_many :answers, through: :candidate_question_answers
