@@ -6,12 +6,16 @@ class JobPolicy < ApplicationPolicy
 		@job = job
 	end
 
+	def index?
+		true
+	end
+
 	def edit?
 		user.is_owner_of?(job)
 	end
 
 	def update?
-		user.is_owner_of(job)
+		user.is_owner_of?(job)
 	end
 
 	def new?
@@ -20,5 +24,9 @@ class JobPolicy < ApplicationPolicy
 
 	def create?
 		user.is_a?(Employer)
+	end
+
+	def destroy?
+		user.is_owner_of?(job)
 	end
 end
