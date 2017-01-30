@@ -22,6 +22,10 @@ class Candidate < ActiveRecord::Base
     return self.first_name + " " + self.last_name
   end
 
+  def is_owner_of?(obj)
+    self.id == obj.try(:candidate_id)
+  end
+
   def self.from_omniauth(auth)
     candidate = Candidate.where(uid: auth.uid).first
     if !candidate

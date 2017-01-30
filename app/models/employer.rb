@@ -12,6 +12,11 @@ class Employer < ActiveRecord::Base
   def name
     "#{self.first_name} #{self.last_name}"
   end
+
+  def is_owner_of?(obj)
+    self.id == obj.try(:employer_id)
+  end
+
   def can_proceed
     self.state.present? && self.city.present? && self.zip.present? && self.website.present? && self.name.present? && self.email.present?
   end
