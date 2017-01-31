@@ -1,4 +1,4 @@
 class Answer < ActiveRecord::Base
-  has_many :questions
-  has_many :candidate_quesiton_answers
+  has_many :candidate_question_answers
+  has_many :questions, through: :candidate_question_answers
 end

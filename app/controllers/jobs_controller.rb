@@ -42,6 +42,7 @@ class JobsController < ApplicationController
     @candidate = Candidate.find(params[:candidate_id])
 
     CandidateMailer.send_job_intro(@candidate.email, @job).deliver
+    render json: :ok
   end
 
   # GET /jobs/1/edit

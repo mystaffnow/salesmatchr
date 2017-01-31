@@ -48,6 +48,7 @@ class CandidatesController < ApplicationController
 
     current_candidate.is_incognito = params[:is_incognito]
     current_candidate.save
+    render json: 'created'
   end
   private
     # Never trust parameters from the scary internet, only allow the white list through.

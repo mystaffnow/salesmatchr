@@ -5,7 +5,7 @@ RSpec.describe CandidateJobActionsController, :type => :controller do
     @candidate = create(:candidate, archetype_score: 200)
     @job_function = create(:job_function)
     @state = create(:state)
-    @employer = create(:employer, state_id: @state.id, city: 'Witchia', zip: 5520, website: 'www.mywebsite.org', first_name: 'user', last_name: 'test')
+    @employer = create(:employer, state_id: @state.id, city: 'Wichita', zip: 5520, website: 'www.mywebsite.org', first_name: 'user', last_name: 'test')
     @job = create(:job, employer_id: @employer.id, salary_low: 50000, salary_high: 150000, state_id: @state.id, job_function_id: @job_function.id)
     @candidate_job_action = create(:candidate_job_action, candidate_id: @candidate.id, job_id: @job.id)
   end
@@ -176,6 +176,67 @@ RSpec.describe CandidateJobActionsController, :type => :controller do
         @employer.update(first_name: nil, last_name: nil, zip: nil, state_id: nil, city: nil, website: nil)
         get :edit, id: @candidate_job_action.id
         expect(response).to redirect_to("/employers/account")
+      end
+    end
+  end
+
+  describe "#candidate_job_saved" do
+    context '.when candidate is signed_in' do
+      before{ sign_in(@candidate) }
+
+      it 'should assign @candidate_job_action' do
+        @candidate_job_action.update(is_saved: true)
+        @candidate_job_action.reload
+        get :candidate_job_saved
+        expect(assigns(:candidate_job_action)).to eq([@candidate_job_action])
+      end
+    end
+
+    context '.when employer is signed_in' do
+      before{ sign_in(@employer) }
+
+      it 'should throw error when current_candidate not found' do
+        expect{get :candidate_job_saved }.to raise_error("undefined method `id' for nil:NilClass")
+      end
+    end
+  end
+
+  describe "#candidate_job_viewed" do
+    context '.when candidate is signed_in' do
+      before{ sign_in(@candidate) }
+
+      it 'should assign @candidate_job_action' do
+        get :candidate_job_viewed
+        expect(assigns(:candidate_job_action)).to eq([@candidate_job_action])
+      end
+    end
+
+    context '.when employer is signed_in' do
+      before{ sign_in(@employer) }
+
+      it 'should throw error when current_candidate not found' do
+        expect{get :candidate_job_viewed }.to raise_error("undefined method `id' for nil:NilClass")
+      end
+    end
+  end
+
+  describe "#candidate_matches" do
+    context '.when candidate is signed_in' do
+      before{ sign_in(@candidate) }
+
+      it 'should assign @jobs' do
+        @job.update_attributes(archetype_low: 10, archetype_high: 201, is_active: true)
+        @job.reload
+        get :candidate_matches
+        expect(assigns(:jobs)).to eq([@job])
+      end
+    end
+
+    context '.when employer is signed_in' do
+      before{ sign_in(@employer) }
+
+      it 'should throw error when current_candidate not found' do
+        expect{get :candidate_matches }.to raise_error("undefined method `archetype_score' for nil:NilClass")
       end
     end
   end
