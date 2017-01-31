@@ -34,12 +34,12 @@
                 .col-md-2
                   = form_for(job_candidate) do |f|
                     = f.hidden_field :status, id: 'is_hired', value: "#{get_status_key_by_value(JobCandidate.statuses[:accepted])}"
-                    %button.btn.btn-default#hire{style: 'width: 128px'}
+                    %button.btn.btn-default{style: 'width: 128px', type: 'submit'}
                       %i.fa.fa-check
                       Connect
                 .col-md-2
                   = form_tag(remove_candidate_path(@job, job_candidate.candidate), method: 'post') do
-                    %button.btn.btn-default
+                    %button.btn.btn-default{type: 'submit'}
                       %i.fa.fa-close
                       Remove
               - else

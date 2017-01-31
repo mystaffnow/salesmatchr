@@ -1,10 +1,21 @@
 class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
+  include Pundit
   protect_from_forgery with: :exception
   before_filter :check_candidate
   before_filter :check_employer
   before_action :configure_permitted_parameters, if: :devise_controller?
+
+  rescue_from Pundit::NotAuthorizedError, with: :action_not_authorized
+
+  def pundit_user
+    if candidate_signed_in?
+      current_candidate
+    else
+      current_employer
+    end
+  end
 
   protected
 
@@ -25,5 +36,12 @@ class ApplicationController < ActionController::Base
         redirect_to employers_account_path
       end
     end
+  end
+
+  private
+
+  def action_not_authorized
+    flash[:alert] = "You are not authorized to perform this action."
+    redirect_to(request.referrer || root_path)
   end
 end

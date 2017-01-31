@@ -41,6 +41,7 @@ RSpec.describe JobsController, :type => :controller do
   describe '#index' do
     context '.when candidate is sign_in' do
       before {sign_in(@candidate)}
+      
       it 'should redirect_to candidate_matches_path' do
         get :index
         expect(response).to redirect_to(candidate_matches_path)
@@ -55,8 +56,10 @@ RSpec.describe JobsController, :type => :controller do
 
     context '.when employer is sign_in' do
       before {sign_in(@employer)}
+
       it 'unauthorized access' do
-        expect{get :index}.to raise_error("Unauthorized access")
+        get :index
+        expect(response).to redirect_to(candidate_matches_path)
       end
 
       it 'should redirect to /employers/account' do
@@ -125,12 +128,10 @@ RSpec.describe JobsController, :type => :controller do
     context '.when candidate is sign_in' do
       before{ sign_in(@candidate) }
 
-      it 'Unauthorized access' do
-        expect{get :new}.to raise_error("Unauthorized Access")
-      end
-
-      it 'should raise error when current_employer not found' do
-        expect{ get :new }.to raise_error("undefined method `jobs' for nil:NilClass")
+      it '#unauthorized access' do
+        get :new
+        expect(response).to redirect_to('/')
+        expect(flash[:alert]).to eq('You are not authorized to perform this action.')
       end
     end
 
@@ -228,7 +229,9 @@ RSpec.describe JobsController, :type => :controller do
       before{ sign_in(@candidate) }
 
       it '#unauthorized access' do
-        expect{get :edit, id: @job.id}.to raise_error("Unauthorized access")
+        get :edit, id: @job.id
+        expect(response).to redirect_to('/')
+        expect(flash[:alert]).to eq('You are not authorized to perform this action.')
       end
 
       it 'should redirect to candidates_archetype_path' do
@@ -241,9 +244,11 @@ RSpec.describe JobsController, :type => :controller do
     context '.when employer is sign_in' do
       context 'and job does not belongs to signed in employer' do
         it 'should raise unauthorized acess' do
-          @fake_employer = create(:employer)
+          @fake_employer = create(:archetype_employer, state_id: @state.id)
           sign_in(@fake_employer)
-          expect{get :edit, id: @job.id}.to raise("Unauthorized access")
+          get :edit, id: @job.id
+          expect(response).to redirect_to('/')
+          expect(flash[:alert]).to eq('You are not authorized to perform this action.')
         end
       end
 
@@ -626,8 +631,10 @@ RSpec.describe JobsController, :type => :controller do
     context '.when candidate is sign_in' do
       before{ sign_in(@candidate) }
 
-      it 'should through error when current_employer not found' do
-        expect{post :create, job: valid_attributes}.to raise_error("undefined method `id' for nil:NilClass")
+      it '#unauthorized access' do
+        get :new
+        expect(response).to redirect_to('/')
+        expect(flash[:alert]).to eq('You are not authorized to perform this action.')
       end
     end
 
@@ -704,7 +711,9 @@ RSpec.describe JobsController, :type => :controller do
       before{sign_in(@candidate)}
 
       it '#unauthorized access' do
-        expect{put :update, {id: @job.id, job: valid_attributes}}.to raise_error("Unauthorized access")
+        put :update, {id: @job.id, job: new_attributes}
+        expect(response).to redirect_to('/')
+        expect(flash[:alert]).to eq('You are not authorized to perform this action.')
       end
 
       it 'should redirect to candidates_archetype_path' do
@@ -716,10 +725,12 @@ RSpec.describe JobsController, :type => :controller do
 
     context '.when employer is sign_in' do
       context 'and job does not belongs to signed in employer' do
-        it 'should raise unauthorized acess' do
-          @fake_employer = create(:employer)
+        it 'should raise unauthorized access' do
+          @fake_employer = create(:archetype_employer, state_id: @state.id)
           sign_in(@fake_employer)
-          expect{put :update, {id: @job.id, job: new_attributes}}.to raise("Unauthorized access")
+          put :update, {id: @job.id, job: new_attributes}
+          expect(response).to redirect_to('/')
+          expect(flash[:alert]).to eq('You are not authorized to perform this action.')
         end
       end
 
@@ -773,7 +784,9 @@ RSpec.describe JobsController, :type => :controller do
       before{ sign_in(@candidate) }
 
       it '#unauthorized access' do
-        expect{delete :destroy, id: @job.id}.to raise_error("Unauthorized access")
+        delete :destroy, id: @job.id
+        expect(response).to redirect_to('/')
+        expect(flash[:alert]).to eq('You are not authorized to perform this action.')
       end
 
       it 'should redirect to candidates_archetype_path' do
@@ -785,10 +798,12 @@ RSpec.describe JobsController, :type => :controller do
 
     describe '.when employer is sign_in' do
       context 'and job does not belongs to signed in employer' do
-        it 'should raise unauthorized acess' do
-          @fake_employer = create(:employer)
+        it 'should raise unauthorized access' do
+          @fake_employer = create(:archetype_employer, state_id: @state.id)
           sign_in(@fake_employer)
-          expect{delete :destroy, id: @job.id}.to raise("Unauthorized access")
+          delete :destroy, id: @job.id
+          expect(response).to redirect_to('/')
+          expect(flash[:alert]).to eq('You are not authorized to perform this action.')
         end
       end
 

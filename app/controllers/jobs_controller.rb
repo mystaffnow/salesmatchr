@@ -22,6 +22,7 @@ class JobsController < ApplicationController
   # GET /jobs/new
   def new
     @job = Job.new
+    authorize(@job)
     if params.permit(:copy_id)[:copy_id]
       job_copy = Job.find(params.permit(:copy_id)[:copy_id])
       attributes = job_copy.attributes.select do |attr, value|
@@ -47,6 +48,7 @@ class JobsController < ApplicationController
 
   # GET /jobs/1/edit
   def edit
+    authorize @job
   end
 
   def employer_show
@@ -92,6 +94,7 @@ class JobsController < ApplicationController
   # POST /jobs.json
   def create
     @job = Job.new(job_params)
+    authorize(@job)
     job_function = JobFunction.find(job_params[:job_function_id])
     @job.archetype_low = job_function.low
     @job.archetype_high = job_function.high
@@ -127,6 +130,7 @@ class JobsController < ApplicationController
   # PATCH/PUT /jobs/1
   # PATCH/PUT /jobs/1.json
   def update
+    authorize(@job)
     job_function = JobFunction.find(job_params[:job_function_id])
     @job.archetype_low = job_function.low
     @job.archetype_high = job_function.high
@@ -145,6 +149,7 @@ class JobsController < ApplicationController
   # DELETE /jobs/1
   # DELETE /jobs/1.json
   def destroy
+    authorize(@job)
     @job.destroy
     respond_to do |format|
       format.html { redirect_to jobs_url, notice: 'Job was successfully destroyed.' }
