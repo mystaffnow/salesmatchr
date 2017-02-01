@@ -1,0 +1,16 @@
+= profile_fields.hidden_field :id, value: profile_fields.object.id
+= profile_fields.label "Profile Image"
+= profile_fields.file_field :avatar
+= profile_fields.label "Education Level"
+%br
+= profile_fields.collection_select(:education_level_id, EducationLevel.all, :id, :name,  {:class => 'form-control selectpickers'})
+%br
+= profile_fields.label "City"
+= profile_fields.text_field :city, class: 'form-control', validate: true
+= profile_fields.label "State"
+%br
+= profile_fields.collection_select(:state_id, State.all, :id, :name,  {:class => 'form-control selectpickers'})
+%br
+= profile_fields.label "Zipcode"
+= profile_fields.text_field :zip, class: 'form-control'
+= profile_fields.hidden_field :ziggeo_token, id: 'ziggeo-token'
