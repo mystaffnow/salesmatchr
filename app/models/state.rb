@@ -9,5 +9,5 @@
 #
 
 class State < ActiveRecord::Base
-  has_many :candidates
+  has_many :candidate_profile
 end
