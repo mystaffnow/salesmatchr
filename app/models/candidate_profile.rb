@@ -3,7 +3,7 @@ class CandidateProfile < ActiveRecord::Base
 	belongs_to :state
 	belongs_to :education_level
 	
-  attr_accessor :avatar
+  # attr_accessor :avatar
   has_attached_file :avatar,  :default_url => "/img/missing.png", :styles => { :medium => "200x200#" }
   validates_attachment_content_type :avatar, :content_type => /\Aimage\/.*\Z/
 
@@ -19,6 +19,5 @@ class CandidateProfile < ActiveRecord::Base
         self.avatar.url(:medium)
       end
     end
-
   end
 end
