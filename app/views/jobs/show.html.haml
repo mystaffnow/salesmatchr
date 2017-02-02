@@ -18,7 +18,7 @@
         = "About "
         = link_to @job.employer.company, employers_public_path(@job.employer)
       %p
-        = @job.employer.description
+        = @job.employer.employer_profile.present? ? @job.employer.employer_profile.description : ''
       %hr
       %h2
         = @job.title
