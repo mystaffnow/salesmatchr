@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151006022249) do
+ActiveRecord::Schema.define(version: 20170201072643) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -49,6 +49,23 @@ ActiveRecord::Schema.define(version: 20151006022249) do
     t.datetime "updated_at",   null: false
   end
 
+  create_table "candidate_profiles", force: :cascade do |t|
+    t.integer  "candidate_id"
+    t.string   "city"
+    t.integer  "state_id"
+    t.string   "zip"
+    t.integer  "education_level_id"
+    t.string   "ziggeo_token"
+    t.boolean  "is_incognito"
+    t.string   "linkedin_picture_url"
+    t.string   "avatar_file_name"
+    t.string   "avatar_content_type"
+    t.integer  "avatar_file_size"
+    t.datetime "avatar_updated_at"
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+  end
+
   create_table "candidate_question_answers", force: :cascade do |t|
     t.integer  "candidate_id"
     t.integer  "question_id"
@@ -60,17 +77,8 @@ ActiveRecord::Schema.define(version: 20151006022249) do
   create_table "candidates", force: :cascade do |t|
     t.string   "first_name"
     t.string   "last_name"
-    t.string   "city"
-    t.integer  "state_id"
-    t.string   "zip"
-    t.integer  "education_level_id"
     t.integer  "archetype_score"
-    t.string   "ziggeo_token"
-    t.string   "uid"
-    t.string   "provider"
-    t.boolean  "is_incognito"
     t.integer  "year_experience_id"
-    t.string   "linkedin_picture_url"
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
     t.string   "email",                  default: "", null: false
@@ -83,10 +91,6 @@ ActiveRecord::Schema.define(version: 20151006022249) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.string   "avatar_file_name"
-    t.string   "avatar_content_type"
-    t.integer  "avatar_file_size"
-    t.datetime "avatar_updated_at"
   end
 
   add_index "candidates", ["email"], name: "index_candidates_on_email", unique: true, using: :btree

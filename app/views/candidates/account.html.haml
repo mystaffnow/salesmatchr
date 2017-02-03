@@ -26,30 +26,18 @@
             %br
             %hr
             %br
-            = f.label "Profile Image"
-            = f.file_field :avatar
-            = f.label "Education Level"
-            %br
-            = f.collection_select(:education_level_id, EducationLevel.all, :id, :name,  {:class => 'form-control selectpickers'})
-            %br
-            = f.label "City"
-            = f.text_field :city, class: 'form-control', validate: true
-            = f.label "State"
-            %br
-            = f.collection_select(:state_id, State.all, :id, :name,  {:class => 'form-control selectpickers'})
-            %br
-            = f.label "Zipcode"
-            = f.text_field :zip, class: 'form-control'
-            = f.hidden_field :ziggeo_token, id: 'ziggeo-token'
-            .video-container
-              .row
-                .col-md-6
-                  %ziggeo{ 'ziggeo-width' => 320, 'ziggeo-height' => 240 }
-                .col-md-5.col-md-offset-1
-                  %p Please introduce yourself and talk about your sales experience, tell us about your top three accomplishments and why are you in sales.  Let your passion come through!  Your video should be no more than a one minute long with 20-30 seconds being ideal so keep it concise.  Feel free to re-record as many times as you need to!
-            %br
-            .btn.btn-default.btn-full.next_button#experience-button
-              Next
+            = f.fields_for :candidate_profile do |profile_fields|
+              = render 'profile_fields', profile_fields: profile_fields
+              
+              .video-container
+                .row
+                  .col-md-6
+                    %ziggeo{ 'ziggeo-width' => 320, 'ziggeo-height' => 240 }
+                  .col-md-5.col-md-offset-1
+                    %p Please introduce yourself and talk about your sales experience, tell us about your top three accomplishments and why are you in sales.  Let your passion come through!  Your video should be no more than a one minute long with 20-30 seconds being ideal so keep it concise.  Feel free to re-record as many times as you need to!
+              %br
+              .btn.btn-default.btn-full.next_button#experience-button
+                Next
 
         // Experience Page
         #experience-panel.account-panel{style: 'display:none'}
@@ -98,20 +86,24 @@
       $('#'+this.id+'-panel').show();
       $(this).addClass('btn-active');
     });
+
     $('.next_button').on('click',function(){
       $('.profile').removeClass('btn-active');
       $('.account-panel').hide();
       $('#'+this.id.split('-')[0]+'-panel').show();
       $('#'+this.id.split('-')[0]).addClass('btn-active');
     });
+
     ZiggeoApi.Events.on("submitted", function (data) {
     	$('#ziggeo-token').val(data.video.token);
     });
+
     $('#archetype-panel').find('input').on('click',function(){
       if ($('#archetype-panel').find('input:checked').length == 20){
         $('#accounts-button').attr('disabled',false);
       }
     });
+
     $('.college-select').on("change", function(){
     });
   }

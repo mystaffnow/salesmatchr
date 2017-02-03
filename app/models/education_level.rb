@@ -9,4 +9,5 @@
 #
 
 class EducationLevel < ActiveRecord::Base
+	has_many :candidate_profiles
 end
