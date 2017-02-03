@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170201072643) do
+ActiveRecord::Schema.define(version: 20170202081953) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -120,16 +120,26 @@ ActiveRecord::Schema.define(version: 20170201072643) do
     t.datetime "updated_at",         null: false
   end
 
+  create_table "employer_profiles", force: :cascade do |t|
+    t.integer  "employer_id"
+    t.string   "website"
+    t.string   "ziggeo_token"
+    t.string   "zip"
+    t.string   "city"
+    t.integer  "state_id"
+    t.string   "description"
+    t.string   "avatar_file_name"
+    t.string   "avatar_content_type"
+    t.integer  "avatar_file_size"
+    t.datetime "avatar_updated_at"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+  end
+
   create_table "employers", force: :cascade do |t|
     t.string   "first_name"
     t.string   "last_name"
     t.string   "company"
-    t.integer  "state_id"
-    t.string   "city"
-    t.string   "zip"
-    t.string   "description"
-    t.string   "website"
-    t.string   "ziggeo_token"
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
     t.string   "email",                  default: "", null: false
@@ -142,10 +152,6 @@ ActiveRecord::Schema.define(version: 20170201072643) do
     t.datetime "last_sign_in_at"
     t.inet     "current_sign_in_ip"
     t.inet     "last_sign_in_ip"
-    t.string   "avatar_file_name"
-    t.string   "avatar_content_type"
-    t.integer  "avatar_file_size"
-    t.datetime "avatar_updated_at"
   end
 
   add_index "employers", ["email"], name: "index_employers_on_email", unique: true, using: :btree

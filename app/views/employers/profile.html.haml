@@ -2,17 +2,17 @@
   .container.padded-container
     .row
       .col-md-3
-        = image_tag current_employer.avatar.url(:medium)
+        = image_tag @profile.avatar.url(:medium)
       .col-md-9
         %h2= current_employer.company
-        %h5= "#{current_employer.city} #{current_employer.state ? current_employer.state.name: ''}, #{current_employer.zip}"
+        %h5= "#{@profile.city} #{@profile.state ? @profile.state.name: ''}, #{@profile.zip}"
         %br
-        %p= current_employer.description
+        %p= @profile.description
         %br
         = link_to "Edit Profile", employers_account_path, class: "btn btn-default"
         = link_to 'Create New Job', new_job_path, class: 'btn btn-default'
-    - if current_employer.ziggeo_token?
+    - if @profile.ziggeo_token?
       %hr
       .row
         .col-md-6.col-md-offset-3
-          %ziggeo{ 'ziggeo-video' => current_employer.ziggeo_token, 'ziggeo-width' => 538, 'ziggeo-height' => 288}
+          %ziggeo{ 'ziggeo-video' => @profile.ziggeo_token, 'ziggeo-width' => 538, 'ziggeo-height' => 288}

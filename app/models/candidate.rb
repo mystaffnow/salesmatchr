@@ -39,22 +39,17 @@ class Candidate < ActiveRecord::Base
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable, :omniauthable,
   :recoverable, :rememberable, :trackable, :validatable,:omniauth_providers => [:linkedin]
-  has_one :candidate_profile
+  has_one :candidate_profile, dependent: :destroy
   has_many :experiences
   has_many :educations
   has_many :candidate_question_answers
   has_many :job_candidates
-  # belongs_to :state
-  # belongs_to :education_level
   belongs_to :year_experience
   accepts_nested_attributes_for :candidate_profile
   accepts_nested_attributes_for :experiences, allow_destroy: true
   accepts_nested_attributes_for :educations, allow_destroy: true
   accepts_nested_attributes_for :candidate_question_answers, allow_destroy: true
   attr_accessor :flash_notice
-  attr_accessor :avatar
-  # has_attached_file :avatar,  :default_url => "/img/missing.png", :styles => { :medium => "200x200#" }
-  # validates_attachment_content_type :avatar, :content_type => /\Aimage\/.*\Z/
 
   def name
     return self.first_name + " " + self.last_name
@@ -123,18 +118,6 @@ class Candidate < ActiveRecord::Base
   def email_required?
     super #&& provider.blank?
   end
-  # def avatar_url
-  #   if is_incognito
-  #     '/img/incognito.png'
-  #   else
-  #     if self.avatar.to_s == "/img/missing.png" && self.linkedin_picture_url
-  #       self.linkedin_picture_url
-  #     else
-  #       self.avatar.url(:medium)
-  #     end
-  #   end
-
-  # end
   def archetype_string
     if !self.archetype_score
       return 'n/a'
@@ -155,5 +138,4 @@ class Candidate < ActiveRecord::Base
       return "Relaxed Farmer"
     end
   end
-
 end

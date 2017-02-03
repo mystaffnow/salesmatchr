@@ -1,7 +1,7 @@
 .container.padded-container
   #account
     #new-registration
-      = form_for(current_employer, validate: true, url: employers_account_path, html: { method: :put }) do |f|
+      = form_for(@profile, validate: true, url: employers_account_path, html: { method: :put }) do |f|
         #accounts-panel.profile-panel
           .container
             .account-panel

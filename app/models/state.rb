@@ -10,4 +10,5 @@
 
 class State < ActiveRecord::Base
   has_many :candidate_profile
+  has_many :employer_profile
 end

@@ -1,18 +1,19 @@
-.profile
-  .container.padded-container
-    .row
-      .col-md-12.text-center
-        = image_tag @employer.avatar.url(:medium)
-    .text-center
-      %h2= @employer.company
-      %h5= "#{@employer.city} #{@employer.state ? @employer.state.name: ''}, #{@employer.zip}"
+- if @profile.present?
+  .profile
+    .container.padded-container
+      .row
+        .col-md-12.text-center
+          = image_tag @profile.avatar.url(:medium)
+      .text-center
+        %h2= @employer.company
+        %h5= "#{@profile.city} #{@profile.state ? @profile.state.name: ''}, #{@profile.zip}"
 
-    %hr
+      %hr
 
-    .row
-      .col-md-6
-        %h2= "About #{@employer.company}"
-        = @employer.description
-      .col-md-6
-        - if @employer.ziggeo_token != nil && @employer.ziggeo_token != ''
-          %ziggeo{ 'ziggeo-video' => @employer.ziggeo_token, 'ziggeo-width' => 553, 'ziggeo-height' => 297}
+      .row
+        .col-md-6
+          %h2= "About #{@employer.company}"
+          = @profile.description
+        .col-md-6
+          - if @profile.ziggeo_token != nil && @profile.ziggeo_token != ''
+            %ziggeo{ 'ziggeo-video' => @profile.ziggeo_token, 'ziggeo-width' => 553, 'ziggeo-height' => 297}

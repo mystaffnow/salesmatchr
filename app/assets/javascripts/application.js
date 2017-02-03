@@ -12,7 +12,6 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require turbolinks
 //= require bootstrap-wysihtml5
 //= require bootstrap-wysihtml5/locales
 //= require rails.validations
