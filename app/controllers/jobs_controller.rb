@@ -1,7 +1,11 @@
 class JobsController < ApplicationController
   before_action :set_job, only: [:show, :edit, :update, :destroy, :inactivate_job, :employer_show, :employer_show_actions, :employer_show_matches, :employer_show_shortlists]
-  before_filter :authenticate_employer!, only: [:employer_index, :employer_archive]
-
+  before_filter :authenticate_employer!, only: [:new, :create, :edit, :update,
+                                                 :destroy, :employer_index, :employer_archive,
+                                                 :employer_show, :employer_show_actions,
+                                                 :employer_show_matches, :employer_show_shortlists,
+                                                 :employer_index, :employer_archive, :inactivate_job
+                                               ]
   # GET /jobs
   # GET /jobs.json
   def index
