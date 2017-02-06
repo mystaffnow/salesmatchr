@@ -1,5 +1,5 @@
 class JobCandidatesController < ApplicationController
-  before_action :set_job_candidate, only: [:show, :edit, :update, :destroy, :receipt]
+  before_action :set_job_candidate, only: [:update, :receipt]
   before_action :authenticate_candidate!, only: [:index]
 
   def index
