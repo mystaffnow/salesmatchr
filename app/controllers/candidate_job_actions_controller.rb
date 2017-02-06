@@ -1,5 +1,8 @@
 class CandidateJobActionsController < ApplicationController
   before_action :set_candidate_job_action, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_candidate!, only: [:candidate_job_saved,
+                                                 :candidate_job_viewed,
+                                                 :candidate_matches]
 
   # GET /candidate_job_actions
   # GET /candidate_job_actions.json
