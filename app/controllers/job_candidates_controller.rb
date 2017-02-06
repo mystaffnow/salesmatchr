@@ -48,6 +48,7 @@ class JobCandidatesController < ApplicationController
   # This action is used by employer to remove this candidate from the job in which this candidate had applied already.
   def remove_candidate
     job_candidate = JobCandidate.where(:job_id => params[:job_id], :candidate_id => params[:candidate_id]).first
+    authorize(job_candidate)
     job_candidate.status = JobCandidate.statuses[:deleted]
     job_candidate.save
 
@@ -63,11 +64,12 @@ class JobCandidatesController < ApplicationController
     tracker.track('employer-'+current_employer.email, 'shortlisted candidate')
 
     job_candidate = JobCandidate.where(:job_id => params[:job_id], :candidate_id => params[:candidate_id]).first
+    authorize(job_candidate)
     job_candidate.status = JobCandidate.statuses[:shortlist]
     job_candidate.save
 
     redirect_to employer_show_path(params[:job_id]), notice: 'Candidate shortlisted'
-  end
+  end 
 
   private
 
