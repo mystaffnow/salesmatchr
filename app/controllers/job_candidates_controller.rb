@@ -1,5 +1,7 @@
 class JobCandidatesController < ApplicationController
   before_action :set_job_candidate, only: [:show, :edit, :update, :destroy, :receipt]
+  before_action :authenticate_candidate!, only: [:index]
+
   def index
     @job_candidates = JobCandidate.where(:candidate_id => current_candidate.id)
   end
