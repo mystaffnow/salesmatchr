@@ -58,17 +58,13 @@ class JobsController < ApplicationController
 
   def employer_show
     authorize @job
-    @job.job_candidates.each do |job_candidate|
-      if job_candidate.submitted?
-        job_candidate.viewed!
-      end
-    end
-    @job_candidates = @job.job_candidates.to_a
-    @job_candidates.each do |job_candidate|
-      if job_candidate.shortlist? || job_candidate.deleted?
-        @job_candidates.delete job_candidate
-      end
-    end
+
+    @job.job_candidates
+        .where(status: JobCandidate.statuses[:submitted])
+        .map { |jc| jc.viewed! }
+
+    @job_candidates = @job.job_candidates.where("status NOT IN (?)", [JobCandidate.statuses[:shortlist],
+                                                    JobCandidate.statuses[:deleted]])
   end
 
   def employer_show_actions
