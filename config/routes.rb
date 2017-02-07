@@ -6,9 +6,9 @@ Rails.application.routes.draw do
 
   resources :jobs
 
-  resources :educations
+  resources :educations, only: [:destroy]
 
-  resources :experiences
+  resources :experiences, only: [:destroy]
 
   resources :job_candidates
 
