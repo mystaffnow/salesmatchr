@@ -1,18 +1,19 @@
-- if @candidate.experiences == 0
-  %h2 hi
+.row
+  .col-md-10
+    %h4
+      = experience.position
+    %p
+      = experience.company
+    %small
+      = format_date experience.start_date
+      - if !experience.is_current
+        \-
+        = format_date experience.end_date
+      - else
+        \- currently employed
+    %p
+      = experience.description
 
-%h4
-  = experience.position
-%p
-  = experience.company
-%small
-  = format_date experience.start_date
-  - if !experience.is_current
-    \-
-    = format_date experience.end_date
-  - else
-    \- currently employed
-%p
-  = experience.description
-
-%hr
+    %hr
+  .col-md-2
+    = link_to "X", experience_path(experience.id), method: :delete, data: { confirm: 'Do you want to remove this record?' }, class: 'btn btn-sm btn-danger'
