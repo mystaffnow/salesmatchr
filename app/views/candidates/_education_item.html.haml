@@ -1,16 +1,19 @@
-%h4
-  - if education.college
-    - if education.college_other && education.college_other != ''
-      = education.college_other
-    - else
-      = education.college.name
-%p
-  = education.education_level.name
-%p
-  = format_date education.start_date
-  \-
-  = format_date education.end_date
-%p
-  = education.description
-
+.row
+  .col-md-10
+    %h4
+      - if education.college
+        - if education.college_other && education.college_other != ''
+          = education.college_other
+        - else
+          = education.college.name
+    %p
+      = education.education_level.name
+    %p
+      = format_date education.start_date
+      \-
+      = format_date education.end_date
+    %p
+      = education.description
+  .col-md-2
+    = link_to "X", education_path(education.id), method: :delete, data: { confirm: 'Do you want to remove this record?' }, class: 'btn btn-sm btn-danger'
 %hr

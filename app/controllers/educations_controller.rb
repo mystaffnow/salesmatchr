@@ -5,6 +5,7 @@ class EducationsController < ApplicationController
   # DELETE /educations/1
   # DELETE /educations/1.json
   def destroy
+    authorize @education
     @education.destroy
     respond_to do |format|
       format.html { redirect_to educations_url, notice: 'Education was successfully destroyed.' }
