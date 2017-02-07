@@ -1,10 +1,11 @@
 class JobsController < ApplicationController
-  before_action :set_job, only: [:show, :edit, :update, :destroy, :inactivate_job, :employer_show, :employer_show_actions, :employer_show_matches, :employer_show_shortlists]
+  before_action :set_job, only: [:show, :edit, :update, :destroy, :inactivate_job, :employer_show, :employer_show_actions, :employer_show_matches, :employer_show_shortlists, :employer_show_remove]
   before_action :authenticate_employer!, only: [:new, :create, :edit, :update,
                                                  :destroy, :employer_index, :employer_archive,
                                                  :employer_show, :employer_show_actions,
                                                  :employer_show_matches, :employer_show_shortlists,
-                                                 :employer_index, :employer_archive, :inactivate_job
+                                                 :employer_index, :employer_archive, :inactivate_job,
+                                                 :employer_show_remove
                                                ]
   # GET /jobs
   # GET /jobs.json
@@ -78,6 +79,11 @@ class JobsController < ApplicationController
   def employer_show_shortlists
     authorize @job
     @shortlists = JobCandidate.where(:job_id => params[:id], :status => JobCandidate.statuses[:shortlist])
+  end
+
+  def employer_show_remove
+    authorize @job
+    @removed_job_candidates = JobCandidate.where(:job_id => params[:id], :status => JobCandidate.statuses[:deleted])
   end
 
   def employer_index

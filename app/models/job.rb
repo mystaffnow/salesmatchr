@@ -50,6 +50,9 @@ class Job < ActiveRecord::Base
   def shortlist
     Candidate.joins(:job_candidates).where("job_candidates.job_id = ? and job_candidates.status = ?", self.id, JobCandidate.statuses[:shortlist])
   end
+  def deleted
+    Candidate.joins(:job_candidates).where("job_candidates.job_id = ? and job_candidates.status = ?", self.id, JobCandidate.statuses[:deleted])
+  end
   def full_street_address
     self.city + " " + self.state.name + " " + self.zip
   end

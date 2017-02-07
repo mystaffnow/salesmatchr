@@ -42,6 +42,10 @@ class JobPolicy < ApplicationPolicy
 		user.is_owner_of?(job)
 	end
 
+	def employer_show_remove?
+		user.is_owner_of?(job)
+	end
+
 	def employer_show_matches?
 		user.is_owner_of?(job)
 	end
