@@ -6,13 +6,16 @@ class EmployersController < ApplicationController
   def profile
     authorize @profile
   end
+
   def account
     authorize @profile
   end
+
   def public
     @employer = Employer.find(params[:id])
     @profile = @employer.try(:employer_profile)
   end
+
   def update
     authorize @profile
     respond_to do |format|
@@ -23,6 +26,7 @@ class EmployersController < ApplicationController
       end
     end
   end
+  
   private
   # Never trust parameters from the scary internet, only allow the white list through.
   def employer_params

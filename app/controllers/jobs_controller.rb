@@ -70,24 +70,30 @@ class JobsController < ApplicationController
       end
     end
   end
+
   def employer_show_actions
     authorize @job
   end
+
   def employer_show_matches
     authorize @job
   end
+
   def employer_show_shortlists
     authorize @job
     @shortlists = JobCandidate.where(:job_id => params[:id], :status => JobCandidate.statuses[:shortlist])
   end
+
   def employer_index
     @jobs = Job.where(employer_id: current_employer.id, is_active: true )
     @inactive_job_count = Job.where(employer_id: current_employer.id, is_active: false ).count
   end
+
   def employer_archive
     @jobs = Job.where(employer_id: current_employer.id, is_active: false )
     @active_job_count = Job.where(employer_id: current_employer.id, is_active: true ).count
   end
+  
   def inactivate_job
     authorize @job
     @job.is_active = !@job.is_active
@@ -165,13 +171,13 @@ class JobsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_job
-      @job = Job.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_job
+    @job = Job.find(params[:id])
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def job_params
-      params.require(:job).permit(:distance, :job_function_id,:employer_id, :city, :state_id, :archetype_low, :archetype_high, :salary_low, :salary_high, :zip, :is_remote, :title, :description, :is_active, :experience_years, :stripe_token)
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def job_params
+    params.require(:job).permit(:distance, :job_function_id,:employer_id, :city, :state_id, :archetype_low, :archetype_high, :salary_low, :salary_high, :zip, :is_remote, :title, :description, :is_active, :experience_years, :stripe_token)
+  end
 end
