@@ -30,9 +30,8 @@
           .row
             .col-md-6
             - if !job_candidate.accepted?
-              .col-md-2
-                = form_for job_candidate do |f|
-                  = f.hidden_field :status, id: 'is_hired', value: "#{get_status_key_by_value(JobCandidate.statuses[:accepted])}"
+              .col-md-2  
+                = link_to accept_candidate_path(job_candidate.id), method: :put do
                   %button.btn.btn-default.force-form-button#hire{style: 'width: 128px'}
                     %i.fa.fa-check
                     Accept

@@ -65,9 +65,7 @@
 
                 .col-md-4.job-actions
                   - if !job_candidate.withdrawn?
-                    = form_for(job_candidate) do |f|
-                      = f.hidden_field :status, value: "#{get_status_key_by_value(JobCandidate.statuses[:withdrawn])}"
-                      %button.btn.btn-info#hire{:data => { :confirm => 'Are you sure?' }}= "Withdraw Application"
+                    = link_to "Withdraw", withdraw_candidate_path(job_candidate.id), method: :put, data: {confirm: 'Do you want to withdraw this application?'}, class: 'button btn btn-info', id: 'hire'
               %hr
         .withdrawn-jobs.hidden
           - @job_candidates.each do |job_candidate|
