@@ -2,7 +2,9 @@ class JobCandidatesController < ApplicationController
   before_action :set_job_candidate, only: [:update, :receipt]
   before_action :authenticate_candidate!, only: [:index, :apply]
   before_action :authenticate_employer!, only: [:remove_candidate, :shortlist_candidate]
+  before_action :require_candidate_profile, only: [:index, :apply]
 
+  # List all candiadte's job based on JobCandidate rec of current_candidate
   def index
     @job_candidates = JobCandidate.where(:candidate_id => current_candidate.id)
   end
@@ -79,5 +81,12 @@ class JobCandidatesController < ApplicationController
 
   def job_candidate_params
     params.require(:job_candidate).permit(:is_hired, :status, :job_id, :candidate_id)
+  end
+
+  # candidate should save his profile info before applying any job of employer because employer can view candidate's profile.
+  def require_candidate_profile
+    unless current_candidate.candidate_profile.present?
+      redirect_to candidates_account_path, notice: 'Complete your profile information'
+    end
   end
 end
