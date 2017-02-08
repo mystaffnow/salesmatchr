@@ -3,6 +3,7 @@ class CandidatesController < ApplicationController
   def archetype
 
   end
+
   def profile
     if params[:id]
       @candidate = Candidate.find(params.permit(:id)[:id])
@@ -12,9 +13,11 @@ class CandidatesController < ApplicationController
       @profile = current_candidate.candidate_profile
     end
   end
+
   def account
     current_candidate.build_candidate_profile if !current_candidate.candidate_profile
   end
+
   def update
     respond_to do |format|
       if current_candidate.update(candidate_params)
@@ -25,6 +28,7 @@ class CandidatesController < ApplicationController
       end
     end
   end
+
   def update_archetype
     tracker = Mixpanel::Tracker.new(ENV["NT_MIXPANEL_TOKEN"])
     tracker.track('candidate-'+current_candidate.email, 'updated archetype')
@@ -39,9 +43,11 @@ class CandidatesController < ApplicationController
       end
     end
   end
+
   def archetype_result
 
   end
+
   #should make a put but tired
   def incognito
     tracker = Mixpanel::Tracker.new(ENV["NT_MIXPANEL_TOKEN"])
@@ -53,6 +59,7 @@ class CandidatesController < ApplicationController
     profile.save
     render json: 'created'
   end
+  
   private
     # Never trust parameters from the scary internet, only allow the white list through.
     def candidate_params
