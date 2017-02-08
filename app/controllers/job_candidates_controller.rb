@@ -26,27 +26,6 @@ class JobCandidatesController < ApplicationController
     @job = @job_candidate.job
   end
 
-  # # this action can access by candidate or employer
-  # # candidate use it to withdraw, employer use it to accept candidate's job application
-  # def update
-  #   respond_to do |format|
-  #     if @job_candidate.update(job_candidate_params)
-  #       #super should fix
-  #       if current_candidate
-  #         EmployerMailer.send_job_withdrawn(@job_candidate.job.employer.email, @job_candidate.job).deliver
-  #         format.html { redirect_to job_candidates_path, notice: 'Successfully withdrawn.' }
-  #       elsif current_employer
-
-  #         tracker = Mixpanel::Tracker.new(ENV["NT_MIXPANEL_TOKEN"])
-  #         tracker.track('employer-'+current_employer.email, 'accepted candidate')
-
-  #         CandidateMailer.send_job_hire(@job_candidate.candidate.email, @job_candidate.job).deliver
-  #         format.html { redirect_to employer_jobs_path, notice: 'Successfully accepted, an email was sent to the candidate.' }
-  #       end
-  #     end
-  #   end
-  # end
-
   # Candidate can withdraw job application
   # signed_in candidate is required
   def withdraw
