@@ -13,12 +13,6 @@ class EmployersController < ApplicationController
     authorize @profile
   end
 
-  # Get employer profile publicly
-  def public
-    @employer = Employer.find(params[:id])
-    @profile = @employer.try(:employer_profile)
-  end
-
   # update profile information of employer
   def update
     authorize @profile
@@ -29,6 +23,12 @@ class EmployersController < ApplicationController
         format.html { render :account }
       end
     end
+  end
+
+  # Get employer profile publicly
+  def public
+    @employer = Employer.find(params[:id])
+    @profile = @employer.try(:employer_profile)
   end
   
   private

@@ -9,4 +9,12 @@ class EmployerProfilePolicy < ApplicationPolicy
 	def profile?
 		user.is_owner_of?(profile)
 	end
+
+	def account?
+		user.is_owner_of?(profile)
+	end
+
+	def update?
+		user.is_owner_of?(profile)
+	end
 end
