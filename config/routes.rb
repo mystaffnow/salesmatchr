@@ -34,6 +34,8 @@ Rails.application.routes.draw do
   get 'job_receipt/:id' => 'job_candidates#receipt', as: 'job_receipt'
   post 'shortlist_candidate/:job_id/:candidate_id' => 'job_candidates#shortlist_candidate', as: 'shortlist_candidate'
   post 'remove_candidate/:job_id/:candidate_id' => 'job_candidates#remove_candidate', as: 'remove_candidate'
+  put 'withdraw/:id' => 'job_candidates#withdraw', as: 'withdraw_candidate'
+  put 'accept_candidate/:id' => 'job_candidates#accept_candidate', as: 'accept_candidate'
   get 'job_candidates/:id/apply' => "job_candidates#apply", as: "create_job_candidates"
 
   # Routes for employers
