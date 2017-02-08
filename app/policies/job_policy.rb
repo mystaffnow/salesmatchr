@@ -29,4 +29,24 @@ class JobPolicy < ApplicationPolicy
 	def destroy?
 		user.is_owner_of?(job)
 	end
+
+	def employer_show?
+		user.is_owner_of?(job)
+	end
+
+	def employer_show_actions?
+		user.is_owner_of?(job)
+	end
+
+	def employer_show_shortlists?
+		user.is_owner_of?(job)
+	end
+
+	def employer_show_matches?
+		user.is_owner_of?(job)
+	end
+
+	def inactivate_job?
+		user.is_owner_of?(job)
+	end
 end

@@ -25,23 +25,44 @@
                     %h3= job_candidate.job.title
                     %p= job_candidate.job.description
                     %p
-                      - if job_candidate.submitted?
-                        %b.secondary-color
+                      - if job_candidate.status.in?(["submitted", "viewed", "shortlist", "accepted", "deleted"])
+                        - if job_candidate.submitted?
+                          %b.secondary-color
+                            Submitted
+                        - else
                           Submitted
-                      - else
-                        Submitted
-                      |
-                      - if job_candidate.viewed?
-                        %b.secondary-color
+                        |
+                        - if job_candidate.viewed?
+                          %b.secondary-color
+                            Viewed
+                        - else
                           Viewed
-                      - else
-                        Viewed
-                      |
-                      - if job_candidate.accepted?
-                        %b.secondary-color
+                        |
+                        - if job_candidate.shortlist?
+                          %b.secondary-color
+                            Shortlist
+                        - else
+                          Shortlist
+                        |
+                        - if job_candidate.accepted?
+                          %b.secondary-color
+                            Accepted
+                        - else
                           Accepted
+                        |
+                        - if job_candidate.deleted?
+                          %b.secondary-color
+                            deleted
+                        - else
+                          deleted
+                        |
                       - else
-                        Accepted
+                        - if job_candidate.purposed?
+                          %b.secondary-color
+                            Purposed
+                        - else
+                          Purposed
+
                 .col-md-4.job-actions
                   - if !job_candidate.withdrawn?
                     = form_for(job_candidate) do |f|

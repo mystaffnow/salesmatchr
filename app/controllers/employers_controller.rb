@@ -1,16 +1,20 @@
 class EmployersController < ApplicationController
   skip_before_filter :check_employer, only: [:account, :update]
+  before_action :authenticate_employer!, only: [:profile, :update, :account]
   before_action :set_profile, only: [:profile, :account, :update]
-  def profile
 
+  def profile
+    authorize @profile
   end
   def account
+    authorize @profile
   end
   def public
     @employer = Employer.find(params[:id])
     @profile = @employer.try(:employer_profile)
   end
   def update
+    authorize @profile
     respond_to do |format|
       if @profile.update(employer_params)
         format.html { redirect_to employers_profile_path, notice: 'Profile was successfully updated.' }

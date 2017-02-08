@@ -1,6 +1,11 @@
 class JobsController < ApplicationController
   before_action :set_job, only: [:show, :edit, :update, :destroy, :inactivate_job, :employer_show, :employer_show_actions, :employer_show_matches, :employer_show_shortlists]
-
+  before_filter :authenticate_employer!, only: [:new, :create, :edit, :update,
+                                                 :destroy, :employer_index, :employer_archive,
+                                                 :employer_show, :employer_show_actions,
+                                                 :employer_show_matches, :employer_show_shortlists,
+                                                 :employer_index, :employer_archive, :inactivate_job
+                                               ]
   # GET /jobs
   # GET /jobs.json
   def index
@@ -52,6 +57,7 @@ class JobsController < ApplicationController
   end
 
   def employer_show
+    authorize @job
     @job.job_candidates.each do |job_candidate|
       if job_candidate.submitted?
         job_candidate.viewed!
@@ -65,24 +71,25 @@ class JobsController < ApplicationController
     end
   end
   def employer_show_actions
-
+    authorize @job
   end
   def employer_show_matches
-
+    authorize @job
   end
   def employer_show_shortlists
+    authorize @job
     @shortlists = JobCandidate.where(:job_id => params[:id], :status => JobCandidate.statuses[:shortlist])
   end
   def employer_index
     @jobs = Job.where(employer_id: current_employer.id, is_active: true )
     @inactive_job_count = Job.where(employer_id: current_employer.id, is_active: false ).count
   end
-
   def employer_archive
     @jobs = Job.where(employer_id: current_employer.id, is_active: false )
     @active_job_count = Job.where(employer_id: current_employer.id, is_active: true ).count
   end
   def inactivate_job
+    authorize @job
     @job.is_active = !@job.is_active
     @job.save
     respond_to do |format|
