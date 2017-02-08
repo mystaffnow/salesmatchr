@@ -3,19 +3,23 @@ class EmployersController < ApplicationController
   before_action :authenticate_employer!, only: [:profile, :update, :account]
   before_action :set_profile, only: [:profile, :account, :update]
 
+  # view employer's profile
   def profile
     authorize @profile
   end
 
+  # submit account information
   def account
     authorize @profile
   end
 
+  # Get employer profile publicly
   def public
     @employer = Employer.find(params[:id])
     @profile = @employer.try(:employer_profile)
   end
 
+  # update profile information of employer
   def update
     authorize @profile
     respond_to do |format|

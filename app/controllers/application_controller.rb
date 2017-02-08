@@ -9,6 +9,7 @@ class ApplicationController < ActionController::Base
 
   rescue_from Pundit::NotAuthorizedError, with: :action_not_authorized
 
+  # authorize user
   def pundit_user
     if candidate_signed_in?
       current_candidate
@@ -19,10 +20,12 @@ class ApplicationController < ActionController::Base
 
   protected
 
+  # strong parameters config for devise controllers, views
   def configure_permitted_parameters
     devise_parameter_sanitizer.for(:sign_up) << :name
   end
 
+  # if archetype_score is nil, candidate should submit archetype form
   def check_candidate
     if candidate_signed_in?
       if !current_candidate.can_proceed
@@ -30,6 +33,8 @@ class ApplicationController < ActionController::Base
       end
     end
   end
+
+  # zip, city, state, email, fullname, website, etc of employer is required
   def check_employer
     if employer_signed_in?
       if !current_employer.can_proceed
@@ -40,6 +45,7 @@ class ApplicationController < ActionController::Base
 
   private
 
+  # when action is unauthorized, it goes to url saved on referrer or root url and alert message will displays
   def action_not_authorized
     flash[:alert] = "You are not authorized to perform this action."
     redirect_to(request.referrer || root_path)

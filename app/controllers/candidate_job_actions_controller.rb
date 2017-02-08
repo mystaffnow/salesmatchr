@@ -2,6 +2,7 @@ class CandidateJobActionsController < ApplicationController
   before_action :authenticate_candidate!, only: [:candidate_job_saved,
                                                  :candidate_job_viewed,
                                                  :candidate_matches]
+  # list of the jobs saved by candidate
   def candidate_job_saved
     @candidate_job_action = CandidateJobAction.where(candidate_id: current_candidate.id, is_saved: true)
 
@@ -9,6 +10,7 @@ class CandidateJobActionsController < ApplicationController
     tracker.track('candidate-'+current_candidate.email, 'viewed saved')
   end
 
+  # List of the jobs which are viewed by candidate
   def candidate_job_viewed
     @candidate_job_action = CandidateJobAction.where(candidate_id: current_candidate.id).order('created_at DESC')
 
@@ -16,6 +18,7 @@ class CandidateJobActionsController < ApplicationController
     tracker.track('candidate-'+current_candidate.email, 'viewed recently viewed jobs')
   end
   
+  # list of matched jobs of candidate
   def candidate_matches
     @jobs = Job.where("archetype_low <= ? and archetype_high >= ? and jobs.is_active = TRUE", current_candidate.archetype_score, current_candidate.archetype_score)
 
