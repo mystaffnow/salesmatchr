@@ -15,7 +15,8 @@
       = experience.description
 
   .col-md-2
-    = link_to "X", experience_path(experience.id), method: :delete, data: { confirm: 'Do you want to remove this record?' }, class: 'btn btn-sm btn-danger'
+    - if current_candidate
+      = link_to "X", experience_path(experience.id), method: :delete, data: { confirm: 'Do you want to remove this record?' }, class: 'btn btn-sm btn-danger'
 
 %hr
   
