@@ -1,6 +1,6 @@
 class JobsController < ApplicationController
   before_action :set_job, only: [:show, :edit, :update, :destroy, :inactivate_job, :employer_show, :employer_show_actions, :employer_show_matches, :employer_show_shortlists]
-  before_filter :authenticate_employer!, only: [:new, :create, :edit, :update,
+  before_action :authenticate_employer!, only: [:new, :create, :edit, :update,
                                                  :destroy, :employer_index, :employer_archive,
                                                  :employer_show, :employer_show_actions,
                                                  :employer_show_matches, :employer_show_shortlists,
