@@ -13,4 +13,12 @@ class JobCandidatePolicy < ApplicationPolicy
 	def shortlist_candidate?
 		user.is_owner_of?(job_candidate.job)
 	end
+
+	def withdraw?
+		user.id == job_candidate.candidate_id
+	end
+
+	def accept_candidate?
+		user.is_owner_of?(job_candidate.job)
+	end
 end
