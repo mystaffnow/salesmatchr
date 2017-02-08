@@ -1,7 +1,7 @@
 class JobsController < ApplicationController
   before_action :set_job, only: [:show, :edit, :update, :destroy, :inactivate_job, :employer_show, :employer_show_actions, :employer_show_matches, :employer_show_shortlists, :employer_show_remove]
   before_action :authenticate_employer!, only: [:new, :create, :edit, :update,
-                                                 :destroy, :employer_index, :employer_archive,
+                                                 :destroy, :employer_archive,
                                                  :employer_show, :employer_show_actions,
                                                  :employer_show_matches, :employer_show_shortlists,
                                                  :employer_index, :employer_archive, :inactivate_job,
@@ -25,6 +25,8 @@ class JobsController < ApplicationController
     end
   end
 
+  # signed_in employer required
+  # employer can submit new job
   # GET /jobs/new
   def new
     @job = Job.new
@@ -44,67 +46,7 @@ class JobsController < ApplicationController
     end
   end
 
-  def send_intro
-    @job = Job.find(params[:id])
-    @candidate = Candidate.find(params[:candidate_id])
-
-    CandidateMailer.send_job_intro(@candidate.email, @job).deliver
-    render json: :ok
-  end
-
-  # GET /jobs/1/edit
-  def edit
-    authorize @job
-  end
-
-  def employer_show
-    authorize @job
-
-    @job.job_candidates
-        .where(status: JobCandidate.statuses[:submitted])
-        .map { |jc| jc.viewed! }
-
-    @job_candidates = @job.job_candidates.where("status NOT IN (?)", [JobCandidate.statuses[:shortlist],
-                                                    JobCandidate.statuses[:deleted]])
-  end
-
-  def employer_show_actions
-    authorize @job
-  end
-
-  def employer_show_matches
-    authorize @job
-  end
-
-  def employer_show_shortlists
-    authorize @job
-    @shortlists = JobCandidate.where(:job_id => params[:id], :status => JobCandidate.statuses[:shortlist])
-  end
-
-  def employer_show_remove
-    authorize @job
-    @removed_job_candidates = JobCandidate.where(:job_id => params[:id], :status => JobCandidate.statuses[:deleted])
-  end
-
-  def employer_index
-    @jobs = Job.where(employer_id: current_employer.id, is_active: true )
-    @inactive_job_count = Job.where(employer_id: current_employer.id, is_active: false ).count
-  end
-
-  def employer_archive
-    @jobs = Job.where(employer_id: current_employer.id, is_active: false )
-    @active_job_count = Job.where(employer_id: current_employer.id, is_active: true ).count
-  end
-  
-  def inactivate_job
-    authorize @job
-    @job.is_active = !@job.is_active
-    @job.save
-    respond_to do |format|
-      format.html { redirect_to employer_jobs_path, notice: 'Job was successfully updated.' }
-    end
-  end
-
+  # signed_in employer required
   # POST /jobs
   # POST /jobs.json
   def create
@@ -138,10 +80,13 @@ class JobsController < ApplicationController
     end
   end
 
-  def employer_job_checkout
-
+  # signed_in employer required
+  # GET /jobs/1/edit
+  def edit
+    authorize @job
   end
 
+  # signed_in employer required
   # PATCH/PUT /jobs/1
   # PATCH/PUT /jobs/1.json
   def update
@@ -161,6 +106,7 @@ class JobsController < ApplicationController
     end
   end
 
+  # signed_in employer required
   # DELETE /jobs/1
   # DELETE /jobs/1.json
   def destroy
@@ -170,6 +116,87 @@ class JobsController < ApplicationController
       format.html { redirect_to jobs_url, notice: 'Job was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def send_intro
+    @job = Job.find(params[:id])
+    @candidate = Candidate.find(params[:candidate_id])
+
+    CandidateMailer.send_job_intro(@candidate.email, @job).deliver
+    render json: :ok
+  end
+
+  # GET: employer_jobs/:id
+  # signed_in employer is required
+  # List of the applications who are not removed and shortlisted
+  def employer_show
+    authorize @job
+
+    @job.job_candidates
+        .where(status: JobCandidate.statuses[:submitted])
+        .map { |jc| jc.viewed! }
+
+    @job_candidates = @job.job_candidates.where("status NOT IN (?)", [JobCandidate.statuses[:shortlist],
+                                                    JobCandidate.statuses[:deleted]])
+  end
+
+  # GET: employer_job_actions/:id
+  # signed_in employer is required
+  # List of all candidates who have viewed the job
+  def employer_show_actions
+    authorize @job
+  end
+
+  # GET: employer_job_matches/:id
+  # signed_in employer is required
+  # List of all candidates whose profile matched with job
+  def employer_show_matches
+    authorize @job
+  end
+
+  # GET: employer_job_shortlists/1
+  # signed_in employer is required
+  # List of all candidates whose profile is shortlisted
+  def employer_show_shortlists
+    authorize @job
+    @shortlists = JobCandidate.where(:job_id => params[:id], :status => JobCandidate.statuses[:shortlist])
+  end
+
+  # GET: employer_job_remove/1
+  # signed_in employer is required
+  # List of all candidates whose profile is rejected or delted
+  def employer_show_remove
+    authorize @job
+    @removed_job_candidates = JobCandidate.where(:job_id => params[:id], :status => JobCandidate.statuses[:deleted])
+  end
+
+  # signed_in employer is required
+  # list all open jobs of signed_in employer, count inactive job and open jobs and display on
+  # this page and link count views-matches-applicants-shortlist-removed
+  def employer_index
+    @jobs = Job.where(employer_id: current_employer.id, is_active: true )
+    @inactive_job_count = Job.where(employer_id: current_employer.id, is_active: false ).count
+  end
+
+  # signed_in employer is required
+  # list of inactive jobs, with count of views-matches-applicants
+  def employer_archive
+    @jobs = Job.where(employer_id: current_employer.id, is_active: false )
+    @active_job_count = Job.where(employer_id: current_employer.id, is_active: true ).count
+  end
+  
+  # toggle is_active
+  def inactivate_job
+    authorize @job
+    @job.is_active = !@job.is_active
+    @job.save
+    respond_to do |format|
+      format.html { redirect_to employer_jobs_path, notice: 'Job was successfully updated.' }
+    end
+  end
+
+  def employer_job_checkout
+
   end
 
   private
