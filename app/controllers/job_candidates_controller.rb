@@ -1,7 +1,7 @@
 class JobCandidatesController < ApplicationController
-  before_action :set_job_candidate, only: [:update, :receipt]
-  before_action :authenticate_candidate!, only: [:index, :apply]
-  before_action :authenticate_employer!, only: [:remove_candidate, :shortlist_candidate]
+  before_action :set_job_candidate, only: [:update, :receipt, :withdraw, :accept_candidate]
+  before_action :authenticate_candidate!, only: [:index, :apply, :withdraw]
+  before_action :authenticate_employer!, only: [:accept_candidate, :remove_candidate, :shortlist_candidate]
   before_action :require_candidate_profile, only: [:index, :apply]
 
   # List all candiadte's job based on JobCandidate rec of current_candidate
@@ -26,25 +26,45 @@ class JobCandidatesController < ApplicationController
     @job = @job_candidate.job
   end
 
-  # this action can access by candidate or employer
-  # candidate use it to withdraw, employer use it to accept candidate's job application
-  def update
-    respond_to do |format|
-      if @job_candidate.update(job_candidate_params)
-        #super should fix
-        if current_candidate
-          EmployerMailer.send_job_withdrawn(@job_candidate.job.employer.email, @job_candidate.job).deliver
-          format.html { redirect_to job_candidates_path, notice: 'Successfully withdrawn.' }
-        elsif current_employer
+  # # this action can access by candidate or employer
+  # # candidate use it to withdraw, employer use it to accept candidate's job application
+  # def update
+  #   respond_to do |format|
+  #     if @job_candidate.update(job_candidate_params)
+  #       #super should fix
+  #       if current_candidate
+  #         EmployerMailer.send_job_withdrawn(@job_candidate.job.employer.email, @job_candidate.job).deliver
+  #         format.html { redirect_to job_candidates_path, notice: 'Successfully withdrawn.' }
+  #       elsif current_employer
 
-          tracker = Mixpanel::Tracker.new(ENV["NT_MIXPANEL_TOKEN"])
-          tracker.track('employer-'+current_employer.email, 'accepted candidate')
+  #         tracker = Mixpanel::Tracker.new(ENV["NT_MIXPANEL_TOKEN"])
+  #         tracker.track('employer-'+current_employer.email, 'accepted candidate')
 
-          CandidateMailer.send_job_hire(@job_candidate.candidate.email, @job_candidate.job).deliver
-          format.html { redirect_to employer_jobs_path, notice: 'Successfully accepted, an email was sent to the candidate.' }
-        end
-      end
-    end
+  #         CandidateMailer.send_job_hire(@job_candidate.candidate.email, @job_candidate.job).deliver
+  #         format.html { redirect_to employer_jobs_path, notice: 'Successfully accepted, an email was sent to the candidate.' }
+  #       end
+  #     end
+  #   end
+  # end
+
+  # Candidate can withdraw job application
+  # signed_in candidate is required
+  def withdraw
+    authorize @job_candidate
+    @job_candidate.withdrawn!
+    EmployerMailer.send_job_withdrawn(@job_candidate.job.employer.email, @job_candidate.job).deliver
+    redirect_to job_candidates_path, notice: 'Successfully withdrawn.'
+  end
+
+  # signed_in employer is required
+  # employer can accept candidate's application
+  def accept_candidate
+    authorize(@job_candidate)
+    @job_candidate.accepted!
+    tracker = Mixpanel::Tracker.new(ENV["NT_MIXPANEL_TOKEN"])
+    tracker.track('employer-'+current_employer.email, 'accepted candidate')
+    CandidateMailer.send_job_hire(@job_candidate.candidate.email, @job_candidate.job).deliver
+    redirect_to employer_jobs_path, notice: 'Successfully accepted, an email was sent to the candidate.'
   end
 
   # This action is used by employer to remove this candidate from the job in which this candidate had applied already.
