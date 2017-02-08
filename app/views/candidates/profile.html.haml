@@ -23,54 +23,55 @@
     .wrapper-sm
       .container
         .row
-          .col-md-12.text-center
-            - if current_candidate && current_candidate.id == @candidate.id
-              #incognito-panel
-                #incognito-header
-                  Incognito Mode
-                #incognito-content
-                  %input{:checked => "", :name => "my-checkbox", :type => "checkbox", :id => 'incognito', checked: @profile.is_incognito}/
-                  - if @profile.is_incognito
-                    %br
-                    %br
-                    %p Your profile is currently hidden. Turn off incognito to make your profile public.
-                  - else
-                    %br
-                    %br
-                    %p Your profile is currently visible. Turn on incognito to hide your profile.
-        %br
-        %br
-          .col-md-6
-            = image_tag @profile.avatar.url(:medium), id: 'avatar', style: "display:" + (!@profile.is_incognito ? 'block' : 'none'), class: 'profile-image'
-            %img{src: '/img/incognito.png', style: "display:" + (@profile.is_incognito ? 'block' : 'none'), id: 'incognito-img', class: 'profile-image'}
-            - if @profile.ziggeo_token != nil && @profile.ziggeo_token != ''
-              .embed-responsive-item
-                %ziggeo{ 'ziggeo-video' => @profile.ziggeo_token, 'ziggeo-responsive' => true }
-              %br
-            - elsif ( current_candidate == @candidate ) && ( !@profile.ziggeo_token )
-              = link_to 'Edit your profile to add a video', candidates_account_path
-              %br
-            .account-panel
-              .account-content
-                .row
-                  .col-md-6
-                    %h4 Location
-                    %p
-                      = @profile.city
-                      - if @profile.state
-                        = @profile.state.name
-                      = @profile.zip
-                  .col-md-6
-                    %h4 Education Level
-                    %p
-                      - if @profile.education_level
-                        = @profile.education_level.name
-                .row
-                  .col-md-6
-                    %h4 Experience
-                    %p
-                      - if @candidate.year_experience
-                        = @candidate.year_experience.name
+          - if @profile.present?
+            .col-md-12.text-center
+              - if current_candidate && current_candidate.id == @candidate.id
+                #incognito-panel
+                  #incognito-header
+                    Incognito Mode
+                  #incognito-content
+                    %input{:checked => "", :name => "my-checkbox", :type => "checkbox", :id => 'incognito', checked: @profile.is_incognito}/
+                    - if @profile.is_incognito
+                      %br
+                      %br
+                      %p Your profile is currently hidden. Turn off incognito to make your profile public.
+                    - else
+                      %br
+                      %br
+                      %p Your profile is currently visible. Turn on incognito to hide your profile.
+            %br
+            %br
+            .col-md-6
+              = image_tag @profile.avatar.url(:medium), id: 'avatar', style: "display:" + (!@profile.is_incognito ? 'block' : 'none'), class: 'profile-image'
+              %img{src: '/img/incognito.png', style: "display:" + (@profile.is_incognito ? 'block' : 'none'), id: 'incognito-img', class: 'profile-image'}
+              - if @profile.ziggeo_token != nil && @profile.ziggeo_token != ''
+                .embed-responsive-item
+                  %ziggeo{ 'ziggeo-video' => @profile.ziggeo_token, 'ziggeo-responsive' => true }
+                %br
+              - elsif ( current_candidate == @candidate ) && ( !@profile.ziggeo_token )
+                = link_to 'Edit your profile to add a video', candidates_account_path
+                %br
+              .account-panel
+                .account-content
+                  .row
+                    .col-md-6
+                      %h4 Location
+                      %p
+                        = @profile.city
+                        - if @profile.state
+                          = @profile.state.name
+                        = @profile.zip
+                    .col-md-6
+                      %h4 Education Level
+                      %p
+                        - if @profile.education_level
+                          = @profile.education_level.name
+                  .row
+                    .col-md-6
+                      %h4 Experience
+                      %p
+                        - if @candidate.year_experience
+                          = @candidate.year_experience.name
 
           
           // Work Experience & Education
@@ -96,18 +97,19 @@
                   .account-content
                     - @candidate.educations.each do |education|
                       = render 'candidates/education_item', education: education
-:javascript
-  var profile_picture_url = "#{@profile.avatar_url}";
-  $(function(){
-    $('#incognito').on('switchChange.bootstrapSwitch', function(event, state) {
-      var url = '/candidates/incognito/' + $('#incognito').bootstrapSwitch('state');
-      $.get(url)
-      if (state){
-        $('#avatar').hide();
-        $('#incognito-img').show();
-      }else{
-        $('#avatar').show();
-        $('#incognito-img').hide();
-      }
+- if @profile.present?
+  :javascript
+    var profile_picture_url = "#{@profile.avatar_url}";
+    $(function(){
+      $('#incognito').on('switchChange.bootstrapSwitch', function(event, state) {
+        var url = '/candidates/incognito/' + $('#incognito').bootstrapSwitch('state');
+        $.get(url)
+        if (state){
+          $('#avatar').hide();
+          $('#incognito-img').show();
+        }else{
+          $('#avatar').show();
+          $('#incognito-img').hide();
+        }
+      })
     })
-  })
