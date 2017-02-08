@@ -1,15 +1,21 @@
 class CandidatesController < ApplicationController
   skip_before_filter :check_candidate, only: [:archetype, :update_archetype, :update, :incognito]
-  
+  before_action :authenticate_candidate!, only: [:archetype, :account, :update,
+                                                 :update_archetype, :archetype_result,
+                                                 :incognito]
+
+
   # submit archetype
+  # only signed_in candidate access this
   def archetype
 
   end
 
   # view profile
+  # anyone can access
   def profile
     if params[:id]
-      @candidate = Candidate.find(params.permit(:id)[:id])
+      @candidate = Candidate.find(params[:id])
       @profile = @candidate.candidate_profile
     elsif current_cadidate
       @candidate = current_candidate
@@ -18,11 +24,13 @@ class CandidatesController < ApplicationController
   end
 
   # submit profile info
+  # only signed_in candidate access this
   def account
     current_candidate.build_candidate_profile if !current_candidate.candidate_profile
   end
 
   # update candidate, profile, education, work experiences.
+  # only signed_in candidate access this
   def update
     respond_to do |format|
       if current_candidate.update(candidate_params)
@@ -35,6 +43,7 @@ class CandidatesController < ApplicationController
   end
 
   # update archetype
+  # only signed_in candidate access this
   def update_archetype
     tracker = Mixpanel::Tracker.new(ENV["NT_MIXPANEL_TOKEN"])
     tracker.track('candidate-'+current_candidate.email, 'updated archetype')
@@ -51,12 +60,14 @@ class CandidatesController < ApplicationController
   end
 
   # view archetype result and submit form to complete profile
+  # only signed_in candidate access this
   def archetype_result
 
   end
 
   #should make a put but tired
   # Toggle incognito
+  # only signed_in candidate access this
   def incognito
     tracker = Mixpanel::Tracker.new(ENV["NT_MIXPANEL_TOKEN"])
     tracker.track('candidate-'+current_candidate.email, 'incognito toggle')
