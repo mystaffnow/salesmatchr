@@ -21,4 +21,8 @@ class JobCandidatePolicy < ApplicationPolicy
 	def accept_candidate?
 		user.is_owner_of?(job_candidate.job)
 	end
+
+	def receipt?
+		user.is_owner_of?(job_candidate)
+	end
 end

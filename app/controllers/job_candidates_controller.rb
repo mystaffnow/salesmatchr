@@ -1,6 +1,6 @@
 class JobCandidatesController < ApplicationController
   before_action :set_job_candidate, only: [:receipt, :withdraw, :accept_candidate]
-  before_action :authenticate_candidate!, only: [:index, :apply, :withdraw]
+  before_action :authenticate_candidate!, only: [:index, :apply, :receipt, :withdraw]
   before_action :authenticate_employer!, only: [:accept_candidate, :remove_candidate, :shortlist_candidate]
   before_action :require_candidate_profile, only: [:index, :apply]
 
@@ -22,7 +22,10 @@ class JobCandidatesController < ApplicationController
     redirect_to job_receipt_path(job_candidate)
   end
 
+  # url: job_receipt/:id
+  # Only candidate can access this page
   def receipt
+    authorize @job_candidate
     @job = @job_candidate.job
   end
 
