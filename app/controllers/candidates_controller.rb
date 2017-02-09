@@ -3,8 +3,6 @@ class CandidatesController < ApplicationController
   before_action :authenticate_candidate!, only: [:archetype, :account, :update,
                                                  :update_archetype, :archetype_result,
                                                  :incognito]
-
-
   # submit archetype
   # only signed_in candidate access this
   def archetype
