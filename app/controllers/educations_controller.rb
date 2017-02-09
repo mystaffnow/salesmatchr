@@ -8,7 +8,7 @@ class EducationsController < ApplicationController
     authorize @education
     @education.destroy
     respond_to do |format|
-      format.html { redirect_to educations_url, notice: 'Education was successfully destroyed.' }
+      format.html { redirect_to candidates_profile_path(current_candidate.id), notice: 'Education was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
