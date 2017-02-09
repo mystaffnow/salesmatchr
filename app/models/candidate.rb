@@ -51,6 +51,10 @@ class Candidate < ActiveRecord::Base
   accepts_nested_attributes_for :candidate_question_answers, allow_destroy: true
   attr_accessor :flash_notice
 
+   # attr_accessor :avatar
+  has_attached_file :avatar,  :default_url => "/img/missing.png", :styles => { :medium => "200x200#" }
+  validates_attachment_content_type :avatar, :content_type => /\Aimage\/.*\Z/
+
   def name
     return self.first_name + " " + self.last_name
   end

@@ -13,6 +13,7 @@ class CreateCandidateProfiles < ActiveRecord::Migration
 
       t.timestamps null: false
     end
+
     Candidate.all.each do |c|
       CandidateProfile.create(
         candidate_id: c.id,
@@ -23,10 +24,7 @@ class CreateCandidateProfiles < ActiveRecord::Migration
         ziggeo_token: c.ziggeo_token,
         is_incognito: c.is_incognito,
         linkedin_picture_url: c.linkedin_picture_url,
-        avatar_file_name: c.avatar_file_name,
-        avatar_content_type: c.avatar_content_type,
-        avatar_file_size: c.avatar_file_size,
-        avatar_updated_at: c.avatar_updated_at
+        avatar: c.avatar
         )
     end
   end
@@ -41,10 +39,7 @@ class CreateCandidateProfiles < ActiveRecord::Migration
                           :ziggeo_token => cp.ziggeo_token,
                           :is_incognito => cp.is_incognito,
                           :linkedin_picture_url => cp.linkedin_picture_url,
-                          :avatar_file_name => cp.avatar_file_name,
-                          :avatar_content_type => cp.avatar_content_type,
-                          :avatar_file_size => cp.avatar_file_size,
-                          :avatar_updated_at => cp.avatar_updated_at)
+                          avatar: cp.avatar)
     end 
     drop_table :candidate_profiles
   end

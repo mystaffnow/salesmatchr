@@ -38,6 +38,9 @@ class Employer < ActiveRecord::Base
   has_one :employer_profile, dependent: :destroy
   has_many :jobs
 
+  has_attached_file :avatar,  :default_url => "/img/missing.png", :styles => { :medium => "200x200#" }
+  validates_attachment_content_type :avatar, :content_type => /\Aimage\/.*\Z/
+
   def name
     "#{self.first_name} #{self.last_name}"
   end
