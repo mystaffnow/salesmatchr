@@ -15,7 +15,7 @@ class JobCandidatePolicy < ApplicationPolicy
 	end
 
 	def withdraw?
-		user.id == job_candidate.candidate_id
+		user.is_owner_of?(job_candidate)
 	end
 
 	def accept_candidate?
