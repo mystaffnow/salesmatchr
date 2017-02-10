@@ -28,6 +28,7 @@ Rails.application.routes.draw do
   get 'candidates/jobs_saved' => 'candidate_job_actions#candidate_job_saved', as: 'candidate_job_saved'
   get 'candidates/jobs_viewed' => 'candidate_job_actions#candidate_job_viewed', as: 'candidate_job_viewed'
   get 'candidates/candidate_matches' => 'candidate_job_actions#candidate_matches', as: 'candidate_matches'
+  post 'candidates/candidate_save_job/:job_id' => 'candidate_job_actions#candidate_save_job', as: 'candidate_save_job'
 
   # Routes for job_candidates
   get 'my_jobs' => 'job_candidates#index'
