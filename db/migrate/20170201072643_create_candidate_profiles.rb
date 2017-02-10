@@ -15,7 +15,7 @@ class CreateCandidateProfiles < ActiveRecord::Migration
     end
 
     Candidate.all.each do |c|
-      CandidateProfile.create(
+      cp = CandidateProfile.new(
         candidate_id: c.id,
         city: c.city,
         state_id: c.state_id,
@@ -25,7 +25,8 @@ class CreateCandidateProfiles < ActiveRecord::Migration
         is_incognito: c.is_incognito,
         linkedin_picture_url: c.linkedin_picture_url,
         avatar: c.avatar
-        )
+      )
+      cp.save(validate: false)
     end
   end
 

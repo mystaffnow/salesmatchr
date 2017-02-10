@@ -13,7 +13,7 @@ class CreateEmployerProfiles < ActiveRecord::Migration
       t.timestamps null: false
     end
     Employer.all.each do |e|
-      EmployerProfile.create(
+      ep = EmployerProfile.new(
         employer_id: e.id,
         website: e.website,
         ziggeo_token: e.ziggeo_token,
@@ -23,6 +23,7 @@ class CreateEmployerProfiles < ActiveRecord::Migration
         description: e.description,
         avatar: e.avatar
       )
+      ep.save(validate: false)
     end
   end
 
