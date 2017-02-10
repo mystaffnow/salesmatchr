@@ -7,7 +7,6 @@ class CandidateJobActionPolicy < ApplicationPolicy
 	end
 
 	def candidate_save_job?
-		binding.pry
 		user.is_owner_of?(candidate_job_action)
 	end
 end
