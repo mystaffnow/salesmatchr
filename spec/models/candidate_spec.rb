@@ -5,17 +5,8 @@
 #  id                     :integer          not null, primary key
 #  first_name             :string
 #  last_name              :string
-#  city                   :string
-#  state_id               :integer
-#  zip                    :string
-#  education_level_id     :integer
 #  archetype_score        :integer
-#  ziggeo_token           :string
-#  uid                    :string
-#  provider               :string
-#  is_incognito           :boolean
 #  year_experience_id     :integer
-#  linkedin_picture_url   :string
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  email                  :string           default(""), not null
@@ -28,10 +19,6 @@
 #  last_sign_in_at        :datetime
 #  current_sign_in_ip     :string
 #  last_sign_in_ip        :string
-#  avatar_file_name       :string
-#  avatar_content_type    :string
-#  avatar_file_size       :integer
-#  avatar_updated_at      :datetime
 #
 
 require 'rails_helper'
@@ -43,35 +30,35 @@ RSpec.describe Candidate do
 	let(:candidate) {create(:candidate, :first_name => "test", :last_name => "candidate")}
 
 	describe "Association" do
+		it {should have_one(:candidate_profile).dependent(:destroy)}
 		it {should have_many :experiences}
 		it {should have_many :educations}
 		it {should have_many :candidate_question_answers}
 		it {should have_many :job_candidates}
-		it {should belong_to :state}
-		it {should belong_to :education_level}
+		# it {should belong_to :state}
+		# it {should belong_to :education_level}
 		it {should belong_to :year_experience}
 	end
 
 	context 'nested attributes' do
+		it{ should accept_nested_attributes_for(:candidate_profile) }
 		it{ should accept_nested_attributes_for(:experiences).allow_destroy(true) }
 		it{ should accept_nested_attributes_for(:educations).allow_destroy(true) }
 		it{ should accept_nested_attributes_for(:candidate_question_answers).allow_destroy(true) }
 	end
 
-	describe "Paperclip avatar" do
-		it { should have_attached_file(:avatar) }
-	  # it { should validate_attachment_presence(:avatar) }
-	  it { should validate_attachment_content_type(:avatar).
-	  	allowing('image/jpg', 'image/png', 'image/gif').
-	  	rejecting('text/plain', 'text/xml') }
-	  # it { should validate_attachment_size(:avatar).less_than(1.megabytes) }
+	# describe "Paperclip avatar" do
+	# 	it { should have_attached_file(:avatar) }
+	#   it { should validate_attachment_content_type(:avatar).
+	#   	allowing('image/jpg', 'image/png', 'image/gif').
+	#   	rejecting('text/plain', 'text/xml') }
 	  
-	  context '.shoulda matcher' do
-	  	it 'should return default avatar' do
-	  		expect(candidate.avatar_url).to eq('/img/missing.png')
-	  	end
-	  end
-	end
+	#   context '.shoulda matcher' do
+	#   	it 'should return default avatar' do
+	#   		expect(candidate.avatar_url).to eq('/img/missing.png')
+	#   	end
+	#   end
+	# end
 	
 	context 'name' do
 		it 'should return full_name of candidate' do
@@ -170,58 +157,58 @@ RSpec.describe Candidate do
 		end
 	end
 
-	context 'password_required?' do
-		it 'should return false' do
-			candidate.provider = 'linkedin'
-			expect(candidate.password_required?).to eq(false)
-		end
+	# context 'password_required?' do
+	# 	it 'should return false' do
+	# 		candidate.provider = 'linkedin'
+	# 		expect(candidate.password_required?).to eq(false)
+	# 	end
 
-		it 'should return true' do
-			candidate.provider = nil
-			expect(candidate.password_required?).to eq(true)
-		end
-	end
+	# 	it 'should return true' do
+	# 		candidate.provider = nil
+	# 		expect(candidate.password_required?).to eq(true)
+	# 	end
+	# end
 
-	context 'email_required?' do
-		it 'should return false' do
-			candidate.provider = 'linkedin'
-			expect(candidate.email_required?).to eq(false)
-		end
+	# context 'email_required?' do
+	# 	it 'should return false' do
+	# 		candidate.provider = 'linkedin'
+	# 		expect(candidate.email_required?).to eq(false)
+	# 	end
 
-		it 'should return true' do
-			candidate.provider = nil
-			expect(candidate.email_required?).to eq(true)
-		end
-	end
+	# 	it 'should return true' do
+	# 		candidate.provider = nil
+	# 		expect(candidate.email_required?).to eq(true)
+	# 	end
+	# end
 
-	context 'avatar_url.' do
-		before(:each) do
-			@path = File.open("#{Rails.root}/public/img/incognito.png", "rb+")
-			@candidate = create(:candidate, :first_name => "test", :last_name => "candidate", avatar: @path )
-		end
+	# context 'avatar_url.' do
+	# 	before(:each) do
+	# 		@path = File.open("#{Rails.root}/public/img/incognito.png", "rb+")
+	# 		@candidate = create(:candidate, :first_name => "test", :last_name => "candidate", avatar: @path )
+	# 	end
 
-		it 'should display incognito.png' do
-			candidate.is_incognito = true
-			expect(@candidate.avatar_url).to match(/incognito.png/)
-		end
+	# 	it 'should display incognito.png' do
+	# 		candidate.is_incognito = true
+	# 		expect(@candidate.avatar_url).to match(/incognito.png/)
+	# 	end
 
-		it 'should display missing.png' do
-			candidate.is_incognito = nil
-			expect(candidate.avatar_url).to eq("/img/missing.png")
-		end
+	# 	it 'should display missing.png' do
+	# 		candidate.is_incognito = nil
+	# 		expect(candidate.avatar_url).to eq("/img/missing.png")
+	# 	end
 		
-		it 'should display profile.jpg' do
-			candidate.is_incognito = false
-		  candidate.linkedin_picture_url = "profile.jpg"
-			expect(candidate.avatar_url).to eq("profile.jpg")
-		end
+	# 	it 'should display profile.jpg' do
+	# 		candidate.is_incognito = false
+	# 	  candidate.linkedin_picture_url = "profile.jpg"
+	# 		expect(candidate.avatar_url).to eq("profile.jpg")
+	# 	end
 
-		it 'should display incognito.png' do
-			candidate.is_incognito = false
-			candidate.linkedin_picture_url = nil
-			expect(@candidate.avatar_url).to match(/incognito.png/)
-		end
-	end
+	# 	it 'should display incognito.png' do
+	# 		candidate.is_incognito = false
+	# 		candidate.linkedin_picture_url = nil
+	# 		expect(@candidate.avatar_url).to match(/incognito.png/)
+	# 	end
+	# end
 
 	context 'archetype_string.' do
 		it 'should return n/a' do
