@@ -28,6 +28,7 @@ class CandidateJobActionsController < ApplicationController
     tracker.track('candidate-'+current_candidate.email, 'viewed matches')
   end
 
+  # save the job
   def candidate_save_job
     @candidate_job_action = CandidateJobAction.where(candidate_id: current_candidate.id, job_id: params[:job_id]).first_or_initialize
     authorize @candidate_job_action

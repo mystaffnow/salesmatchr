@@ -71,7 +71,6 @@ class CandidatesController < ApplicationController
     tracker.track('candidate-'+current_candidate.email, 'incognito toggle')
 
     profile = current_candidate.candidate_profile
-
     profile.is_incognito = params[:is_incognito]
     profile.save
     render json: 'created'
