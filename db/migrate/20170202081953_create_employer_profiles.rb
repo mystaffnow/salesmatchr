@@ -13,7 +13,7 @@ class CreateEmployerProfiles < ActiveRecord::Migration
       t.timestamps null: false
     end
     Employer.all.each do |e|
-      EmployerProfile.create(
+      ep = EmployerProfile.new(
         employer_id: e.id,
         website: e.website,
         ziggeo_token: e.ziggeo_token,
@@ -21,11 +21,9 @@ class CreateEmployerProfiles < ActiveRecord::Migration
         city: e.city,
         state_id: e.state_id,
         description: e.description,
-        avatar_file_name: e.avatar_file_name,
-        avatar_content_type: e.avatar_content_type,
-        avatar_file_size: e.avatar_file_size,
-        avatar_updated_at: e.avatar_updated_at
+        avatar: e.avatar
       )
+      ep.save(validate: false)
     end
   end
 
@@ -37,10 +35,7 @@ class CreateEmployerProfiles < ActiveRecord::Migration
                           :city => ep.city,
                           :state_id => ep.state_id,
                           :description => ep.description,
-                          :avatar_file_name => ep.avatar_file_name,
-                          :avatar_content_type => ep.avatar_content_type,
-                          :avatar_file_size => ep.avatar_file_size,
-                          :avatar_updated_at => ep.avatar_updated_at)
+                          avatar: ep.avatar)
     end 
     drop_table :employer_profiles
   end

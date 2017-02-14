@@ -1,7 +1,9 @@
 class CandidateJobActionsController < ApplicationController
   before_action :authenticate_candidate!, only: [:candidate_job_saved,
                                                  :candidate_job_viewed,
-                                                 :candidate_matches]
+                                                 :candidate_matches,
+                                                 :candidate_save_job
+                                               ]
   # list of the jobs saved by candidate
   def candidate_job_saved
     @candidate_job_action = CandidateJobAction.where(candidate_id: current_candidate.id, is_saved: true)
@@ -24,5 +26,13 @@ class CandidateJobActionsController < ApplicationController
 
     tracker = Mixpanel::Tracker.new(ENV["NT_MIXPANEL_TOKEN"])
     tracker.track('candidate-'+current_candidate.email, 'viewed matches')
+  end
+
+  def candidate_save_job
+    @candidate_job_action = CandidateJobAction.where(candidate_id: current_candidate.id, job_id: params[:job_id]).first_or_initialize
+    authorize @candidate_job_action
+    @candidate_job_action.is_saved = true
+    @candidate_job_action.save
+    redirect_to candidate_matches_path, notice: 'You have saved the job.'
   end
 end
