@@ -6,12 +6,6 @@
 #  first_name             :string
 #  last_name              :string
 #  company                :string
-#  state_id               :integer
-#  city                   :string
-#  zip                    :string
-#  description            :string
-#  website                :string
-#  ziggeo_token           :string
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  email                  :string           default(""), not null
@@ -24,10 +18,6 @@
 #  last_sign_in_at        :datetime
 #  current_sign_in_ip     :inet
 #  last_sign_in_ip        :inet
-#  avatar_file_name       :string
-#  avatar_content_type    :string
-#  avatar_file_size       :integer
-#  avatar_updated_at      :datetime
 #
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html

@@ -12,6 +12,7 @@ require 'rails_helper'
 
 RSpec.describe State do
   describe 'association' do
-    it {should have_many :candidates}
+    it {should have_many :candidate_profile}
+    it {should have_many :employer_profile}
   end
 end
