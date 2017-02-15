@@ -1,7 +1,7 @@
 class JobCandidatesController < ApplicationController
-  before_action :set_job_candidate, only: [:receipt, :withdraw, :accept_candidate]
   before_action :authenticate_candidate!, only: [:index, :apply, :receipt, :withdraw]
   before_action :authenticate_employer!, only: [:accept_candidate, :remove_candidate, :shortlist_candidate]
+  before_action :set_job_candidate, only: [:receipt, :withdraw, :accept_candidate]
   before_action :require_candidate_profile, only: [:index, :apply]
 
   # List all candiadte's job based on JobCandidate rec of current_candidate
