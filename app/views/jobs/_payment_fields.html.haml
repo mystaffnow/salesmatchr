@@ -1,0 +1,15 @@
+/ = f.text_field :amount, class: 'form-control'
+= f.hidden_field :stripe_card_token
+
+#c1c-fields
+  #stripe_error.text-danger
+  .field
+    = label_tag :card_number, "Credit Card Number "
+    = text_field_tag :card_number, nil, name: nil, value: '', class: 'form-control'
+  .field
+    = label_tag :card_code, "Security Code on Card (CVV)"
+    = text_field_tag :card_code, nil, name: nil, value: '', class: 'form-control'
+  .field
+    = label_tag :card_month, "Card Expiration"
+    = select_month nil, {add_month_numbers_true: true}, {name: nil, id: "card_month"}
+    = select_year nil, {start_year: Date.today.year, end_year: Date.today.year+15}, {name: nil, id: "card_year"}
