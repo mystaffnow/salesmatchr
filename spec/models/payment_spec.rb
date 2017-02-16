@@ -14,8 +14,8 @@
 #  updated_at         :datetime         not null
 #
 
-class Payment < ActiveRecord::Base
-	belongs_to :job
+require 'rails_helper'
 
-	enum status: ['charged']
+RSpec.describe Payment, type: :model do
+  pending "add some examples to (or delete) #{__FILE__}"
 end

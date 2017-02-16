@@ -14,8 +14,12 @@
 #  updated_at         :datetime         not null
 #
 
-class Payment < ActiveRecord::Base
-	belongs_to :job
-
-	enum status: ['charged']
+FactoryGirl.define do
+  factory :payment do
+    amount 1.5
+    stripe_card_token "MyString"
+    stripe_customer_id "MyString"
+    stripe_charge_id "MyString"
+    payment_status "MyString"
+  end
 end
