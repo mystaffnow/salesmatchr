@@ -33,6 +33,7 @@ class Job < ActiveRecord::Base
   has_many :job_candidates
   has_many :candidate_job_actions
   attr_accessor :job_function_id
+  has_one :payment, dependent: :destroy
 
   # validation
   validates :employer_id, :title, :description, :city, :zip, presence: true
