@@ -1,6 +1,6 @@
 class EducationsController < ApplicationController
   before_action :set_education, only: [:destroy]
-  before_action :authenticate_candidate!
+  before_action :authenticate_candidate!, only: :destroy
 
   # DELETE /educations/1
   # DELETE /educations/1.json

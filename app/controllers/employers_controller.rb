@@ -3,17 +3,17 @@ class EmployersController < ApplicationController
   before_action :authenticate_employer!, only: [:profile, :update, :account]
   before_action :set_profile, only: [:profile, :account, :update]
 
-  # view employer's profile
+  # view employer's profile, signed in employer can access this
   def profile
     authorize @profile
   end
 
-  # submit account information
+  # submit account information, signed in employer can access this
   def account
     authorize @profile
   end
 
-  # update profile information of employer
+  # update profile information of employer, signed in employer can access this
   def update
     authorize @profile
     respond_to do |format|
@@ -25,7 +25,7 @@ class EmployersController < ApplicationController
     end
   end
 
-  # Get employer profile publicly
+  # Get employer profile publicly, signed in employer or candidate can access this
   def public
     @employer = Employer.find(params[:id])
     @profile = @employer.try(:employer_profile)
@@ -34,7 +34,7 @@ class EmployersController < ApplicationController
   private
   # Never trust parameters from the scary internet, only allow the white list through.
   def employer_params
-    params.require(:employer_profile).permit(:website, :email, :ziggeo_token, :avatar, :zip, :city, :state_id, :name, :description, :company)
+    params.require(:employer_profile).permit(:website, :ziggeo_token, :avatar, :zip, :city, :state_id, :description)
   end
 
   def set_profile

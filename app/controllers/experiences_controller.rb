@@ -1,6 +1,6 @@
 class ExperiencesController < ApplicationController
   before_action :set_experience, only: [:destroy]
-  before_action :authenticate_candidate!
+  before_action :authenticate_candidate!, only: :destroy
 
   # DELETE /experiences/1
   # DELETE /experiences/1.json
