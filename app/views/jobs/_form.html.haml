@@ -51,8 +51,8 @@
     / remove it to fix current issue
     // or create a button to toggle this form
     #waiting{style: 'display:none;text-align:center'}
-    %h3
-      Your credit card is being processed, this could take up to 3 minutes, please don't leave this page and wait for the request to finish.
+      %h3
+        Your credit card is being processed, this could take up to 3 minutes, please don't leave this page and wait for the request to finish.
     = f.fields_for :payment do |form|
       = render 'payment_fields', f: form
   = f.submit 'Pay and Submit', class: 'btn btn-default', id: 'pay-btn'
