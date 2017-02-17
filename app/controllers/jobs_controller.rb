@@ -56,9 +56,8 @@ class JobsController < ApplicationController
 
     stripe_card_token = params["job"]["payment"]["stripe_card_token"]
     
-    # ToDo: need to active below two lines later
-    # tracker = Mixpanel::Tracker.new(ENV["NT_MIXPANEL_TOKEN"])
-    # tracker.track('employer-'+@job.employer.email, 'job created')
+    tracker = Mixpanel::Tracker.new(ENV["NT_MIXPANEL_TOKEN"])
+    tracker.track('employer-'+@job.employer.email, 'job created')
 
     respond_to do |format|
       if @job.save
