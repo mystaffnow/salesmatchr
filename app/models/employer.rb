@@ -28,6 +28,9 @@ class Employer < ActiveRecord::Base
   has_one :employer_profile, dependent: :destroy
   has_many :jobs
 
+  # validation
+  validates_presence_of :first_name, :last_name, :company
+
   def name
     "#{self.first_name} #{self.last_name}"
   end
