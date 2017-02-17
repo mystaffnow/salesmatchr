@@ -1,0 +1,55 @@
+= form_for @job, :role=>"form", :html => {:id => "new_user"} do |f|
+  .field
+    = f.label :title
+    = f.text_field :title, class: 'form-control'
+  .field
+    = f.label :description
+    = f.text_area :description, class: "wysihtml5", rows: 12
+  .field
+    %label
+      Job Function
+    %p Select from the pull down menu to the left the PRIMARY Function for this position.  It is important you choose the best selection for this specific role so that SalesMatchr can make the best matches!
+    %br
+    = f.collection_select(:job_function_id, JobFunction.all, :id, :name,  {:class => 'form-control'})
+  .field
+    %label
+      Minimum Years of Experience
+    %br
+    = f.select(:experience_years, options_for_select(0..25),  {:class => 'form-control'})
+  .field
+    = f.label "Salary range (Drag each triangle to create the range for this position)"
+    %br
+    %input#salaries{:'data-slider-handle' => 'triangle'}
+    = f.hidden_field :salary_low,id: 'salary_low'
+    = f.hidden_field :salary_high, id: 'salary_high'
+    %br
+    %br
+  .field
+    = f.label :city
+    = f.text_field :city, class: 'form-control'
+  .field
+    = f.label :state
+    %br
+    = f.collection_select(:state_id, State.all, :id, :name,  {:class => 'form-control'})
+    %br
+  .field
+    = f.label :zip
+    = f.number_field :zip, class: 'form-control'
+  .field
+    %h5 Is this a telecommuting position?
+    Yes
+    = f.check_box :is_remote, style: 'width:15px'
+    %br
+    %br
+  = f.submit 'Submit', class: 'btn btn-default', id: 'save-btn'
+  
+:javascript
+  $(function(){
+    $('#save-btn').on('click', function(){
+      $('#salary_low').val(salary_slider.slider('getValue')[0]);
+      $('#salary_high').val(salary_slider.slider('getValue')[1]);
+    })
+    $('.wysihtml5').each(function(i, elem) {
+      $(elem).wysihtml5();
+    });
+  });
