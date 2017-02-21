@@ -39,11 +39,7 @@ class JobsController < ApplicationController
       @job.assign_attributes(attributes)
       @job.id = nil
     end
-    if current_employer.jobs.count >= 2
-      @should_pay = true
-    else
-      @should_pay = false
-    end
+    @job.build_payment
   end
 
   # signed_in employer required
@@ -58,20 +54,17 @@ class JobsController < ApplicationController
     @job.employer_id = current_employer.id
     @job.job_function_id = job_function.id
 
-    if @job.stripe_token
-      charge = Stripe::Charge.create(
-          :amount => 15000, # amount in cents, again
-          :currency => "usd",
-          :source => @job.stripe_token,
-          :description => current_employer.company
-        )
-    end
-
-    tracker = Mixpanel::Tracker.new(ENV["NT_MIXPANEL_TOKEN"])
-    tracker.track('employer-'+@job.employer.email, 'job created')
+    stripe_card_token = params["job"]["payment"]["stripe_card_token"]
+    
+    # ToDo: need to active below two lines later
+    # tracker = Mixpanel::Tracker.new(ENV["NT_MIXPANEL_TOKEN"])
+    # tracker.track('employer-'+@job.employer.email, 'job created')
 
     respond_to do |format|
       if @job.save
+        payment_service = Services::Pay.new(current_employer, @job, stripe_card_token)
+        payment_service.process_payment
+
         format.html { redirect_to employer_archive_jobs_path, notice: 'Job was successfully created.' }
       else
         format.html { render :new }
@@ -207,6 +200,13 @@ class JobsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def job_params
-    params.require(:job).permit(:distance, :job_function_id,:employer_id, :city, :state_id, :archetype_low, :archetype_high, :salary_low, :salary_high, :zip, :is_remote, :title, :description, :is_active, :experience_years, :stripe_token)
+    params.require(:job).permit(:distance, :job_function_id,:employer_id, :city, 
+                                :state_id, :archetype_low, :archetype_high, :salary_low, 
+                                :salary_high, :zip, :is_remote, :title, :description, 
+                                :is_active, :experience_years, :stripe_token,
+                                :payment_attributes => [
+                                  :id, :stripe_card_token
+                                ]
+                                )
   end
 end

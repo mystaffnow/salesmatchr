@@ -23,5 +23,8 @@ module Salesmatchr
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
+
+    # Autoload dir inside app/
+    config.autoload_paths += %W( #{config.root}/app )
   end
 end
