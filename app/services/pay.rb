@@ -1,7 +1,7 @@
 module Services
 	class Pay
 		attr_accessor :employer, :job, :stripe_card_token
-		JOB_POSTING_FEE = 150
+		JOB_POSTING_FEE = 199
 
 		def initialize(employer, job, stripe_card_token)
 			@employer = employer
