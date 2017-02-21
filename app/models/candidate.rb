@@ -31,6 +31,7 @@ class Candidate < ActiveRecord::Base
   has_many :educations
   has_many :candidate_question_answers
   has_many :job_candidates
+  has_many :candidate_job_actions
   belongs_to :year_experience
   accepts_nested_attributes_for :candidate_profile
   accepts_nested_attributes_for :experiences, allow_destroy: true
