@@ -13,7 +13,7 @@ ActiveAdmin.register SalesType do
 #   permitted
 # end
 
-	menu priority: 2, parent: 'Setting'
+	menu priority: 6, parent: 'Setting'
 
 	permit_params :id, :name
 
