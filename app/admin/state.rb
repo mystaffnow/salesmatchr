@@ -13,7 +13,7 @@ ActiveAdmin.register State do
 #   permitted
 # end
 
-  menu priority: 1, parent: 'Setting'
+  menu priority: 7, parent: 'Setting'
 
 	permit_params :id, :name
 
