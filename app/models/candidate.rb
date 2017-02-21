@@ -38,6 +38,9 @@ class Candidate < ActiveRecord::Base
   accepts_nested_attributes_for :candidate_question_answers, allow_destroy: true
   attr_accessor :flash_notice
 
+  # validation
+  validates_presence_of :first_name, :last_name
+
   def name
     return self.first_name + " " + self.last_name
   end

@@ -1,7 +1,8 @@
-<script>
+:javascript
   var subscription;
 
   $(document).ready(function() {
+    $('#stripe_error').hide();
     Stripe.setPublishableKey($('meta[name="stripe-key"]').attr('content'));
     return subscription.setupForm();
   });
@@ -27,8 +28,6 @@
     },
     handleStripeResponse: function(status, response) {
       if (status === 200) {
-        console.log('stripe card token')
-        console.log(response.id)
         $('#job_payment_stripe_card_token').val(response.id);
         $('#new_user')[0].submit();
       } else {
@@ -57,4 +56,3 @@
       $('#new_user').submit();
     });
   });
-</script>

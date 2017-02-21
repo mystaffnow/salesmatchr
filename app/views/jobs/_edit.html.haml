@@ -41,19 +41,15 @@
     = f.check_box :is_remote, style: 'width:15px'
     %br
     %br
-  %hr
-    .account-content
-      .text-center
-        Each job posting is only $150.  After purchasing the job, you can edit it at anytime!
-    %hr
-    %br
-    // display:none will hide current #waiting div
-    / remove it to fix current issue
-    // or create a button to toggle this form
-    #waiting{style: 'display:none;text-align:center'}
-      %h3
-        Your credit card is being processed, this could take up to 3 minutes, please don't leave this page and wait for the request to finish.
-    = f.fields_for :payment do |form|
-      = render 'payment_fields', f: form
-  = f.submit 'Pay and Submit', class: 'btn btn-default', id: 'pay-btn'
-  = render 'card_js'
+  = f.submit 'Submit', class: 'btn btn-default', id: 'save-btn'
+  
+:javascript
+  $(function(){
+    $('#save-btn').on('click', function(){
+      $('#salary_low').val(salary_slider.slider('getValue')[0]);
+      $('#salary_high').val(salary_slider.slider('getValue')[1]);
+    })
+    $('.wysihtml5').each(function(i, elem) {
+      $(elem).wysihtml5();
+    });
+  });
