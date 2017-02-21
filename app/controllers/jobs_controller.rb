@@ -55,14 +55,20 @@ class JobsController < ApplicationController
     @job.job_function_id = job_function.id
 
     stripe_card_token = params["job"]["payment"]["stripe_card_token"]
-    
-    tracker = Mixpanel::Tracker.new(ENV["NT_MIXPANEL_TOKEN"])
-    tracker.track('employer-'+@job.employer.email, 'job created')
 
     respond_to do |format|
       if @job.save
         payment_service = Services::Pay.new(current_employer, @job, stripe_card_token)
-        payment_service.process_payment
+        
+        ps = payment_service.process_payment
+
+        @job.destroy if ps.nil? # if there is an error while payment
+        
+        # don't load event when job post fails 
+        unless @job.destroyed?
+          tracker = Mixpanel::Tracker.new(ENV["NT_MIXPANEL_TOKEN"])
+          tracker.track('employer-'+@job.employer.email, 'job created')
+        end
 
         format.html { redirect_to employer_archive_jobs_path, notice: 'Job was successfully created.' }
       else
