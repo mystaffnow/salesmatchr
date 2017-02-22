@@ -1,6 +1,7 @@
 module Services
 	class Pay
 		attr_accessor :employer, :job, :stripe_card_token
+		attr_reader :stripe_customer
 
 		def initialize(employer, job, stripe_card_token)
 			@employer = employer
