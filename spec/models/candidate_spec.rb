@@ -29,6 +29,11 @@ RSpec.describe Candidate do
 	let(:job) {create(:job, employer_id: employer.id, state_id: state.id, city: 'New york', zip: 10900)}
 	let(:candidate) {create(:candidate, :first_name => "test", :last_name => "candidate")}
 
+	describe 'Validation' do
+		it {should validate_presence_of(:first_name)}
+		it {should validate_presence_of(:last_name)}
+	end
+
 	describe "Association" do
 		it {should have_one(:candidate_profile).dependent(:destroy)}
 		it {should have_many :experiences}
@@ -37,6 +42,7 @@ RSpec.describe Candidate do
 		it {should have_many :job_candidates}
 		# it {should belong_to :state}
 		# it {should belong_to :education_level}
+		it {should have_many :candidate_job_actions}
 		it {should belong_to :year_experience}
 	end
 

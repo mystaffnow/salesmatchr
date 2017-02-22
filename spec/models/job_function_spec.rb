@@ -13,4 +13,7 @@
 require 'rails_helper'
 
 RSpec.describe JobFunction do
+	describe 'association' do
+		it {should have_many :jobs}
+	end
 end

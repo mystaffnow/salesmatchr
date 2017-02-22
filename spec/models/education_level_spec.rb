@@ -11,4 +11,7 @@
 require 'rails_helper'
 
 RSpec.describe EducationLevel do
+	describe 'validation' do
+		it {should have_many :candidate_profiles}
+	end
 end

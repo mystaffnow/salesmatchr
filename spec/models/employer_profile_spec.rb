@@ -24,6 +24,10 @@ RSpec.describe EmployerProfile, type: :model do
 	let(:employer) {create(:employer, :first_name => "test", :last_name => "employer")}
 	let(:state) {create(:state)}
 
+  describe "Validation" do
+    it {should validate_uniqueness_of(:employer_id)}
+  end
+
   describe "Association" do
     it {should belong_to(:employer)}
     it {should belong_to(:state)}
