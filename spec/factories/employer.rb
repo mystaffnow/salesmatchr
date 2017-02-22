@@ -8,9 +8,10 @@ FactoryGirl.define do
   end
 
   factory :archetype_employer, class: Employer do
-		first_name 'test'
-		last_name 'employer'
-		sequence(:email) {|i| "employer#{i}@example.com"}
-		password 'password'
+    first_name 'test'
+    last_name 'employer'
+    sequence(:email) {|i| "employer#{i}@example.com"}
+    password 'password'
+    company 'Emp company name'
 	end
 end
