@@ -41,13 +41,6 @@ class Candidate < ActiveRecord::Base
 
   after_save :add_candidate_profile
 
-  def add_candidate_profile
-    if self.candidate_profile.blank?
-      profile = CandidateProfile.new(candidate_id: self.id)
-      profile.save
-    end
-  end
-
   # validation
   validates_presence_of :first_name, :last_name
 
@@ -149,6 +142,15 @@ class Candidate < ActiveRecord::Base
     # score between -100-(-71)
     else
       return "Relaxed Farmer"
+    end
+  end
+
+  private
+
+  def add_candidate_profile
+    if self.candidate_profile.blank?
+      profile = CandidateProfile.new(candidate_id: self.id)
+      profile.save
     end
   end
 end

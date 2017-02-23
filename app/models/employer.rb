@@ -31,6 +31,8 @@ class Employer < ActiveRecord::Base
   # validation
   validates_presence_of :first_name, :last_name, :company
 
+  after_save :add_employer_profile
+
   def name
     "#{self.first_name} #{self.last_name}"
   end
@@ -42,5 +44,14 @@ class Employer < ActiveRecord::Base
   def can_proceed
     return false if self.employer_profile.nil?
     self.employer_profile.state.present? && self.employer_profile.city.present? && self.employer_profile.zip.present? && self.employer_profile.website.present? && self.name.present? && self.email.present?
+  end
+
+  private
+
+  def add_employer_profile
+    if self.employer_profile.blank?
+      profile = EmployerProfile.new(employer_id: self.id)
+      profile.save
+    end
   end
 end

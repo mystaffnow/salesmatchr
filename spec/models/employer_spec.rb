@@ -49,6 +49,24 @@ RSpec.describe Employer do
   #   end
   # end
 
+  it 'should build profile automatically' do
+    @employer = create(:employer)
+    @employer.reload
+    expect(@employer.employer_profile).to be_a(EmployerProfile)
+    expect(@employer.employer_profile.employer_id).to eq(@employer.id)
+    expect(@employer.employer_profile.city).to be_nil
+  end
+
+  it 'should not build employer profile when already there' do
+    @employer = build(:employer)
+    @employer.employer_profile = build(:employer_profile)
+    @employer.save
+    expect(Employer.count).to eq(1)
+    expect(EmployerProfile.count).to eq(1)
+    expect(EmployerProfile.first.employer_id).to eq(@employer.id)
+    expect(EmployerProfile.first.city).to eq("my city")
+  end
+
   it 'should return full_name of employer' do
     expect(employer.name).to eq('test employer')
   end
