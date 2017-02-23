@@ -89,6 +89,33 @@ RSpec.describe CandidateJobActionsController, :type => :controller do
         get :candidate_matches
         expect(assigns(:jobs)).to eq([job])
       end
+
+      context '.archetype_score' do
+        let(:candidate) { create(:candidate, archetype_score: 35)}
+
+        let(:inside_sales) {create(:inside_sales)}                      # low: 31, high: 100
+        let(:outside_sales) {create(:outside_sales)}                    # low: 31, high: 100
+        let(:business_developement) {create(:business_developement)}    # low: -10, high: 70
+        let(:sales_manager) {create(:sales_manager)}                    # low: -30, high: 70
+        let(:sales_operations) {create(:sales_operations)}              # low: -100, high: 10
+        let(:customer_service) {create(:customer_service)}              # low: -100, high: 10
+        let(:account_manager) {create(:account_manager)}                # low: -100, high: -11
+
+        before do
+          @job  = create(:job, is_active: true, state_id: state.id, employer_id: employer.id, job_function_id: inside_sales.id)
+          @job1 = create(:job, is_active: true, state_id: state.id, employer_id: employer.id, job_function_id: outside_sales.id)
+          @job2 = create(:job, is_active: true, state_id: state.id, employer_id: employer.id, job_function_id: business_developement.id)
+          @job3 = create(:job, is_active: true, state_id: state.id, employer_id: employer.id, job_function_id: sales_manager.id)
+          @job4 = create(:job, is_active: true, state_id: state.id, employer_id: employer.id, job_function_id: sales_operations.id)
+          @job5 = create(:job, is_active: true, state_id: state.id, employer_id: employer.id, job_function_id: customer_service.id)
+          @job6 = create(:job, is_active: true, state_id: state.id, employer_id: employer.id, job_function_id: account_manager.id)
+        end
+
+        it 'should match candidates scale between 31-100' do
+          get :candidate_matches
+          expect(assigns(:jobs)).to eq([@job, @job1, @job2, @job3])
+        end
+      end
     end
 
     context '.when employer is signed_in' do

@@ -583,7 +583,6 @@ RSpec.describe JobsController, :type => :controller do
   describe '#create' do
     context '.when candidate is sign_in' do
       before{ sign_in(candidate) }
-
       it 'should redirect_to employers sign_in page' do
         post :create
         expect(response).to redirect_to("/employers/sign_in")
@@ -630,6 +629,28 @@ RSpec.describe JobsController, :type => :controller do
           employer_profile.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
           post :create, {job: valid_attributes}
           expect(response).to redirect_to("/employers/account")
+        end
+
+        context '.Account manager' do
+          let(:account_manager) { create(:job_function, name: "Account Manager", low: -100, high: -11)}
+          let(:attributes) { {job_function_id: account_manager.id, employer_id: employer.id, city: 'Boston',
+                state_id: state.id, salary_low: 55000, salary_high: 550000,
+                zip: 1050, is_remote: true, title: 'Account manager',
+                description: 'This is general description', is_active: false,
+                experience_years: 5, payment: {stripe_card_token: generate_stripe_card_token} }}
+
+          it "should store low and high from job_function" do
+            post :create, {job: attributes}
+            job = Job.first
+            expect(Job.count).to eq(1)
+            expect(job.archetype_low).to eq(-100)
+            expect(job.archetype_high).to eq(-11)
+            expect(job.job_function).to eq(account_manager)
+            expect(job.title).to eq('Account manager')
+            expect(job.employer).to eq(employer)
+            expect(job.state).to eq(state)
+            expect(job.city).to eq('Boston')
+          end
         end
       end
 

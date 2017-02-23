@@ -3,6 +3,8 @@ FactoryGirl.define do
     title "Urgent need Sales Manager"
     description "Select from the pull down menu to the left the"
     city 'Wichita'
-    zip 70113
+    zip "10900"
+    salary_low 45000
+    salary_high 280000
   end
 end
