@@ -49,8 +49,6 @@ class JobsController < ApplicationController
     @job = Job.new(job_params)
     authorize(@job)
     job_function = JobFunction.find(job_params[:job_function_id])
-    @job.archetype_low = job_function.low
-    @job.archetype_high = job_function.high
     @job.employer_id = current_employer.id
     @job.job_function_id = job_function.id
 
