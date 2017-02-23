@@ -1,7 +1,6 @@
 class EmployersController < ApplicationController
   skip_before_filter :check_employer, only: [:account, :update]
   before_action :authenticate_employer!, only: [:profile, :update, :account]
-  before_action :set_profile, only: [:profile, :account, :update]
 
   # view employer's profile, signed in employer can access this
   def profile
@@ -35,9 +34,5 @@ class EmployersController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def employer_params
     params.require(:employer_profile).permit(:website, :ziggeo_token, :avatar, :zip, :city, :state_id, :description)
-  end
-
-  def set_profile
-    @profile = EmployerProfile.find_or_initialize_by(employer_id: current_employer.id)
   end
 end
