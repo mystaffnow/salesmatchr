@@ -54,10 +54,6 @@ RSpec.describe Job do
   end
 
   context 'matches.' do
-    # it 'should return array of candidates' do
-    #   expect(@job.matches).to eq([@candidate1, @candidate2])
-    # end
-
     context '.Inside sales' do
       let(:inside_sales) {create(:inside_sales)} # low: 31, high: 100
       let(:inside_sales_job) {create(:job, state_id: state.id, employer_id: employer.id, job_function_id: inside_sales.id)}
