@@ -65,6 +65,24 @@ RSpec.describe Candidate do
 	#   	end
 	#   end
 	# end
+
+	it 'should build candidate profile automatically' do
+		@candidate = create(:candidate)
+		@candidate.reload
+		expect(@candidate.candidate_profile).to be_a(CandidateProfile)
+		expect(@candidate.candidate_profile.candidate_id).to eq(@candidate.id)
+		expect(@candidate.candidate_profile.city).to be_nil
+	end
+
+	it 'should not build candidate profile when already there' do
+		@candidate = build(:candidate)
+		@candidate.candidate_profile = build(:candidate_profile)
+		@candidate.save
+		expect(Candidate.count).to eq(1)
+		expect(CandidateProfile.count).to eq(1)
+		expect(CandidateProfile.first.candidate_id).to eq(@candidate.id)
+		expect(CandidateProfile.first.city).to eq("test city")
+	end
 	
 	context 'name' do
 		it 'should return full_name of candidate' do

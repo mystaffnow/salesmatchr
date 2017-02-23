@@ -39,6 +39,15 @@ class Candidate < ActiveRecord::Base
   accepts_nested_attributes_for :candidate_question_answers, allow_destroy: true
   attr_accessor :flash_notice
 
+  after_save :add_candidate_profile
+
+  def add_candidate_profile
+    if self.candidate_profile.blank?
+      profile = CandidateProfile.new(candidate_id: self.id)
+      profile.save
+    end
+  end
+
   # validation
   validates_presence_of :first_name, :last_name
 
