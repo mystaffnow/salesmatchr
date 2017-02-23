@@ -1,4 +1,4 @@
-- if candidate.candidate_profile.is_incognito
+- if candidate.try(:candidate_profile).try(:is_incognito)
   .row
     .col-md-2
       %img{src: candidate.candidate_profile.avatar_url, style: 'width: 100%'}
