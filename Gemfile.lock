@@ -216,6 +216,8 @@ GEM
     pry-byebug (3.1.0)
       byebug (~> 4.0)
       pry (~> 0.10)
+    pry-rails (0.3.5)
+      pry (>= 0.9.10)
     pundit (1.1.0)
       activesupport (>= 3.0.0)
     rack (1.6.0)
@@ -355,6 +357,7 @@ DEPENDENCIES
   paperclip (~> 4.2)
   pg (~> 0.17.1)
   pry-byebug
+  pry-rails
   pundit
   rails (= 4.2.0)
   rmagick (~> 2.16.0)
