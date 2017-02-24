@@ -1,10 +1,16 @@
 Rails.application.routes.draw do
+  get 'home/index'
+
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
 
   resources :candidate_job_actions
 
-  resources :jobs
+  resources :jobs do
+    member do
+      post :email_match_candidates
+    end
+  end
 
   resources :educations, only: [:destroy]
 

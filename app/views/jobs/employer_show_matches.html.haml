@@ -10,8 +10,11 @@
     .row
       .col-md-12
         %h2{style: 'padding-bottom:5px'}
-          Candidate Matches
-          %hr
+          %span Candidate Matches 
+        %div
+          = form_tag email_match_candidates_job_path(@job), method: :post do
+            = submit_tag "Click here to send email to all matched candidates", class: 'btn btn-sm btn-info'
+        %hr
         %table.table.table-responsive
           - @job.matches.each do |candidate|
             = render 'jobs/candidate_small_list_item', :candidate => candidate, :job => @job

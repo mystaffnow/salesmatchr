@@ -1,11 +1,15 @@
 class JobsController < ApplicationController
-  before_action :set_job, only: [:show, :edit, :update, :destroy, :inactivate_job, :employer_show, :employer_show_actions, :employer_show_matches, :employer_show_shortlists, :employer_show_remove]
+  before_action :set_job, only: [:show, :edit, :update, :destroy,
+                                 :inactivate_job, :employer_show,
+                                 :employer_show_actions, :employer_show_matches,
+                                 :employer_show_shortlists, :employer_show_remove,
+                                 :email_match_candidates]
   before_action :authenticate_employer!, only: [:new, :create, :edit, :update,
                                                  :destroy, :employer_archive,
                                                  :employer_show, :employer_show_actions,
                                                  :employer_show_matches, :employer_show_shortlists,
                                                  :employer_index, :employer_archive, :inactivate_job,
-                                                 :employer_show_remove
+                                                 :employer_show_remove, :email_match_candidates
                                                ]
   # GET /jobs
   # GET /jobs.json
@@ -193,6 +197,17 @@ class JobsController < ApplicationController
 
   def employer_job_checkout
 
+  end
+
+  # Send email to all candidates who matches the job
+  def email_match_candidates
+    candidates = @job.matches
+    if candidates.present?
+      candidates.map {|candidate| SendEmailJob.perform_in(1, candidate, @job)}
+      redirect_to employer_show_matches_path(@job.id), notice: 'Email send to all matched candidates.'
+    else
+      redirect_to :back
+    end
   end
 
   private
