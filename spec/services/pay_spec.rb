@@ -3,10 +3,10 @@ require 'rails_helper'
 RSpec.describe Services::Pay do
 	let(:state) {create(:state)}
 	let(:employer) {create(:employer)}
+  let(:job_function) {create(:job_function)}
   let(:job) {
-      create(:job, employer_id: employer.id, salary_low: 45000, salary_high: 280000, zip: "10900",
-                    archetype_low: -30, archetype_high: 70, city: 'city1', state_id: state.id
-                    )
+      create(:job, employer_id: employer.id, salary_low: 45000, salary_high: 280000, zip: "10900", 
+                   city: 'city1', state_id: state.id,job_function_id: job_function.id)
             }
   let(:stripe_card_token) {generate_stripe_card_token}
 
