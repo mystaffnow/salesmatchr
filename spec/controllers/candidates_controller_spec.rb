@@ -113,12 +113,11 @@ RSpec.describe CandidatesController, :type => :controller do
         expect(assigns(:candidate)).to eq(@candidate1)
       end
 
-      # it 'should redirect to /employers/account' do
-      #   employer.update(first_name: nil, last_name: nil)
-      #   employer_profile.update(zip: nil, state_id: nil, city: nil, website: nil)
-      #   get :profile, id: candidate.id
-      #   expect(response).to redirect_to("/employers/account")
-      # end
+      it 'should redirect to /employers/account' do
+        EmployerProfile.first.update(zip: nil, state_id: nil, city: nil, website: nil)
+        get :profile, id: candidate.id
+        expect(response).to redirect_to("/employers/account")
+      end
     end
   end
 

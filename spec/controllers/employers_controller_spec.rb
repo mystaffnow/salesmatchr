@@ -14,15 +14,19 @@ RSpec.describe EmployersController, :type => :controller do
         expect(response).to redirect_to("/employers/sign_in")
       end
     end
-    # context '.when employer is signed in' do
-    #   before { sign_in(employer)}
 
-    #   it 'should redirect to /employers/account' do
-    #     employer_profile.update(zip: nil, state_id: nil, city: nil, website: nil)
-    #     get :profile
-    #     expect(response).to redirect_to("/employers/account")
-    #   end
-    # end
+    context '.when employer is signed in' do
+      before {
+        sign_in(employer)
+        employer_profile(employer)
+      }
+
+      it 'should redirect to /employers/account' do
+        EmployerProfile.first.update(zip: nil, state_id: nil, city: nil, website: nil)
+        get :profile
+        expect(response).to redirect_to("/employers/account")
+      end
+    end
   end
 
   describe 'GET#account' do
@@ -35,15 +39,18 @@ RSpec.describe EmployersController, :type => :controller do
       end
     end
 
-    # context '.when employer is signed in' do
-    #   before { sign_in(employer) }
-    #   it 'should not call check_employer and should not redirect to /employers/account' do
-    #     employer.update(first_name: nil, last_name: nil)
-    #     employer_profile.update(zip: nil, state_id: nil, city: nil, website: nil)
-    #     get :account
-    #     expect(response).not_to redirect_to("/employers/account")
-    #   end
-    # end
+    context '.when employer is signed in' do
+      before { 
+        sign_in(employer)
+        employer_profile(employer)
+        }
+
+      it 'should not call check_employer and should not redirect to /employers/account' do
+        EmployerProfile.first.update(zip: nil, state_id: nil, city: nil, website: nil)
+        get :account
+        expect(response).not_to redirect_to("/employers/account")
+      end
+    end
   end
 
   describe 'PUT#account' do
@@ -55,15 +62,18 @@ RSpec.describe EmployersController, :type => :controller do
       end
     end
 
-    # context '.when employer is signed in' do
-    #   before { sign_in(employer) }
-    #   it 'should not call check_employer and should not redirect to /employers/account' do
-    #     employer.update(first_name: nil, last_name: nil)
-    #     employer_profile.update(zip: nil, state_id: nil, city: nil, website: nil)
-    #     put :account
-    #     expect(response).not_to redirect_to("/employers/account")
-    #   end
-    # end
+    context '.when employer is signed in' do
+      before { 
+        sign_in(employer)
+        employer_profile(employer)
+      }
+      
+      it 'should not call check_employer and should not redirect to /employers/account' do
+        EmployerProfile.first.update(zip: nil, state_id: nil, city: nil, website: nil)
+        put :account
+        expect(response).not_to redirect_to("/employers/account")
+      end
+    end
   end
 
   describe '#public' do
@@ -75,15 +85,18 @@ RSpec.describe EmployersController, :type => :controller do
         expect(assigns(:employer)).to eq(employer)
       end
       
-      # it 'should redirect to candidates_archetype_path' do
-      #   candidate.update(archetype_score: nil)
-      #   get :public, id: candidate.id
-      #   expect(response).to redirect_to(candidates_archetype_path)
-      # end
+      it 'should redirect to candidates_archetype_path' do
+        candidate.update(archetype_score: nil)
+        get :public, id: candidate.id
+        expect(response).to redirect_to(candidates_archetype_path)
+      end
     end
 
     context '.when employer is signed in' do
-      before {sign_in(employer)}
+      before {
+        sign_in(employer)
+        employer_profile(employer)
+      }
 
       it 'should correctly assign employer' do
         employer_profile(employer)
@@ -91,12 +104,11 @@ RSpec.describe EmployersController, :type => :controller do
         expect(assigns(:employer)).to eq(employer)
       end
 
-      # it 'should redirect to /employers/account' do
-      #   employer.update(first_name: nil, last_name: nil)
-      #   employer_profile.update(zip: nil, state_id: nil, city: nil, website: nil)
-      #   get :public, id: candidate.id
-      #   expect(response).to redirect_to("/employers/account")
-      # end
+      it 'should redirect to /employers/account' do
+        EmployerProfile.first.update(zip: nil, state_id: nil, city: nil, website: nil)
+        get :public, id: candidate.id
+        expect(response).to redirect_to("/employers/account")
+      end
     end
   end
 
@@ -131,7 +143,10 @@ RSpec.describe EmployersController, :type => :controller do
     end
 
     context '.when employer is signed in' do
-      before { sign_in(employer)}
+      before { 
+        sign_in(employer)
+        employer_profile(employer)
+      }
 
       context 'with valid params'
         it 'should update employer profile with requested parameters' do
@@ -144,12 +159,11 @@ RSpec.describe EmployersController, :type => :controller do
           expect(response).to redirect_to(employers_profile_path) 
         end
 
-        # it 'should not call check_employer and should not redirect to /employers/account' do
-        #   employer.update(first_name: nil, last_name: nil)
-        #   employer_profile.update(zip: nil, state_id: nil, city: nil, website: nil)
-        #   put :update, { employer_profile: new_attributes }
-        #   expect(response).not_to redirect_to("/employers/account")
-        # end
+        it 'should not call check_employer and should not redirect to /employers/account' do
+          EmployerProfile.first.update(zip: nil, state_id: nil, city: nil, website: nil)
+          put :update, { employer_profile: new_attributes }
+          expect(response).not_to redirect_to("/employers/account")
+        end
       end
 
       context 'with invalid params' do

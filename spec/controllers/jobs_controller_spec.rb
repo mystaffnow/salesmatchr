@@ -1,11 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe JobsController, :type => :controller do
-  let(:candidate) {create(:candidate, archetype_score: 200)}
+  let(:candidate) {create(:candidate, archetype_score: 35)}
   let(:job_function) {create(:job_function)}
   let(:state) {create(:state)}
   let(:employer) {create(:employer, first_name: 'user', last_name: 'test')}
-  let(:employer_profile) {create(:employer_profile, employer_id: employer.id, state_id: state.id, city: 'Wichita', zip: 5520, website: 'www.mywebsite.org')}
   let(:job) {create(:job, employer_id: employer.id, salary_low: 50000, salary_high: 150000, state_id: state.id, job_function_id: job_function.id)}
   let(:candidate_job_action) {create(:candidate_job_action, candidate_id: candidate.id, job_id: job.id) }
 
@@ -59,7 +58,7 @@ RSpec.describe JobsController, :type => :controller do
     context '.when employer is sign_in' do
       before {
           sign_in(employer)
-          employer_profile
+          employer_profile(employer)
         }
 
       it 'unauthorized access' do
@@ -68,8 +67,7 @@ RSpec.describe JobsController, :type => :controller do
       end
 
       it 'should redirect to /employers/account' do
-        employer.update(first_name: nil, last_name: nil)
-        employer_profile.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
+        EmployerProfile.first.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
         get :index
         expect(response).to redirect_to("/employers/account")
       end
@@ -100,7 +98,7 @@ RSpec.describe JobsController, :type => :controller do
 
       it 'should create new candidate_job_action with is_saved status false when candidate_job_action is nil' do
         employer = create(:employer)
-        job = create(:job, employer_id: employer.id, city: 'my city', state_id: state.id, zip: 1200)
+        job = create(:job, employer_id: employer.id, city: 'my city', state_id: state.id, zip: 1200, job_function_id: job_function.id)
         get :show, id: job.id
         expect(assigns(CandidateJobAction.last.is_saved)).to be_falsy
       end
@@ -115,7 +113,7 @@ RSpec.describe JobsController, :type => :controller do
     context '.when employer is sign_in' do
       before {
           sign_in(employer)
-          employer_profile
+          employer_profile(employer)
         }
 
       it 'should call set_job method' do
@@ -129,8 +127,7 @@ RSpec.describe JobsController, :type => :controller do
       end
 
       it 'should redirect to /employers/account' do
-        employer.update(first_name: nil, last_name: nil)
-        employer_profile.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
+        EmployerProfile.first.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
         get :show, id: job.id
         expect(response).to redirect_to("/employers/account")
       end
@@ -150,7 +147,7 @@ RSpec.describe JobsController, :type => :controller do
     context '.when employer is sign_in' do
       before {
           sign_in(employer)
-          employer_profile
+          employer_profile(employer)
         }
 
       let(:required_params) {
@@ -175,8 +172,7 @@ RSpec.describe JobsController, :type => :controller do
       end
 
       it 'should redirect to /employers/account' do
-        employer.update(first_name: nil, last_name: nil)
-        employer_profile.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
+        EmployerProfile.first.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
         get :index
         expect(response).to redirect_to("/employers/account")
       end
@@ -210,9 +206,9 @@ RSpec.describe JobsController, :type => :controller do
 
     context '.when employer is sign_in' do
       before {
-          sign_in(employer)
-          employer_profile
-        }
+        sign_in(employer)
+        employer_profile(employer)
+      }
 
       it 'should correctly assign job' do
         get :send_intro, { candidate_id: candidate.id, id: job.id }
@@ -229,8 +225,7 @@ RSpec.describe JobsController, :type => :controller do
       end
 
       it 'should redirect to /employers/account' do
-        employer.update(first_name: nil, last_name: nil)
-        employer_profile.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
+        EmployerProfile.first.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
         get :index
         expect(response).to redirect_to("/employers/account")
       end
@@ -257,7 +252,8 @@ RSpec.describe JobsController, :type => :controller do
       context 'and job does not belongs to signed in employer' do
         it 'should raise unauthorized acess' do
           fake_employer = create(:archetype_employer)
-          fake_employer_profile = create(:employer_profile, employer_id: fake_employer.id, city: 'Wichita', zip: 1123, website: 'www.example.com', state_id: state.id)
+          employer_profile(fake_employer)
+          # fake_employer_profile = create(:employer_profile, employer_id: fake_employer.id, city: 'Wichita', zip: 1123, website: 'www.example.com', state_id: state.id)
           sign_in(fake_employer)
           get :edit, id: job.id
           expect(response).to redirect_to('/')
@@ -268,7 +264,7 @@ RSpec.describe JobsController, :type => :controller do
       context 'job belongs to signed in employer' do
         before {
           sign_in(employer)
-          employer_profile
+          employer_profile(employer)
         }
 
         it 'should correctly assign job' do
@@ -282,8 +278,7 @@ RSpec.describe JobsController, :type => :controller do
         end
 
         it 'should redirect to /employers/account' do
-          employer.update(first_name: nil, last_name: nil)
-          employer_profile.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
+          EmployerProfile.first.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
           get :edit, id: job.id
           expect(response).to redirect_to("/employers/account")
         end
@@ -306,7 +301,7 @@ RSpec.describe JobsController, :type => :controller do
 
       before {
           sign_in(employer)
-          employer_profile
+          employer_profile(employer)
           job_candidate
         }
 
@@ -335,8 +330,7 @@ RSpec.describe JobsController, :type => :controller do
       end
 
       it 'should redirect to /employers/account' do
-        employer.update(first_name: nil, last_name: nil)
-        employer_profile.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
+        EmployerProfile.first.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
         get :employer_show, id: job.id
         expect(response).to redirect_to("/employers/account")
       end
@@ -356,7 +350,7 @@ RSpec.describe JobsController, :type => :controller do
     context '.when employer is sign_in' do
       before {
           sign_in(employer)
-          employer_profile
+          employer_profile(employer)
         }
 
       it 'should correctly assign job' do
@@ -370,8 +364,7 @@ RSpec.describe JobsController, :type => :controller do
       end
 
       it 'should redirect to /employers/account' do
-        employer.update(first_name: nil, last_name: nil)
-        employer_profile.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
+        EmployerProfile.first.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
         get :employer_show_actions, id: job.id
         expect(response).to redirect_to("/employers/account")
       end
@@ -391,7 +384,7 @@ RSpec.describe JobsController, :type => :controller do
     context '.when employer is sign_in' do
       before {
           sign_in(employer)
-          employer_profile
+          employer_profile(employer)
         }
 
       it 'should correctly assign job' do
@@ -405,8 +398,7 @@ RSpec.describe JobsController, :type => :controller do
       end
 
       it 'should redirect to /employers/account' do
-        employer.update(first_name: nil, last_name: nil)
-        employer_profile.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
+        EmployerProfile.first.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
         get :employer_show_matches, id: job.id
         expect(response).to redirect_to("/employers/account")
       end
@@ -426,7 +418,7 @@ RSpec.describe JobsController, :type => :controller do
     context '.when employer is sign_in' do
       before {
           sign_in(employer)
-          employer_profile
+          employer_profile(employer)
         }
 
       it 'should correctly assign job' do
@@ -446,8 +438,7 @@ RSpec.describe JobsController, :type => :controller do
       end
 
       it 'should redirect to /employers/account' do
-        employer.update(first_name: nil, last_name: nil)
-        employer_profile.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
+        EmployerProfile.first.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
         get :employer_show_shortlists, id: job.id
         expect(response).to redirect_to("/employers/account")
       end
@@ -467,7 +458,7 @@ RSpec.describe JobsController, :type => :controller do
     context '.when employer is sign_in' do
       before {
           sign_in(employer)
-          employer_profile
+          employer_profile(employer)
         }
 
       it 'should properly assigns jobs' do
@@ -483,8 +474,7 @@ RSpec.describe JobsController, :type => :controller do
       end
 
       it 'should redirect to /employers/account' do
-        employer.update(first_name: nil, last_name: nil)
-        employer_profile.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
+        EmployerProfile.first.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
         get :employer_index, id: job.id
         expect(response).to redirect_to("/employers/account")
       end
@@ -504,7 +494,7 @@ RSpec.describe JobsController, :type => :controller do
     context '.when employer is sign_in' do
       before {
           sign_in(employer)
-          employer_profile
+          employer_profile(employer)
         }
 
       it 'should properly assigns jobs' do
@@ -520,8 +510,7 @@ RSpec.describe JobsController, :type => :controller do
       end
 
       it 'should redirect to /employers/account' do
-        employer.update(first_name: nil, last_name: nil)
-        employer_profile.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
+        EmployerProfile.first.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
         get :employer_archive, id: job.id
         expect(response).to redirect_to("/employers/account")
       end
@@ -541,7 +530,7 @@ RSpec.describe JobsController, :type => :controller do
     context '.when employer is sign_in' do
       before {
           sign_in(employer)
-          employer_profile
+          employer_profile(employer)
         }
 
       it 'should correctly assign job' do
@@ -572,8 +561,7 @@ RSpec.describe JobsController, :type => :controller do
       end
 
       it 'should redirect to /employers/account' do
-        employer.update(first_name: nil, last_name: nil)
-        employer_profile.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
+        EmployerProfile.first.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
         get :inactivate_job, id: job.id
         expect(response).to redirect_to("/employers/account")
       end
@@ -592,7 +580,7 @@ RSpec.describe JobsController, :type => :controller do
     context '.when employer is sign_in' do
       before {
           sign_in(employer)
-          employer_profile
+          employer_profile(employer)
         }
 
       context '.with valid attributes' do
@@ -625,8 +613,7 @@ RSpec.describe JobsController, :type => :controller do
         end
 
         it 'should redirect to /employers/account' do
-          employer.update(first_name: nil, last_name: nil)
-          employer_profile.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
+          EmployerProfile.first.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
           post :create, {job: valid_attributes}
           expect(response).to redirect_to("/employers/account")
         end
@@ -707,7 +694,7 @@ RSpec.describe JobsController, :type => :controller do
       context 'and job does not belongs to signed in employer' do
         it 'should raise unauthorized access' do
           fake_employer = create(:archetype_employer)
-          fake_employer_profile = create(:employer_profile, employer_id: fake_employer.id, state_id: state.id)
+          employer_profile(fake_employer)
           sign_in(fake_employer)
           put :update, {id: job.id, job: new_attributes}
           expect(response).to redirect_to('/')
@@ -718,7 +705,7 @@ RSpec.describe JobsController, :type => :controller do
       context 'and job belongs to signed in employer' do
         before {
           sign_in(employer)
-          employer_profile
+          employer_profile(employer)
         }
 
         context '.with valid attributes' do
@@ -777,7 +764,7 @@ RSpec.describe JobsController, :type => :controller do
       context 'and job does not belongs to signed in employer' do
         it 'should raise unauthorized access' do
           fake_employer = create(:archetype_employer)
-          fake_employer_profile = create(:employer_profile, employer_id: fake_employer.id, state_id: state.id)
+          employer_profile(fake_employer)
           sign_in(fake_employer)
           delete :destroy, id: job.id
           expect(response).to redirect_to('/')
@@ -788,7 +775,7 @@ RSpec.describe JobsController, :type => :controller do
       context 'job belongs to signed in employer' do
         before {
           sign_in(employer)
-          employer_profile
+          employer_profile(employer)
         }
 
         it 'should assign job' do
@@ -811,8 +798,7 @@ RSpec.describe JobsController, :type => :controller do
         end
 
         it 'should redirect to /employers/account' do
-          employer.update(first_name: nil, last_name: nil)
-          employer_profile.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
+          EmployerProfile.first.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
           delete :destroy, id: job.id
           expect(response).to redirect_to("/employers/account")
         end
