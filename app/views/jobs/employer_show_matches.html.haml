@@ -5,22 +5,19 @@
         .col-md-12
           %h2
             = @job.title
-
   .container.padded-container
     .row
-      .col-md-12
+      .col-md-6
         %h2{style: 'padding-bottom:5px'}
-          %span Candidate Matches 
-        %div
+          %span Candidate Matches
+      .col-md-6
+        %div.mail-matched
           = form_tag email_match_candidates_job_path(@job), method: :post do
-            = submit_tag "Click here to send email to all matched candidates", class: 'btn btn-sm btn-info'
-        %hr
+            = submit_tag "Email matched candidates", class: 'btn btn-md btn-info'
+    %hr
+    .row
+      .col-md-12
         %table.table.table-responsive
           - @job.matches.each do |candidate|
             = render 'jobs/candidate_small_list_item', :candidate => candidate, :job => @job
             %hr
-
-:javascript
-  $(function(){
-
-  })
