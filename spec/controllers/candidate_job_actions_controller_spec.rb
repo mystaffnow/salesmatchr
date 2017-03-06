@@ -1,11 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe CandidateJobActionsController, :type => :controller do
-  let(:candidate) {create(:candidate, archetype_score: 200)}
+  let(:candidate) {create(:candidate, archetype_score: 35)}
   let(:job_function) {create(:job_function)}
   let(:state) {create(:state)}
   let(:employer) {create(:employer, first_name: 'user', last_name: 'test')}
-  let(:employer_profile) {create(:employer_profile, employer_id: employer.id, state_id: state.id, city: 'Wichita', zip: 5520, website: 'www.mywebsite.org', )}
   let(:job) {create(:job, employer_id: employer.id, salary_low: 50000, salary_high: 150000, state_id: state.id, job_function_id: job_function.id)}
   let(:candidate_job_action) {create(:candidate_job_action, candidate_id: candidate.id, job_id: job.id)}
 
@@ -29,9 +28,9 @@ RSpec.describe CandidateJobActionsController, :type => :controller do
     end
 
     context '.when employer is signed_in' do
-      before{ 
-        employer_profile
-        sign_in(employer) 
+      before{
+        sign_in(employer)
+        employer_profile(employer)
       }
 
       it 'should redirects to candidates sign_in page' do
@@ -60,10 +59,9 @@ RSpec.describe CandidateJobActionsController, :type => :controller do
 
     context '.when employer is signed_in' do
       before{ 
-        employer_profile
         sign_in(employer) 
+        employer_profile(employer)
       }
-
 
       it 'should redirects to candidates sign_in page' do
         get :candidate_job_viewed 
@@ -81,10 +79,12 @@ RSpec.describe CandidateJobActionsController, :type => :controller do
     end
 
     context '.when candidate is signed_in' do
-      before{ sign_in(candidate) }
+      before{
+        sign_in(candidate) 
+      }
 
       it 'should assign @jobs' do
-        job.update_attributes(archetype_low: 10, archetype_high: 201, is_active: true)
+        job.update_attributes(is_active: true)
         job.reload
         get :candidate_matches
         expect(assigns(:jobs)).to eq([job])
@@ -120,8 +120,8 @@ RSpec.describe CandidateJobActionsController, :type => :controller do
 
     context '.when employer is signed_in' do
       before{ 
-        employer_profile
         sign_in(employer) 
+        employer_profile(employer)
       }
 
       it 'redirects to candidates login page' do
@@ -168,7 +168,7 @@ RSpec.describe CandidateJobActionsController, :type => :controller do
 
     context '.when employer is signed_in' do
       before{
-        employer_profile
+        employer_profile(employer)
         sign_in(employer) 
       }
 

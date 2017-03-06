@@ -1,24 +1,23 @@
 require 'rails_helper'
 
 RSpec.describe JobCandidatesController, :type => :controller do
+  let(:path) {File.open("#{Rails.root}/public/img/incognito.png", "rb+")}
   let(:state) {create(:state)}
   let(:education_level) {create(:education_level)}
-  let(:candidate) {create(:candidate, archetype_score: 200)}
-  let(:candidate_profile) {create(:candidate_profile, candidate_id: candidate.id, city: 'Wichita', state_id: state.id, zip: '1254', education_level_id: education_level.id)}
+  let(:candidate) {create(:candidate, archetype_score: 35)}
   let(:job_function) {create(:job_function)}
   let(:employer) {create(:employer, first_name: 'user', last_name: 'test')}
-  let(:employer_profile) {create(:employer_profile, employer_id: employer.id, state_id: state.id, city: 'Wichita', zip: 5520, website: 'www.mywebsite.org')}
   let(:job) {create(:job, employer_id: employer.id, salary_low: 50000, salary_high: 150000, state_id: state.id, job_function_id: job_function.id)}
 
   describe '#index' do
     context '.when candidate is sign_in' do
       before{ 
         sign_in(candidate) 
-        candidate_profile
+        candidate_profile(candidate)
       }
 
       it '#require_candidate_profile' do
-        candidate.candidate_profile = nil
+        CandidateProfile.first.destroy
         get :index
         expect(response).to redirect_to(candidates_account_path)
       end
@@ -39,7 +38,7 @@ RSpec.describe JobCandidatesController, :type => :controller do
     context '.when employer is sign_in' do
       before{
         sign_in(employer)
-        employer_profile
+        employer_profile(employer)
          }
 
       it 'should redirect to candidate signin page' do
@@ -53,11 +52,11 @@ RSpec.describe JobCandidatesController, :type => :controller do
     context '.when candidate is sign_in' do
       before{ 
         sign_in(candidate) 
-        candidate_profile
+        candidate_profile(candidate)
       }
 
       it '#require_candidate_profile' do
-        candidate.candidate_profile = nil
+        CandidateProfile.first.destroy
         get :apply, id: job.id
         expect(response).to redirect_to(candidates_account_path)
       end
@@ -98,7 +97,7 @@ RSpec.describe JobCandidatesController, :type => :controller do
     context '.when employer is sign_in' do
       before{ 
         sign_in(employer) 
-        employer_profile
+        employer_profile(employer)
       }
 
       it 'should redirect to candidate login page' do
@@ -114,7 +113,7 @@ RSpec.describe JobCandidatesController, :type => :controller do
     context '.when candidate is sign_in' do
       before{ 
         sign_in(candidate) 
-        candidate_profile
+        candidate_profile(candidate)
       }
 
       it 'should correctly assign job' do
@@ -137,7 +136,7 @@ RSpec.describe JobCandidatesController, :type => :controller do
     context '.when employer is sign_in' do
       before{ 
         sign_in(employer) 
-        employer_profile
+        employer_profile(employer)
       }
 
       it 'should redirect to candidate login page' do
@@ -153,7 +152,7 @@ RSpec.describe JobCandidatesController, :type => :controller do
     context '.when candidate is sign_in' do
       before{ 
         sign_in(candidate) 
-        candidate_profile
+        candidate_profile(candidate)
       }
 
       it 'should call set_job_candidate and assign job_candidate' do
@@ -191,7 +190,7 @@ RSpec.describe JobCandidatesController, :type => :controller do
     context '.when employer is sign_in' do
       before{ 
         sign_in(employer) 
-        employer_profile
+        employer_profile(employer)
       }
 
       it 'should redirect to employer login page' do
@@ -207,7 +206,7 @@ RSpec.describe JobCandidatesController, :type => :controller do
     context '.when candidate is sign_in' do
       before{ 
         sign_in(candidate) 
-        candidate_profile
+        candidate_profile(candidate)
       }
 
       it 'should redirect to employer login page' do
@@ -219,7 +218,7 @@ RSpec.describe JobCandidatesController, :type => :controller do
     context '.when employer is sign_in' do
       before{ 
         sign_in(employer) 
-        employer_profile
+        employer_profile(employer)
       }
 
       it 'should update job_candidate status accepted' do
@@ -238,8 +237,7 @@ RSpec.describe JobCandidatesController, :type => :controller do
       end
 
       it 'should redirect to /employers/account' do
-        employer.update(first_name: nil, last_name: nil)
-        employer_profile.update(zip: nil, state_id: nil, city: nil, website: nil)
+        EmployerProfile.first.update(zip: nil, state_id: nil, city: nil, website: nil)
         put :accept_candidate, id: job_candidate.id
         expect(response).to redirect_to("/employers/account")
       end
@@ -252,7 +250,7 @@ RSpec.describe JobCandidatesController, :type => :controller do
     context '.when candidate is sign_in' do
       before{ 
         sign_in(candidate) 
-        candidate_profile
+        candidate_profile(candidate)
       }
 
       it 'should redirect to employer login page' do
@@ -264,7 +262,7 @@ RSpec.describe JobCandidatesController, :type => :controller do
     context '.when employer is sign_in' do
       before{ 
         sign_in(employer) 
-        employer_profile
+        employer_profile(employer)
       }
 
       it 'should update job_candidate status deleted' do
@@ -281,8 +279,7 @@ RSpec.describe JobCandidatesController, :type => :controller do
       end
 
       it 'should redirect to /employers/account' do
-        employer.update(first_name: nil, last_name: nil)
-        employer_profile.update(zip: nil, state_id: nil, city: nil, website: nil)
+        EmployerProfile.first.update(zip: nil, state_id: nil, city: nil, website: nil)
         post :remove_candidate, { job_id: job.id, candidate_id: candidate.id }
         expect(response).to redirect_to("/employers/account")
       end
@@ -295,7 +292,7 @@ RSpec.describe JobCandidatesController, :type => :controller do
     context '.when candidate is sign_in' do
       before{ 
         sign_in(candidate) 
-        candidate_profile
+        candidate_profile(candidate)
       }
 
       it 'should redirect_to employer login page' do
@@ -307,7 +304,7 @@ RSpec.describe JobCandidatesController, :type => :controller do
     context '.when employer is sign_in' do
       before{ 
         sign_in(employer) 
-        employer_profile
+        employer_profile(employer)
         job_candidate
       }
       
@@ -323,8 +320,7 @@ RSpec.describe JobCandidatesController, :type => :controller do
       end
 
       it 'should redirect to /employers/account' do
-        employer.update(first_name: nil, last_name: nil)
-        employer_profile.update(zip: nil, state_id: nil, city: nil, website: nil)
+        EmployerProfile.first.update(zip: nil, state_id: nil, city: nil, website: nil)
         post :shortlist_candidate, { job_id: job.id, candidate_id: candidate.id }
         expect(response).to redirect_to("/employers/account")
       end

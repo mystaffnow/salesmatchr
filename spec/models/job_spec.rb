@@ -244,4 +244,26 @@ RSpec.describe Job do
     
     expect(@job.full_street_address).to eq("city1 Alaska 10900")
   end
+
+  context 'send_email' do
+    let(:inside_sales) {create(:inside_sales)} # low: 31, high: 100
+    let(:inside_sales_job) {create(:job, state_id: state.id, employer_id: employer.id, job_function_id: inside_sales.id)}
+
+    before do
+      @candidate = create(:candidate, archetype_score: 30)
+      @candidate1 = create(:candidate, archetype_score: 31)
+      @candidate2 = create(:candidate, archetype_score: 50)
+      @candidate3 = create(:candidate, archetype_score: 80)
+      @candidate4 = create(:candidate, archetype_score: 100)
+      @candidate5 = create(:candidate, archetype_score: 101)
+
+      ActionMailer::Base.delivery_method = :test
+      ActionMailer::Base.perform_deliveries = true
+      ActionMailer::Base.deliveries = []
+    end
+
+    it 'should send email to all matched candidates' do
+      expect {inside_sales_job.send_email}.to change { ActionMailer::Base.deliveries.count }.by(4)
+    end
+  end
 end
