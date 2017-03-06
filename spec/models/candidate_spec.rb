@@ -26,7 +26,8 @@ require 'rails_helper'
 RSpec.describe Candidate do
 	let(:employer) {create(:employer, :first_name => "test", :last_name => "employer")}
 	let(:state) {create(:state)}
-	let(:job) {create(:job, employer_id: employer.id, state_id: state.id, city: 'New york', zip: 10900)}
+	let(:job_function) {create(:job_function)}
+	let(:job) {create(:job, employer_id: employer.id, state_id: state.id, city: 'New york', zip: 10900, job_function_id: job_function.id)}
 	let(:candidate) {create(:candidate, :first_name => "test", :last_name => "candidate")}
 
 	describe 'Validation' do

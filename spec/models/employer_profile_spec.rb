@@ -40,10 +40,8 @@ RSpec.describe EmployerProfile, type: :model do
       rejecting('text/plain', 'text/xml') }
       
     it 'should return default avatar' do
-			@employer_profile = create(:employer_profile, employer_id: employer.id,
-															state_id: state.id
-															)
-      expect(employer.employer_profile.avatar.url).to eq('/img/missing.png')
+      @employer1 = create(:employer, first_name: "test1", last_name: "employer1")
+      expect(EmployerProfile.first.avatar.url).to eq('/img/missing.png')
     end
   end
 end

@@ -82,3 +82,8 @@ gem 'sendgrid-rails', '~> 2.0'
 gem 'bootstrap-glyphicons'
 # Authorization management
 gem 'pundit'
+
+# Create job and run it on backend
+gem 'activejob'
+# Asnchronous process library
+gem 'sucker_punch'

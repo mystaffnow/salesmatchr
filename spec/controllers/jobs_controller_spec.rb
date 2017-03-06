@@ -819,4 +819,6 @@ RSpec.describe JobsController, :type => :controller do
       end
     end
   end
+
+  it '#email_match_candidates'
 end

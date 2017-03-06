@@ -72,17 +72,17 @@ RSpec.describe Employer do
   end
   
   context '.can_proceed' do
-    before(:each) do
-      @employer_profile = create(:employer_profile, :employer_id => employer.id, :state_id => state.id, :city => 'Sherwood', :zip => '97140', :website => 'http://www.mywebsite.com')
-    end
-
     it 'should return true' do
-      expect(employer.can_proceed).to be_truthy
+      @employer = create(:employer)
+      @profile1 = EmployerProfile.first
+      @profile1.update_attributes(:state_id => state.id, :city => 'Sherwood', :zip => '97140', :website => 'http://www.mywebsite.com')
+      @profile1.reload
+      expect(Employer.first.can_proceed).to be_truthy
     end
 
     it 'should return false without state' do
-      employer.employer_profile.state = nil
-      expect(employer.can_proceed).to be_falsey
+      @employer1 = create(:employer)
+      expect(@employer1.can_proceed).to be_falsey
     end
 
     it 'should return false without name' do
@@ -92,17 +92,15 @@ RSpec.describe Employer do
     end
 
     it 'should return false without city' do
-      employer.employer_profile.city = nil
-      expect(employer.can_proceed).to be_falsey
+      @employer1 = create(:employer)
+      expect(@employer1.can_proceed).to be_falsey
     end
 
     it 'should return false without zip' do
-      employer.employer_profile.zip = nil
       expect(employer.can_proceed).to be_falsey
     end
 
     it 'should return false without website' do
-      employer.employer_profile.website = nil
       expect(employer.can_proceed).to be_falsey
     end
   end

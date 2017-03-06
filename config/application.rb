@@ -26,5 +26,6 @@ module Salesmatchr
 
     # Autoload dir inside app/
     config.autoload_paths += %W( #{config.root}/app )
+    config.active_job.queue_adapter = :sucker_punch
   end
 end
