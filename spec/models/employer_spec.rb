@@ -25,6 +25,12 @@ require 'rails_helper'
 RSpec.describe Employer do
   let(:employer) {create(:employer, :first_name => "test", :last_name => "employer")}
   let(:state) {create(:state)}
+
+  describe "Validation" do
+    it {should validate_presence_of(:first_name)}
+    it {should validate_presence_of(:last_name)}
+    it {should validate_presence_of(:company)}
+  end
   
   describe "Association" do
     # it {should belong_to :state}

@@ -26,7 +26,10 @@ RSpec.describe JobsController, :type => :controller do
       "description": 'This is general description',
       "is_active": false,
       "experience_years": 5,
-      "stripe_token": nil
+      "stripe_token": nil,
+      "payment": {
+        "stripe_card_token": generate_stripe_card_token
+      }
     }
   }
 
@@ -165,17 +168,10 @@ RSpec.describe JobsController, :type => :controller do
         expect(assigns(:job)[:id]).to eq(nil)
       end
 
-      it 'employer should pay to post more than two jobs' do
-        job1 = create(:job, employer_id: employer.id, city: 'my city', state_id: state.id, zip: 1200)
-        job2 = create(:job, employer_id: employer.id, city: 'my city', state_id: state.id, zip: 1200)
-        job3 = create(:job, employer_id: employer.id, city: 'my city', state_id: state.id, zip: 1200)
+      it 'should build payment for each job' do
         get :new
-        expect(assigns(:should_pay)).to be_truthy
-      end
-
-      it 'First two jobs are free and employer should not pay' do
-        get :new
-        expect(assigns(:should_pay)).to be_falsy
+        job = assigns(:job)
+        expect(job.payment).to be_a_new(Payment)
       end
 
       it 'should redirect to /employers/account' do
@@ -617,7 +613,17 @@ RSpec.describe JobsController, :type => :controller do
           expect(response).to redirect_to(employer_archive_jobs_path)
         end
 
-        it 'should implement stripe'
+        it 'should store payment' do
+          post :create, {job: valid_attributes}
+          expect(Payment.count).to eq(1)
+          expect(Payment.last.employer_id).to eq(employer.id)
+          expect(Payment.last.job_id).to eq(Job.last.id)
+          expect(Payment.last.stripe_card_token).to eq(valid_attributes[:payment][:stripe_card_token])
+          expect(Payment.last.stripe_customer_id).not_to be_blank
+          expect(Payment.last.stripe_charge_id).not_to be_blank
+          expect(Payment.last.status).to eq("charged")
+          expect(Payment.last.amount).to eq(190.0)
+        end
 
         it 'should redirect to /employers/account' do
           employer.update(first_name: nil, last_name: nil)

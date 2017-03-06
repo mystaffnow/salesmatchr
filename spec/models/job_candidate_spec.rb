@@ -20,6 +20,10 @@ RSpec.describe JobCandidate do
     it { should belong_to :candidate }
   end
 
+  it 'should have enum status' do
+    expect(JobCandidate.statuses).to eq({"submitted"=>0, "viewed"=>1, "accepted"=>2, "withdrawn"=>3, "shortlist"=>4, "deleted"=>5, "purposed"=>6})
+  end
+
   it "should save status 'submitted'" do
     job_candidate.update_attributes(status: 'submitted')
     expect(job_candidate.status).to eq("submitted")

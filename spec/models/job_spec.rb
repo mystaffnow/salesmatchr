@@ -35,11 +35,22 @@ RSpec.describe Job do
                     archetype_low: -30, archetype_high: 70, city: 'city1', state_id: @state.id
                     )
             }
+  
+  describe "Validation" do
+    it {validate_presence_of :employer_id}
+    it {validate_presence_of :title}
+    it {validate_presence_of :description}
+    it {validate_presence_of :city}
+    it {validate_presence_of :zip}
+  end
+
   describe "Association" do
     it {should belong_to :state}
     it {should belong_to :employer}
     it {should have_many :job_candidates}
     it {should have_many :candidate_job_actions}
+    it {should belong_to :job_function}
+    it {should have_one(:payment).dependent(:destroy)}
   end
 
   context 'matches.' do
@@ -76,5 +87,45 @@ RSpec.describe Job do
         expect(@job.applicants).to eq([@candidate1, @candidate2, @candidate3, @candidate4, @candidate5])
       end
     end
+  end
+
+  context 'shortlist' do
+    before(:each) do
+      @job = create(:job, employer_id: employer.id, salary_low: 45000, salary_high: 280000, zip: "10900",
+                    archetype_low: -30, archetype_high: 70, city: 'city1', state_id: state.id
+                    )
+      @candidate1 = create(:candidate, archetype_score: 21)
+      @candidate2 = create(:candidate, archetype_score: 35)
+      @job_candidate = create(:job_candidate, job_id: @job.id, candidate_id: @candidate1.id, status: 4)
+      @job_candidate = create(:job_candidate, job_id: @job.id, candidate_id: @candidate2.id, status: 1)
+    end
+
+    it 'should return list of shortlist candidate' do
+      expect(@job.shortlist).to eq([@candidate1])
+    end
+  end
+
+  context 'deleted' do
+    before(:each) do
+      @job = create(:job, employer_id: employer.id, salary_low: 45000, salary_high: 280000, zip: "10900",
+                    archetype_low: -30, archetype_high: 70, city: 'city1', state_id: state.id
+                    )
+      @candidate1 = create(:candidate, archetype_score: 21)
+      @candidate2 = create(:candidate, archetype_score: 35)
+      @job_candidate = create(:job_candidate, job_id: @job.id, candidate_id: @candidate1.id, status: 5)
+      @job_candidate = create(:job_candidate, job_id: @job.id, candidate_id: @candidate2.id, status: 1)
+    end
+
+    it 'should return list of shortlist candidate' do
+      expect(@job.deleted).to eq([@candidate1])
+    end
+  end
+
+  it 'full_street_address' do
+    @job = create(:job, employer_id: employer.id, salary_low: 45000, salary_high: 280000, zip: "10900",
+                    archetype_low: -30, archetype_high: 70, city: 'city1', state_id: state.id
+                    )
+    
+    expect(@job.full_street_address).to eq("city1 Alaska 10900")
   end
 end

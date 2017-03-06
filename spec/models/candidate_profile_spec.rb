@@ -31,6 +31,10 @@ RSpec.describe CandidateProfile, type: :model do
 																 :education_level_id => education_level.id
 																 )}
 
+	describe '.validation' do
+		it { should validate_uniqueness_of(:candidate_id)}
+	end
+
   describe "Association" do
 		it {should belong_to :candidate}
 		it {should belong_to :state}
@@ -48,10 +52,6 @@ RSpec.describe CandidateProfile, type: :model do
 	  		expect(candidate_profile.avatar_url).to eq('/img/missing.png')
 	  	end
 	  end
-	end
-
-	describe '.validation' do
-		it { should validate_uniqueness_of(:candidate_id)}
 	end
 end
 	
