@@ -1,5 +1,6 @@
 class CandidateMailer < ApplicationMailer
   default :from => 'donotreply@salesmatchr.com'
+  
   def send_job_hire(email, job)
     @job = job
     mail( :to => email,

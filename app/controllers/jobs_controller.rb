@@ -64,15 +64,19 @@ class JobsController < ApplicationController
         
         ps = payment_service.process_payment
 
-        @job.destroy if ps.nil? # if there is an error while payment
-        
-        # don't load event when job post fails 
-        unless @job.destroyed?
-          tracker = Mixpanel::Tracker.new(ENV["NT_MIXPANEL_TOKEN"])
-          tracker.track('employer-'+@job.employer.email, 'job created')
+        if ps.nil? # if there is an error while payment
+          @job.destroy 
+          format.html { redirect_to employer_archive_jobs_path, notice: 'Oops! there is some issue while process payment, please contact techical support.' }        
+        else
+          result = @job.send_email
+          if result.present?
+            tracker = Mixpanel::Tracker.new(ENV["NT_MIXPANEL_TOKEN"])
+            tracker.track('employer-'+@job.employer.email, 'job created')
+            format.html { redirect_to employer_archive_jobs_path, notice: 'Job was successfully created.' }
+          else
+            format.html { redirect_to employer_archive_jobs_path, notice: 'Oops! we cannot process your request, please contact techical support.' }
+          end
         end
-
-        format.html { redirect_to employer_archive_jobs_path, notice: 'Job was successfully created.' }
       else
         format.html { render :new }
         format.json { render json: @job.errors, status: :unprocessable_entity }
@@ -201,12 +205,11 @@ class JobsController < ApplicationController
 
   # Send email to all candidates who matches the job
   def email_match_candidates
-    candidates = @job.matches
-    if candidates.present?
-      candidates.map {|candidate| SendEmailJob.perform_in(1, candidate, @job)}
+    result = @job.send_email
+    if result.present?
       redirect_to employer_show_matches_path(@job.id), notice: 'Email send to all matched candidates.'
     else
-      redirect_to :back
+      format.html { redirect_to employer_archive_jobs_path, notice: 'Oops! we cannot process your request, please contact techical support.' }
     end
   end
 

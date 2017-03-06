@@ -64,6 +64,16 @@ class Job < ActiveRecord::Base
     self.city + " " + self.state.name + " " + self.zip
   end
 
+  def send_email
+    candidates = self.matches
+    if candidates.present?
+      candidates.map {|candidate| CandidateMailer.send_job_match(candidate, self).deliver_later}
+    end
+    rescue => e
+      self.destroy
+      return nil
+  end
+
   private
 
   def add_archetype_score
