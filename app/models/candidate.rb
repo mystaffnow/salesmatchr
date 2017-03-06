@@ -39,6 +39,8 @@ class Candidate < ActiveRecord::Base
   accepts_nested_attributes_for :candidate_question_answers, allow_destroy: true
   attr_accessor :flash_notice
 
+  after_save :add_candidate_profile
+
   # validation
   validates_presence_of :first_name, :last_name
 
@@ -113,20 +115,42 @@ class Candidate < ActiveRecord::Base
     if !self.archetype_score
       return 'n/a'
     end
+    # score between 71-100
     if self.archetype_score > 71
       return "Aggressive Hunter"
+
+    # score between 31-70
     elsif self.archetype_score > 31
       return "Relaxed Hunter"
+
+    # score between 11-30
     elsif self.archetype_score > 11
       return "Aggressive Fisherman"
+
+    # score between -10-10
     elsif self.archetype_score > -10
       return "Balanced Fisherman"
+    
+    # score between -30-(-11)
     elsif self.archetype_score > -30
       return "Relaxed Fisherman"
+    
+    # score between -70-(-31)
     elsif self.archetype_score > -70
       return "Aggressive Farmer"
+    
+    # score between -100-(-71)
     else
       return "Relaxed Farmer"
+    end
+  end
+
+  private
+
+  def add_candidate_profile
+    if self.candidate_profile.blank?
+      profile = CandidateProfile.new(candidate_id: self.id)
+      profile.save
     end
   end
 end

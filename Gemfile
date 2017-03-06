@@ -49,6 +49,7 @@ group :development, :test do
   # manage env variables
 	gem 'figaro'
 	# debugger
+  gem 'pry-rails'
 	gem 'pry-byebug'
 
 	# testing packages

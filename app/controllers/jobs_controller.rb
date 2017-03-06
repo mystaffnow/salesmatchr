@@ -49,8 +49,6 @@ class JobsController < ApplicationController
     @job = Job.new(job_params)
     authorize(@job)
     job_function = JobFunction.find(job_params[:job_function_id])
-    @job.archetype_low = job_function.low
-    @job.archetype_high = job_function.high
     @job.employer_id = current_employer.id
     @job.job_function_id = job_function.id
 
@@ -205,9 +203,9 @@ class JobsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def job_params
-    params.require(:job).permit(:distance, :job_function_id,:employer_id, :city, 
-                                :state_id, :archetype_low, :archetype_high, :salary_low, 
-                                :salary_high, :zip, :is_remote, :title, :description, 
+    params.require(:job).permit(:distance, :job_function_id,:employer_id, :city, :state_id,
+                                #:archetype_low, :archetype_high,
+                                :salary_low, :salary_high, :zip, :is_remote, :title, :description, 
                                 :is_active, :experience_years, :stripe_token,
                                 :payment_attributes => [
                                   :id, :stripe_card_token

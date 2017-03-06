@@ -54,16 +54,130 @@ RSpec.describe Job do
   end
 
   context 'matches.' do
-    before(:each) do
-      @job = create(:job, employer_id: employer.id, salary_low: 45000, salary_high: 280000, zip: "10900",
-                    archetype_low: -30, archetype_high: 70, city: 'city1', state_id: state.id
-                    )
-      @candidate1 = create(:candidate, archetype_score: 21)
-      @candidate2 = create(:candidate, archetype_score: 35)
+    context '.Inside sales' do
+      let(:inside_sales) {create(:inside_sales)} # low: 31, high: 100
+      let(:inside_sales_job) {create(:job, state_id: state.id, employer_id: employer.id, job_function_id: inside_sales.id)}
+
+      before do
+        @candidate = create(:candidate, archetype_score: 30)
+        @candidate1 = create(:candidate, archetype_score: 31)
+        @candidate2 = create(:candidate, archetype_score: 50)
+        @candidate3 = create(:candidate, archetype_score: 80)
+        @candidate4 = create(:candidate, archetype_score: 100)
+        @candidate5 = create(:candidate, archetype_score: 101)
+      end
+
+      it 'should match candidates scale between 31-100' do
+        expect(inside_sales_job.matches).to eq([@candidate1, @candidate2, @candidate3, @candidate4])
+      end
     end
 
-    it 'should return array of candidates' do
-      expect(@job.matches).to eq([@candidate1, @candidate2])
+    context '.Outside sales' do
+      let(:outside_sales) {create(:outside_sales)} # low: 31, high: 100
+      let(:outside_sales_job) {create(:job, state_id: state.id, employer_id: employer.id, job_function_id: outside_sales.id)}
+
+      before do
+        @candidate = create(:candidate, archetype_score: 30)
+        @candidate1 = create(:candidate, archetype_score: 31)
+        @candidate2 = create(:candidate, archetype_score: 50)
+        @candidate3 = create(:candidate, archetype_score: 80)
+        @candidate4 = create(:candidate, archetype_score: 100)
+        @candidate5 = create(:candidate, archetype_score: 101)
+      end
+
+      it 'should match candidates scale between 31-100' do
+        expect(outside_sales_job.matches).to eq([@candidate1, @candidate2, @candidate3, @candidate4])
+      end
+    end
+
+    context '.Business developement (bizdev)' do
+      let(:business_developement) {create(:business_developement)} # low: -10, high: 70
+      let(:business_developement_job) {create(:job, state_id: state.id, employer_id: employer.id, job_function_id: business_developement.id)}
+
+      before do
+        @candidate = create(:candidate, archetype_score: -20)
+        @candidate1 = create(:candidate, archetype_score: -10)
+        @candidate2 = create(:candidate, archetype_score: 10)
+        @candidate3 = create(:candidate, archetype_score: 50)
+        @candidate4 = create(:candidate, archetype_score: 70)
+        @candidate5 = create(:candidate, archetype_score: 71)
+      end
+
+      it 'should match candidates scale between 31-100' do
+        expect(business_developement_job.matches).to eq([@candidate1, @candidate2, @candidate3, @candidate4])
+      end
+    end
+
+    context '.Sales Manager' do
+      let(:sales_manager) {create(:sales_manager)} # low: -30, high: 70
+      let(:sales_manager_job) {create(:job, state_id: state.id, employer_id: employer.id, job_function_id: sales_manager.id)}
+
+      before do
+        @candidate = create(:candidate, archetype_score: -40)
+        @candidate1 = create(:candidate, archetype_score: -30)
+        @candidate2 = create(:candidate, archetype_score: -10)
+        @candidate3 = create(:candidate, archetype_score: 10)
+        @candidate4 = create(:candidate, archetype_score: 70)
+        @candidate5 = create(:candidate, archetype_score: 71)
+      end
+
+      it 'should match candidates scale between 31-100' do
+        expect(sales_manager_job.matches).to eq([@candidate1, @candidate2, @candidate3, @candidate4])
+      end
+    end
+
+    context '.Sales Operations' do
+      let(:sales_operations) {create(:sales_operations)} # low: -100, high: 10
+      let(:sales_operations_job) {create(:job, state_id: state.id, employer_id: employer.id, job_function_id: sales_operations.id)}
+
+      before do
+        @candidate = create(:candidate, archetype_score: -110)
+        @candidate1 = create(:candidate, archetype_score: -100)
+        @candidate2 = create(:candidate, archetype_score: -10)
+        @candidate3 = create(:candidate, archetype_score: 1)
+        @candidate4 = create(:candidate, archetype_score: 10)
+        @candidate5 = create(:candidate, archetype_score: 11)
+      end
+
+      it 'should match candidates scale between 31-100' do
+        expect(sales_operations_job.matches).to eq([@candidate1, @candidate2, @candidate3, @candidate4])
+      end
+    end
+
+    context '.Customer service' do
+      let(:customer_service) {create(:customer_service)} # low: -100, high: 10
+      let(:customer_service_job) {create(:job, state_id: state.id, employer_id: employer.id, job_function_id: customer_service.id)}
+
+      before do
+        @candidate = create(:candidate, archetype_score: -110)
+        @candidate1 = create(:candidate, archetype_score: -100)
+        @candidate2 = create(:candidate, archetype_score: -10)
+        @candidate3 = create(:candidate, archetype_score: 1)
+        @candidate4 = create(:candidate, archetype_score: 10)
+        @candidate5 = create(:candidate, archetype_score: 11)
+      end
+
+      it 'should match candidates scale between 31-100' do
+        expect(customer_service_job.matches).to eq([@candidate1, @candidate2, @candidate3, @candidate4])
+      end
+    end
+
+    context '.Account Manager' do
+      let(:account_manager) {create(:account_manager)} # low: -100, high: -11
+      let(:account_manager_job) {create(:job, state_id: state.id, employer_id: employer.id, job_function_id: account_manager.id)}
+
+      before do
+        @candidate = create(:candidate, archetype_score: -110)
+        @candidate1 = create(:candidate, archetype_score: -100)
+        @candidate2 = create(:candidate, archetype_score: -50)
+        @candidate3 = create(:candidate, archetype_score: -12)
+        @candidate4 = create(:candidate, archetype_score: -11)
+        @candidate5 = create(:candidate, archetype_score: -9)
+      end
+
+      it 'should match candidates scale between 31-100' do
+        expect(account_manager_job.matches).to eq([@candidate1, @candidate2, @candidate3, @candidate4])
+      end
     end
   end
 
