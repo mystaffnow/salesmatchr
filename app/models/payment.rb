@@ -16,6 +16,7 @@
 
 class Payment < ActiveRecord::Base
 	belongs_to :job
+	belongs_to :employer
 
 	enum status: ['charged']
 end

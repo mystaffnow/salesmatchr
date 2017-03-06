@@ -32,7 +32,8 @@ class Job < ActiveRecord::Base
   belongs_to :employer
   has_many :job_candidates
   has_many :candidate_job_actions
-  attr_accessor :job_function_id
+  # attr_accessor :job_function_id
+  belongs_to :job_function
   has_one :payment, dependent: :destroy
 
   # validation

@@ -1,4 +1,4 @@
-ActiveAdmin.register SalesType do
+ActiveAdmin.register Answer do
 
 # See permitted parameters documentation:
 # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
@@ -13,9 +13,9 @@ ActiveAdmin.register SalesType do
 #   permitted
 # end
 
-	menu priority: 6, parent: 'Setting'
+	menu priority: 1, parent: 'Setting'
 
-	permit_params :id, :name
+	permit_params :id, :name, :score
 
 	filter :name
 
@@ -23,6 +23,7 @@ ActiveAdmin.register SalesType do
 		selectable_column
 		column :id
 		column :name
+		column :score
 		actions
 	end
 
@@ -30,6 +31,7 @@ ActiveAdmin.register SalesType do
 		attributes_table do
 			row :id
 			row :name
+			row :score
 		end
 	end
 end

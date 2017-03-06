@@ -1,4 +1,4 @@
-ActiveAdmin.register SalesType do
+ActiveAdmin.register College do
 
 # See permitted parameters documentation:
 # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
@@ -13,7 +13,7 @@ ActiveAdmin.register SalesType do
 #   permitted
 # end
 
-	menu priority: 6, parent: 'Setting'
+  menu priority: 2, parent: 'Setting'
 
 	permit_params :id, :name
 
