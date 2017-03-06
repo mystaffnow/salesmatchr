@@ -256,14 +256,15 @@ RSpec.describe Job do
       @candidate3 = create(:candidate, archetype_score: 80)
       @candidate4 = create(:candidate, archetype_score: 100)
       @candidate5 = create(:candidate, archetype_score: 101)
-
-      ActionMailer::Base.delivery_method = :test
-      ActionMailer::Base.perform_deliveries = true
-      ActionMailer::Base.deliveries = []
     end
 
     it 'should send email to all matched candidates' do
       expect {inside_sales_job.send_email}.to change { ActionMailer::Base.deliveries.count }.by(4)
+    end
+
+    it 'on success' do
+      inside_sales_job.send_email
+      expect(Job.count).to eq(1)
     end
   end
 end

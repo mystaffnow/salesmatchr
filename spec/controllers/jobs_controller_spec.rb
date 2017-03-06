@@ -612,6 +612,17 @@ RSpec.describe JobsController, :type => :controller do
           expect(Payment.last.amount).to eq(190.0)
         end
 
+        it 'should send email to matches candidates' do
+          @candidate = create(:candidate, archetype_score: 30)
+          @candidate1 = create(:candidate, archetype_score: 31)
+          @candidate2 = create(:candidate, archetype_score: 50)
+          @candidate3 = create(:candidate, archetype_score: 80)
+          @candidate4 = create(:candidate, archetype_score: 100)
+          @candidate5 = create(:candidate, archetype_score: 101)
+
+          expect {post :create, {job: valid_attributes}}.to change { ActionMailer::Base.deliveries.count }.by(4)
+        end
+
         it 'should redirect to /employers/account' do
           EmployerProfile.first.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
           post :create, {job: valid_attributes}
@@ -806,5 +817,67 @@ RSpec.describe JobsController, :type => :controller do
     end
   end
 
-  it '#email_match_candidates'
+  describe '#email_match_candidates' do
+    context '.when candidate is sign_in' do
+      before{ sign_in(candidate) }
+
+      it 'should redirect_to employers login page' do
+        post :email_match_candidates, id: job.id
+        expect(response).to redirect_to("/employers/sign_in")
+      end
+    end
+
+    describe '.when employer is sign_in' do
+      context 'and job does not belongs to signed in employer' do
+        it 'should raise unauthorized access' do
+          fake_employer = create(:archetype_employer)
+          employer_profile(fake_employer)
+          sign_in(fake_employer)
+          post :email_match_candidates, id: job.id
+          expect(response).to redirect_to('/')
+          expect(flash[:alert]).to eq('You are not authorized to perform this action.')
+        end
+      end
+
+      context 'job belongs to signed in employer' do
+        before {
+          sign_in(employer)
+          employer_profile(employer)
+        }
+
+        it 'should assign job' do
+          post :email_match_candidates, id: job.id
+          expect(assigns(:job)).to eq(job)
+        end
+
+        it 'should call set_job' do
+          expect(controller).to receive(:set_job).once.and_call_original
+          post :email_match_candidates, id: job.id
+        end
+
+        it 'should redirect when email send to matched candidates' do
+          @candidate = create(:candidate, archetype_score: 30)
+          @candidate1 = create(:candidate, archetype_score: 31)
+          @candidate2 = create(:candidate, archetype_score: 50)
+          @candidate3 = create(:candidate, archetype_score: 80)
+          @candidate4 = create(:candidate, archetype_score: 100)
+          @candidate5 = create(:candidate, archetype_score: 101)
+
+          post :email_match_candidates, id: job.id
+          expect(response).to redirect_to(employer_show_matches_path(job.id))
+        end
+
+        it 'when matched candidates not found' do
+          post :email_match_candidates, id: job.id
+          expect(response).to redirect_to(employer_archive_jobs_path)
+        end
+
+        it 'should redirect to /employers/account' do
+          EmployerProfile.first.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
+          post :email_match_candidates, id: job.id
+          expect(response).to redirect_to("/employers/account")
+        end
+      end
+    end
+  end
 end

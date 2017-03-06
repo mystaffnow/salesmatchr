@@ -205,11 +205,12 @@ class JobsController < ApplicationController
 
   # Send email to all candidates who matches the job
   def email_match_candidates
+    authorize @job
     result = @job.send_email
     if result.present?
       redirect_to employer_show_matches_path(@job.id), notice: 'Email send to all matched candidates.'
     else
-      format.html { redirect_to employer_archive_jobs_path, notice: 'Oops! we cannot process your request, please contact techical support.' }
+      redirect_to employer_archive_jobs_path, notice: 'Oops! we cannot process your request, please contact techical support.'
     end
   end
 
