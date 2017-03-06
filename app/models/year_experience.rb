@@ -11,4 +11,8 @@
 #
 
 class YearExperience < ActiveRecord::Base
+	# validation
+	validates_presence_of :name, :low, :high
+	validates_uniqueness_of :name 
+	# validation
 end
