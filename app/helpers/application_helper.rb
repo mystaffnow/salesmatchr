@@ -7,6 +7,7 @@ module ApplicationHelper
     end
     link_to(name, '#', class: "add_fields btn btn-primary btn-full", data: {id: id, fields: fields.gsub("\n", "")})
   end
+
   def get_archetype_from_score(score)
     if !score
       return 'n/a'
