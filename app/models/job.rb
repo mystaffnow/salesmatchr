@@ -28,6 +28,7 @@
 class Job < ActiveRecord::Base
   geocoded_by :full_street_address   # can also be an IP address
   after_validation :geocode          # auto-fetch coordinates
+  
   belongs_to :state
   belongs_to :employer
   has_many :job_candidates
@@ -40,6 +41,7 @@ class Job < ActiveRecord::Base
   validates :employer_id, :title, :description, :city, :zip, presence: true
   # validation
 
+  # assign archetype scores values from job function before rec save
   before_save :add_archetype_score
 
   def matches
@@ -64,6 +66,7 @@ class Job < ActiveRecord::Base
     self.city + " " + self.state.name + " " + self.zip
   end
 
+  # send email to job matched candidates
   def send_email
     candidates = self.matches
     if candidates.present?
@@ -76,6 +79,7 @@ class Job < ActiveRecord::Base
 
   private
 
+  # as job_function is required to post job so, assign archetype_low and high value from job_function do not accept from parameters
   def add_archetype_score
     self.archetype_low = job_function.low
     self.archetype_high = job_function.high

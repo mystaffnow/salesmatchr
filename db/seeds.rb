@@ -623,4 +623,3 @@ College.create :name => "York University"
 College.create :name => "Zhejiang University"
 
 College.create :name => "Other"
-AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password') if AdminUser.first.nil?
