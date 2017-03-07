@@ -87,3 +87,5 @@ gem 'pundit'
 gem 'activejob'
 # Asnchronous process library
 gem 'sucker_punch'
+
+gem 'rails_12factor'
