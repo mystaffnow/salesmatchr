@@ -19,64 +19,66 @@
         .open-jobs
           - @job_candidates.each do |job_candidate|
             - if !job_candidate.withdrawn?
-              .row
-                = link_to job_path(job_candidate.job) do
-                  .col-md-8
-                    %h3= job_candidate.job.title
-                    %p= job_candidate.job.description
-                    %p
-                      - if job_candidate.status.in?(["submitted", "viewed", "shortlist", "accepted", "deleted"])
-                        - if job_candidate.submitted?
-                          %b.secondary-color
+              - if job_candidate.job
+                .row
+                  = link_to job_path(job_candidate.job) do
+                    .col-md-8
+                      %h3= job_candidate.job.title
+                      %p= job_candidate.job.description
+                      %p
+                        - if job_candidate.status.in?(["submitted", "viewed", "shortlist", "accepted", "deleted"])
+                          - if job_candidate.submitted?
+                            %b.secondary-color
+                              Submitted
+                          - else
                             Submitted
-                        - else
-                          Submitted
-                        |
-                        - if job_candidate.viewed?
-                          %b.secondary-color
+                          |
+                          - if job_candidate.viewed?
+                            %b.secondary-color
+                              Viewed
+                          - else
                             Viewed
-                        - else
-                          Viewed
-                        |
-                        - if job_candidate.shortlist?
-                          %b.secondary-color
+                          |
+                          - if job_candidate.shortlist?
+                            %b.secondary-color
+                              Shortlist
+                          - else
                             Shortlist
-                        - else
-                          Shortlist
-                        |
-                        - if job_candidate.accepted?
-                          %b.secondary-color
+                          |
+                          - if job_candidate.accepted?
+                            %b.secondary-color
+                              Accepted
+                          - else
                             Accepted
-                        - else
-                          Accepted
-                        |
-                        - if job_candidate.deleted?
-                          %b.secondary-color
+                          |
+                          - if job_candidate.deleted?
+                            %b.secondary-color
+                              deleted
+                          - else
                             deleted
+                          |
                         - else
-                          deleted
-                        |
-                      - else
-                        - if job_candidate.purposed?
-                          %b.secondary-color
+                          - if job_candidate.purposed?
+                            %b.secondary-color
+                              Purposed
+                          - else
                             Purposed
-                        - else
-                          Purposed
 
-                .col-md-4.job-actions
-                  - if !job_candidate.withdrawn?
-                    = link_to "Withdraw", withdraw_candidate_path(job_candidate.id), method: :put, data: {confirm: 'Do you want to withdraw this application?'}, class: 'button btn btn-info', id: 'hire'
-              %hr
+                  .col-md-4.job-actions
+                    - if !job_candidate.withdrawn?
+                      = link_to "Withdraw", withdraw_candidate_path(job_candidate.id), method: :put, data: {confirm: 'Do you want to withdraw this application?'}, class: 'button btn btn-info', id: 'hire'
+                %hr
         .withdrawn-jobs.hidden
           - @job_candidates.each do |job_candidate|
             - if job_candidate.withdrawn?
-              .row
-                = link_to job_path(job_candidate.job) do
-                  .col-md-8
-                    %h3= job_candidate.job.title
-                    %p= job_candidate.job.description
-                .col-md-4.job-actions
-              %hr
+              - if job_candidate.job
+                .row
+                  = link_to job_path(job_candidate.job) do
+                    .col-md-8
+                      %h3= job_candidate.job.title
+                      %p= job_candidate.job.description
+                  .col-md-4.job-actions
+                %hr
 
 :javascript
   function page_ready(){

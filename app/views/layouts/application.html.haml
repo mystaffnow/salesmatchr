@@ -88,12 +88,20 @@
                   = link_to 'FAQ', pages_hustlers_faq_path
                 %li
                   = link_to 'Create Your Account', new_candidate_registration_path
+                %li
+                  = link_to 'Sign in', new_candidate_session_path
             %li
               = link_to "Blog", 'http://salesmatchrblog.com/'
-            %li
-              = link_to "Sign up", new_candidate_registration_path
-            %li
-              = link_to "Sign in", new_candidate_session_path
+            - if params[:action].in?(["hustlers", "hustlers_faq"])
+              %li
+                = link_to "Sign up", new_candidate_registration_path
+              %li
+                = link_to "Sign in", new_candidate_session_path
+            - else
+              %li
+                = link_to "Sign up", new_employer_registration_path
+              %li
+                = link_to "Sign in", new_employer_session_path
 
   #flash-display
     .container
