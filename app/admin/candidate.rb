@@ -12,7 +12,7 @@ ActiveAdmin.register Candidate do
 #   permitted << :other if resource.something?
 #   permitted
 # end
-  actions :all, :except => [:new, :create, :edit, :update, :destroy]
+  actions :all, :except => [:new, :create, :edit, :update]
 
   filter :first_name
   filter :last_name
@@ -60,24 +60,30 @@ ActiveAdmin.register Candidate do
     end
 
     panel 'Work history' do
-      attributes_table_for cd.experiences do
-        row :position
-        row :company
-        row :description
-        row :start_date
-        row :end_date
-        row :sales_type_id
+      table_for cd.experiences do
+        column :position
+        column :company
+        column :description
+        column :start_date
+        column :end_date
+        # column :sales_type_id |exp|
+        #   exp.sales_type.present? ? exp.sales_type.name : ''
+        # end
       end
     end
 
     panel 'Education' do
-      attributes_table_for cd.educations do
-        row :college_id
-        row :college_other
-        row :education_level_id
-        row :description
-        row :start_date
-        row :end_date
+      table_for cd.educations do
+        column :college_id do |cd|
+          cd.college.present? ? cd.college.name : ''
+        end
+        column :college_other
+        column :education_level_id do |cd|
+          cd.education_level.present? ? cd.education_level.name : ''
+        end
+        column :description
+        column :start_date
+        column :end_date
       end
     end
 
@@ -93,16 +99,16 @@ ActiveAdmin.register Candidate do
     end
 
     panel 'Job Candidates' do
-      attributes_table_for cd.job_candidates do
-        row :job_id
-        row :status
+      table_for cd.job_candidates do
+        column :job_id
+        column :status
       end
     end
 
     panel 'Candidate Job Actions' do
-      attributes_table_for cd.candidate_job_actions do
-        row :job_id
-        row :is_saved
+      table_for cd.candidate_job_actions do
+        column :job_id
+        column :is_saved
       end
     end
   end
