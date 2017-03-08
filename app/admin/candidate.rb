@@ -66,9 +66,9 @@ ActiveAdmin.register Candidate do
         column :description
         column :start_date
         column :end_date
-        # column :sales_type_id |exp|
-        #   exp.sales_type.present? ? exp.sales_type.name : ''
-        # end
+        column :sales_type_id do |st|
+          st.sales_type.present? ? st.sales_type.name : ''
+        end
       end
     end
 
@@ -109,6 +109,91 @@ ActiveAdmin.register Candidate do
       table_for cd.candidate_job_actions do
         column :job_id
         column :is_saved
+      end
+    end
+  end
+
+  csv do |candidate|
+    column :id
+    column :first_name
+    column :last_name
+    column :year_experience_id
+    column :archetype_score
+    column :archetype_string
+    column :email
+
+    # profile
+    column(:city) {|c| c.candidate_profile.city}
+    column(:state_id) {|c| c.candidate_profile.state_id}
+    column(:zip) {|c| c.candidate_profile.zip}
+    column(:education_level_id) {|c| c.candidate_profile.education_level_id}
+    column(:ziggeo_token) {|c| c.candidate_profile.ziggeo_token}
+    column(:is_incognito) {|c| c.candidate_profile.is_incognito}
+
+    # experience
+    column(:experiences) do |c|
+      if c.experiences.present?
+        c.experiences.map { |e| [e.id,
+                               e.position? ? e.position : nil,
+                               e.description? ? e.description : nil,
+                               e.start_date? ? e.start_date : nil,
+                               e.end_date? ? e.end_date : nil] }
+       else
+        [nil, nil, nil, nil, nil]
+       end
+    end
+
+    # education
+    column(:educations) do |c|
+      if c.educations.present?
+        c.educations.map { |e| [e.id,
+                                e.college_id? ? e.college_id : nil,
+                                e.college_other? ? e.college_other : nil,
+                                e.education_level_id? ? e.education_level_id : nil,
+                                e.description? ? e.description : nil,
+                                e.start_date? ? e.start_date : nil,
+                                e.end_date? ? e.end_date : nil] }
+      else
+        [nil, nil, nil, nil, nil, nil, nil]
+      end
+    end
+
+    # Candidate Question Answers
+    column(:candidate_question_answers) do |c|
+      if c.candidate_question_answers.present?
+        c.candidate_question_answers.map {|cqs| [cqs.id,
+                                                 cqs.question_id? ? cqs.question_id : nil,
+                                                 cqs.answer_id? ? cqs.answer_id : nil]}
+      else
+        [nil, nil, nil]
+      end
+    end
+
+    # job candidates
+    column(:job_candidates) do |c|
+      if c.job_candidates.present?
+        c.job_candidates.map {|jc| [
+          jc.id,
+          jc.candidate_id? ? jc.candidate_id : nil,
+          jc.job_id? ? jc.job_id : nil,
+          jc.status? ? jc.status : nil
+          ]}
+      else
+        [nil, nil, nil, nil]
+      end
+    end
+
+    # candidate job action
+    column(:candidate_job_actions) do |c|
+      if c.candidate_job_actions.present?
+        c.candidate_job_actions.map {|jc| [
+          jc.id,
+          jc.candidate_id? ? jc.candidate_id : nil,
+          jc.job_id? ? jc.job_id : nil,
+          jc.is_saved? ? jc.is_saved : nil
+          ]}
+      else
+        [nil, nil, nil, nil]
       end
     end
   end
