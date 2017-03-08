@@ -260,4 +260,8 @@ ActiveAdmin.setup do |config|
   # You can enable or disable them for all resources here.
   #
   # config.filters = true
+
+  config.namespace :staffnow do |admin|
+    admin.download_links = [:csv]
+  end
 end
