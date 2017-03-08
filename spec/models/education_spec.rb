@@ -19,4 +19,5 @@ require 'rails_helper'
 RSpec.describe Education do
 	it {should belong_to :education_level}
   it {should belong_to :college}
+  it {should belong_to :candidate}
 end
