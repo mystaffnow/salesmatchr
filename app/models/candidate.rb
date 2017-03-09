@@ -27,11 +27,11 @@ class Candidate < ActiveRecord::Base
   devise :database_authenticatable, :registerable, :omniauthable,
   :recoverable, :rememberable, :trackable, :validatable,:omniauth_providers => [:linkedin]
   has_one :candidate_profile, dependent: :destroy
-  has_many :experiences
-  has_many :educations
-  has_many :candidate_question_answers
-  has_many :job_candidates
-  has_many :candidate_job_actions
+  has_many :experiences, dependent: :destroy
+  has_many :educations, dependent: :destroy
+  has_many :candidate_question_answers, dependent: :destroy
+  has_many :job_candidates, dependent: :destroy
+  has_many :candidate_job_actions, dependent: :destroy
   belongs_to :year_experience
   accepts_nested_attributes_for :candidate_profile
   accepts_nested_attributes_for :experiences, allow_destroy: true
