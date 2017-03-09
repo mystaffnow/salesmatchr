@@ -17,4 +17,6 @@
 #
 
 class Experience < ActiveRecord::Base
+	belongs_to :sales_type
+	belongs_to :candidate
 end

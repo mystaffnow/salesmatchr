@@ -19,4 +19,6 @@
 require 'rails_helper'
 
 RSpec.describe Experience do
+	it {should belong_to :sales_type}
+	it {should belong_to :candidate}
 end

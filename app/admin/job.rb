@@ -13,6 +13,7 @@ ActiveAdmin.register Job do
 #   permitted
 # end
   actions :all, :except => [:new, :create, :edit, :update, :destroy]
+  
   filter :title
   filter :city
 
