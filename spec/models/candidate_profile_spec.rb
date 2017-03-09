@@ -9,7 +9,7 @@
 #  zip                  :string
 #  education_level_id   :integer
 #  ziggeo_token         :string
-#  is_incognito         :boolean
+#  is_incognito         :boolean          default(TRUE)
 #  linkedin_picture_url :string
 #  avatar_file_name     :string
 #  avatar_content_type  :string
