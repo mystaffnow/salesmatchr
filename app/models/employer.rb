@@ -26,7 +26,7 @@ class Employer < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
   has_one :employer_profile, dependent: :destroy
-  has_many :jobs
+  has_many :jobs, dependent: :destroy
 
   # validation
   validates_presence_of :first_name, :last_name, :company
