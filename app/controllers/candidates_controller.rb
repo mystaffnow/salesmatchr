@@ -75,6 +75,17 @@ class CandidatesController < ApplicationController
     profile.save
     render json: 'created'
   end
+
+  # subscribe and unsubscribe to job match alert
+  # only signed in candidate access this
+  def subscription
+    @profile = current_candidate.candidate_profile
+    @profile.toggle!(:is_active_match_subscription)
+
+    respond_to do |format|
+      format.js {render layout: false}
+    end
+  end
   
   private
     # Never trust parameters from the scary internet, only allow the white list through.
