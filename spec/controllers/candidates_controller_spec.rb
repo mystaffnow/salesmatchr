@@ -328,4 +328,6 @@ RSpec.describe CandidatesController, :type => :controller do
       end
     end
   end
+
+  it "#subscription"
 end
