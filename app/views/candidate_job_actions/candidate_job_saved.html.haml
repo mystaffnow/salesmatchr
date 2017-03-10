@@ -4,34 +4,41 @@
       .col-md-2
         - if candidate_signed_in?
           = render 'jobs/candidate_sidebar'
-      .col-md-10
-        .row
-          .col-md-4
-            %h3 Position
-          .col-md-2
-            %h3 Salary
-          .col-md-3
-            %h3 Location
-          .col-md-3
-        .small
-        - @jobs.each do |job|
+      - if @jobs.count == 0
+        .col-md-10
+          %h2.text-center
+            You don't have any saved job yet
+            %br
+            check back later!
+      - else
+        .col-md-10
           .row
-            = link_to job_path(job) do
-              .col-md-4
-                %h4
-                  = job.title
-              .col-md-2
-                %b
-                  Salary Range
-                %br
-                = "$#{job.salary_low}"
-                \-
-                = "$#{job.salary_high}"
-              .col-md-3
-                %b
-                  Location
-                %br
-                = "#{job.city}, #{job.state.name}"
+            .col-md-4
+              %h3 Position
+            .col-md-2
+              %h3 Salary
             .col-md-3
-              = link_to 'View', job_path(job), class: "btn btn-primary"
-          %hr
+              %h3 Location
+            .col-md-3
+          .small
+          - @jobs.each do |job|
+            .row
+              = link_to job_path(job) do
+                .col-md-4
+                  %h4
+                    = job.title
+                .col-md-2
+                  %b
+                    Salary Range
+                  %br
+                  = "$#{job.salary_low}"
+                  \-
+                  = "$#{job.salary_high}"
+                .col-md-3
+                  %b
+                    Location
+                  %br
+                  = "#{job.city}, #{job.state.name}"
+              .col-md-3
+                = link_to 'View', job_path(job), class: "btn btn-primary"
+            %hr
