@@ -87,4 +87,16 @@ module ApplicationHelper
   def get_status_key_by_value(value)
     JobCandidate.statuses.keys[value]
   end
+  
+  # check if candidate_job is saved or just viewed
+  def job_candidate_saved?(candidate_id, job_id)
+    cd_jb_action = CandidateJobAction.where(candidate_id: candidate_id,
+                             job_id: job_id).try(:first)
+    return false if cd_jb_action.blank?
+    if cd_jb_action.is_saved?
+      true
+    else
+      false
+    end
+  end
 end
