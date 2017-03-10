@@ -208,12 +208,12 @@ class JobsController < ApplicationController
 
   end
 
-  # Send email to all candidates who matches the job
+  # Send email to all candidates who matches the job and who have only subscribed to alert feature
   def email_match_candidates
     authorize @job
     result = @job.send_email
     if result.present?
-      redirect_to employer_show_matches_path(@job.id), notice: 'Email send to all matched candidates.'
+      redirect_to employer_show_matches_path(@job.id), notice: 'Email send to all matched candidates who have subscribed to receive email.'
     else
       redirect_to employer_archive_jobs_path, notice: 'Oops! we cannot process your request, please contact techical support.'
     end
