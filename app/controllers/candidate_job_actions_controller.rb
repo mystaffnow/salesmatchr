@@ -20,7 +20,8 @@ class CandidateJobActionsController < ApplicationController
     tracker.track('candidate-'+current_candidate.email, 'viewed recently viewed jobs')
   end
   
-  # list of matched jobs of candidate
+  # List all jobs which are active and matched to the candidate
+  # Candidate should not see inactive jobs in matched list, although they matched to it
   def candidate_matches
     @jobs = Job.where(":archetype_score >= archetype_low and :archetype_score <= archetype_high and jobs.is_active = TRUE", archetype_score: current_candidate.archetype_score)
 
