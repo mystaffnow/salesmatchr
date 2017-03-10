@@ -14,25 +14,24 @@
             %h3 Location
           .col-md-3
         .small
-        - @candidate_job_action.each do |candidate_job_action|
-          - if candidate_job_action.job
-            .row
-              = link_to job_path(candidate_job_action.job) do
-                .col-md-4
-                  %h4
-                    = candidate_job_action.job.title
-                .col-md-2
-                  %b
-                    Salary Range
-                  %br
-                  = "$#{candidate_job_action.job.salary_low}"
-                  \-
-                  = "$#{candidate_job_action.job.salary_high}"
-                .col-md-3
-                  %b
-                    Location
-                  %br
-                  = "#{candidate_job_action.job.city}, #{candidate_job_action.job.state.name}"
+        - @jobs.each do |job|
+          .row
+            = link_to job_path(job) do
+              .col-md-4
+                %h4
+                  = job.title
+              .col-md-2
+                %b
+                  Salary Range
+                %br
+                = "$#{job.salary_low}"
+                \-
+                = "$#{job.salary_high}"
               .col-md-3
-                = link_to 'View', job_path(candidate_job_action.job), class: "btn btn-primary"
-            %hr
+                %b
+                  Location
+                %br
+                = "#{job.city}, #{job.state.name}"
+            .col-md-3
+              = link_to 'View', job_path(job), class: "btn btn-primary"
+          %hr

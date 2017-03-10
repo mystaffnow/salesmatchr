@@ -14,25 +14,33 @@
             %h3 Location
           .col-md-3
         .small
-        - @candidate_job_action.each do |candidate_job_action|
-          - if candidate_job_action.job
+        - @jobs.each do |job|
+          - if job
             .row
-              = link_to job_path(candidate_job_action.job) do
+              = link_to job_path(job) do
                 .col-md-4
                   %h4
-                    = candidate_job_action.job.title
+                    = job.title
                 .col-md-2
                   %b
                     Salary Range
                   %br
-                  = "$#{candidate_job_action.job.salary_low}"
+                  = "$#{job.salary_low}"
                   \-
-                  = "$#{candidate_job_action.job.salary_high}"
+                  = "$#{job.salary_high}"
                 .col-md-3
                   %b
                     Location
                   %br
-                  = "#{candidate_job_action.job.city}, #{candidate_job_action.job.state.name}"
+                  = "#{job.city}, #{job.state.name}"
               .col-md-3
-                = link_to 'View', job_path(candidate_job_action.job), class: "btn btn-primary"
+                .row
+                  .col-md-3
+                    = link_to 'View', job_path(job), class: "btn btn-primary"
+                  .col-md-3
+                    - if job_candidate_saved?(current_candidate.id, job.id)
+                      %span.label.label-success Saved
+                    - else
+                      = form_tag candidate_save_job_path(job.id) do
+                        = submit_tag "Save", class: "btn btn-primary"
             %hr

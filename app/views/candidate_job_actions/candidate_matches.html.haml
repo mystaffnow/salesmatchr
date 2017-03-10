@@ -44,6 +44,9 @@
                   .col-md-3
                     = link_to 'View', job_path(job), class: "btn btn-primary"
                   .col-md-3
-                    = form_tag candidate_save_job_path(job.id) do
-                      = submit_tag "Save", class: "btn btn-primary"
+                    - if job_candidate_saved?(current_candidate.id, job.id)
+                      %span.label.label-success Saved
+                    - else
+                      = form_tag candidate_save_job_path(job.id) do
+                        = submit_tag "Save", class: "btn btn-primary"
             %hr

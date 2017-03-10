@@ -73,4 +73,6 @@ RSpec.describe ApplicationHelper, type: :helper do
 		expect{helper.get_status_key_by_value(nil)}.to raise_error("no implicit conversion from nil to integer")
 		expect(helper.get_status_key_by_value(0)).to eq("submitted")
 	end
+
+	it '#job_candidate_saved?'
 end
