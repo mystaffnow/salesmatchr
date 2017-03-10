@@ -17,6 +17,8 @@ ActiveAdmin.register YearExperience do
 
 	permit_params :id, :name, :low, :high
 
+	actions :all, :except => [:destroy]
+
 	filter :name
 
 	index do

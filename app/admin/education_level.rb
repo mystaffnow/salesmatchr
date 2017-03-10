@@ -15,6 +15,8 @@ ActiveAdmin.register EducationLevel do
 
   menu priority: 3, parent: 'Setting'
 
+  actions :all, :except => [:destroy]
+
 	permit_params :id, :name
 
 	filter :name

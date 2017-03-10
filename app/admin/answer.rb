@@ -15,6 +15,8 @@ ActiveAdmin.register Answer do
 
 	menu priority: 1, parent: 'Setting'
 
+	actions :all, :except => [:destroy]
+
 	permit_params :id, :name, :score
 
 	filter :name

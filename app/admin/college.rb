@@ -15,6 +15,8 @@ ActiveAdmin.register College do
 
   menu priority: 2, parent: 'Setting'
 
+  actions :all, :except => [:destroy]
+
 	permit_params :id, :name
 
 	filter :name

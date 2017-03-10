@@ -15,6 +15,8 @@ ActiveAdmin.register SalesType do
 
 	menu priority: 6, parent: 'Setting'
 
+	actions :all, :except => [:destroy]
+
 	permit_params :id, :name
 
 	filter :name

@@ -15,6 +15,8 @@ ActiveAdmin.register JobFunction do
 
 	menu priority: 4, parent: 'Setting'
 
+	actions :all, :except => [:destroy]
+
 	permit_params :id, :name, :low, :high
 
 	filter :name

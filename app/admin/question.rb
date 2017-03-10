@@ -15,6 +15,8 @@ ActiveAdmin.register Question do
 
 	menu priority: 5, parent: 'Setting'
 
+	actions :all, :except => [:destroy]
+
 	permit_params :id, :name
 
 	filter :name
