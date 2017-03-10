@@ -70,7 +70,11 @@ class Job < ActiveRecord::Base
 
   # send email to job matched candidates
   def send_email
-    candidates = self.matches
+    candidates = Candidate.where("candidates.archetype_score >= ? and
+                                  candidates.archetype_score <= ?", self.archetype_low,
+                                                                    self.archetype_high)
+                              .joins(:candidate_profile)
+                              .where("candidate_profiles.is_active_match_subscription=true")
     if candidates.present?
       candidates.map {|candidate| CandidateMailer.send_job_match(candidate, self).deliver_later}
     end
