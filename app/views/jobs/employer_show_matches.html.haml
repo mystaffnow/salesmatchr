@@ -18,6 +18,21 @@
     .row
       .col-md-12
         %table.table.table-responsive
-          - @job.matches.each do |candidate|
-            = render 'jobs/candidate_small_list_item', :candidate => candidate, :job => @job
-            %hr
+          - @candidates.each do |candidate|
+            .row
+              .col-md-2
+                = link_to candidates_profile_path(candidate) do
+                  %img{src: candidate.candidate_profile.avatar_url}
+              .col-md-6
+                = link_to candidates_profile_path(candidate) do
+                  %h3
+                    = candidate.name
+                  = get_location candidate.candidate_profile
+                %br
+                %br
+                %p
+                  = mail_to candidate.email, "Email Candidate"
+              .col-md-4
+                %h4 Education
+                - if candidate.candidate_profile.education_level
+                  = candidate.candidate_profile.education_level.name

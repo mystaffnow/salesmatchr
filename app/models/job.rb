@@ -31,8 +31,8 @@ class Job < ActiveRecord::Base
   
   belongs_to :state
   belongs_to :employer
-  has_many :job_candidates
-  has_many :candidate_job_actions
+  has_many :job_candidates, dependent: :destroy
+  has_many :candidate_job_actions, dependent: :destroy
   # attr_accessor :job_function_id
   belongs_to :job_function
   has_one :payment, dependent: :destroy
@@ -44,8 +44,10 @@ class Job < ActiveRecord::Base
   # assign archetype scores values from job function before rec save
   before_save :add_archetype_score
 
+  # this method returns all the candidates who matches the job and having their profile visible
   def matches
-    Candidate.where("candidates.archetype_score >= ? and candidates.archetype_score <= ? ", self.archetype_low, self.archetype_high).to_a
+    # Candidate.where("candidates.archetype_score >= ? and candidates.archetype_score <= ? ", self.archetype_low, self.archetype_high).to_a
+    Candidate.where("candidates.archetype_score >= ? and candidates.archetype_score <= ?", self.archetype_low, self.archetype_high).joins(:candidate_profile).where("candidate_profiles.is_incognito=false")
   end
 
   def applicants

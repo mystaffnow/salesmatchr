@@ -130,6 +130,25 @@ class JobsController < ApplicationController
     render json: :ok
   end
 
+  # GET: employer_job_actions/:id
+  # signed_in employer is required
+  # List of all candidates who have viewed the job
+  def employer_show_actions
+    authorize @job
+    # @job.candidate_job_actions
+    @candidates = Candidate.joins(:candidate_job_actions)
+                           .joins(:candidate_profile)
+                           .where("job_id=? and candidate_profiles.is_incognito=false", @job.id)
+  end
+
+  # GET: employer_job_matches/:id
+  # signed_in employer is required
+  # List of all candidates whose profile matched with job
+  def employer_show_matches
+    authorize @job
+    @candidates = @job.matches
+  end
+
   # GET: employer_jobs/:id
   # signed_in employer is required
   # List of the applications who are not removed and shortlisted
@@ -142,20 +161,6 @@ class JobsController < ApplicationController
 
     @job_candidates = @job.job_candidates.where("status NOT IN (?)", [JobCandidate.statuses[:shortlist],
                                                     JobCandidate.statuses[:deleted]])
-  end
-
-  # GET: employer_job_actions/:id
-  # signed_in employer is required
-  # List of all candidates who have viewed the job
-  def employer_show_actions
-    authorize @job
-  end
-
-  # GET: employer_job_matches/:id
-  # signed_in employer is required
-  # List of all candidates whose profile matched with job
-  def employer_show_matches
-    authorize @job
   end
 
   # GET: employer_job_shortlists/1
