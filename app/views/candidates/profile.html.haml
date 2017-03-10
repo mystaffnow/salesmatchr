@@ -28,6 +28,18 @@
               - if current_candidate && current_candidate.id == @candidate.id
                 #incognito-panel
                   #incognito-header
+                    Subscribe to job match
+                  #incognito-content
+                    %input{:checked => "", :name => "my-checkbox", :type => "checkbox", :id => 'subscribe', checked: @profile.is_active_match_subscription}/
+                    #subscription-toggle
+                      = render 'subscription'
+                  %br
+                  %br
+
+            .col-md-12.text-center
+              - if current_candidate && current_candidate.id == @candidate.id
+                #incognito-panel
+                  #incognito-header
                     Incognito Mode
                   #incognito-content
                     %input{:checked => "", :name => "my-checkbox", :type => "checkbox", :id => 'incognito', checked: @profile.is_incognito}/
@@ -41,6 +53,7 @@
                       %p Your profile is currently visible. Turn on incognito to hide your profile.
             %br
             %br
+
             .col-md-6
               = image_tag @profile.avatar.url(:medium), id: 'avatar', style: "display:" + (!@profile.is_incognito ? 'block' : 'none'), class: 'profile-image'
               %img{src: '/img/incognito.png', style: "display:" + (@profile.is_incognito ? 'block' : 'none'), id: 'incognito-img', class: 'profile-image'}
@@ -112,4 +125,10 @@
           $('#incognito-img').hide();
         }
       })
+    
+    $('#subscribe').on('switchChange.bootstrapSwitch', function(event, state) {
+        var url = '/candidates/subscription/'
+        $.get(url)
+      })
     })
+  })
