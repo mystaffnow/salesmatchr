@@ -329,6 +329,11 @@ RSpec.describe JobsController, :type => :controller do
         expect(assigns(:job_candidates)).to eq([])
       end
 
+      it 'should return job_candidates' do
+        get :employer_show, id: job.id
+        expect(assigns(:job_candidates)).to eq([job_candidate])
+      end      
+
       it 'should redirect to /employers/account' do
         EmployerProfile.first.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
         get :employer_show, id: job.id
@@ -368,6 +373,14 @@ RSpec.describe JobsController, :type => :controller do
         get :employer_show_actions, id: job.id
         expect(response).to redirect_to("/employers/account")
       end
+
+      it 'should assigns and return candidate list' do
+        candidate
+        CandidateProfile.first.update(is_incognito: false)
+        create(:candidate_job_action, job_id: job.id, candidate_id: candidate.id, is_saved: false)
+        get :employer_show_actions, id: job.id
+        expect(assigns(:candidates)).to eq([candidate])
+      end
     end
   end
 
@@ -401,6 +414,14 @@ RSpec.describe JobsController, :type => :controller do
         EmployerProfile.first.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
         get :employer_show_matches, id: job.id
         expect(response).to redirect_to("/employers/account")
+      end
+
+      it 'should assigns and return candidate list' do
+        candidate
+        CandidateProfile.first.update(is_incognito: false)
+        create(:candidate_job_action, job_id: job.id, candidate_id: candidate.id, is_saved: false)
+        get :employer_show_matches, id: job.id
+        expect(assigns(:candidates)).to eq([candidate])
       end
     end
   end
@@ -445,6 +466,46 @@ RSpec.describe JobsController, :type => :controller do
     end
   end
 
+  describe '#employer_show_remove' do
+    context '.when candidate is sign_in' do
+      before{ sign_in(candidate) }
+
+      it 'should redirect_to employers sign_in page' do
+        get :employer_show_remove, id: job.id
+        expect(response).to redirect_to("/employers/sign_in")
+      end
+    end
+
+    context '.when employer is sign_in' do
+      before {
+          sign_in(employer)
+          employer_profile(employer)
+        }
+
+      it 'should correctly assign job' do
+        get :employer_show_remove, id: job.id
+        expect(assigns(:job)).to eq(job)
+      end
+
+      it 'should call set_job method' do
+        expect(controller).to receive(:set_job).once.and_call_original
+        get :employer_show_remove, id: job.id
+      end
+
+      it 'should properly assign shortlists' do
+        job_candidate = create(:job_candidate, job_id: job.id, candidate_id: candidate.id, status: 'deleted')
+        get :employer_show_remove, id: job.id
+        expect(assigns(:removed_job_candidates)).to eq([job_candidate])
+      end
+
+      it 'should redirect to /employers/account' do
+        EmployerProfile.first.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
+        get :employer_show_remove, id: job.id
+        expect(response).to redirect_to("/employers/account")
+      end
+    end
+  end
+
   describe '#employer_index' do
     context '.when candidate is sign_in' do
       before{ sign_in(candidate) }
@@ -469,8 +530,9 @@ RSpec.describe JobsController, :type => :controller do
       end
 
       it 'should count inactive jobs and assigns to inactive_job_count' do
+        create(:job, employer_id: employer.id, salary_low: 50000, salary_high: 150000, state_id: state.id, job_function_id: job_function.id, is_active: false)
         get :employer_index
-        expect(Job.count).to eq(0)
+        expect(Job.count).to eq(1)
       end
 
       it 'should redirect to /employers/account' do
@@ -585,7 +647,6 @@ RSpec.describe JobsController, :type => :controller do
 
       context '.with valid attributes' do
         it 'should create a new Job' do
-          Job.destroy_all
           post :create, {job: valid_attributes}
           expect(Job.count).to eq(1)
         end
@@ -609,7 +670,7 @@ RSpec.describe JobsController, :type => :controller do
           expect(Payment.last.stripe_customer_id).not_to be_blank
           expect(Payment.last.stripe_charge_id).not_to be_blank
           expect(Payment.last.status).to eq("charged")
-          expect(Payment.last.amount).to eq(190.0)
+          expect(Payment.last.amount).to eq(JOB_POSTING_FEE.to_f)
         end
 
         it 'should send email to matches candidates' do
@@ -620,7 +681,7 @@ RSpec.describe JobsController, :type => :controller do
           @candidate4 = create(:candidate, archetype_score: 100)
           @candidate5 = create(:candidate, archetype_score: 101)
 
-          expect {post :create, {job: valid_attributes}}.to change { ActionMailer::Base.deliveries.count }.by(4)
+          expect {post :create, {job: valid_attributes}}.to change { ActionMailer::Base.deliveries.count }.by(5)
         end
 
         it 'should redirect to /employers/account' do
