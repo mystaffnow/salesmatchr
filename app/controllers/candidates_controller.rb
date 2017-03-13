@@ -1,8 +1,8 @@
 class CandidatesController < ApplicationController
-  skip_before_filter :check_candidate, only: [:archetype, :update_archetype, :update, :incognito]
+  skip_before_filter :check_candidate, only: [:archetype, :update_archetype, :update, :incognito, :subscription]
   before_action :authenticate_candidate!, only: [:archetype, :account, :update,
                                                  :update_archetype, :archetype_result,
-                                                 :incognito]
+                                                 :incognito, :subscription]
   # submit archetype
   # only signed_in candidate access this
   def archetype
@@ -12,6 +12,7 @@ class CandidatesController < ApplicationController
   # view profile
   # anyone can access
   def profile
+    
     if params[:id]
       @candidate = Candidate.find(params[:id])
       @profile = @candidate.candidate_profile
