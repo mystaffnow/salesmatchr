@@ -1,19 +1,19 @@
 FactoryGirl.define do
   factory :job_function do
     name "Outside Sales"
-    low 31
+    low 11
     high 100
   end
 
   factory :outside_sales, class: JobFunction do
 		name "Outside Sales"
-	  low 31
+	  low 11
 	  high 100
 	end
 
 	factory :inside_sales, class: JobFunction do
 		name "Inside Sales"
-	  low 31
+	  low 11
 	  high 100
 	end
 

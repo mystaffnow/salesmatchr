@@ -329,5 +329,36 @@ RSpec.describe CandidatesController, :type => :controller do
     end
   end
 
-  it "#subscription"
+  describe "#subscription" do
+    context '.when employer signed in' do
+      before { 
+        employer_profile(employer)
+        sign_in(employer)
+      }
+
+      it 'should redirects to candidates sign_in page' do
+        get :subscription
+        expect(response).to redirect_to("/candidates/sign_in")
+      end
+    end
+
+    context '.when candidate signed in' do
+      before {
+        candidate_profile(candidate)
+        sign_in(candidate)
+      }
+
+      it 'should_not call check_candidate' do
+        get :subscription, format: :js
+        expect(response).not_to redirect_to(candidates_archetype_path)
+      end
+
+      it 'should update subscription' do
+        get :subscription, format: :js
+        expect(assigns(:profile)).to eq(CandidateProfile.first)
+        expect(CandidateProfile.count).to eq(1)
+        expect(CandidateProfile.first.is_active_match_subscription).to be_falsy
+      end
+    end
+  end
 end

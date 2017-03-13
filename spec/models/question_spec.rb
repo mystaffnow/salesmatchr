@@ -18,6 +18,11 @@ RSpec.describe Question do
   end
 
   context 'nested attributes' do
-    it{ should accept_nested_attributes_for(:answers).allow_destroy(true) }
+    it { should accept_nested_attributes_for(:answers).allow_destroy(true) }
+  end
+
+  context 'validation' do
+  	it {should validate_presence_of :name}
+  	it {should validate_uniqueness_of :name}
   end
 end

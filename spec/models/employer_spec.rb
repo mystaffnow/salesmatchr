@@ -35,7 +35,7 @@ RSpec.describe Employer do
   describe "Association" do
     # it {should belong_to :state}
     it {should have_one(:employer_profile).dependent(:destroy)}
-    it {should have_many :jobs}
+    it {should have_many(:jobs).dependent(:destroy)}
   end
 
   # describe "Paperclip avatar" do
