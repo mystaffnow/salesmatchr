@@ -23,7 +23,7 @@ RSpec.describe CandidateJobActionsController, :type => :controller do
         candidate_job_action.update(is_saved: true)
         candidate_job_action.reload
         get :candidate_job_saved
-        expect(assigns(:candidate_job_action)).to eq([candidate_job_action])
+        expect(assigns(:jobs)).to eq([job])
       end
     end
 
@@ -44,7 +44,7 @@ RSpec.describe CandidateJobActionsController, :type => :controller do
     it '.when archetype_score is nil' do
       @candidate3 = create(:candidate, archetype_score: nil)
       sign_in(@candidate3)
-      post :candidate_job_viewed
+      get :candidate_job_viewed
       expect(response).to redirect_to(candidates_archetype_path)
     end
 
@@ -52,8 +52,9 @@ RSpec.describe CandidateJobActionsController, :type => :controller do
       before{ sign_in(candidate) }
 
       it 'should assign @candidate_job_action' do
+        create(:candidate_job_action, candidate_id: candidate.id, job_id: job.id, is_saved: false)
         get :candidate_job_viewed
-        expect(assigns(:candidate_job_action)).to eq([candidate_job_action])
+        expect(assigns(:jobs)).to eq([job])
       end
     end
 
