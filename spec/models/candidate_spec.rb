@@ -37,13 +37,11 @@ RSpec.describe Candidate do
 
 	describe "Association" do
 		it {should have_one(:candidate_profile).dependent(:destroy)}
-		it {should have_many :experiences}
-		it {should have_many :educations}
-		it {should have_many :candidate_question_answers}
-		it {should have_many :job_candidates}
-		# it {should belong_to :state}
-		# it {should belong_to :education_level}
-		it {should have_many :candidate_job_actions}
+		it {should have_many(:experiences).dependent(:destroy)}
+		it {should have_many(:educations).dependent(:destroy)}
+		it {should have_many(:candidate_question_answers).dependent(:destroy)}
+		it {should have_many(:job_candidates).dependent(:destroy)}
+		it {should have_many(:candidate_job_actions).dependent(:destroy)}
 		it {should belong_to :year_experience}
 	end
 

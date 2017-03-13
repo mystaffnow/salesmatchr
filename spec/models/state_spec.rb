@@ -15,4 +15,9 @@ RSpec.describe State do
     it {should have_many :candidate_profile}
     it {should have_many :employer_profile}
   end
+
+  context 'validation' do
+  	it {should validate_presence_of :name}
+  	it {should validate_uniqueness_of :name}
+  end
 end
