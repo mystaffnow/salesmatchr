@@ -12,10 +12,10 @@ class CandidatesController < ApplicationController
   # view profile
   # anyone can access
   def profile
-    
     if params[:id]
       @candidate = Candidate.find(params[:id])
       @profile = @candidate.candidate_profile
+      authorize(@profile)
     elsif current_cadidate
       @candidate = current_candidate
       @profile = current_candidate.candidate_profile
