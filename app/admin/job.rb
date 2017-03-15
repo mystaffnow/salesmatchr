@@ -41,6 +41,13 @@ ActiveAdmin.register Job do
     column :latitude
     column :longitude
     column :experience_years
+    column :status
+    column :action do |j|
+    	str = j.inactive? ? 'Active' : 'Inactive'
+    	link_to str, change_status_staffnow_job_path(j.id), method: :put
+    end
+    column :activated_at
+
     actions
   end
 
@@ -96,6 +103,7 @@ ActiveAdmin.register Job do
 	  end
   end
 
+  # export feature
   csv do
   	# job
   	column :id
@@ -189,6 +197,19 @@ ActiveAdmin.register Job do
 				[nil, nil, nil]
 			end
 		end
+  end
+  # export feature
 
+  # make job active/inactive
+  # if job is active, visible/invisible, admin can make it inactive
+	# if job is inactive, admin can make it active
+  member_action :change_status, method: :put do
+  	if resource.inactive?
+  		resource.update(status: Job.statuses['active'],
+  										activated_on: Time.now)
+  	else
+  		resource.update(status: Job.statuses['inactive'])
+  	end
+  	redirect_to staffnow_jobs_path, notice: 'Status is updated successfully!'
   end
 end
