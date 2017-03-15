@@ -1,4 +1,4 @@
-  # == Schema Information
+# == Schema Information
 #
 # Table name: jobs
 #
@@ -23,6 +23,8 @@
 #  experience_years :integer
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
+#  status           :integer          default(0)
+#  activated_at     :datetime
 #
 
 class Job < ActiveRecord::Base
@@ -41,27 +43,41 @@ class Job < ActiveRecord::Base
   validates :employer_id, :title, :description, :city, :zip, presence: true
   # validation
 
+  # define enum for job statuses
+  enum status: [:active, :inactive, :visible, :invisible]
+
   # assign archetype scores values from job function before rec save
   before_save :add_archetype_score
 
   # this method returns all the candidates who matches the job and having their profile visible
   def matches
     # Candidate.where("candidates.archetype_score >= ? and candidates.archetype_score <= ? ", self.archetype_low, self.archetype_high).to_a
-    Candidate.where("candidates.archetype_score >= ? and candidates.archetype_score <= ?", self.archetype_low, self.archetype_high).joins(:candidate_profile).where("candidate_profiles.is_incognito=false")
+    Candidate.where("candidates.archetype_score >= ?
+                     and candidates.archetype_score <= ?",
+                    self.archetype_low,
+                    self.archetype_high)
+              .joins(:candidate_profile)
+              .where("candidate_profiles.is_incognito=false")
   end
 
   def applicants
     arr = Array.new
     arr << JobCandidate.statuses[:shortlist] << JobCandidate.statuses[:deleted]
-    Candidate.joins(:job_candidates).where("job_candidates.job_id = ? and job_candidates.status not in (?)", self.id, arr)
+    Candidate.joins(:job_candidates).where("job_candidates.job_id = ?
+                                           and job_candidates.status not in (?)",
+                                          self.id, arr)
   end
 
   def shortlist
-    Candidate.joins(:job_candidates).where("job_candidates.job_id = ? and job_candidates.status = ?", self.id, JobCandidate.statuses[:shortlist])
+    Candidate.joins(:job_candidates).where("job_candidates.job_id = ? and
+                                            job_candidates.status = ?",
+                                            self.id, JobCandidate.statuses[:shortlist])
   end
 
   def deleted
-    Candidate.joins(:job_candidates).where("job_candidates.job_id = ? and job_candidates.status = ?", self.id, JobCandidate.statuses[:deleted])
+    Candidate.joins(:job_candidates).where("job_candidates.job_id = ? and
+                                            job_candidates.status = ?",
+                                             self.id, JobCandidate.statuses[:deleted])
   end
 
   def full_street_address
@@ -87,7 +103,9 @@ class Job < ActiveRecord::Base
 
   # as job_function is required to post job so, assign archetype_low and high value from job_function do not accept from parameters
   def add_archetype_score
-    self.archetype_low = job_function.low
-    self.archetype_high = job_function.high
+    if job_function.present?
+      self.archetype_low = job_function.low
+      self.archetype_high = job_function.high 
+    end
   end
 end
