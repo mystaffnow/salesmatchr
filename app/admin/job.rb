@@ -95,4 +95,100 @@ ActiveAdmin.register Job do
 	  	end
 	  end
   end
+
+  csv do
+  	# job
+  	column :id
+  	column :employer_id
+  	column :salary_low
+  	column :salary_high
+		column :zip
+		column :is_remote
+		column :title
+		column :description
+		column :is_active
+		column :state_id
+		column :city
+		column :archetype_low
+		column :archetype_high
+		column :job_function_id
+		column :latitude
+		column :longitude
+		column :experience_years
+		column :created_at
+		column :updated_at
+
+		# payment
+		column(:employer_id) do |j|
+			j.employer_id
+		end
+
+		column(:amount) do |j|
+			payment = j.payment
+			if payment.present?
+				payment.amount? ? payment.amount : nil 
+			else
+				nil
+			end
+		end
+
+		column(:stripe_card_token) do |j|
+			payment = j.payment
+			if payment.present?
+				payment.stripe_card_token? ? payment.stripe_card_token : nil 
+			else
+				nil
+			end
+		end
+
+		column(:stripe_customer_id) do |j|
+			payment = j.payment
+			if payment.present?
+				payment.stripe_customer_id? ? payment.stripe_customer_id : nil 
+			else
+				nil
+			end
+		end
+
+		column(:stripe_charge_id) do |j|
+			payment = j.payment
+			if payment.present?
+				payment.stripe_charge_id? ? payment.stripe_charge_id : nil 
+			else
+				nil
+			end
+		end
+
+		column(:status) do |j|
+			payment = j.payment
+			if payment.present?
+				payment.status 
+			else
+				nil
+			end
+		end
+
+		# Job Candidates
+		column(:job_candidates) do |j|
+			if j.job_candidates.present?
+				j.job_candidates.map {|jc| [jc.id,
+																	 jc.candidate_id,
+																	 jc.status]}
+			else
+				[nil, nil, nil]
+			end
+		end
+
+		# Candidate Job Action
+		column(:candidate_job_actions) do |j|
+			if j.candidate_job_actions.present?
+				j.candidate_job_actions.map {|jc| [jc.id,
+																	 jc.candidate_id,
+																	 jc.is_saved]}
+			else
+				[nil, nil, nil]
+			end
+		end
+
+  end
 end

@@ -78,4 +78,48 @@ ActiveAdmin.register Employer do
     	end
     end
   end
+
+  csv do |employer|
+    column :id
+    column :first_name
+    column :last_name
+    column :company
+    column :email
+
+    # profile
+    column(:website) {|e| e.employer_profile.website}
+    column(:ziggeo_token) {|e| e.employer_profile.ziggeo_token}
+    column(:zip) {|e| e.employer_profile.zip}
+    column(:city) {|e| e.employer_profile.city}
+    column(:state_id) {|e| e.employer_profile.state_id}
+    column(:description) {|e| e.employer_profile.description}
+    column(:avatar_file_name) {|e| e.employer_profile.avatar_file_name}
+    column(:avatar_content_type) {|e| e.employer_profile.avatar_content_type}
+    column(:avatar_file_size) {|e| e.employer_profile.avatar_file_size}
+    column(:avatar_updated_at) {|e| e.employer_profile.avatar_updated_at}
+
+    # jobs
+    column(:jobs) do |e|
+      if e.jobs.present?
+        e.jobs.map {|j| [j.id,
+                         j.title? ? j.title : nil,
+                         j.description? ? j.description : nil,
+                         j.state_id? ? j.state_id : nil,
+                         j.city? ? j.city : nil,
+                         j.zip? ? j.zip : nil,
+                         j.latitude? ? j.latitude : nil,
+                         j.longitude? ? j.longitude : nil,
+                         j.salary_low? ? j.salary_low : nil,
+                         j.salary_high? ? j.salary_high : nil,
+                         j.job_function_id? ? j.job_function_id : nil,
+                         j.archetype_low? ? j.archetype_low : nil,
+                         j.archetype_high? ? j.archetype_high : nil,
+                         j.is_remote? ? j.is_remote : nil,
+                         j.is_active? ? j.is_active : nil
+                         ]}
+      else
+        [nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil]
+      end
+    end
+  end
 end
