@@ -206,7 +206,7 @@ ActiveAdmin.register Job do
   member_action :change_status, method: :put do
   	if resource.inactive?
   		resource.update(status: Job.statuses['active'],
-  										activated_on: Time.now)
+  										activated_at: Time.now)
   	else
   		resource.update(status: Job.statuses['inactive'])
   	end
