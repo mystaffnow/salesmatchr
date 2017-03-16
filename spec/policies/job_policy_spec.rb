@@ -44,4 +44,6 @@ RSpec.describe JobPolicy do
 			expect(subject).to permit(candidate)
 		end
 	end
+
+	it "#show?"
 end
