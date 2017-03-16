@@ -99,4 +99,13 @@ module ApplicationHelper
       false
     end
   end
+
+  # list all the candidates for the job whose profile is visible
+  def list_job_viewed_by_visible_candidates(job)
+    cids = CandidateJobAction.where(job_id: job.id).pluck(:candidate_id)
+    visible_candidate_ids = Candidate.where(id: cids)
+                                     .joins(:candidate_profile)
+                                     .where("candidate_profiles.is_incognito=false").pluck(:id)
+    CandidateJobAction.where(job_id: job.id, candidate_id: visible_candidate_ids)
+  end
 end
