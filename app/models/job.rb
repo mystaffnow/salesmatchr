@@ -44,13 +44,41 @@ class Job < ActiveRecord::Base
   # validation
 
   # define enum for job statuses
-  enum status: [:active, :inactive, :visible, :invisible]
+  enum status: [:enable, :disable]
 
   # assign archetype scores values from job function before rec save
   before_save :add_archetype_score
 
+  # List all jobs which are active and matched to the candidate
+  # Candidate should not see inactive jobs in matched list, although they matched to it
+  scope :job_matched_list, ->(current_candidate) {where(":archetype_score >= archetype_low and
+                                    :archetype_score <= archetype_high and
+                                    jobs.is_active = true",
+                                    archetype_score: current_candidate.archetype_score)}
+  
+  # List of the jobs which are viewed by candidate
+  scope :job_viewed_list, ->(current_candidate) {
+    joins(:candidate_job_actions)
+    .where("candidate_job_actions.candidate_id=?", current_candidate.id)
+    .order('created_at DESC')
+  }
+  
+  # list of the jobs saved by candidate
+  scope :job_saved_list, ->(current_candidate) {
+    joins(:candidate_job_actions)
+    .where("candidate_job_actions.candidate_id=?
+            and candidate_job_actions.is_saved=true", current_candidate.id)
+  }
+
+  # list of all visible candidates who have viewed particular job
+  scope :visible_candidate_viewed_list, ->(job) {
+    Candidate.joins(:candidate_job_actions)
+    .joins(:candidate_profile)
+    .where("job_id=? and candidate_profiles.is_incognito=false", job.id)
+  }
+
   # this method returns all the candidates who matches the job and having their profile visible
-  def matches
+  def candidate_matches_list
     # Candidate.where("candidates.archetype_score >= ? and candidates.archetype_score <= ? ", self.archetype_low, self.archetype_high).to_a
     Candidate.where("candidates.archetype_score >= ?
                      and candidates.archetype_score <= ?",
