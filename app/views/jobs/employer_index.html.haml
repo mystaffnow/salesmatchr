@@ -12,6 +12,8 @@
       = "Open Jobs (#{@jobs.count})"
       |
       = link_to "Inactive Jobs (#{@inactive_job_count})", employer_archive_jobs_path
+      |
+      = link_to "Disable Jobs", employer_job_disable_path
       %hr
 
   -@jobs.each do |job|
@@ -23,13 +25,13 @@
           = link_to employer_show_actions_path(job) do
             %i.fa.fa-inbox
             %span
-            = job.candidate_job_actions.count
+            = list_job_viewed_by_visible_candidates(job).count
             views
         .stat
           = link_to employer_show_matches_path(job) do
             %i.fa.fa-search
             %span
-            = job.matches.count
+            = job.candidate_matches_list.count
             matches
         .stat
           = link_to employer_show_path(job) do
