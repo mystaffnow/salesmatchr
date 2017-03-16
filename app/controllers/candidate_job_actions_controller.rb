@@ -10,7 +10,7 @@ class CandidateJobActionsController < ApplicationController
     # @jobs = Job.joins(:candidate_job_actions)
     #            .where("candidate_job_actions.candidate_id=?
     #                   and candidate_job_actions.is_saved=true", current_candidate.id)
-    @jobs = Job.job_saved_list
+    @jobs = Job.job_saved_list(current_candidate)
     tracker = Mixpanel::Tracker.new(ENV["NT_MIXPANEL_TOKEN"])
     tracker.track('candidate-'+current_candidate.email, 'viewed saved')
   end
@@ -21,7 +21,7 @@ class CandidateJobActionsController < ApplicationController
     # @jobs = Job.joins(:candidate_job_actions)
     #            .where("candidate_job_actions.candidate_id=?", current_candidate.id)
     #            .order('created_at DESC')
-    @jobs = Job.job_viewed_list
+    @jobs = Job.job_viewed_list(current_candidate)
     tracker = Mixpanel::Tracker.new(ENV["NT_MIXPANEL_TOKEN"])
     tracker.track('candidate-'+current_candidate.email, 'viewed recently viewed jobs')
   end
@@ -33,7 +33,7 @@ class CandidateJobActionsController < ApplicationController
     #                    :archetype_score <= archetype_high and
     #                    jobs.is_active = TRUE",
     #                    archetype_score: current_candidate.archetype_score)
-    @jobs = Job.job_matched_list
+    @jobs = Job.job_matched_list(current_candidate)
     tracker = Mixpanel::Tracker.new(ENV["NT_MIXPANEL_TOKEN"])
     tracker.track('candidate-'+current_candidate.email, 'viewed matches')
   end

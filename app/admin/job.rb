@@ -204,7 +204,7 @@ ActiveAdmin.register Job do
   # if job is active, visible/invisible, admin can make it inactive
 	# if job is inactive, admin can make it active
   member_action :change_status, method: :put do
-  	if resource.inactive?
+  	if resource.disable?
   		resource.update(status: Job.statuses['enable'],
   										activated_at: Time.now)
   	else
