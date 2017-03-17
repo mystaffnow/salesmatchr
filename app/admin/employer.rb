@@ -58,7 +58,9 @@ ActiveAdmin.register Employer do
     	table_for emp.jobs do
     		column :id
     		column :title
-    		column :description
+    		column :description do |job|
+          raw(truncate(job.description, length: 120, omission: "...", escape: false))
+        end
     		column :state_id do |job|
     			job.state.present? ? job.state.name : ''
     		end

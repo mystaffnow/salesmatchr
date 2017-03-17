@@ -27,7 +27,7 @@
             %h4
               = job.title
             %p
-              = job.description
+              = strip_tags(truncate(job.description, length: 600, omission: "...", escape: false))
             %hr
             %p You need to pay $100 to enable job for next 30 days.
 
