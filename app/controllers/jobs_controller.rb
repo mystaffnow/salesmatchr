@@ -51,7 +51,7 @@ class JobsController < ApplicationController
   # POST /jobs
   # POST /jobs.json
   def create
-    @job = Job.new(job_params)
+    @job = Job.new(job_params.merge(activated_at: DateTime.now))
     authorize(@job)
     job_function = JobFunction.find(job_params[:job_function_id])
     @job.employer_id = current_employer.id
