@@ -12,7 +12,7 @@ ActiveAdmin.register Job do
 #   permitted << :other if resource.something?
 #   permitted
 # end
-  actions :all, :except => [:new, :create, :edit, :update, :destroy]
+  actions :all, :except => [:new, :create, :edit, :update]
   
   filter :title
   filter :city
