@@ -25,21 +25,3 @@
                   %h4 Education
                   - if candidate.candidate_profile.education_level
                     = candidate.candidate_profile.education_level.name
-            
-          / - @job.candidate_job_actions.each do |candidate_job_action|
-          /   = link_to candidates_profile_path(candidate_job_action.candidate) do
-          /     .row
-          /       .col-md-2
-          /         %img{src: candidate_job_action.candidate.candidate_profile.avatar_url}
-          /       .col-md-6
-          /         %h3
-          /           - if candidate_job_action.candidate.try(:candidate_profile).try(:is_incognito)
-          /             Candidate
-          /           - else
-          /             = candidate_job_action.candidate.name
-          /         = get_location candidate_job_action.candidate.candidate_profile
-          /       .col-md-4
-          /         %h4 Education
-          /         - if candidate_job_action.candidate.candidate_profile.education_level
-          /           = candidate_job_action.candidate.candidate_profile.education_level.name
-          / %hr

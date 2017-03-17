@@ -7,7 +7,7 @@ class CandidateProfilePolicy < ApplicationPolicy
 	end
 
 	# unauthorize if profile setting is invisible
-	def profile?
+	def profile? 
 		res = user.is_owner_of?(profile)
 		if res
 			true

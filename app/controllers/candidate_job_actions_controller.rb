@@ -6,10 +6,6 @@ class CandidateJobActionsController < ApplicationController
                                                ]
   # list of the jobs saved by candidate
   def candidate_job_saved
-    # @candidate_job_action = CandidateJobAction.where(candidate_id: current_candidate.id, is_saved: true)
-    # @jobs = Job.joins(:candidate_job_actions)
-    #            .where("candidate_job_actions.candidate_id=?
-    #                   and candidate_job_actions.is_saved=true", current_candidate.id)
     @jobs = Job.job_saved_list(current_candidate)
     tracker = Mixpanel::Tracker.new(ENV["NT_MIXPANEL_TOKEN"])
     tracker.track('candidate-'+current_candidate.email, 'viewed saved')
@@ -17,10 +13,6 @@ class CandidateJobActionsController < ApplicationController
 
   # List of the jobs which are viewed by candidate
   def candidate_job_viewed
-    # @candidate_job_action = CandidateJobAction.where(candidate_id: current_candidate.id).order('created_at DESC')
-    # @jobs = Job.joins(:candidate_job_actions)
-    #            .where("candidate_job_actions.candidate_id=?", current_candidate.id)
-    #            .order('created_at DESC')
     @jobs = Job.job_viewed_list(current_candidate)
     tracker = Mixpanel::Tracker.new(ENV["NT_MIXPANEL_TOKEN"])
     tracker.track('candidate-'+current_candidate.email, 'viewed recently viewed jobs')
@@ -29,10 +21,6 @@ class CandidateJobActionsController < ApplicationController
   # List all jobs which are active and matched to the candidate
   # Candidate should not see inactive jobs in matched list, although they matched to it
   def candidate_matches
-    # @jobs = Job.where(":archetype_score >= archetype_low and
-    #                    :archetype_score <= archetype_high and
-    #                    jobs.is_active = TRUE",
-    #                    archetype_score: current_candidate.archetype_score)
     @jobs = Job.job_matched_list(current_candidate)
     tracker = Mixpanel::Tracker.new(ENV["NT_MIXPANEL_TOKEN"])
     tracker.track('candidate-'+current_candidate.email, 'viewed matches')
