@@ -10,7 +10,6 @@
 #  is_remote        :boolean
 #  title            :string
 #  description      :text
-#  is_active        :boolean          default(FALSE)
 #  view_count       :integer
 #  state_id         :integer
 #  city             :string
@@ -24,6 +23,7 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  status           :integer          default(0)
+#  is_active        :boolean          default(TRUE)
 #  activated_at     :datetime
 #
 
@@ -320,4 +320,17 @@ RSpec.describe Job do
       expect(Job.count).to eq(1)
     end
   end
+
+  # Test query for expired_jobs
+  # jobs are expired after 30 days of activated time
+  # context '#expired_jobs' do
+  #   it 'should return all expired jobs' do
+  #     @job = create(:job, activated_at: 2.days.ago, state_id: state.id, employer: employer, job_function: job_function)
+  #     @job1 = create(:job, activated_at: 29.days.ago, state_id: state.id, employer: employer, job_function: job_function)
+  #     @job2 = create(:job, activated_at: 30.days.ago, state_id: state.id, employer: employer, job_function: job_function)
+  #     @job3 = create(:job, activated_at: 31.days.ago, state_id: state.id, employer: employer, job_function: job_function)
+
+  #     expect(Job.expired_jobs).to eq([@job2, @job3])
+  #   end
+  # end
 end
