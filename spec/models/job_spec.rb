@@ -57,6 +57,10 @@ RSpec.describe Job do
     it {should have_one(:payment).dependent(:destroy)}
   end
 
+  it 'should have enum status' do
+    expect(Job.statuses).to eq({"enable"=>0, "disable"=>1})
+  end
+
   describe 'matches.' do
     context '.Inside sales' do
       let(:inside_sales) {create(:inside_sales)} # low: 11, high: 100
