@@ -75,10 +75,14 @@ RSpec.describe Job do
       expect(Job.job_matched_list(@candidate)).to eq([])
     end
 
-    it 'should return job list' do
+    it 'should return job list which are active & matched to candidate' do
       @inside_sales = create(:inside_sales)
       @candidate = create(:candidate, archetype_score: 35)
       @job1 = create(:job, job_function_id: @inside_sales.id)
+
+      @job_function1 = create(:outside_sales)
+      @state1 = create(:state, name: 'Test')
+      @job2 = create(:job, job_function_id: @job_function1.id, state_id: @state1.id, is_active: false)
       expect(Job.job_matched_list(@candidate)).to eq([@job1])
     end
   end
@@ -94,6 +98,55 @@ RSpec.describe Job do
       @candidate = create(:candidate)
       @candidate_job_action = create(:candidate_job_action, job_id: @job.id, candidate_id: @candidate.id)
       expect(Job.job_viewed_list(@candidate)).to eq([@job])
+    end
+  end
+
+  context '#job_saved_list' do
+    it 'should return nil' do
+      @candidate = create(:candidate)
+      expect(Job.job_saved_list(@candidate)).to eq([])
+    end
+
+    it 'should return jobs list' do
+      @job_function = create(:inside_sales)
+      @job = create(:job, job_function_id: @job_function.id)
+
+      @job_function1 = create(:outside_sales)
+      @state1 = create(:state, name: 'Test')
+      @job1 = create(:job, job_function_id: @job_function1.id, state_id: @state1.id)
+      
+      @candidate = create(:candidate)
+      
+      @candidate_job_action1 = create(:candidate_job_action, job_id: @job.id,
+                                                           candidate_id: @candidate.id,
+                                                           is_saved: true)
+      @candidate_job_action2 = create(:candidate_job_action, job_id: @job1 .id,
+                                                           candidate_id: @candidate.id,
+                                                           is_saved: false)
+      expect(Job.job_saved_list(@candidate)).to eq([@job])
+    end
+  end
+
+  context '#visible_candidate_viewed_list' do
+    it 'should return nil' do
+      @candidate = create(:candidate)
+      expect(Job.visible_candidate_viewed_list(@candidate)).to eq([])
+    end
+
+    it 'should return candidates list' do
+      @job = create(:job)
+      @candidate = create(:candidate)
+      CandidateProfile.first.update_attribute(:is_incognito, false)
+      @candidate1 = create(:candidate) # incognito ON
+      @candidate2 = create(:candidate)
+      CandidateProfile.third.update_attribute(:is_incognito, false)
+      @candidate_job_action1 = create(:candidate_job_action, job_id: @job.id,
+                                                           candidate_id: @candidate.id,
+                                                           is_saved: true)
+      @candidate_job_action2 = create(:candidate_job_action, job_id: @job.id,
+                                                           candidate_id: @candidate2.id,
+                                                           is_saved: true)
+      expect(Job.visible_candidate_viewed_list(@job)).to eq([@candidate, @candidate2])
     end
   end
 
