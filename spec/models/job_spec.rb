@@ -78,7 +78,7 @@ RSpec.describe Job do
 
       it 'should match candidates scale between 11-100' do
         expect(CandidateProfile.count).to eq(6)
-        expect(inside_sales_job.matches).to eq([@candidate, @candidate1, @candidate2, @candidate3, @candidate4])
+        expect(inside_sales_job.candidate_matches_list).to eq([@candidate, @candidate1, @candidate2, @candidate3, @candidate4])
       end
     end
 
@@ -101,7 +101,7 @@ RSpec.describe Job do
       end
 
       it 'should match candidates scale between 11-100' do
-        expect(outside_sales_job.matches).to eq([@candidate, @candidate1, @candidate2, @candidate3, @candidate4])
+        expect(outside_sales_job.candidate_matches_list).to eq([@candidate, @candidate1, @candidate2, @candidate3, @candidate4])
       end
     end
 
@@ -124,7 +124,7 @@ RSpec.describe Job do
       end
 
       it 'should match candidates scale between -10 to 70' do
-        expect(business_developement_job.matches).to eq([@candidate1, @candidate2, @candidate3, @candidate4])
+        expect(business_developement_job.candidate_matches_list).to eq([@candidate1, @candidate2, @candidate3, @candidate4])
       end
     end
 
@@ -147,7 +147,7 @@ RSpec.describe Job do
       end
 
       it 'should match candidates scale between -30 to 70' do
-        expect(sales_manager_job.matches).to eq([@candidate1, @candidate2, @candidate3, @candidate4])
+        expect(sales_manager_job.candidate_matches_list).to eq([@candidate1, @candidate2, @candidate3, @candidate4])
       end
     end
 
@@ -170,7 +170,7 @@ RSpec.describe Job do
       end
 
       it 'should match candidates scale between -100 to 10' do
-        expect(sales_operations_job.matches).to eq([@candidate1, @candidate2, @candidate3, @candidate4])
+        expect(sales_operations_job.candidate_matches_list).to eq([@candidate1, @candidate2, @candidate3, @candidate4])
       end
     end
 
@@ -193,7 +193,8 @@ RSpec.describe Job do
       end
 
       it 'should match candidates scale between -100 to 10' do
-        expect(customer_service_job.matches).to eq([@candidate4, @candidate1, @candidate2, @candidate3])
+        expect(customer_service_job.candidate_matches_list.count).to eq(4)
+        expect(customer_service_job.candidate_matches_list).to eq([@candidate1, @candidate2, @candidate3, @candidate4])
       end
     end
 
@@ -216,7 +217,7 @@ RSpec.describe Job do
       end
 
       it 'should match candidates scale between -100 to -11' do
-        expect(account_manager_job.matches).to eq([@candidate1, @candidate2, @candidate3, @candidate4])
+        expect(account_manager_job.candidate_matches_list).to eq([@candidate1, @candidate2, @candidate3, @candidate4])
       end
     end
   end

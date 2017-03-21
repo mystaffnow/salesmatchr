@@ -560,6 +560,7 @@ RSpec.describe JobsController, :type => :controller do
         }
 
       it 'should properly assigns jobs' do
+        job.update_attribute(:is_active, false)
         get :employer_archive
         expect(assigns(:jobs)).to eq([job])
       end
