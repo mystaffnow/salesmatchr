@@ -33,21 +33,9 @@ RSpec.describe Employer do
   end
   
   describe "Association" do
-    # it {should belong_to :state}
     it {should have_one(:employer_profile).dependent(:destroy)}
     it {should have_many(:jobs).dependent(:destroy)}
   end
-
-  # describe "Paperclip avatar" do
-  #   it { should have_attached_file(:avatar) }
-  #   it { should validate_attachment_content_type(:avatar).
-  #     allowing('image/jpg', 'image/png', 'image/gif').
-  #     rejecting('text/plain', 'text/xml') }
-      
-  #   it 'should return default avatar' do
-  #     expect(employer.avatar.url).to eq('/img/missing.png')
-  #   end
-  # end
 
   it 'should build profile automatically' do
     @employer = create(:employer)
