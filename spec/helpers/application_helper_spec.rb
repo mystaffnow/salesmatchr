@@ -78,17 +78,19 @@ RSpec.describe ApplicationHelper, type: :helper do
 	end
 
 	context '#job_candidate_saved?' do
-		before {
+		let(:function) {
 			@candidate = candidate
 			@job = job
 		}
 
 		it 'when rec found with true' do
+			function
 		  CandidateJobAction.create(candidate_id: @candidate.id, job_id: @job.id, is_saved: true)
 		  expect(helper.job_candidate_saved?(@candidate.id, @job.id)).to eq(true)
 		end
 
 		it 'when rec found with false' do
+			function
 		  CandidateJobAction.create(candidate_id: @candidate.id, job_id: @job.id, is_saved: false)
 		  expect(helper.job_candidate_saved?(@candidate.id, @job.id)).to eq(false)
 		end
