@@ -57,12 +57,12 @@ RSpec.describe Job do
     it {should have_one(:payment).dependent(:destroy)}
   end
 
-  context 'matches.' do
+  describe 'matches.' do
     context '.Inside sales' do
       let(:inside_sales) {create(:inside_sales)} # low: 11, high: 100
       let(:inside_sales_job) {create(:job, state_id: state.id, employer_id: employer.id, job_function_id: inside_sales.id)}
 
-      before do
+      it 'should match candidates scale between 11-100' do
         @candidate = create(:candidate, archetype_score: 11)
         CandidateProfile.first.update(is_incognito: false)
         @candidate1 = create(:candidate, archetype_score: 31)
@@ -74,9 +74,7 @@ RSpec.describe Job do
         @candidate4 = create(:candidate, archetype_score: 100)
         CandidateProfile.fifth.update(is_incognito: false)
         @candidate5 = create(:candidate, archetype_score: 101)
-      end
 
-      it 'should match candidates scale between 11-100' do
         expect(CandidateProfile.count).to eq(6)
         expect(inside_sales_job.candidate_matches_list).to eq([@candidate, @candidate1, @candidate2, @candidate3, @candidate4])
       end
@@ -86,7 +84,7 @@ RSpec.describe Job do
       let(:outside_sales) {create(:outside_sales)} # low: 11, high: 100
       let(:outside_sales_job) {create(:job, state_id: state.id, employer_id: employer.id, job_function_id: outside_sales.id)}
 
-      before do
+      it 'should match candidates scale between 11-100' do
         @candidate = create(:candidate, archetype_score: 11)
         CandidateProfile.first.update(is_incognito: false)
         @candidate1 = create(:candidate, archetype_score: 31)
@@ -98,9 +96,7 @@ RSpec.describe Job do
         @candidate4 = create(:candidate, archetype_score: 100)
         CandidateProfile.fifth.update(is_incognito: false)
         @candidate5 = create(:candidate, archetype_score: 101)
-      end
 
-      it 'should match candidates scale between 11-100' do
         expect(outside_sales_job.candidate_matches_list).to eq([@candidate, @candidate1, @candidate2, @candidate3, @candidate4])
       end
     end
@@ -109,7 +105,7 @@ RSpec.describe Job do
       let(:business_developement) {create(:business_developement)} # low: -10, high: 70
       let(:business_developement_job) {create(:job, state_id: state.id, employer_id: employer.id, job_function_id: business_developement.id)}
 
-      before do
+      it 'should match candidates scale between -10 to 70' do
         @candidate = create(:candidate, archetype_score: -20)
         CandidateProfile.first.update(is_incognito: false)
         @candidate1 = create(:candidate, archetype_score: -10)
@@ -121,9 +117,7 @@ RSpec.describe Job do
         @candidate4 = create(:candidate, archetype_score: 70)
         CandidateProfile.fifth.update(is_incognito: false)
         @candidate5 = create(:candidate, archetype_score: 71)
-      end
 
-      it 'should match candidates scale between -10 to 70' do
         expect(business_developement_job.candidate_matches_list).to eq([@candidate1, @candidate2, @candidate3, @candidate4])
       end
     end
@@ -132,7 +126,7 @@ RSpec.describe Job do
       let(:sales_manager) {create(:sales_manager)} # low: -30, high: 70
       let(:sales_manager_job) {create(:job, state_id: state.id, employer_id: employer.id, job_function_id: sales_manager.id)}
 
-      before do
+      it 'should match candidates scale between -30 to 70' do
         @candidate = create(:candidate, archetype_score: -40)
         CandidateProfile.first.update(is_incognito: false)
         @candidate1 = create(:candidate, archetype_score: -30)
@@ -144,9 +138,7 @@ RSpec.describe Job do
         @candidate4 = create(:candidate, archetype_score: 70)
         CandidateProfile.fifth.update(is_incognito: false)
         @candidate5 = create(:candidate, archetype_score: 71)
-      end
 
-      it 'should match candidates scale between -30 to 70' do
         expect(sales_manager_job.candidate_matches_list).to eq([@candidate1, @candidate2, @candidate3, @candidate4])
       end
     end
@@ -155,7 +147,7 @@ RSpec.describe Job do
       let(:sales_operations) {create(:sales_operations)} # low: -100, high: 10
       let(:sales_operations_job) {create(:job, state_id: state.id, employer_id: employer.id, job_function_id: sales_operations.id)}
 
-      before do
+      it 'should match candidates scale between -100 to 10' do
         @candidate = create(:candidate, archetype_score: -110)
         CandidateProfile.first.update(is_incognito: false)
         @candidate1 = create(:candidate, archetype_score: -100)
@@ -167,9 +159,7 @@ RSpec.describe Job do
         @candidate4 = create(:candidate, archetype_score: 10)
         CandidateProfile.fifth.update(is_incognito: false)
         @candidate5 = create(:candidate, archetype_score: 11)
-      end
 
-      it 'should match candidates scale between -100 to 10' do
         expect(sales_operations_job.candidate_matches_list).to eq([@candidate1, @candidate2, @candidate3, @candidate4])
       end
     end
@@ -178,7 +168,7 @@ RSpec.describe Job do
       let(:customer_service) {create(:customer_service)} # low: -100, high: 10
       let(:customer_service_job) {create(:job, state_id: state.id, employer_id: employer.id, job_function_id: customer_service.id)}
 
-      before do
+      it 'should match candidates scale between -100 to 10' do
         @candidate = create(:candidate, archetype_score: -110)
         CandidateProfile.first.update(is_incognito: false)
         @candidate1 = create(:candidate, archetype_score: -100)
@@ -190,9 +180,7 @@ RSpec.describe Job do
         @candidate4 = create(:candidate, archetype_score: 10)
         CandidateProfile.fifth.update(is_incognito: false)
         @candidate5 = create(:candidate, archetype_score: 11)
-      end
 
-      it 'should match candidates scale between -100 to 10' do
         expect(customer_service_job.candidate_matches_list.count).to eq(4)
         expect(customer_service_job.candidate_matches_list).to eq([@candidate1, @candidate2, @candidate3, @candidate4])
       end
@@ -202,7 +190,7 @@ RSpec.describe Job do
       let(:account_manager) {create(:account_manager)} # low: -100, high: -11
       let(:account_manager_job) {create(:job, state_id: state.id, employer_id: employer.id, job_function_id: account_manager.id)}
 
-      before do
+      it 'should match candidates scale between -100 to -11' do
         @candidate = create(:candidate, archetype_score: -110)
         CandidateProfile.first.update(is_incognito: false)
         @candidate1 = create(:candidate, archetype_score: -100)
@@ -214,16 +202,14 @@ RSpec.describe Job do
         @candidate4 = create(:candidate, archetype_score: -11)
         CandidateProfile.fifth.update(is_incognito: false)
         @candidate5 = create(:candidate, archetype_score: -9)
-      end
 
-      it 'should match candidates scale between -100 to -11' do
         expect(account_manager_job.candidate_matches_list).to eq([@candidate1, @candidate2, @candidate3, @candidate4])
       end
     end
   end
 
   context 'applicants.' do
-    before(:each) do
+    it 'should return list of candidates, when job_candidate status is not deleted/shortlisted' do
       @job = create(:job, employer_id: employer.id, salary_low: 45000, salary_high: 280000, zip: "10900",
                     archetype_low: -30, archetype_high: 70, city: 'city1', state_id: state.id
                     )
@@ -242,15 +228,13 @@ RSpec.describe Job do
       @job_candidate = create(:job_candidate, job_id: @job.id, candidate_id: @candidate3.id, status: 2)
       @job_candidate = create(:job_candidate, job_id: @job.id, candidate_id: @candidate4.id, status: 3)
       @job_candidate = create(:job_candidate, job_id: @job.id, candidate_id: @candidate5.id, status: 6)
-    
-      it 'should return list of candidates, when job_candidate status is not deleted/shortlisted' do
-        expect(@job.applicants).to eq([@candidate1, @candidate2, @candidate3, @candidate4, @candidate5])
-      end
+        
+      expect(@job.applicants).to eq([@candidate1, @candidate2, @candidate3, @candidate4, @candidate5])
     end
   end
 
   context 'shortlist' do
-    before(:each) do
+    it 'should return list of shortlist candidate' do
       @job = create(:job, employer_id: employer.id, salary_low: 45000, salary_high: 280000, zip: "10900",
                     archetype_low: -30, archetype_high: 70, city: 'city1', state_id: state.id, job_function_id: job_function.id
                     )
@@ -258,15 +242,13 @@ RSpec.describe Job do
       @candidate2 = create(:candidate, archetype_score: 35)
       @job_candidate = create(:job_candidate, job_id: @job.id, candidate_id: @candidate1.id, status: 4)
       @job_candidate = create(:job_candidate, job_id: @job.id, candidate_id: @candidate2.id, status: 1)
-    end
 
-    it 'should return list of shortlist candidate' do
       expect(@job.shortlist).to eq([@candidate1])
     end
   end
 
   context 'deleted' do
-    before(:each) do
+    it 'should return list of shortlist candidate' do
       @job = create(:job, employer_id: employer.id, salary_low: 45000, salary_high: 280000, zip: "10900",
                     archetype_low: -30, archetype_high: 70, city: 'city1', state_id: state.id, job_function_id: job_function.id
                     )
@@ -274,9 +256,7 @@ RSpec.describe Job do
       @candidate2 = create(:candidate, archetype_score: 35)
       @job_candidate = create(:job_candidate, job_id: @job.id, candidate_id: @candidate1.id, status: 5)
       @job_candidate = create(:job_candidate, job_id: @job.id, candidate_id: @candidate2.id, status: 1)
-    end
 
-    it 'should return list of shortlist candidate' do
       expect(@job.deleted).to eq([@candidate1])
     end
   end
