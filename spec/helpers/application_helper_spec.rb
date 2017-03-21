@@ -1,6 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe ApplicationHelper, type: :helper do
+	let(:candidate) {create(:candidate)}
+	let(:job) {create(:job)}
+
 	it '#get_archetype_from_score' do
 		expect(helper.get_archetype_from_score(nil)).to eq('n/a')
 		expect(helper.get_archetype_from_score(72)).to eq('Aggressive Hunter')
@@ -74,5 +77,57 @@ RSpec.describe ApplicationHelper, type: :helper do
 		expect(helper.get_status_key_by_value(0)).to eq("submitted")
 	end
 
-	it '#job_candidate_saved?'
+	context '#job_candidate_saved?' do
+		before {
+			@candidate = candidate
+			@job = job
+		}
+
+		it 'when rec found with true' do
+		  CandidateJobAction.create(candidate_id: @candidate.id, job_id: @job.id, is_saved: true)
+		  expect(helper.job_candidate_saved?(@candidate.id, @job.id)).to eq(true)
+		end
+
+		it 'when rec found with false' do
+		  CandidateJobAction.create(candidate_id: @candidate.id, job_id: @job.id, is_saved: false)
+		  expect(helper.job_candidate_saved?(@candidate.id, @job.id)).to eq(false)
+		end
+
+		it 'when rec not found' do
+		  expect(helper.job_candidate_saved?(nil, nil)).to eq(false)
+	  end
+	end
+
+	context '#list_job_viewed_by_visible_candidates' do
+		it 'should return candidate_job_actions record' do
+			@job = job
+			@candidate1 = candidate
+			CandidateProfile.first.update(is_incognito: true)
+			@candidate2 = create(:candidate)
+			CandidateProfile.second.update(is_incognito: false)
+			@candidate3 = create(:candidate)
+			CandidateProfile.third.update(is_incognito: false)
+			@candidate4 = create(:candidate)
+			CandidateProfile.fourth.update(is_incognito: false)
+			@candidate5 = create(:candidate)
+			CandidateProfile.fifth.update(is_incognito: true)
+
+			@cja1 = create(:candidate_job_action, candidate_id: @candidate1.id, job_id: @job.id, is_saved: false)
+			@cja2 = create(:candidate_job_action, candidate_id: @candidate2.id, job_id: @job.id, is_saved: false)
+			@cja3 = create(:candidate_job_action, candidate_id: @candidate3.id, job_id: @job.id, is_saved: false)
+			@cja4 = create(:candidate_job_action, candidate_id: @candidate4.id, job_id: @job.id, is_saved: false)
+			@cja5 = create(:candidate_job_action, candidate_id: @candidate5.id, job_id: @job.id, is_saved: false)
+		  
+		  expect(helper.list_job_viewed_by_visible_candidates(@job)).to eq([@cja2, @cja3, @cja4])
+		end
+
+		it 'should return empty array' do
+			@job = job
+			@candidate1 = candidate
+			CandidateProfile.first.update(is_incognito: true)
+
+		  expect(helper.list_job_viewed_by_visible_candidates(@job)).to eq([])
+		  expect(helper.list_job_viewed_by_visible_candidates(nil)).to eq([])
+		end
+	end
 end
