@@ -45,5 +45,46 @@ RSpec.describe JobPolicy do
 		end
 	end
 
-	it "#show?"
+	permissions :show? do
+		it 'permit access by anyone when job is enabled and active' do
+			expect(job.enable?).to be_truthy
+			expect(job.is_active).to be_truthy
+			expect(subject).to permit(candidate, job)
+			expect(subject).to permit(employer, job)
+			expect(subject).to permit(nil, job)
+		end
+
+		it 'denies access to candidate and visitors when job disable' do
+			job.update(status: 1)
+			expect(subject).not_to permit(candidate, job)
+			expect(subject).not_to permit(nil, job)
+		end
+
+		it 'permit resource owner when job disable' do
+			job.update(status: 1)
+			expect(subject).to permit(employer, job)
+		end
+
+		it 'denies access to candidate and visitors when job inactive' do
+			job.update(is_active: false)
+			expect(subject).not_to permit(candidate, job)
+			expect(subject).not_to permit(nil, job)
+		end
+
+		it 'permit resource owner when job inactive' do
+			job.update(is_active: false)
+			expect(subject).to permit(employer, job)
+		end
+
+		it 'denies access to candidate & visitors, when job inactive and disable' do
+			job.update(is_active: false, status: 1)
+			expect(subject).not_to permit(candidate, job)
+			expect(subject).not_to permit(nil, job)
+		end
+
+		it 'permit resource owner when job inactive and disable' do
+			job.update(is_active: false, status: 1)
+			expect(subject).to permit(employer, job)
+		end
+	end
 end
