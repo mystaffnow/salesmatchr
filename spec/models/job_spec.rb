@@ -69,10 +69,33 @@ RSpec.describe Job do
     expect(Job.first.archetype_high).to eq(@job.job_function.high)
   end
 
-  it '#job_matched_list'
-  it '#job_viewed_list'
-  it '#job_saved_list'
-  it '#visible_candidate_viewed_list'
+  context '#job_matched_list' do
+    it 'should return nil' do
+      @candidate = create(:candidate)
+      expect(Job.job_matched_list(@candidate)).to eq([])
+    end
+
+    it 'should return job list' do
+      @inside_sales = create(:inside_sales)
+      @candidate = create(:candidate, archetype_score: 35)
+      @job1 = create(:job, job_function_id: @inside_sales.id)
+      expect(Job.job_matched_list(@candidate)).to eq([@job1])
+    end
+  end
+
+  context '#job_viewed_list' do
+    it 'should return nil' do
+      @candidate = create(:candidate)
+      expect(Job.job_viewed_list(@candidate)).to eq([])
+    end
+
+    it 'should return jobs list' do
+      @job = create(:job)
+      @candidate = create(:candidate)
+      @candidate_job_action = create(:candidate_job_action, job_id: @job.id, candidate_id: @candidate.id)
+      expect(Job.job_viewed_list(@candidate)).to eq([@job])
+    end
+  end
 
   describe '#candidate_matches_list' do
     context '.Inside sales' do
