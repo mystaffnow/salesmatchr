@@ -61,7 +61,20 @@ RSpec.describe Job do
     expect(Job.statuses).to eq({"enable"=>0, "disable"=>1})
   end
 
-  describe 'matches.' do
+  it '#add_archetype_score .assign job function value to archetype scale' do
+    @job_function = create(:job_function)
+    @job = create(:job, job_function_id: @job_function.id)
+    expect(Job.count).to eq(1)
+    expect(Job.first.archetype_low).to eq(@job.job_function.low)
+    expect(Job.first.archetype_high).to eq(@job.job_function.high)
+  end
+
+  it '#job_matched_list'
+  it '#job_viewed_list'
+  it '#job_saved_list'
+  it '#visible_candidate_viewed_list'
+
+  describe '#candidate_matches_list' do
     context '.Inside sales' do
       let(:inside_sales) {create(:inside_sales)} # low: 11, high: 100
       let(:inside_sales_job) {create(:job, state_id: state.id, employer_id: employer.id, job_function_id: inside_sales.id)}
