@@ -58,6 +58,12 @@ RSpec.describe Employer do
   it 'should return full_name of employer' do
     expect(employer.name).to eq('test employer')
   end
+
+  it '#is_owner_of?' do
+    @employer = employer
+    EmployerProfile.first.update(employer_id: @employer.id)
+    expect(@employer.is_owner_of?(EmployerProfile.first)).to be_truthy
+  end
   
   context '.can_proceed' do
     it 'should return true' do
