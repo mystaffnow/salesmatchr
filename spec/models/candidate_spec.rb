@@ -76,6 +76,12 @@ RSpec.describe Candidate do
 		end
 	end
 
+	it '#is_owner_of?' do
+		@candidate = candidate
+		CandidateProfile.first.update(candidate_id: @candidate.id)
+		expect(@candidate.is_owner_of?(CandidateProfile.first)).to be_truthy
+	end
+
 	context 'has_applied-job' do
 		it 'should return false if candidate has not applied a job' do
 			expect(candidate.has_applied(job)).to eq(false)

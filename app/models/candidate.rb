@@ -37,7 +37,7 @@ class Candidate < ActiveRecord::Base
   accepts_nested_attributes_for :experiences, allow_destroy: true
   accepts_nested_attributes_for :educations, allow_destroy: true
   accepts_nested_attributes_for :candidate_question_answers, allow_destroy: true
-  attr_accessor :flash_notice
+  # attr_accessor :flash_notice
 
   after_save :add_candidate_profile
 
