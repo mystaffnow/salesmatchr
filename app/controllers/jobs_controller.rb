@@ -8,7 +8,8 @@ class JobsController < ApplicationController
                                                  :destroy, :employer_archive,
                                                  :employer_show, :employer_show_actions,
                                                  :employer_show_matches, :employer_show_shortlists,
-                                                 :employer_index, :employer_archive, :inactivate_job,
+                                                 :employer_index, :employer_archive,
+                                                 :list_disable_jobs, :inactivate_job,
                                                  :employer_show_remove, :email_match_candidates
                                                ]
   # GET /jobs
@@ -136,7 +137,6 @@ class JobsController < ApplicationController
   # List of all visible candidates who have viewed the job
   def employer_show_actions
     authorize @job
-    # @job.candidate_job_actions
     @candidates = Job.visible_candidate_viewed_list(@job)
   end
 
@@ -164,7 +164,7 @@ class JobsController < ApplicationController
 
   # GET: employer_job_shortlists/1
   # signed_in employer is required
-  # List of all candidates whose profile is shortlisted
+  # List of all job_candidates whose profile is shortlisted
   def employer_show_shortlists
     authorize @job
     @shortlists = JobCandidate.where(:job_id => params[:id], :status => JobCandidate.statuses[:shortlist])
@@ -172,7 +172,7 @@ class JobsController < ApplicationController
 
   # GET: employer_job_remove/1
   # signed_in employer is required
-  # List of all candidates whose profile is rejected or delted
+  # List of all job_candidates whose profile is rejected or deleted
   def employer_show_remove
     authorize @job
     @removed_job_candidates = JobCandidate.where(:job_id => params[:id], :status => JobCandidate.statuses[:deleted])

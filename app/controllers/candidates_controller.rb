@@ -10,13 +10,15 @@ class CandidatesController < ApplicationController
   end
 
   # view profile
-  # anyone can access
+  # candidate can view his profile
+  # employer can view applicants profile
+  # end user can view profile when incognito OFF
   def profile
     if params[:id]
       @candidate = Candidate.find(params[:id])
       @profile = @candidate.candidate_profile
       authorize(@profile)
-    elsif current_cadidate
+    elsif current_candidate
       @candidate = current_candidate
       @profile = current_candidate.candidate_profile
     end
