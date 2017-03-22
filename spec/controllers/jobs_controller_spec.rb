@@ -170,7 +170,7 @@ RSpec.describe JobsController, :type => :controller do
 
       it 'should redirect to /employers/account' do
         EmployerProfile.first.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
-        get :index
+        get :new
         expect(response).to redirect_to("/employers/account")
       end
     end
@@ -196,7 +196,7 @@ RSpec.describe JobsController, :type => :controller do
 
       it 'should redirect to candidates_archetype_path' do
         candidate.update(archetype_score: nil)
-        get :show, id: job.id
+        get :send_intro, { candidate_id: candidate.id, id: job.id }
         expect(response).to redirect_to(candidates_archetype_path)
       end
     end
@@ -223,7 +223,7 @@ RSpec.describe JobsController, :type => :controller do
 
       it 'should redirect to /employers/account' do
         EmployerProfile.first.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
-        get :index
+        get :send_intro, { candidate_id: candidate.id, id: job.id }
         expect(response).to redirect_to("/employers/account")
       end
     end
@@ -370,12 +370,21 @@ RSpec.describe JobsController, :type => :controller do
         expect(response).to redirect_to("/employers/account")
       end
 
-      it 'should assigns and return candidate list' do
+      it 'should return candidates list whose profile are visible and who have viewed the job' do
         candidate
         CandidateProfile.first.update(is_incognito: false)
         create(:candidate_job_action, job_id: job.id, candidate_id: candidate.id, is_saved: false)
+        
+        candidate1 = create(:candidate)
+        CandidateProfile.second.update(is_incognito: false)
+        create(:candidate_job_action, job_id: job.id, candidate_id: candidate1.id, is_saved: false)
+
+        candidate2 = create(:candidate)
+        CandidateProfile.third.update(is_incognito: true)
+        create(:candidate_job_action, job_id: job.id, candidate_id: candidate2.id, is_saved: false)
+
         get :employer_show_actions, id: job.id
-        expect(assigns(:candidates)).to eq([candidate])
+        expect(assigns(:candidates)).to eq([candidate, candidate1])
       end
     end
   end
@@ -412,12 +421,21 @@ RSpec.describe JobsController, :type => :controller do
         expect(response).to redirect_to("/employers/account")
       end
 
-      it 'should assigns and return candidate list' do
+      it 'should return all candidates whose profile matched with job' do
         candidate
         CandidateProfile.first.update(is_incognito: false)
         create(:candidate_job_action, job_id: job.id, candidate_id: candidate.id, is_saved: false)
+        
+        candidate1 = create(:candidate, archetype_score: 35)
+        CandidateProfile.second.update(is_incognito: false)
+        create(:candidate_job_action, job_id: job.id, candidate_id: candidate1.id, is_saved: false)
+
+        candidate2 = create(:candidate, archetype_score: 35)
+        CandidateProfile.third.update(is_incognito: true)
+        create(:candidate_job_action, job_id: job.id, candidate_id: candidate2.id, is_saved: false)
+
         get :employer_show_matches, id: job.id
-        expect(assigns(:candidates)).to eq([candidate])
+        expect(assigns(:candidates)).to eq([candidate, candidate1])
       end
     end
   end
@@ -448,10 +466,14 @@ RSpec.describe JobsController, :type => :controller do
         get :employer_show_shortlists, id: job.id
       end
 
-      it 'should properly assign shortlists' do
+      it 'should list all job_candidates whose profile is shortlisted' do
         job_candidate = create(:job_candidate, job_id: job.id, candidate_id: candidate.id, status: 'shortlist')
+        candidate1 = create(:candidate)
+        job_candidate1 = create(:job_candidate, job_id: job.id, candidate_id: candidate1.id, status: 'shortlist')
+        candidate2 = create(:candidate)
+        job_candidate2 = create(:job_candidate, job_id: job.id, candidate_id: candidate2.id, status: 'viewed')
         get :employer_show_shortlists, id: job.id
-        expect(assigns(:shortlists)).to eq([job_candidate])
+        expect(assigns(:shortlists)).to eq([job_candidate, job_candidate1])
       end
 
       it 'should redirect to /employers/account' do
@@ -488,10 +510,14 @@ RSpec.describe JobsController, :type => :controller do
         get :employer_show_remove, id: job.id
       end
 
-      it 'should properly assign shortlists' do
+      it 'should show all job_candidates whose profile is rejected or deleted' do
         job_candidate = create(:job_candidate, job_id: job.id, candidate_id: candidate.id, status: 'deleted')
+        candidate1 = create(:candidate)
+        job_candidate1 = create(:job_candidate, job_id: job.id, candidate_id: candidate1.id, status: 'deleted')
+        candidate2 = create(:candidate)
+        job_candidate2 = create(:job_candidate, job_id: job.id, candidate_id: candidate2.id, status: 'viewed')
         get :employer_show_remove, id: job.id
-        expect(assigns(:removed_job_candidates)).to eq([job_candidate])
+        expect(assigns(:removed_job_candidates)).to eq([job_candidate, job_candidate1])
       end
 
       it 'should redirect to /employers/account' do
@@ -518,9 +544,15 @@ RSpec.describe JobsController, :type => :controller do
           employer_profile(employer)
         }
 
-      it 'should properly assigns jobs' do
-        job.update(is_active: true)
+      it 'should return active and enable jobs of employer' do
+        job.update(is_active: true, status: Job.statuses['enable'])
         job.reload
+        state1 = create(:state, name: 'title1')
+        job1 = create(:job, employer_id: employer.id, state_id: state1.id, is_active: true, status: Job.statuses['disable'])
+        state2 = create(:state, name: 'title2')
+        job2 = create(:job, employer_id: employer.id, state_id: state2.id, is_active: false, status: Job.statuses['disable'])
+        state3 = create(:state, name: 'title3')
+        job3 = create(:job, employer_id: employer.id, state_id: state3.id, is_active: false, status: Job.statuses['enable'])
         get :employer_index
         expect(assigns(:jobs)).to eq([job])
       end
@@ -555,10 +587,17 @@ RSpec.describe JobsController, :type => :controller do
           employer_profile(employer)
         }
 
-      it 'should properly assigns jobs' do
-        job.update_attribute(:is_active, false)
+      it 'should return list of inactive jobs' do
+        job.update(is_active: false, status: Job.statuses['enable'])
+        job.reload
+        state1 = create(:state, name: 'title1')
+        job1 = create(:job, employer_id: employer.id, state_id: state1.id, is_active: true, status: Job.statuses['disable'])
+        state2 = create(:state, name: 'title2')
+        job2 = create(:job, employer_id: employer.id, state_id: state2.id, is_active: false, status: Job.statuses['disable'])
+        state3 = create(:state, name: 'title3')
+        job3 = create(:job, employer_id: employer.id, state_id: state3.id, is_active: false, status: Job.statuses['enable'])
         get :employer_archive
-        expect(assigns(:jobs)).to eq([job])
+        expect(assigns(:jobs)).to eq([job, job3])
       end
 
       it 'should count open jobs and assigns to active_job_count' do
@@ -571,6 +610,42 @@ RSpec.describe JobsController, :type => :controller do
       it 'should redirect to /employers/account' do
         EmployerProfile.first.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
         get :employer_archive, id: job.id
+        expect(response).to redirect_to("/employers/account")
+      end
+    end
+  end
+
+  describe '#list_disable_jobs' do
+    context '.when candidate is sign_in' do
+      before{ sign_in(candidate) }
+
+      it 'should redirect_to employers sign_in page' do
+        get :list_disable_jobs
+        expect(response).to redirect_to("/employers/sign_in")
+      end
+    end
+
+    context '.when employer is sign_in' do
+      before {
+        sign_in(employer)
+        employer_profile(employer)
+      }
+
+      it 'should return list of jobs disable by admin' do
+        job.update(status: Job.statuses['disable'])
+        state1 = create(:state, name: 'title1')
+        job1 = create(:job, employer_id: employer.id, state_id: state1.id, status: Job.statuses['disable'])
+        state2 = create(:state, name: 'title2')
+        job2 = create(:job, employer_id: employer.id, state_id: state2.id, status: Job.statuses['enable'])
+        state3 = create(:state, name: 'title3')
+        job3 = create(:job, employer_id: employer.id, state_id: state3.id, status: Job.statuses['disable'])
+        get :list_disable_jobs
+        expect(assigns(:jobs)).to eq([job, job1, job3])
+      end
+
+      it 'should redirect to /employers/account' do
+        EmployerProfile.first.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
+        get :list_disable_jobs, id: job.id
         expect(response).to redirect_to("/employers/account")
       end
     end
