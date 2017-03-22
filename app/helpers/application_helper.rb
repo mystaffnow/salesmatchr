@@ -102,6 +102,8 @@ module ApplicationHelper
 
   # list all the candidates for the job whose profile is visible
   def list_job_viewed_by_visible_candidates(job)
+    return [] if job.nil?
+
     cids = CandidateJobAction.where(job_id: job.id).pluck(:candidate_id)
     visible_candidate_ids = Candidate.where(id: cids)
                                      .joins(:candidate_profile)

@@ -10,13 +10,10 @@ RSpec.describe JobsController, :type => :controller do
 
   let(:valid_attributes) {
     {
-      # "distance": nil, 
       "job_function_id": job_function.id,
       "employer_id": employer.id,
       "city": 'Boston',
       "state_id": state.id,
-      # "archetype_low": 20,
-      # "archetype_high": 70,
       "salary_low": 55000,
       "salary_high": 550000,
       "zip": 1050,
@@ -253,7 +250,6 @@ RSpec.describe JobsController, :type => :controller do
         it 'should raise unauthorized acess' do
           fake_employer = create(:archetype_employer)
           employer_profile(fake_employer)
-          # fake_employer_profile = create(:employer_profile, employer_id: fake_employer.id, city: 'Wichita', zip: 1123, website: 'www.example.com', state_id: state.id)
           sign_in(fake_employer)
           get :edit, id: job.id
           expect(response).to redirect_to('/')
@@ -560,6 +556,7 @@ RSpec.describe JobsController, :type => :controller do
         }
 
       it 'should properly assigns jobs' do
+        job.update_attribute(:is_active, false)
         get :employer_archive
         expect(assigns(:jobs)).to eq([job])
       end
@@ -734,7 +731,6 @@ RSpec.describe JobsController, :type => :controller do
   describe '#update' do
     let(:new_attributes) {
       {
-        #"distance": nil, # unknown attributes distance for job
         "job_function_id": job_function.id,
         "employer_id": employer.id,
         "city": "New York",

@@ -52,19 +52,6 @@ RSpec.describe Candidate do
 		it{ should accept_nested_attributes_for(:candidate_question_answers).allow_destroy(true) }
 	end
 
-	# describe "Paperclip avatar" do
-	# 	it { should have_attached_file(:avatar) }
-	#   it { should validate_attachment_content_type(:avatar).
-	#   	allowing('image/jpg', 'image/png', 'image/gif').
-	#   	rejecting('text/plain', 'text/xml') }
-	  
-	#   context '.shoulda matcher' do
-	#   	it 'should return default avatar' do
-	#   		expect(candidate.avatar_url).to eq('/img/missing.png')
-	#   	end
-	#   end
-	# end
-
 	it 'should build candidate profile automatically' do
 		@candidate = create(:candidate)
 		@candidate.reload
@@ -87,6 +74,12 @@ RSpec.describe Candidate do
 		it 'should return full_name of candidate' do
 			expect(candidate.name).to eq('test candidate')
 		end
+	end
+
+	it '#is_owner_of?' do
+		@candidate = candidate
+		CandidateProfile.first.update(candidate_id: @candidate.id)
+		expect(@candidate.is_owner_of?(CandidateProfile.first)).to be_truthy
 	end
 
 	context 'has_applied-job' do
@@ -179,59 +172,6 @@ RSpec.describe Candidate do
 			expect(candidate.archetype_score).to be_instance_of(Fixnum)
 		end
 	end
-
-	# context 'password_required?' do
-	# 	it 'should return false' do
-	# 		candidate.provider = 'linkedin'
-	# 		expect(candidate.password_required?).to eq(false)
-	# 	end
-
-	# 	it 'should return true' do
-	# 		candidate.provider = nil
-	# 		expect(candidate.password_required?).to eq(true)
-	# 	end
-	# end
-
-	# context 'email_required?' do
-	# 	it 'should return false' do
-	# 		candidate.provider = 'linkedin'
-	# 		expect(candidate.email_required?).to eq(false)
-	# 	end
-
-	# 	it 'should return true' do
-	# 		candidate.provider = nil
-	# 		expect(candidate.email_required?).to eq(true)
-	# 	end
-	# end
-
-	# context 'avatar_url.' do
-	# 	before(:each) do
-	# 		@path = File.open("#{Rails.root}/public/img/incognito.png", "rb+")
-	# 		@candidate = create(:candidate, :first_name => "test", :last_name => "candidate", avatar: @path )
-	# 	end
-
-	# 	it 'should display incognito.png' do
-	# 		candidate.is_incognito = true
-	# 		expect(@candidate.avatar_url).to match(/incognito.png/)
-	# 	end
-
-	# 	it 'should display missing.png' do
-	# 		candidate.is_incognito = nil
-	# 		expect(candidate.avatar_url).to eq("/img/missing.png")
-	# 	end
-		
-	# 	it 'should display profile.jpg' do
-	# 		candidate.is_incognito = false
-	# 	  candidate.linkedin_picture_url = "profile.jpg"
-	# 		expect(candidate.avatar_url).to eq("profile.jpg")
-	# 	end
-
-	# 	it 'should display incognito.png' do
-	# 		candidate.is_incognito = false
-	# 		candidate.linkedin_picture_url = nil
-	# 		expect(@candidate.avatar_url).to match(/incognito.png/)
-	# 	end
-	# end
 
 	context 'archetype_string.' do
 		it 'should return n/a' do

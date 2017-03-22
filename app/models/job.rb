@@ -35,7 +35,6 @@ class Job < ActiveRecord::Base
   belongs_to :employer
   has_many :job_candidates, dependent: :destroy
   has_many :candidate_job_actions, dependent: :destroy
-  # attr_accessor :job_function_id
   belongs_to :job_function
   has_one :payment, dependent: :destroy
 
@@ -79,13 +78,13 @@ class Job < ActiveRecord::Base
 
   # this method returns all the candidates who matches the job and having their profile visible
   def candidate_matches_list
-    # Candidate.where("candidates.archetype_score >= ? and candidates.archetype_score <= ? ", self.archetype_low, self.archetype_high).to_a
     Candidate.where("candidates.archetype_score >= ?
                      and candidates.archetype_score <= ?",
                     self.archetype_low,
                     self.archetype_high)
               .joins(:candidate_profile)
               .where("candidate_profiles.is_incognito=false")
+              .order(id: :asc)
   end
 
   def applicants
