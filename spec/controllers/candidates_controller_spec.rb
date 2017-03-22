@@ -125,6 +125,12 @@ RSpec.describe CandidatesController, :type => :controller do
     context '.when candidate is sign_in' do
       before {sign_in(candidate)}
 
+      it 'should build candidate profile' do
+        get :account
+        expect(CandidateProfile.count).to eq(1)
+        expect(CandidateProfile.first.candidate_id).to eq(candidate.id)
+      end
+
       it 'should redirect to candidates_archetype_path' do
         candidate.update(archetype_score: nil)
         get :account
