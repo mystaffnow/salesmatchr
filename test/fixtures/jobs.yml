@@ -10,7 +10,6 @@
 #  is_remote        :boolean
 #  title            :string
 #  description      :text
-#  is_active        :boolean          default(FALSE)
 #  view_count       :integer
 #  state_id         :integer
 #  city             :string
@@ -24,6 +23,7 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  status           :integer          default(0)
+#  is_active        :boolean          default(TRUE)
 #  activated_at     :datetime
 #
 

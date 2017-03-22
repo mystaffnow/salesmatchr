@@ -12,7 +12,7 @@ ActiveAdmin.register Job do
 #   permitted << :other if resource.something?
 #   permitted
 # end
-  actions :all, :except => [:new, :create, :edit, :update, :destroy]
+  actions :all, :except => [:new, :create, :edit, :update]
   
   filter :title
   filter :city
@@ -21,7 +21,7 @@ ActiveAdmin.register Job do
     id_column
     column :title
     column :description do |job|
-    	raw(job.description)
+    	raw(truncate(job.description, length: 120, omission: "...", escape: false))
     end
     column :employer
     column :salary_low

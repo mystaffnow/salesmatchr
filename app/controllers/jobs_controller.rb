@@ -51,7 +51,7 @@ class JobsController < ApplicationController
   # POST /jobs
   # POST /jobs.json
   def create
-    @job = Job.new(job_params)
+    @job = Job.new(job_params.merge(activated_at: DateTime.now))
     authorize(@job)
     job_function = JobFunction.find(job_params[:job_function_id])
     @job.employer_id = current_employer.id
@@ -233,7 +233,6 @@ class JobsController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def job_params
     params.require(:job).permit(:distance, :job_function_id,:employer_id, :city, :state_id,
-                                #:archetype_low, :archetype_high,
                                 :salary_low, :salary_high, :zip, :is_remote, :title, :description, 
                                 :is_active, :experience_years, :stripe_token,
                                 :payment_attributes => [

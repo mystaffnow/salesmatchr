@@ -10,7 +10,6 @@
 #  is_remote        :boolean
 #  title            :string
 #  description      :text
-#  is_active        :boolean          default(FALSE)
 #  view_count       :integer
 #  state_id         :integer
 #  city             :string
@@ -24,6 +23,7 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  status           :integer          default(0)
+#  is_active        :boolean          default(TRUE)
 #  activated_at     :datetime
 #
 
@@ -126,6 +126,11 @@ class Job < ActiveRecord::Base
       self.destroy
       return nil
   end
+
+  # Created to test expired jobs from TestCase
+  # def self.expired_jobs
+  #   where("? > activated_at", 30.days.ago)
+  # end
 
   private
 

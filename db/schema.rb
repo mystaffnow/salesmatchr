@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170315085459) do
+ActiveRecord::Schema.define(version: 20170316131248) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -196,7 +196,6 @@ ActiveRecord::Schema.define(version: 20170315085459) do
     t.boolean  "is_remote"
     t.string   "title"
     t.text     "description"
-    t.boolean  "is_active",        default: false
     t.integer  "view_count"
     t.integer  "state_id"
     t.string   "city"
@@ -207,9 +206,10 @@ ActiveRecord::Schema.define(version: 20170315085459) do
     t.float    "longitude"
     t.string   "stripe_token"
     t.integer  "experience_years"
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
     t.integer  "status",           default: 0
+    t.boolean  "is_active",        default: true
     t.datetime "activated_at"
   end
 
