@@ -28,7 +28,6 @@ ActiveAdmin.register Job do
     column :salary_high
     column :zip
     column :is_remote
-    column :is_active
     column :state_id do |st|
     	st.state.name if st.state.present?
     end
@@ -41,6 +40,7 @@ ActiveAdmin.register Job do
     column :latitude
     column :longitude
     column :experience_years
+    column :is_active
     column :status
     column :action do |j|
     	str = j.disable? ? 'Enable' : 'Disable'
@@ -62,7 +62,6 @@ ActiveAdmin.register Job do
 	    row :salary_high
 	    row :zip
 	    row :is_remote
-	    row :is_active
 	    row :state_id do
 	    	job.state.name if job.state.present?
 	    end
@@ -75,6 +74,9 @@ ActiveAdmin.register Job do
 	    row :latitude
 	    row :longitude
 	    row :experience_years
+	    row :is_active
+	    row :status
+	    row :activated_at
 	  end
 
     panel 'Job Payment' do
