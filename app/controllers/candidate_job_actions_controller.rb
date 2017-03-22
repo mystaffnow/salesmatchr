@@ -38,7 +38,9 @@ class CandidateJobActionsController < ApplicationController
 
   # save the job
   def candidate_save_job
-    @candidate_job_action = CandidateJobAction.where(candidate_id: current_candidate.id, job_id: params[:job_id]).first_or_initialize
+    @candidate_job_action = CandidateJobAction.where(candidate_id: current_candidate.id,
+                                                     job_id: params[:job_id])
+                                              .first_or_initialize
     authorize @candidate_job_action
     @candidate_job_action.is_saved = true
     @candidate_job_action.save
