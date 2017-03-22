@@ -21,6 +21,7 @@ class JobsController < ApplicationController
   # GET /jobs/1
   # GET /jobs/1.json
   def show
+    authorize(@job)
     if current_candidate
       @candidate_job_action = CandidateJobAction.where(candidate_id: current_candidate.id, job_id: @job.id).first
       if !@candidate_job_action
@@ -132,13 +133,11 @@ class JobsController < ApplicationController
 
   # GET: employer_job_actions/:id
   # signed_in employer is required
-  # List of all candidates who have viewed the job
+  # List of all visible candidates who have viewed the job
   def employer_show_actions
     authorize @job
     # @job.candidate_job_actions
-    @candidates = Candidate.joins(:candidate_job_actions)
-                           .joins(:candidate_profile)
-                           .where("job_id=? and candidate_profiles.is_incognito=false", @job.id)
+    @candidates = Job.visible_candidate_viewed_list(@job)
   end
 
   # GET: employer_job_matches/:id
@@ -146,7 +145,7 @@ class JobsController < ApplicationController
   # List of all candidates whose profile matched with job
   def employer_show_matches
     authorize @job
-    @candidates = @job.matches
+    @candidates = @job.candidate_matches_list
   end
 
   # GET: employer_jobs/:id
@@ -183,15 +182,21 @@ class JobsController < ApplicationController
   # list all open jobs of signed_in employer, count inactive job and open jobs and display on
   # this page and link count views-matches-applicants-shortlist-removed
   def employer_index
-    @jobs = Job.where(employer_id: current_employer.id, is_active: true )
-    @inactive_job_count = Job.where(employer_id: current_employer.id, is_active: false ).count
+    @jobs = Job.enable.where(employer_id: current_employer.id, is_active: true)
+    @inactive_job_count = Job.enable.where(employer_id: current_employer.id, is_active: false ).count
   end
 
   # signed_in employer is required
   # list of inactive jobs, with count of views-matches-applicants
   def employer_archive
-    @jobs = Job.where(employer_id: current_employer.id, is_active: false )
-    @active_job_count = Job.where(employer_id: current_employer.id, is_active: true ).count
+    @jobs = Job.enable.where(employer_id: current_employer.id, is_active: false)
+    @active_job_count = Job.enable.where(employer_id: current_employer.id, is_active: true ).count
+  end
+
+  # signed_in employer is required
+  # list of employer's job which is disable by admin
+  def list_disable_jobs
+    @jobs = Job.disable.where(employer_id: current_employer.id)
   end
   
   # toggle is_active

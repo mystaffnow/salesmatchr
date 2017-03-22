@@ -63,7 +63,7 @@ Rails.application.routes.draw do
   get 'employer_job_checkout/:id' => 'jobs#employer_job_checkout', as: 'employer_job_checkout'
   put 'inactivate_job/:id' => 'jobs#inactivate_job', as: 'inactivate_job'
   get 'jobs/:id/send_candidate_intro/:candidate_id' => 'jobs#send_intro', as: 'send_job_candidate_intro'
-
+  get 'employer_job_disable' => 'jobs#list_disable_jobs', as: 'employer_job_disable'
   # Routes for pages
   root to: 'pages#index'
   get 'contact' => 'pages#contact'

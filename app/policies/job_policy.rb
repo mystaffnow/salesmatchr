@@ -10,6 +10,10 @@ class JobPolicy < ApplicationPolicy
 		true
 	end
 
+	def show?
+		(job.enable? && job.is_active) || (user.present? && user.is_owner_of?(job))
+	end
+
 	def edit?
 		user.is_owner_of?(job)
 	end

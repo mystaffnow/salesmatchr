@@ -1,0 +1,44 @@
+.action-bar
+  .container
+    .row
+      .col-md-10
+        %h2 My jobs disabled by Admin
+      .col-md-2
+        = link_to 'Create New Job', new_job_path, class: 'btn btn-default'
+
+.container.padded-container
+  - @jobs.each do |job|
+    .row
+      .col-md-8
+        %h3= job.title
+        %p= strip_tags(truncate(job.description, length: 600, omission: "...", escape: false))
+      .col-md-4.job-actions
+        = link_to "#", {class: 'btn btn-info',"data-target" => "#enable-job-#{job.id}", "data-toggle" => "modal", :type => "button"} do
+          %i.fa.fa-rocket
+          Enable
+    / Modal
+    .modal.fade{:role => "dialog", id: "enable-job-#{job.id}"}
+      .modal-dialog
+        .modal-content
+          .modal-header
+            %button.close{"data-dismiss" => "modal", :type => "button"} ×
+            %h4.modal-title Pay to enable the job
+          .modal-body
+            %h4
+              = job.title
+            %p
+              = job.description
+            %hr
+            %p You need to pay $100 to enable job for next 30 days.
+
+            %hr
+            %p We will build this feature soon. This is under construction!
+          .modal-footer
+            %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Close
+
+    %hr
+  
+:css
+  .modal-backdrop {
+    display:none;
+  }
