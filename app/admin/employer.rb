@@ -77,6 +77,8 @@ ActiveAdmin.register Employer do
     		column :archetype_high
     		column :is_remote
     		column :is_active
+        column :status
+        column :activated_at
     	end
     end
   end
@@ -117,10 +119,13 @@ ActiveAdmin.register Employer do
                          j.archetype_low? ? j.archetype_low : nil,
                          j.archetype_high? ? j.archetype_high : nil,
                          j.is_remote? ? j.is_remote : nil,
-                         j.is_active? ? j.is_active : nil
+                         j.is_active? ? j.is_active : nil,
+                         j.status? ? j.status : nil,
+                         j.activated_at ? j.activated_at : nil
                          ]}
       else
-        [nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil]
+        [nil, nil, nil, nil, nil, nil, nil, nil, nil,
+         nil, nil, nil, nil, nil, nil, nil, nil]
       end
     end
   end
