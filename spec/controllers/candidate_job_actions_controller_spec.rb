@@ -12,18 +12,27 @@ RSpec.describe CandidateJobActionsController, :type => :controller do
     it '.when archetype_score is nil' do
       @candidate3 = create(:candidate, archetype_score: nil)
       sign_in(@candidate3)
-      post :candidate_job_saved
+      get :candidate_job_saved
       expect(response).to redirect_to(candidates_archetype_path)
     end
 
     context '.when candidate is signed_in' do
       before{ sign_in(candidate) }
 
-      it 'should assign @candidate_job_action' do
-        candidate_job_action.update(is_saved: true)
-        candidate_job_action.reload
+      it 'should return candidate jobs saved list' do
+        state2 = create(:state, name: 'Test2')
+        state3 = create(:state, name: 'Test3')
+        state4 = create(:state, name: 'Test4')
+        job1 = job
+        job2 = create(:job, state_id: state2.id)
+        job3 = create(:job, state_id: state3.id)
+        job4 = create(:job, state_id: state4.id)
+        create(:candidate_job_action, candidate_id: candidate.id, job_id: job1.id, is_saved: true)
+        create(:candidate_job_action, candidate_id: candidate.id, job_id: job2.id, is_saved: true)
+        create(:candidate_job_action, candidate_id: candidate.id, job_id: job3.id, is_saved: true)
+        create(:candidate_job_action, candidate_id: candidate.id, job_id: job4.id, is_saved: false)
         get :candidate_job_saved
-        expect(assigns(:jobs)).to eq([job])
+        expect(assigns(:jobs)).to eq([job1, job2, job3])
       end
     end
 
@@ -51,10 +60,20 @@ RSpec.describe CandidateJobActionsController, :type => :controller do
     context '.when candidate is signed_in' do
       before{ sign_in(candidate) }
 
-      it 'should assign @candidate_job_action' do
-        create(:candidate_job_action, candidate_id: candidate.id, job_id: job.id, is_saved: false)
+      it 'should return candidate job viewed list' do
+        state2 = create(:state, name: 'Test2')
+        state3 = create(:state, name: 'Test3')
+        state4 = create(:state, name: 'Test4')
+        job1 = job
+        job2 = create(:job, state_id: state2.id)
+        job3 = create(:job, state_id: state3.id)
+        job4 = create(:job, state_id: state4.id)
+        create(:candidate_job_action, candidate_id: candidate.id, job_id: job1.id, is_saved: true)
+        create(:candidate_job_action, candidate_id: candidate.id, job_id: job2.id, is_saved: false)
+        create(:candidate_job_action, candidate_id: candidate.id, job_id: job3.id, is_saved: false)
+        create(:candidate_job_action, candidate_id: candidate.id, job_id: job4.id, is_saved: false)
         get :candidate_job_viewed
-        expect(assigns(:jobs)).to eq([job])
+        expect(assigns(:jobs)).to eq([job4, job3, job2, job1])
       end
     end
 
@@ -84,11 +103,17 @@ RSpec.describe CandidateJobActionsController, :type => :controller do
         sign_in(candidate) 
       }
 
-      it 'should assign @jobs' do
+      it 'should return active-job matches list for the candidate' do
         job.update_attributes(is_active: true)
         job.reload
+        state1 = create(:state, name: 'Test1')
+        state2 = create(:state, name: 'Test2')
+        state3 = create(:state, name: 'Test3')
+        job1 = create(:job, state_id: state1.id, job_function_id: job_function.id, is_active: true)
+        job2 = create(:job, state_id: state2.id, job_function_id: job_function.id, is_active: true)
+        job3 = create(:job, state_id: state3.id, job_function_id: job_function.id, is_active: false)
         get :candidate_matches
-        expect(assigns(:jobs)).to eq([job])
+        expect(assigns(:jobs)).to eq([job, job1, job2])
       end
 
       context '.archetype_score' do
