@@ -111,6 +111,18 @@ RSpec.describe Job do
       @candidate_job_action = create(:candidate_job_action, job_id: @job.id, candidate_id: @candidate.id)
       expect(Job.job_viewed_list(@candidate)).to eq([@job])
     end
+
+    it 'should return nil when job is inactive and disabled' do
+      @inside_sales = create(:inside_sales)
+      @candidate = create(:candidate, archetype_score: 35)
+      @job1 = create(:job, job_function_id: @inside_sales.id, is_active: false, status: Job.statuses["disable"])
+      state = create(:state, name: 'Title 1')
+      @job = create(:job, state_id: state.id, job_function_id: @inside_sales.id)
+      expect(Job.job_matched_list(@candidate)).to eq([@job])
+      expect(Job.first.is_active).to be_falsy
+      expect(Job.first.status).to eq('disable')
+      expect(Job.job_viewed_list(@candidate)).not_to eq([@job1])
+    end
   end
 
   context '#job_saved_list' do
