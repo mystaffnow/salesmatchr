@@ -55,14 +55,14 @@ class Job < ActiveRecord::Base
                                     jobs.is_active = true",
                                     archetype_score: current_candidate.archetype_score)}
   
-  # List of the jobs which are viewed by candidate
+  # List of the enable jobs which are viewed by candidate
   scope :job_viewed_list, ->(current_candidate) {
     enable.joins(:candidate_job_actions)
     .where("candidate_job_actions.candidate_id=?", current_candidate.id)
     .order('created_at DESC')
   }
   
-  # list of the jobs saved by candidate
+  # list of enable jobs saved by candidate
   scope :job_saved_list, ->(current_candidate) {
     enable.joins(:candidate_job_actions)
     .where("candidate_job_actions.candidate_id=?
