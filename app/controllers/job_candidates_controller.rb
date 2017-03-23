@@ -4,9 +4,11 @@ class JobCandidatesController < ApplicationController
   before_action :set_job_candidate, only: [:receipt, :withdraw, :accept_candidate]
   before_action :require_candidate_profile, only: [:index, :apply]
 
-  # List all candiadte's job based on JobCandidate rec of current_candidate
+  # List all current candidate's job_candidates list on which job is active and enable
   def index
     @job_candidates = JobCandidate.where(:candidate_id => current_candidate.id)
+                                  .joins(:job)
+                                  .where("jobs.status=0 and jobs.is_active=true")
   end
 
   # Only candidate can apply on Job
