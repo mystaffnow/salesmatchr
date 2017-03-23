@@ -389,6 +389,14 @@ RSpec.describe Job do
       expect {inside_sales_job.send_email}.to change { ActionMailer::Base.deliveries.count }.by(0)
     end
 
+    it 'should return status 0 when success' do
+      expect(inside_sales_job.send_email).to eq(0)
+    end
+
+    it 'should not return status 500 when success' do
+      expect(inside_sales_job.send_email).not_to eq(500)
+    end
+
     it 'on success' do
       inside_sales_job.send_email
       expect(Job.count).to eq(1)
