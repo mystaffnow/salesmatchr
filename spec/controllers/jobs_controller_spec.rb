@@ -1001,9 +1001,9 @@ RSpec.describe JobsController, :type => :controller do
           expect(response).not_to redirect_to(employer_archive_jobs_path(job.id))
         end
 
-        it 'when matched candidates not found' do
+        it 'when success' do
           post :email_match_candidates, id: job.id
-          expect(response).to redirect_to(employer_archive_jobs_path)
+          expect(response).not_to redirect_to(employer_archive_jobs_path)
         end
 
         it 'should redirect to /employers/account' do
