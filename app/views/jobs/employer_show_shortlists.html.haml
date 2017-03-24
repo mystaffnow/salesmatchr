@@ -30,19 +30,14 @@
                     = job_candidate.candidate.candidate_profile.education_level.name
             .row
               .col-md-8
-              - if !job_candidate.accepted?
-                .col-md-2
-                  = link_to accept_candidate_path(job_candidate.id), method: :put do
-                    %button.btn.btn-default.force-form-button#hire{style: 'width: 128px'}
-                      %i.fa.fa-check
-                      Connect
-                .col-md-2
-                  = form_tag(remove_candidate_path(@job, job_candidate.candidate), method: 'post') do
-                    %button.btn.btn-default{type: 'submit'}
-                      %i.fa.fa-close
-                      Remove
-              - else
-                .col-md-3
-                .col-md-3
-                  Match Accepted
+              .col-md-2
+                = link_to accept_candidate_path(job_candidate.id), method: :put do
+                  %button.btn.btn-default.force-form-button#hire{style: 'width: 128px'}
+                    %i.fa.fa-check
+                    Connect
+              .col-md-2
+                = form_tag(remove_candidate_path(@job, job_candidate.candidate), method: 'post') do
+                  %button.btn.btn-default{type: 'submit'}
+                    %i.fa.fa-close
+                    Remove
             %hr
