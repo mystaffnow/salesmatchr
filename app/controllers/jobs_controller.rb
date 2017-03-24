@@ -125,13 +125,14 @@ class JobsController < ApplicationController
     end
   end
 
-  def send_intro
-    @job = Job.find(params[:id])
-    @candidate = Candidate.find(params[:candidate_id])
+  # ToDo: remove this later
+  # def send_intro
+  #   @job = Job.find(params[:id])
+  #   @candidate = Candidate.find(params[:candidate_id])
 
-    CandidateMailer.send_job_intro(@candidate.email, @job).deliver
-    render json: :ok
-  end
+  #   CandidateMailer.send_job_intro(@candidate.email, @job).deliver
+  #   render json: :ok
+  # end
 
   # GET: employer_job_actions/:id
   # signed_in employer is required

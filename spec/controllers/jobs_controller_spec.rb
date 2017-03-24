@@ -176,58 +176,59 @@ RSpec.describe JobsController, :type => :controller do
     end
   end
 
-  describe '#send_intro' do
-    context '.when candidate is sign_in' do
-      before {sign_in(candidate)}
+  # ToDo: remove this later
+  # describe '#send_intro' do
+  #   context '.when candidate is sign_in' do
+  #     before {sign_in(candidate)}
 
-      it 'should correctly assign job' do
-        get :send_intro, { candidate_id: candidate.id, id: job.id }
-        expect(assigns(:job)).to eq(job)
-      end
+  #     it 'should correctly assign job' do
+  #       get :send_intro, { candidate_id: candidate.id, id: job.id }
+  #       expect(assigns(:job)).to eq(job)
+  #     end
 
-      it 'should correctly assign candidate' do
-        get :send_intro, { candidate_id: candidate.id, id: job.id }
-        expect(assigns(:candidate)).to eq(candidate)
-      end
+  #     it 'should correctly assign candidate' do
+  #       get :send_intro, { candidate_id: candidate.id, id: job.id }
+  #       expect(assigns(:candidate)).to eq(candidate)
+  #     end
 
-      it 'should send_job_intro email to candidate' do
-        expect { get :send_intro, { candidate_id: candidate.id, id: job.id } }.to change { ActionMailer::Base.deliveries.count }.by(1)
-      end
+  #     it 'should send_job_intro email to candidate' do
+  #       expect { get :send_intro, { candidate_id: candidate.id, id: job.id } }.to change { ActionMailer::Base.deliveries.count }.by(1)
+  #     end
 
-      it 'should redirect to candidates_archetype_path' do
-        candidate.update(archetype_score: nil)
-        get :send_intro, { candidate_id: candidate.id, id: job.id }
-        expect(response).to redirect_to(candidates_archetype_path)
-      end
-    end
+  #     it 'should redirect to candidates_archetype_path' do
+  #       candidate.update(archetype_score: nil)
+  #       get :send_intro, { candidate_id: candidate.id, id: job.id }
+  #       expect(response).to redirect_to(candidates_archetype_path)
+  #     end
+  #   end
 
-    context '.when employer is sign_in' do
-      before {
-        sign_in(employer)
-        employer_profile(employer)
-      }
+  #   context '.when employer is sign_in' do
+  #     before {
+  #       sign_in(employer)
+  #       employer_profile(employer)
+  #     }
 
-      it 'should correctly assign job' do
-        get :send_intro, { candidate_id: candidate.id, id: job.id }
-        expect(assigns(:job)).to eq(job)
-      end
+  #     it 'should correctly assign job' do
+  #       get :send_intro, { candidate_id: candidate.id, id: job.id }
+  #       expect(assigns(:job)).to eq(job)
+  #     end
 
-      it 'should correctly assign candidate' do
-        get :send_intro, { candidate_id: candidate.id, id: job.id }
-        expect(assigns(:candidate)).to eq(candidate)
-      end
+  #     it 'should correctly assign candidate' do
+  #       get :send_intro, { candidate_id: candidate.id, id: job.id }
+  #       expect(assigns(:candidate)).to eq(candidate)
+  #     end
 
-      it 'should send_job_intro email to candidate' do
-        expect { get :send_intro, { candidate_id: candidate.id, id: job.id } }.to change { ActionMailer::Base.deliveries.count }.by(1)
-      end
+  #     it 'should send_job_intro email to candidate' do
+  #       expect { get :send_intro, { candidate_id: candidate.id, id: job.id } }.to change { ActionMailer::Base.deliveries.count }.by(1)
+  #     end
 
-      it 'should redirect to /employers/account' do
-        EmployerProfile.first.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
-        get :send_intro, { candidate_id: candidate.id, id: job.id }
-        expect(response).to redirect_to("/employers/account")
-      end
-    end
-  end
+  #     it 'should redirect to /employers/account' do
+  #       EmployerProfile.first.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
+  #       get :send_intro, { candidate_id: candidate.id, id: job.id }
+  #       expect(response).to redirect_to("/employers/account")
+  #     end
+  #   end
+  # end
 
   describe '#edit' do
     context '.when candidate is sign_in' do
