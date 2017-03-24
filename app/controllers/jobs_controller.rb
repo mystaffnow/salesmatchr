@@ -71,12 +71,13 @@ class JobsController < ApplicationController
           format.html { redirect_to employer_archive_jobs_path, notice: 'Oops! there is some issue while process payment, please contact techical support.' }        
         else
           result = @job.send_email
-          if result.present?
+          case result
+          when 0
             tracker = Mixpanel::Tracker.new(ENV["NT_MIXPANEL_TOKEN"])
             tracker.track('employer-'+@job.employer.email, 'job created')
             format.html { redirect_to employer_archive_jobs_path, notice: 'Job was successfully created.' }
-          else
-            format.html { redirect_to employer_archive_jobs_path, notice: 'Oops! we cannot process your request, please contact techical support.' }
+          when 500
+            format.html { redirect_to employer_archive_jobs_path, notice: 'Oops! job was successfully created but email send to matched candidates failed, please contact techical support.' }
           end
         end
       else
@@ -217,9 +218,10 @@ class JobsController < ApplicationController
   def email_match_candidates
     authorize @job
     result = @job.send_email
-    if result.present?
+    case result
+    when 0
       redirect_to employer_show_matches_path(@job.id), notice: 'Email send to all matched candidates who have subscribed to receive email.'
-    else
+    when 500
       redirect_to employer_archive_jobs_path, notice: 'Oops! we cannot process your request, please contact techical support.'
     end
   end

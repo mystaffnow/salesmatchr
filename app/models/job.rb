@@ -50,21 +50,21 @@ class Job < ActiveRecord::Base
 
   # List all jobs which are active and matched to the candidate
   # Candidate should not see inactive jobs in matched list, although they matched to it
-  scope :job_matched_list, ->(current_candidate) {where(":archetype_score >= archetype_low and
+  scope :job_matched_list, ->(current_candidate) {enable.where(":archetype_score >= archetype_low and
                                     :archetype_score <= archetype_high and
                                     jobs.is_active = true",
                                     archetype_score: current_candidate.archetype_score)}
   
-  # List of the jobs which are viewed by candidate
+  # List of the enable jobs which are viewed by candidate
   scope :job_viewed_list, ->(current_candidate) {
-    joins(:candidate_job_actions)
+    enable.joins(:candidate_job_actions)
     .where("candidate_job_actions.candidate_id=?", current_candidate.id)
     .order('created_at DESC')
   }
   
-  # list of the jobs saved by candidate
+  # list of enable jobs saved by candidate
   scope :job_saved_list, ->(current_candidate) {
-    joins(:candidate_job_actions)
+    enable.joins(:candidate_job_actions)
     .where("candidate_job_actions.candidate_id=?
             and candidate_job_actions.is_saved=true", current_candidate.id)
   }
@@ -113,17 +113,18 @@ class Job < ActiveRecord::Base
 
   # send email to job matched candidates
   def send_email
+    error_code = 0
     candidates = Candidate.where("candidates.archetype_score >= ? and
                                   candidates.archetype_score <= ?", self.archetype_low,
                                                                     self.archetype_high)
                               .joins(:candidate_profile)
                               .where("candidate_profiles.is_active_match_subscription=true")
-    if candidates.present?
-      candidates.map {|candidate| CandidateMailer.send_job_match(candidate, self).deliver_later}
-    end
+
+    candidates.map {|candidate| CandidateMailer.send_job_match(candidate, self).deliver_later}
+    return error_code
+    
     rescue => e
-      self.destroy
-      return nil
+      return error_code = 500
   end
 
   # Created to test expired jobs from TestCase

@@ -22,10 +22,29 @@ RSpec.describe JobCandidatesController, :type => :controller do
         expect(response).to redirect_to(candidates_account_path)
       end
 
-      it 'should correctly assign job_candidates' do
+      it 'should list all job candidates whose job are active and enable' do
         job_candidate = create(:job_candidate, job_id: job.id, candidate_id: candidate.id)
         get :index
         expect(assigns(:job_candidates)).to eq([job_candidate])
+      end
+
+      it 'should not list job candidates where job are inactive or disable' do
+        job1 = job
+        
+        state2 = create(:state, name: 'Test1')
+        job2 = create(:job, job_function_id: job_function.id, state_id: state2.id, status: Job.statuses['disable'])
+        
+        state3 = create(:state, name: 'Test2')
+        job3 = create(:job, job_function_id: job_function.id, state_id: state3.id, is_active: false)
+        
+        state4 = create(:state, name: 'Test3')
+        job4 = create(:job, job_function_id: job_function.id, state_id: state4.id)
+        
+        jc1 = create(:job_candidate, job_id: job1.id, candidate_id: candidate.id, status: JobCandidate.statuses["submitted"])
+        jc2 = create(:job_candidate, job_id: job2.id, candidate_id: candidate.id, status: JobCandidate.statuses["submitted"])
+        jc3 = create(:job_candidate, job_id: job3.id, candidate_id: candidate.id, status: JobCandidate.statuses["submitted"])
+        get :index
+        expect(assigns(:job_candidates)).to eq([jc1])
       end
 
       it 'should redirect to candidates_archetype_path' do
