@@ -20,7 +20,7 @@ class JobCandidatesController < ApplicationController
     tracker = Mixpanel::Tracker.new(ENV["NT_MIXPANEL_TOKEN"])
     tracker.track('candidate-'+job_candidate.candidate.email, 'applied to job')
 
-    EmployerMailer.send_job_application(@job.employer.email, @job).deliver
+    EmployerMailer.send_job_application(@job.employer.email, @job).deliver_later
     redirect_to job_receipt_path(job_candidate)
   end
 
@@ -36,7 +36,7 @@ class JobCandidatesController < ApplicationController
   def withdraw
     authorize @job_candidate
     @job_candidate.withdrawn!
-    EmployerMailer.send_job_withdrawn(@job_candidate.job.employer.email, @job_candidate.job).deliver
+    EmployerMailer.send_job_withdrawn(@job_candidate.job.employer.email, @job_candidate.job).deliver_later
     redirect_to job_candidates_path, notice: 'Successfully withdrawn.'
   end
 
@@ -47,7 +47,7 @@ class JobCandidatesController < ApplicationController
     @job_candidate.accepted!
     tracker = Mixpanel::Tracker.new(ENV["NT_MIXPANEL_TOKEN"])
     tracker.track('employer-'+current_employer.email, 'accepted candidate')
-    CandidateMailer.send_job_hire(@job_candidate.candidate.email, @job_candidate.job).deliver
+    CandidateMailer.send_job_hire(@job_candidate.candidate.email, @job_candidate.job).deliver_later
     redirect_to employer_jobs_path, notice: 'Successfully accepted, an email was sent to the candidate.'
   end
 
