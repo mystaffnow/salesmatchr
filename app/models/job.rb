@@ -48,6 +48,8 @@ class Job < ActiveRecord::Base
   # assign archetype scores values from job function before rec save
   before_save :add_archetype_score
 
+  scope :active, -> {where(is_active: true)}
+
   # List all jobs which are active and matched to the candidate
   # Candidate should not see inactive jobs in matched list, although they matched to it
   scope :job_matched_list, ->(current_candidate) {enable.where(":archetype_score >= archetype_low and
@@ -57,14 +59,14 @@ class Job < ActiveRecord::Base
   
   # List of the enable jobs which are viewed by candidate
   scope :job_viewed_list, ->(current_candidate) {
-    enable.joins(:candidate_job_actions)
+    enable.active.joins(:candidate_job_actions)
     .where("candidate_job_actions.candidate_id=?", current_candidate.id)
     .order('created_at DESC')
   }
   
   # list of enable jobs saved by candidate
   scope :job_saved_list, ->(current_candidate) {
-    enable.joins(:candidate_job_actions)
+    enable.active.joins(:candidate_job_actions)
     .where("candidate_job_actions.candidate_id=?
             and candidate_job_actions.is_saved=true", current_candidate.id)
   }
