@@ -731,7 +731,7 @@ RSpec.describe JobsController, :type => :controller do
 
         it 'should redirect to employer_archive_jobs_path' do
           post :create, {job: valid_attributes}
-          expect(response).to redirect_to(employer_archive_jobs_path)
+          expect(response).to redirect_to(employer_jobs_path)
         end
 
         it 'should store payment' do
