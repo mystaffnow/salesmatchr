@@ -1,0 +1,24 @@
+= profile_fields.hidden_field :id, value: profile_fields.object.id
+= profile_fields.label "Company Website"
+= profile_fields.text_field :website, class: 'form-control'
+= profile_fields.label "Company Logo"
+%br
+%i.small
+  *images will be cropped to 200x200 resolution
+= profile_fields.file_field :avatar
+= profile_fields.label "City"
+= profile_fields.text_field :city, class: 'form-control'
+= profile_fields.label "State"
+%br
+= profile_fields.collection_select(:state_id, State.all, :id, :name,  {:class => 'form-control selectpickers'})
+%br
+= profile_fields.label "Zipcode"
+= profile_fields.text_field :zip, class: 'form-control'
+= profile_fields.label "Company Bio"
+= profile_fields.text_area :description, class: 'form-control'
+= profile_fields.hidden_field :ziggeo_token, id: 'ziggeo-token'
+%ziggeo{ 'ziggeo-width' => 320, 'ziggeo-height' => 240 }
+%br
+.account-footer
+  %button.btn.btn-default.btn-full
+    Save Changes
