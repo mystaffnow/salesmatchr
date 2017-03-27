@@ -28,6 +28,8 @@ class Employer < ActiveRecord::Base
   has_one :employer_profile, dependent: :destroy
   has_many :jobs, dependent: :destroy
 
+  accepts_nested_attributes_for :employer_profile
+
   # validation
   validates_presence_of :first_name, :last_name, :company
 
