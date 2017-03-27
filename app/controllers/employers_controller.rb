@@ -10,14 +10,16 @@ class EmployersController < ApplicationController
 
   # submit account information, signed in employer can access this
   def account
-    authorize @profile
+    # authorize @profile
+    current_employer.build_employer_profile if !current_employer.employer_profile
   end
 
   # update profile information of employer, signed in employer can access this
   def update
-    authorize @profile
+    # authorize @profile
     respond_to do |format|
-      if @profile.update(employer_params)
+      if current_employer.update(employer_params)
+        current_employer.save
         format.html { redirect_to employers_profile_path, notice: 'Profile was successfully updated.' }
       else
         format.html { render :account }
@@ -32,9 +34,14 @@ class EmployersController < ApplicationController
   end
   
   private
+
   # Never trust parameters from the scary internet, only allow the white list through.
   def employer_params
-    params.require(:employer_profile).permit(:website, :ziggeo_token, :avatar, :zip, :city, :state_id, :description)
+    params.require(:employer).permit(:first_name, :last_name,
+        :employer_profile_attributes => [
+          :id, :website, :ziggeo_token, :avatar, :zip, :city, :state_id, :description
+        ]
+      )
   end
 
   def set_profile
