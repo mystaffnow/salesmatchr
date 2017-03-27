@@ -12,19 +12,23 @@
           Candidate Removed
           %hr
         %table.table.table-responsive
-          - @removed_job_candidates.each do |job_candidate|
-            = link_to candidates_profile_path(job_candidate.candidate) do
-              .row
-                .col-md-2
-                  %img{src: job_candidate.candidate.candidate_profile.avatar_url}
-                .col-md-6
-                  %h3
-                    - if job_candidate.candidate.candidate_profile.is_incognito
-                      Candidate
-                    - else
-                      = job_candidate.candidate.name
-                  = get_location job_candidate.candidate.candidate_profile
-                .col-md-4
-                  %h4 Education
-                  - if job_candidate.candidate.candidate_profile.education_level
-                    = job_candidate.candidate.candidate_profile.education_level.name
+          - if @removed_job_candidates.present?
+            - @removed_job_candidates.each do |job_candidate|
+              = link_to candidates_profile_path(job_candidate.candidate) do
+                .row
+                  .col-md-2
+                    %img{src: job_candidate.candidate.candidate_profile.avatar_url}
+                  .col-md-6
+                    %h3
+                      - if job_candidate.candidate.candidate_profile.is_incognito
+                        Candidate
+                      - else
+                        = job_candidate.candidate.name
+                    = get_location job_candidate.candidate.candidate_profile
+                  .col-md-4
+                    %h4 Education
+                    - if job_candidate.candidate.candidate_profile.education_level
+                      = job_candidate.candidate.candidate_profile.education_level.name
+          - else
+            %h3.text-center
+              No one is removed yet!

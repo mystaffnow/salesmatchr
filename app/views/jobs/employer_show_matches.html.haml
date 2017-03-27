@@ -10,7 +10,7 @@
       .col-md-6
         %h2{style: 'padding-bottom:5px'}
           %span Candidate Matches
-      - if @job.is_active
+      - if @job.is_active && @candidates.present?
         .col-md-6
           %div.mail-matched
             = form_tag email_match_candidates_job_path(@job), method: :post do
@@ -19,21 +19,25 @@
     .row
       .col-md-12
         %table.table.table-responsive
-          - @candidates.each do |candidate|
-            .row
-              .col-md-2
-                = link_to candidates_profile_path(candidate) do
-                  %img{src: candidate.candidate_profile.avatar_url}
-              .col-md-6
-                = link_to candidates_profile_path(candidate) do
-                  %h3
-                    = candidate.name
-                  = get_location candidate.candidate_profile
-                %br
-                %br
-                %p
-                  = mail_to candidate.email, "Email Candidate"
-              .col-md-4
-                %h4 Education
-                - if candidate.candidate_profile.education_level
-                  = candidate.candidate_profile.education_level.name
+          - if @candidates.present?
+            - @candidates.each do |candidate|
+              .row
+                .col-md-2
+                  = link_to candidates_profile_path(candidate) do
+                    %img{src: candidate.candidate_profile.avatar_url}
+                .col-md-6
+                  = link_to candidates_profile_path(candidate) do
+                    %h3
+                      = candidate.name
+                    = get_location candidate.candidate_profile
+                  %br
+                  %br
+                  %p
+                    = mail_to candidate.email, "Email Candidate"
+                .col-md-4
+                  %h4 Education
+                  - if candidate.candidate_profile.education_level
+                    = candidate.candidate_profile.education_level.name
+          - else
+            %h3.text-center
+              No one is matched on this job yet!

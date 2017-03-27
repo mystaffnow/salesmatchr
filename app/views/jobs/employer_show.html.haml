@@ -11,42 +11,46 @@
         %h2{style: 'padding-bottom:5px'}
           Applicants
           %hr
-        - @job_candidates.each do |job_candidate|
-          = link_to candidates_profile_path(job_candidate.candidate) do
+        - if @job_candidates.present?
+          - @job_candidates.each do |job_candidate|
+            = link_to candidates_profile_path(job_candidate.candidate) do
+              .row
+                .col-md-2
+                  %img{src: job_candidate.candidate.candidate_profile.avatar_url}
+                .col-md-6
+                  %h3
+                    = job_candidate.candidate.name
+                  = get_location job_candidate.candidate.candidate_profile
+                .col-md-4
+                  %h4 Education
+                  - if job_candidate.candidate.candidate_profile.education_level
+                    = job_candidate.candidate.candidate_profile.education_level.name
             .row
-              .col-md-2
-                %img{src: job_candidate.candidate.candidate_profile.avatar_url}
               .col-md-6
-                %h3
-                  = job_candidate.candidate.name
-                = get_location job_candidate.candidate.candidate_profile
-              .col-md-4
-                %h4 Education
-                - if job_candidate.candidate.candidate_profile.education_level
-                  = job_candidate.candidate.candidate_profile.education_level.name
-          .row
-            .col-md-6
-            - if (job_candidate.submitted? || job_candidate.viewed? || job_candidate.purposed?)
-              .col-md-2  
-                = link_to accept_candidate_path(job_candidate.id), method: :put do
-                  %button.btn.btn-default.force-form-button#hire{style: 'width: 128px'}
-                    %i.fa.fa-check
-                    Accept
-              .col-md-2
-                = form_tag(remove_candidate_path(@job, job_candidate.candidate), method: 'post') do
-                  %button.btn.btn-default.force-form-button
-                    %i.fa.fa-close
-                    Remove
-              .col-md-2
-                = form_tag(shortlist_candidate_path(@job, job_candidate.candidate), method: 'post') do
-                  %button.btn.btn-default.force-form-button
-                    %i.fa.fa-list-ol
-                    Shortlist
-            - elsif job_candidate.withdrawn?
-              .col-md-3
-                %h4
-                  Application Withdrawn
-            - elsif job_candidate.accepted?
-              .col-md-3
-                %h4
-                  Match Accepted
+              - if (job_candidate.submitted? || job_candidate.viewed? || job_candidate.purposed?)
+                .col-md-2  
+                  = link_to accept_candidate_path(job_candidate.id), method: :put do
+                    %button.btn.btn-default.force-form-button#hire{style: 'width: 128px'}
+                      %i.fa.fa-check
+                      Accept
+                .col-md-2
+                  = form_tag(remove_candidate_path(@job, job_candidate.candidate), method: 'post') do
+                    %button.btn.btn-default.force-form-button
+                      %i.fa.fa-close
+                      Remove
+                .col-md-2
+                  = form_tag(shortlist_candidate_path(@job, job_candidate.candidate), method: 'post') do
+                    %button.btn.btn-default.force-form-button
+                      %i.fa.fa-list-ol
+                      Shortlist
+              - elsif job_candidate.withdrawn?
+                .col-md-3
+                  %h4
+                    Application Withdrawn
+              - elsif job_candidate.accepted?
+                .col-md-3
+                  %h4
+                    Match Accepted
+        - else
+          %h3.text-center
+            No one has applied on this job yet!

@@ -12,17 +12,21 @@
           Candidate Views
           %hr
         %table.table.table-responsive
-          - @candidates.each do |candidate|
-            = link_to candidates_profile_path(candidate) do
-              .row
-                .col-md-2
-                  %img{src: candidate.candidate_profile.avatar_url}
-                .col-md-6
-                  %h3
-                    = candidate.name
-                  = get_location candidate.candidate_profile
-                .col-md-4
-                  %h4 Education
-                  - if candidate.candidate_profile.education_level
-                    = candidate.candidate_profile.education_level.name
-              %hr
+          - if @candidates.present?
+            - @candidates.each do |candidate|
+              = link_to candidates_profile_path(candidate) do
+                .row
+                  .col-md-2
+                    %img{src: candidate.candidate_profile.avatar_url}
+                  .col-md-6
+                    %h3
+                      = candidate.name
+                    = get_location candidate.candidate_profile
+                  .col-md-4
+                    %h4 Education
+                    - if candidate.candidate_profile.education_level
+                      = candidate.candidate_profile.education_level.name
+                %hr
+          - else
+            %h3.text-center
+              No one have viewed this job yet!
