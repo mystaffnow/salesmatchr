@@ -186,6 +186,7 @@ class JobsController < ApplicationController
   def employer_index
     @jobs = Job.enable.where(employer_id: current_employer.id, is_active: true)
     @inactive_job_count = Job.enable.where(employer_id: current_employer.id, is_active: false ).count
+    @disable_job_count = Job.disable.count
   end
 
   # signed_in employer is required
@@ -193,12 +194,15 @@ class JobsController < ApplicationController
   def employer_archive
     @jobs = Job.enable.where(employer_id: current_employer.id, is_active: false)
     @active_job_count = Job.enable.where(employer_id: current_employer.id, is_active: true ).count
+    @disable_job_count = Job.disable.count
   end
 
   # signed_in employer is required
   # list of employer's job which is disable by admin
   def list_disable_jobs
     @jobs = Job.disable.where(employer_id: current_employer.id)
+    @active_job_count = Job.enable.where(employer_id: current_employer.id, is_active: true ).count
+    @inactive_job_count = Job.enable.where(employer_id: current_employer.id, is_active: false ).count
   end
   
   # toggle is_active
