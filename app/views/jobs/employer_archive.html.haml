@@ -13,7 +13,7 @@
       |
       = "Inactive Jobs (#{@jobs.count})"
       |
-      = link_to "Disable Jobs", employer_job_disable_path
+      = link_to "Disable Jobs (#{@disable_job_count})", employer_job_disable_path
       %hr
 
   - @jobs.each do |job|
