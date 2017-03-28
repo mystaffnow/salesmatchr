@@ -115,13 +115,17 @@ RSpec.describe EmployersController, :type => :controller do
   describe '#update' do
     let(:new_attributes){
       {
-        "website": "www.example.com",
-        "ziggeo_token": "nil",
-        "avatar": nil,
-        "zip": 1050,
-        "city": 'Wichita',
-        "state_id": state.id,
-        "description": "This is general description!"
+        first_name: 'Test',
+        last_name: 'User',
+        :employer_profile_attributes => {
+          "website": "www.example.com",
+          "ziggeo_token": "nil",
+          "avatar": nil,
+          "zip": 1050,
+          "city": 'Wichita',
+          "state_id": state.id,
+          "description": "This is general description!"
+        }
       }
     }
 
@@ -137,7 +141,7 @@ RSpec.describe EmployersController, :type => :controller do
       before { sign_in(candidate) }
 
       it 'should redirect_to employers sign_in page' do
-        put :update, { employer_profile: new_attributes }
+        put :update, { employer: new_attributes }
         expect(response).to redirect_to("/employers/sign_in")
       end
     end
@@ -150,18 +154,18 @@ RSpec.describe EmployersController, :type => :controller do
 
       context 'with valid params'
         it 'should update employer profile with requested parameters' do
-          put :update, { employer_profile: new_attributes }
+          put :update, { employer: new_attributes }
           expect(EmployerProfile.last.website).to eq("www.example.com")
         end
 
         it 'should redirect_to employers_profile_path after update' do
-          put :update, { employer_profile: new_attributes }
+          put :update, { employer: new_attributes }
           expect(response).to redirect_to(employers_profile_path) 
         end
 
         it 'should not call check_employer and should not redirect to /employers/account' do
           EmployerProfile.first.update(zip: nil, state_id: nil, city: nil, website: nil)
-          put :update, { employer_profile: new_attributes }
+          put :update, { employer: new_attributes }
           expect(response).not_to redirect_to("/employers/account")
         end
       end
@@ -170,7 +174,7 @@ RSpec.describe EmployersController, :type => :controller do
         pending("Pending Validation") do
           before { sign_in(employer)}
           it 'should render account page' do
-            put :update, { employer_profile: invalid_attributes }
+            put :update, { employer: invalid_attributes }
             expect(response).to render_template("account")
           end
         end

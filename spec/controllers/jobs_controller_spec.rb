@@ -562,6 +562,14 @@ RSpec.describe JobsController, :type => :controller do
         create(:job, employer_id: employer.id, salary_low: 50000, salary_high: 150000, state_id: state.id, job_function_id: job_function.id, is_active: false)
         get :employer_index
         expect(Job.count).to eq(1)
+        expect(assigns(:inactive_job_count)).to eq(1)
+      end
+
+      it 'should count disable jobs' do
+        create(:job, employer_id: employer.id, salary_low: 50000, salary_high: 150000, state_id: state.id, job_function_id: job_function.id, status: Job.statuses['disable'])
+        get :employer_index
+        get :employer_index
+        expect(assigns(:disable_job_count)).to eq(1)
       end
 
       it 'should redirect to /employers/account' do
@@ -606,6 +614,14 @@ RSpec.describe JobsController, :type => :controller do
         job.reload
         get :employer_archive
         expect(Job.count).to eq(1)
+        expect(assigns(:active_job_count)).to eq(1)
+      end
+
+      it 'should count disable jobs' do
+        job.update(status: Job.statuses['disable'])
+        job.reload
+        get :employer_archive
+        expect(assigns(:disable_job_count)).to eq(1)
       end
 
       it 'should redirect to /employers/account' do
@@ -642,6 +658,21 @@ RSpec.describe JobsController, :type => :controller do
         job3 = create(:job, employer_id: employer.id, state_id: state3.id, status: Job.statuses['disable'])
         get :list_disable_jobs
         expect(assigns(:jobs)).to eq([job, job1, job3])
+      end
+
+      it 'should count active jobs' do
+        job.update(is_active: true)
+        job.reload
+        get :list_disable_jobs
+        expect(Job.count).to eq(1)
+        expect(assigns(:active_job_count)).to eq(1)
+      end
+
+      it 'should count inactive jobs' do
+        job.update(is_active: false)
+        job.reload
+        get :list_disable_jobs
+        expect(assigns(:inactive_job_count)).to eq(1)
       end
 
       it 'should redirect to /employers/account' do

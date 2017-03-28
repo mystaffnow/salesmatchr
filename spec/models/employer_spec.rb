@@ -31,6 +31,10 @@ RSpec.describe Employer do
     it {should validate_presence_of(:last_name)}
     it {should validate_presence_of(:company)}
   end
+
+  describe '.nested attributes' do
+    it {should accept_nested_attributes_for(:employer_profile)}
+  end
   
   describe "Association" do
     it {should have_one(:employer_profile).dependent(:destroy)}
