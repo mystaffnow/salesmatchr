@@ -1,0 +1,68 @@
+.job-list
+  .action-bar
+    .container
+      .row
+        .col-md-9
+          %h2 My Open Jobs
+  .container.padded-container
+    .row
+      .col-md-2
+        %p
+          = link_to "Open Jobs", my_jobs_path
+        %p
+          = link_to "Withdrawn Jobs", my_withdrawn_jobs_path
+      .col-md-10
+        - if @open_job_candidates.present?
+          - if @job_candidates.count === 0
+            %h3.text-center
+              Looks like you haven't applied for any jobs yet. <br> Get started by
+              = link_to "searching for available jobs.", jobs_path
+          -	@open_job_candidates.each do |job_candidate|
+            .row
+              .col-md-8
+                %h3= job_candidate.job.title
+                %p= job_candidate.job.description
+                %p
+                - if job_candidate.submitted?
+                  %b.secondary-color
+                    Submitted
+                - else
+                  Submitted
+                |
+                - if job_candidate.viewed?
+                  %b.secondary-color
+                    Viewed
+                - else
+                  Viewed
+                |
+                - if job_candidate.shortlist?
+                  %b.secondary-color
+                    Shortlist
+                - else
+                  Shortlist
+                |
+                - if job_candidate.accepted?
+                  %b.secondary-color
+                    Accepted
+                - else
+                  Accepted
+                |
+                - if job_candidate.deleted?
+                  %b.secondary-color
+                    deleted
+                - else
+                  deleted
+                |
+                - if job_candidate.purposed?
+                  %b.secondary-color
+                    Purposed
+                - else
+                  Purposed
+              .col-md-4.job-actions
+                - if !job_candidate.withdrawn?
+                  = link_to "Withdraw", withdraw_candidate_path(job_candidate.id), method: :put, data: {confirm: 'Do you want to withdraw this application?'}, class: 'button btn btn-info', id: 'hire'
+                %hr
+
+          = paginate @open_job_candidates
+        - else
+          No records found yet!

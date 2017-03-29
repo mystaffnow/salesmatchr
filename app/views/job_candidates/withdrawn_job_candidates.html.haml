@@ -1,0 +1,29 @@
+.job-list
+  .action-bar
+    .container
+      .row
+        .col-md-9
+          %h2 My Withdrawn Jobs
+  .container.padded-container
+    .row
+      .col-md-2
+        %p
+          = link_to "Open Jobs", my_jobs_path
+        %p
+          = link_to "Withdrawn Jobs", my_withdrawn_jobs_path
+      .col-md-10
+        - if @withdrawn_job_candidates.present?
+          - @withdrawn_job_candidates.each do |job_candidate|
+            - if job_candidate.withdrawn?
+              - if job_candidate.job
+                .row
+                  = link_to job_path(job_candidate.job) do
+                    .col-md-8
+                      %h3= job_candidate.job.title
+                      %p= job_candidate.job.description
+                  .col-md-4.job-actions
+                %hr
+
+          = paginate @withdrawn_job_candidates
+        - else
+          No Record found yet!

@@ -5,10 +5,25 @@ class JobCandidatesController < ApplicationController
   before_action :require_candidate_profile, only: [:index, :apply]
 
   # List all current candidate's job_candidates list on which job is active and enable
+  # ToDo: Remove the action and test cases and other resources
   def index
     @job_candidates = JobCandidate.where(:candidate_id => current_candidate.id)
                                   .joins(:job)
                                   .where("jobs.status=0 and jobs.is_active=true")
+  end
+
+  # ToDo: Add test cases
+  def withdrawn_job_candidates
+    if active_job_candidate_list.present?
+      @withdrawn_job_candidates = active_job_candidate_list.where(status: JobCandidate.statuses["withdrawn"]).page(params[:page])
+    end
+  end
+
+  # ToDo: Add test cases
+  def open_job_candidates
+    if active_job_candidate_list.present?
+      @open_job_candidates = active_job_candidate_list.where("job_candidates.status in (?)", JobCandidate.statuses_opened).page(params[:page])
+    end
   end
 
   # Only candidate can apply on Job
@@ -85,6 +100,10 @@ class JobCandidatesController < ApplicationController
 
   def job_candidate_params
     params.require(:job_candidate).permit(:is_hired, :status, :job_id, :candidate_id)
+  end
+
+  def active_job_candidate_list
+    @job_candidates = JobCandidate.active_job_candidate_list(current_candidate) 
   end
 
   # candidate should save his profile info before applying any job of employer because employer can view candidate's profile.
