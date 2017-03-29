@@ -7,6 +7,14 @@
         = link_to 'Create New Job', new_job_path, class: 'btn btn-default'
 
 .container.padded-container
+  .row
+    .col-md-12.job-status
+      = link_to "Open Jobs (#{@active_job_count})", employer_jobs_path
+      |
+      = link_to "Inactive Jobs (#{@inactive_job_count})", employer_archive_jobs_path
+      |
+      = "Disable Jobs (#{@jobs.count})"
+      %hr
   - @jobs.each do |job|
     .row
       .col-md-8

@@ -14,6 +14,8 @@ RSpec.describe CandidatesController, :type => :controller do
 
   let(:valid_attributes) {
       {
+        first_name: 'Test',
+        last_name: 'User',
         year_experience_id: year_experience.id,
         archetype_score: candidate.archetype_score,
         :candidate_profile_attributes => {
@@ -159,6 +161,8 @@ RSpec.describe CandidatesController, :type => :controller do
         it 'should update requested info' do
           put :update_archetype, {candidate: valid_attributes}
           candidate.reload
+          expect(candidate.first_name).to eq("Test")
+          expect(candidate.last_name).to eq("User")
           expect(candidate.year_experience_id).to eq(year_experience.id)
           expect(candidate.candidate_profile.is_incognito).to eq(false)
           expect(candidate.candidate_profile.zip).to eq("1020")
