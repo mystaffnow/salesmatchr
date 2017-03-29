@@ -6,11 +6,11 @@ class JobCandidatesController < ApplicationController
 
   # List all current candidate's job_candidates list on which job is active and enable
   # ToDo: Remove the action and test cases and other resources
-  def index
-    @job_candidates = JobCandidate.where(:candidate_id => current_candidate.id)
-                                  .joins(:job)
-                                  .where("jobs.status=0 and jobs.is_active=true")
-  end
+  # def index
+  #   @job_candidates = JobCandidate.where(:candidate_id => current_candidate.id)
+  #                                 .joins(:job)
+  #                                 .where("jobs.status=0 and jobs.is_active=true")
+  # end
 
   # ToDo: Add test cases
   def withdrawn_job_candidates
