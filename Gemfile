@@ -90,3 +90,6 @@ gem 'sucker_punch'
 
 # logging aggregation and static assets serving in production
 gem 'rails_12factor', group: :production
+
+# paginator solution
+gem 'kaminari'
