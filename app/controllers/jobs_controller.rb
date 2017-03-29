@@ -68,16 +68,16 @@ class JobsController < ApplicationController
 
         if ps.nil? # if there is an error while payment
           @job.destroy 
-          format.html { redirect_to employer_archive_jobs_path, notice: 'Oops! there is some issue while process payment, please contact techical support.' }        
+          format.html { redirect_to employer_jobs_path, notice: 'Oops! there is some issue while process payment, please contact techical support.' }        
         else
           result = @job.send_email
           case result
           when 0
             tracker = Mixpanel::Tracker.new(ENV["NT_MIXPANEL_TOKEN"])
             tracker.track('employer-'+@job.employer.email, 'job created')
-            format.html { redirect_to employer_archive_jobs_path, notice: 'Job was successfully created.' }
+            format.html { redirect_to employer_jobs_path, notice: 'Job was successfully created.' }
           when 500
-            format.html { redirect_to employer_archive_jobs_path, notice: 'Oops! job was successfully created but email send to matched candidates failed, please contact techical support.' }
+            format.html { redirect_to employer_jobs_path, notice: 'Oops! job was successfully created but email send to matched candidates failed, please contact techical support.' }
           end
         end
       else

@@ -15,7 +15,7 @@
     %label
       Minimum Years of Experience
     %br
-    = f.select(:experience_years, options_for_select(0..25),  {:class => 'form-control'})
+    = f.select(:experience_years, options_for_select(0..25, selected: f.object.experience_years),  {:class => 'form-control'})
   .field
     = f.label "Salary range (Drag each triangle to create the range for this position)"
     %br
