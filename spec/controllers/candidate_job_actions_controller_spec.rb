@@ -34,6 +34,17 @@ RSpec.describe CandidateJobActionsController, :type => :controller do
         get :candidate_job_saved
         expect(assigns(:jobs)).to eq([job1, job2, job3])
       end
+
+      it 'should assign max 25 records on variable' do
+        30.times do |i|
+          state = create(:state, name: "State #{i}")
+          job = create(:job, state_id: state.id)
+          create(:candidate_job_action, candidate_id: candidate.id, job_id: job.id, is_saved: true)
+        end
+        get :candidate_job_saved
+        expect(CandidateJobAction.count).to eq(30)
+        expect(assigns(:jobs)).to eq(Job.first(25))
+      end
     end
 
     context '.when employer is signed_in' do
@@ -74,6 +85,17 @@ RSpec.describe CandidateJobActionsController, :type => :controller do
         create(:candidate_job_action, candidate_id: candidate.id, job_id: job4.id, is_saved: false)
         get :candidate_job_viewed
         expect(assigns(:jobs)).to eq([job4, job3, job2, job1])
+      end
+
+      it 'should assign max 25 records on variable' do
+        30.times do |i|
+          state = create(:state, name: "State #{i}")
+          job = create(:job, state_id: state.id)
+          create(:candidate_job_action, candidate_id: candidate.id, job_id: job.id, is_saved: false)
+        end
+        get :candidate_job_viewed
+        expect(CandidateJobAction.count).to eq(30)
+        expect(assigns(:jobs)).to eq(Job.order('id desc').first(25))
       end
     end
 
@@ -141,6 +163,18 @@ RSpec.describe CandidateJobActionsController, :type => :controller do
           get :candidate_matches
           expect(assigns(:jobs)).to eq([@job, @job1, @job2, @job3])
         end
+      end
+
+
+      it 'should assign max 25 records on variable' do
+        @inside_sales1 = create(:inside_sales) 
+        30.times do |i|
+          state = create(:state, name: "State #{i}")
+          job = create(:job, state_id: state.id, is_active: true, employer_id: employer.id, job_function_id: @inside_sales1.id)
+        end
+        get :candidate_matches
+        expect(Job.count).to eq(30)
+        expect(assigns(:jobs)).to eq(Job.first(25))
       end
     end
 
