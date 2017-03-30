@@ -188,7 +188,7 @@ class JobsController < ApplicationController
   def employer_index
     @jobs = Job.enable.where(employer_id: current_employer.id, is_active: true).page(params[:page])
     @inactive_job_count = Job.enable.where(employer_id: current_employer.id, is_active: false ).count
-    @disable_job_count = Job.disable.count
+    @disable_job_count = Job.disable.where(employer_id: current_employer.id).count
   end
 
   # signed_in employer is required
@@ -196,7 +196,7 @@ class JobsController < ApplicationController
   def employer_archive
     @jobs = Job.enable.where(employer_id: current_employer.id, is_active: false).page(params[:page])
     @active_job_count = Job.enable.where(employer_id: current_employer.id, is_active: true ).count
-    @disable_job_count = Job.disable.count
+    @disable_job_count = Job.disable.where(employer_id: current_employer.id).count
   end
 
   # signed_in employer is required
