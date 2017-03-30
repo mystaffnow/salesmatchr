@@ -9,7 +9,7 @@ RSpec.describe JobCandidatesController, :type => :controller do
   let(:employer) {create(:employer, first_name: 'user', last_name: 'test')}
   let(:job) {create(:job, employer_id: employer.id, salary_low: 50000, salary_high: 150000, state_id: state.id, job_function_id: job_function.id)}
 
-  describe '#index' do
+  describe '#withdrawn_job_candidates' do
     context '.when candidate is sign_in' do
       before{ 
         sign_in(candidate) 
@@ -18,14 +18,74 @@ RSpec.describe JobCandidatesController, :type => :controller do
 
       it '#require_candidate_profile' do
         CandidateProfile.first.destroy
-        get :index
+        get :withdrawn_job_candidates
         expect(response).to redirect_to(candidates_account_path)
       end
 
-      it 'should list all job candidates whose job are active and enable' do
-        job_candidate = create(:job_candidate, job_id: job.id, candidate_id: candidate.id)
-        get :index
-        expect(assigns(:job_candidates)).to eq([job_candidate])
+      it 'should list all job candidates whose job are active, enable and withdrawn' do
+        job_candidate = create(:job_candidate, job_id: job.id, candidate_id: candidate.id, status: 'withdrawn')
+        job_candidate1 = create(:job_candidate, job_id: job.id, candidate_id: candidate.id, status: 'submitted')
+        get :withdrawn_job_candidates
+        expect(assigns(:withdrawn_job_candidates)).to eq([job_candidate])
+      end
+
+      it 'should not list job candidates where job are inactive or disable' do
+        job1 = job
+        
+        state2 = create(:state, name: 'Test1')
+        job2 = create(:job, job_function_id: job_function.id, state_id: state2.id, status: Job.statuses['disable'])
+        
+        state3 = create(:state, name: 'Test2')
+        job3 = create(:job, job_function_id: job_function.id, state_id: state3.id, is_active: false)
+        
+        state4 = create(:state, name: 'Test3')
+        job4 = create(:job, job_function_id: job_function.id, state_id: state4.id)
+        
+        jc1 = create(:job_candidate, job_id: job1.id, candidate_id: candidate.id, status: JobCandidate.statuses["withdrawn"])
+        jc2 = create(:job_candidate, job_id: job2.id, candidate_id: candidate.id, status: JobCandidate.statuses["withdrawn"])
+        jc3 = create(:job_candidate, job_id: job3.id, candidate_id: candidate.id, status: JobCandidate.statuses["withdrawn"])
+        get :withdrawn_job_candidates
+        expect(assigns(:withdrawn_job_candidates)).to eq([jc1])
+      end
+
+      it 'should redirect to candidates_archetype_path' do
+        candidate.update(archetype_score: nil)
+        get :withdrawn_job_candidates
+        expect(response).to redirect_to(candidates_archetype_path)
+      end
+    end
+
+    context '.when employer is sign_in' do
+      before{
+        sign_in(employer)
+        employer_profile(employer)
+         }
+
+      it 'should redirect to candidate signin page' do
+        get :withdrawn_job_candidates
+        expect(response).to redirect_to("/candidates/sign_in")
+      end
+    end
+  end
+
+  describe '#open_job_candidates' do
+    context '.when candidate is sign_in' do
+      before{ 
+        sign_in(candidate) 
+        candidate_profile(candidate)
+      }
+
+      it '#require_candidate_profile' do
+        CandidateProfile.first.destroy
+        get :open_job_candidates
+        expect(response).to redirect_to(candidates_account_path)
+      end
+
+      it 'should list all job candidates whose job are active, enable and opened' do
+        job_candidate = create(:job_candidate, job_id: job.id, candidate_id: candidate.id, status: 'withdrawn')
+        job_candidate1 = create(:job_candidate, job_id: job.id, candidate_id: candidate.id, status: 'submitted')
+        get :open_job_candidates
+        expect(assigns(:open_job_candidates)).to eq([job_candidate1])
       end
 
       it 'should not list job candidates where job are inactive or disable' do
@@ -43,13 +103,13 @@ RSpec.describe JobCandidatesController, :type => :controller do
         jc1 = create(:job_candidate, job_id: job1.id, candidate_id: candidate.id, status: JobCandidate.statuses["submitted"])
         jc2 = create(:job_candidate, job_id: job2.id, candidate_id: candidate.id, status: JobCandidate.statuses["submitted"])
         jc3 = create(:job_candidate, job_id: job3.id, candidate_id: candidate.id, status: JobCandidate.statuses["submitted"])
-        get :index
-        expect(assigns(:job_candidates)).to eq([jc1])
+        get :open_job_candidates
+        expect(assigns(:open_job_candidates)).to eq([jc1])
       end
 
       it 'should redirect to candidates_archetype_path' do
         candidate.update(archetype_score: nil)
-        get :index
+        get :open_job_candidates
         expect(response).to redirect_to(candidates_archetype_path)
       end
     end
@@ -61,7 +121,7 @@ RSpec.describe JobCandidatesController, :type => :controller do
          }
 
       it 'should redirect to candidate signin page' do
-        get :index
+        get :open_job_candidates
         expect(response).to redirect_to("/candidates/sign_in")
       end
     end
