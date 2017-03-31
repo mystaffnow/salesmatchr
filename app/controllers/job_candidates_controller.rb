@@ -7,22 +7,14 @@ class JobCandidatesController < ApplicationController
   before_action :require_candidate_profile, only: [:withdrawn_job_candidates,
                                                    :open_job_candidates, :apply]
 
-  # List all current candidate's job_candidates list on which job is active and enable
-  # ToDo: Remove the action and test cases and other resources
-  # def index
-  #   @job_candidates = JobCandidate.where(:candidate_id => current_candidate.id)
-  #                                 .joins(:job)
-  #                                 .where("jobs.status=0 and jobs.is_active=true")
-  # end
-
-  # ToDo: Add test cases
+  # return all withdrawn job candidates
   def withdrawn_job_candidates
     if active_job_candidate_list.present?
       @withdrawn_job_candidates = active_job_candidate_list.where(status: JobCandidate.statuses["withdrawn"]).page(params[:page])
     end
   end
 
-  # ToDo: Add test cases
+  # return all job_candidates who are applicants, submitted, viewed, purposed, removed, shortlisted candidates
   def open_job_candidates
     if active_job_candidate_list.present?
       @open_job_candidates = active_job_candidate_list.where("job_candidates.status in (?)", JobCandidate.statuses_opened).page(params[:page])
@@ -105,6 +97,7 @@ class JobCandidatesController < ApplicationController
     params.require(:job_candidate).permit(:is_hired, :status, :job_id, :candidate_id)
   end
 
+  # return job_candidates of current_candidate where are jobs are active and enable
   def active_job_candidate_list
     @job_candidates = JobCandidate.active_job_candidate_list(current_candidate) 
   end

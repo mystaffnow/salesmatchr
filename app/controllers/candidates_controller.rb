@@ -72,13 +72,9 @@ class CandidatesController < ApplicationController
   def incognito
     tracker = Mixpanel::Tracker.new(ENV["NT_MIXPANEL_TOKEN"])
     tracker.track('candidate-'+current_candidate.email, 'incognito toggle')
-
+    
     @profile = current_candidate.candidate_profile
     @profile.toggle!(:is_incognito)
-    # profile.is_incognito = params[:is_incognito]
-    # profile.save
-    # render json: 'created'
-
     respond_to do |format|
       format.js {render layout: false}
     end
