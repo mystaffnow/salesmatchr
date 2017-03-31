@@ -41,11 +41,11 @@
                     Incognito Mode
                   #incognito-content
                     %input{:checked => "", :name => "my-checkbox", :type => "checkbox", :id => 'incognito', checked: @profile.is_incognito}/
-            .col-md-12.text-center
-              - if current_candidate && current_candidate.id == @candidate.id
-                #incognito-toggle
-                  = render 'incognito'
+                    #incognito-toggle
+                      = render 'incognito'
             .col-md-6
+              = image_tag @profile.avatar.url(:medium), id: 'avatar', style: "display:" + (!@profile.is_incognito ? 'block' : 'none'), class: 'profile-image'
+              %img{src: '/img/incognito.png', style: "display:" + (@profile.is_incognito ? 'block' : 'none'), id: 'incognito-img', class: 'profile-image'}
               - if @profile.ziggeo_token != nil && @profile.ziggeo_token != ''
                 .embed-responsive-item
                   %ziggeo{ 'ziggeo-video' => @profile.ziggeo_token, 'ziggeo-responsive' => true }
@@ -106,7 +106,13 @@
       $('#incognito').on('switchChange.bootstrapSwitch', function(event, state) {
         var url = '/candidates/incognito/' + $('#incognito').bootstrapSwitch('state');
         $.get(url)
-        
+        if (state){
+          $('#avatar').hide();
+          $('#incognito-img').show();
+        }else{
+          $('#avatar').show();
+          $('#incognito-img').hide();
+        }
       })
     
     $('#subscribe').on('switchChange.bootstrapSwitch', function(event, state) {
