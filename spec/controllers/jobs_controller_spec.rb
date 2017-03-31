@@ -329,7 +329,18 @@ RSpec.describe JobsController, :type => :controller do
       it 'should return job_candidates' do
         get :employer_show, id: job.id
         expect(assigns(:job_candidates)).to eq([job_candidate])
-      end      
+      end
+
+      it 'should return first 25 records only' do
+        30.times do |i|
+          candidate = create(:candidate)
+          CandidateProfile.last.update(is_incognito: false)
+          create(:job_candidate, job_id: job.id, candidate_id: candidate.id, status: 'submitted')
+        end
+        get :employer_show, id: job.id
+        expect(Candidate.count).to eq(31)
+        expect(assigns(:job_candidates)).to eq(JobCandidate.first(25))
+      end     
 
       it 'should redirect to /employers/account' do
         EmployerProfile.first.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
@@ -387,6 +398,17 @@ RSpec.describe JobsController, :type => :controller do
         get :employer_show_actions, id: job.id
         expect(assigns(:candidates)).to eq([candidate, candidate1])
       end
+
+      it 'should return first 25 records only' do
+        30.times do |i|
+          candidate = create(:candidate)
+          CandidateProfile.last.update(is_incognito: false)
+          create(:candidate_job_action, job_id: job.id, candidate_id: candidate.id, is_saved: false)
+        end
+        get :employer_show_actions, id: job.id
+        expect(Candidate.count).to eq(30)
+        expect(assigns(:candidates).count).to eq(25)
+      end
     end
   end
 
@@ -438,6 +460,17 @@ RSpec.describe JobsController, :type => :controller do
         get :employer_show_matches, id: job.id
         expect(assigns(:candidates)).to eq([candidate, candidate1])
       end
+
+      it 'should return first 25 records only' do
+        30.times do |i|
+          candidate = create(:candidate, archetype_score: 35)
+          CandidateProfile.last.update(is_incognito: false)
+          create(:candidate_job_action, job_id: job.id, candidate_id: candidate.id, is_saved: false)
+        end
+        get :employer_show_matches, id: job.id
+        expect(Candidate.count).to eq(30)
+        expect(assigns(:candidates)).to eq(Candidate.first(25))
+      end
     end
   end
 
@@ -475,6 +508,16 @@ RSpec.describe JobsController, :type => :controller do
         job_candidate2 = create(:job_candidate, job_id: job.id, candidate_id: candidate2.id, status: 'viewed')
         get :employer_show_shortlists, id: job.id
         expect(assigns(:shortlists)).to eq([job_candidate, job_candidate1])
+      end
+
+      it 'should return first 25 records only' do
+        30.times do |i|
+          candidate1 = create(:candidate)
+          job_candidate1 = create(:job_candidate, job_id: job.id, candidate_id: candidate1.id, status: 'shortlist')
+        end
+        get :employer_show_shortlists, id: job.id
+        expect(Candidate.count).to eq(30)
+        expect(assigns(:shortlists)).to eq(JobCandidate.first(25))
       end
 
       it 'should redirect to /employers/account' do
@@ -521,6 +564,16 @@ RSpec.describe JobsController, :type => :controller do
         expect(assigns(:removed_job_candidates)).to eq([job_candidate, job_candidate1])
       end
 
+      it 'should return first 25 records only' do
+        30.times do |i|
+          candidate1 = create(:candidate)
+          job_candidate1 = create(:job_candidate, job_id: job.id, candidate_id: candidate1.id, status: 'deleted')
+        end
+        get :employer_show_remove, id: job.id
+        expect(JobCandidate.count).to eq(30)
+        expect(assigns(:removed_job_candidates)).to eq(JobCandidate.first(25))
+      end
+
       it 'should redirect to /employers/account' do
         EmployerProfile.first.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
         get :employer_show_remove, id: job.id
@@ -556,6 +609,15 @@ RSpec.describe JobsController, :type => :controller do
         job3 = create(:job, employer_id: employer.id, state_id: state3.id, is_active: false, status: Job.statuses['enable'])
         get :employer_index
         expect(assigns(:jobs)).to eq([job])
+      end
+
+      it 'should return 25 records only' do
+        30.times do |i|
+          state = create(:state, name: "title#{i}")
+          job = create(:job, employer_id: employer.id, state_id: state.id, is_active: true, status: Job.statuses['enable'])
+        end
+        get :employer_index
+        expect(assigns(:jobs).count).to eq(25)
       end
 
       it 'should count inactive jobs and assigns to inactive_job_count' do
@@ -609,6 +671,15 @@ RSpec.describe JobsController, :type => :controller do
         expect(assigns(:jobs)).to eq([job, job3])
       end
 
+      it 'should return 25 records only' do
+        30.times do |i|
+          state = create(:state, name: "title#{i}")
+          job = create(:job, employer_id: employer.id, state_id: state.id, is_active: false, status: Job.statuses['enable'])
+        end
+        get :employer_archive
+        expect(assigns(:jobs).count).to eq(25)
+      end
+
       it 'should count open jobs and assigns to active_job_count' do
         job.update(is_active: true)
         job.reload
@@ -658,6 +729,15 @@ RSpec.describe JobsController, :type => :controller do
         job3 = create(:job, employer_id: employer.id, state_id: state3.id, status: Job.statuses['disable'])
         get :list_disable_jobs
         expect(assigns(:jobs)).to eq([job, job1, job3])
+      end
+
+      it 'should return 25 records only' do
+        30.times do |i|
+          state = create(:state, name: "title#{i}")
+          job = create(:job, employer_id: employer.id, state_id: state.id, is_active: true, status: Job.statuses['disable'])
+        end
+        get :list_disable_jobs
+        expect(assigns(:jobs).count).to eq(25)
       end
 
       it 'should count active jobs' do

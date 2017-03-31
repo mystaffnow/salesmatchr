@@ -1,8 +1,11 @@
 class JobCandidatesController < ApplicationController
-  before_action :authenticate_candidate!, only: [:index, :apply, :receipt, :withdraw]
+  before_action :authenticate_candidate!, only: [:apply, :receipt, :withdraw,
+                                                 :withdrawn_job_candidates,
+                                                 :open_job_candidates]
   before_action :authenticate_employer!, only: [:accept_candidate, :remove_candidate, :shortlist_candidate]
   before_action :set_job_candidate, only: [:receipt, :withdraw, :accept_candidate]
-  before_action :require_candidate_profile, only: [:index, :apply]
+  before_action :require_candidate_profile, only: [:withdrawn_job_candidates,
+                                                   :open_job_candidates, :apply]
 
   # List all current candidate's job_candidates list on which job is active and enable
   # ToDo: Remove the action and test cases and other resources

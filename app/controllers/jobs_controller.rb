@@ -139,7 +139,7 @@ class JobsController < ApplicationController
   # List of all visible candidates who have viewed the job
   def employer_show_actions
     authorize @job
-    @candidates = Job.visible_candidate_viewed_list(@job)
+    @candidates = Job.visible_candidate_viewed_list(@job).page(params[:page])
   end
 
   # GET: employer_job_matches/:id
@@ -147,7 +147,7 @@ class JobsController < ApplicationController
   # List of all candidates whose profile matched with job
   def employer_show_matches
     authorize @job
-    @candidates = @job.candidate_matches_list
+    @candidates = @job.candidate_matches_list.page(params[:page])
   end
 
   # GET: employer_jobs/:id
@@ -160,8 +160,10 @@ class JobsController < ApplicationController
         .where(status: JobCandidate.statuses[:submitted])
         .map { |jc| jc.viewed! }
 
-    @job_candidates = @job.job_candidates.where("status NOT IN (?)", [JobCandidate.statuses[:shortlist],
-                                                    JobCandidate.statuses[:deleted]])
+    @job_candidates = @job.job_candidates.where("status NOT IN (?)",
+                                                [JobCandidate.statuses[:shortlist],
+                                                JobCandidate.statuses[:deleted]])
+                                          .page(params[:page])
   end
 
   # GET: employer_job_shortlists/1
@@ -169,7 +171,7 @@ class JobsController < ApplicationController
   # List of all job_candidates whose profile is shortlisted
   def employer_show_shortlists
     authorize @job
-    @shortlists = JobCandidate.where(:job_id => params[:id], :status => JobCandidate.statuses[:shortlist])
+    @shortlists = JobCandidate.where(:job_id => params[:id], :status => JobCandidate.statuses[:shortlist]).page(params[:page])
   end
 
   # GET: employer_job_remove/1
@@ -177,7 +179,7 @@ class JobsController < ApplicationController
   # List of all job_candidates whose profile is rejected or deleted
   def employer_show_remove
     authorize @job
-    @removed_job_candidates = JobCandidate.where(:job_id => params[:id], :status => JobCandidate.statuses[:deleted])
+    @removed_job_candidates = JobCandidate.where(:job_id => params[:id], :status => JobCandidate.statuses[:deleted]).page(params[:page])
   end
 
   # signed_in employer is required
@@ -186,7 +188,7 @@ class JobsController < ApplicationController
   def employer_index
     @jobs = Job.enable.where(employer_id: current_employer.id, is_active: true).page(params[:page])
     @inactive_job_count = Job.enable.where(employer_id: current_employer.id, is_active: false ).count
-    @disable_job_count = Job.disable.count
+    @disable_job_count = Job.disable.where(employer_id: current_employer.id).count
   end
 
   # signed_in employer is required
@@ -194,7 +196,7 @@ class JobsController < ApplicationController
   def employer_archive
     @jobs = Job.enable.where(employer_id: current_employer.id, is_active: false).page(params[:page])
     @active_job_count = Job.enable.where(employer_id: current_employer.id, is_active: true ).count
-    @disable_job_count = Job.disable.count
+    @disable_job_count = Job.disable.where(employer_id: current_employer.id).count
   end
 
   # signed_in employer is required

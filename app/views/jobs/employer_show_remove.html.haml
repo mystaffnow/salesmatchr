@@ -29,6 +29,7 @@
                     %h4 Education
                     - if job_candidate.candidate.candidate_profile.education_level
                       = job_candidate.candidate.candidate_profile.education_level.name
+            = paginate @removed_job_candidates
           - else
             %h3.text-center
               No one is removed yet!

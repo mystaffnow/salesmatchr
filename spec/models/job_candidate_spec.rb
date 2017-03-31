@@ -62,4 +62,25 @@ RSpec.describe JobCandidate do
   it "should not save invalid status" do
     expect{job_candidate.update_attributes(status: 'invalid')}.to raise_error("'invalid' is not a valid status")
   end
+
+  it "should have active_job_candidate_list" do
+    job_function = create(:job_function)
+    state = create(:state)
+    job1 = create(:job, state_id: state.id, job_function_id: job_function.id, is_active: true, status: 0)
+    candidate1 = create(:candidate)
+    CandidateProfile.last.update(is_incognito: false)
+    create(:job_candidate, candidate_id: candidate1.id, job_id: job1.id, status: 'submitted')
+
+    job_function2 = create(:job_function, name: 'title test')
+    state2 = create(:state, name: 'title test')
+    job2 = create(:job, state_id: state2.id, job_function_id: job_function2.id, is_active: false, status: 1)
+    create(:job_candidate, candidate_id: candidate1.id, job_id: job2.id, status: 'submitted')
+
+    expect(JobCandidate.count).to eq(2)
+    expect(JobCandidate.active_job_candidate_list(candidate1).count).to eq(1)
+  end
+
+  it "should have statuses_opened array" do
+    expect(JobCandidate.statuses_opened).to eq([0, 1, 4, 2, 5, 6])
+  end
 end

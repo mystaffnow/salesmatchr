@@ -1,38 +1,38 @@
-.job-list
-  .action-bar
-    .container
-      .row
-        .col-md-9
-          %h2 My Matches
-  .container.padded-container
-    .row
-      .col-md-2
-        %p
-          = link_to "Open Jobs", my_jobs_path
-        %p
-          = link_to "Withdrawn Jobs", my_withdrawn_jobs_path
-      .col-md-10
-        - if @job_candidates.count === 0
-          %h3.text-center
-            Looks like you haven't applied for any jobs yet. <br> Get started by
-            = link_to "searching for available jobs.", jobs_path
-        .open-jobs
-          = render 'opened_jobs'
-        .withdrawn-jobs.hidden
-          = render 'withdrawn_jobs'
+/ .job-list
+/   .action-bar
+/     .container
+/       .row
+/         .col-md-9
+/           %h2 My Matches
+/   .container.padded-container
+/     .row
+/       .col-md-2
+/         %p
+/           = link_to "Open Jobs", my_jobs_path
+/         %p
+/           = link_to "Withdrawn Jobs", my_withdrawn_jobs_path
+/       .col-md-10
+/         - if @job_candidates.count === 0
+/           %h3.text-center
+/             Looks like you haven't applied for any jobs yet. <br> Get started by
+/             = link_to "searching for available jobs.", jobs_path
+/         .open-jobs
+/           = render 'opened_jobs'
+/         .withdrawn-jobs.hidden
+/           = render 'withdrawn_jobs'
 
-:javascript
-  function page_ready(){
-    $('#open-jobs').on('click', function(){
-      $('.open-jobs').removeClass('hidden');
-      $('.withdrawn-jobs').addClass('hidden');
-    });
+/ :javascript
+/   function page_ready(){
+/     $('#open-jobs').on('click', function(){
+/       $('.open-jobs').removeClass('hidden');
+/       $('.withdrawn-jobs').addClass('hidden');
+/     });
 
-    $('#withdrawn-jobs').on('click', function(){
-      $('.withdrawn-jobs').removeClass('hidden');
-      $('.open-jobs').addClass('hidden');
-    });
-  }
+/     $('#withdrawn-jobs').on('click', function(){
+/       $('.withdrawn-jobs').removeClass('hidden');
+/       $('.open-jobs').addClass('hidden');
+/     });
+/   }
 
-  $(document).on('page:load', page_ready);
-  $(document).ready(page_ready);
+/   $(document).on('page:load', page_ready);
+/   $(document).ready(page_ready);

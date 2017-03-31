@@ -27,6 +27,7 @@
                     - if candidate.candidate_profile.education_level
                       = candidate.candidate_profile.education_level.name
                 %hr
+            = paginate @candidates
           - else
             %h3.text-center
               No one have viewed this job yet!
