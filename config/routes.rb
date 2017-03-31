@@ -38,7 +38,9 @@ Rails.application.routes.draw do
   post 'candidates/candidate_save_job/:job_id' => 'candidate_job_actions#candidate_save_job', as: 'candidate_save_job'
 
   # Routes for job_candidates
-  get 'my_jobs' => 'job_candidates#index'
+  # get 'my_jobs' => 'job_candidates#index'
+  get 'my_withdrawn_jobs' => 'job_candidates#withdrawn_job_candidates'
+  get 'my_jobs' => 'job_candidates#open_job_candidates'
   get 'job_receipt/:id' => 'job_candidates#receipt', as: 'job_receipt'
   post 'shortlist_candidate/:job_id/:candidate_id' => 'job_candidates#shortlist_candidate', as: 'shortlist_candidate'
   post 'remove_candidate/:job_id/:candidate_id' => 'job_candidates#remove_candidate', as: 'remove_candidate'

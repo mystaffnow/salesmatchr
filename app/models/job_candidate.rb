@@ -15,4 +15,22 @@ class JobCandidate < ActiveRecord::Base
   belongs_to :candidate
 
   enum status: [ :submitted, :viewed, :accepted, :withdrawn, :shortlist, :deleted, :purposed]
+
+  # add TestCase
+  scope :active_job_candidate_list , ->(current_candidate) {
+  																		where(:candidate_id => current_candidate.id)
+                											.joins(:job)
+                											.where("jobs.status=0 and jobs.is_active=true")}
+
+  # ToDo: Add TestCase              											
+  def self.statuses_opened
+  	arr = Array.new
+  	arr << JobCandidate.statuses["submitted"]
+  	arr << JobCandidate.statuses["viewed"]
+  	arr << JobCandidate.statuses["shortlist"]
+  	arr << JobCandidate.statuses["accepted"]
+  	arr << JobCandidate.statuses["deleted"]
+  	arr << JobCandidate.statuses["purposed"]
+  	return arr
+  end
 end

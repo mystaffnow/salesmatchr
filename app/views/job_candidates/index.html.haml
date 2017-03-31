@@ -8,87 +8,18 @@
     .row
       .col-md-2
         %p
-          = link_to "Open Jobs", '#', id: 'open-jobs'
+          = link_to "Open Jobs", my_jobs_path
         %p
-          = link_to "Withdrawn Jobs", '#', id: 'withdrawn-jobs'
+          = link_to "Withdrawn Jobs", my_withdrawn_jobs_path
       .col-md-10
         - if @job_candidates.count === 0
           %h3.text-center
             Looks like you haven't applied for any jobs yet. <br> Get started by
             = link_to "searching for available jobs.", jobs_path
         .open-jobs
-          .header-bar
-            .container
-              .row
-                .col-md-12
-                  %h2 Open jobs
-          - @job_candidates.each do |job_candidate|
-            - if !job_candidate.withdrawn?
-              - if job_candidate.job
-                .row
-                  = link_to job_path(job_candidate.job) do
-                    .col-md-8
-                      %h3= job_candidate.job.title
-                      %p= job_candidate.job.description
-                      %p
-                        - if job_candidate.status.in?(["submitted", "viewed", "shortlist", "accepted", "deleted"])
-                          - if job_candidate.submitted?
-                            %b.secondary-color
-                              Submitted
-                          - else
-                            Submitted
-                          |
-                          - if job_candidate.viewed?
-                            %b.secondary-color
-                              Viewed
-                          - else
-                            Viewed
-                          |
-                          - if job_candidate.shortlist?
-                            %b.secondary-color
-                              Shortlist
-                          - else
-                            Shortlist
-                          |
-                          - if job_candidate.accepted?
-                            %b.secondary-color
-                              Accepted
-                          - else
-                            Accepted
-                          |
-                          - if job_candidate.deleted?
-                            %b.secondary-color
-                              deleted
-                          - else
-                            deleted
-                          |
-                        - else
-                          - if job_candidate.purposed?
-                            %b.secondary-color
-                              Purposed
-                          - else
-                            Purposed
-
-                  .col-md-4.job-actions
-                    - if !job_candidate.withdrawn?
-                      = link_to "Withdraw", withdraw_candidate_path(job_candidate.id), method: :put, data: {confirm: 'Do you want to withdraw this application?'}, class: 'button btn btn-info', id: 'hire'
-                %hr
+          = render 'opened_jobs'
         .withdrawn-jobs.hidden
-          - @job_candidates.each do |job_candidate|
-            - if job_candidate.withdrawn?
-              .header-bar
-                .container
-                  .row
-                    .col-md-12
-                      %h2 Withdrawn jobs
-              - if job_candidate.job
-                .row
-                  = link_to job_path(job_candidate.job) do
-                    .col-md-8
-                      %h3= job_candidate.job.title
-                      %p= job_candidate.job.description
-                  .col-md-4.job-actions
-                %hr
+          = render 'withdrawn_jobs'
 
 :javascript
   function page_ready(){
