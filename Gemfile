@@ -77,7 +77,7 @@ gem 'client_side_validations', github: 'DavyJonesLocker/client_side_validations'
 
 # Mail send by sendgrid
 gem 'sendgrid'
-gem 'sendgrid-rails', '~> 2.0'
+gem 'sendgrid-rails', '~> 3.1.0'
 # need to use bootstrap glyphicons
 gem 'bootstrap-glyphicons'
 # Authorization management
