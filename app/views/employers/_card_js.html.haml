@@ -1,0 +1,39 @@
+:javascript
+  var subscription;
+
+  $(document).ready(function() {
+    $('#stripe_error').hide();
+    Stripe.setPublishableKey($('meta[name="stripe-key"]').attr('content'));
+    return subscription.setupForm();
+  });
+
+  subscription = {
+    setupForm: function() {
+      return $('#new_user').submit(function() {
+        $("#stripe_error").hide();
+        $('input[type=submit]').attr('disabled', true);
+        subscription.processCard();
+        return false;
+      });
+    },
+    processCard: function() {
+      var card, charge;
+      card = {
+        number: $('#card_number').val(),
+        cvc: $('#card_code').val(),
+        expMonth: $('#card_month').val(),
+        expYear: $('#card_year').val()
+      };
+      return Stripe.createToken(card, subscription.handleStripeResponse);
+    },
+    handleStripeResponse: function(status, response) {
+      if (status === 200) {
+        $('#customer_stripe_card_token').val(response.id);
+        $('#new_user')[0].submit();
+      } else {
+        $('input[type=submit]').attr('disabled', false);
+        $('#stripe_error').show();
+        $('#stripe_error').html(response.error.message)
+      }
+    }
+  };
