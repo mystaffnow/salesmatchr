@@ -23,7 +23,7 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  status           :integer          default(0)
-#  is_active        :boolean          default(TRUE)
+#  is_active        :boolean          default(FALSE)
 #  activated_at     :datetime
 #
 
