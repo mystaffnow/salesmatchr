@@ -53,6 +53,8 @@ Rails.application.routes.draw do
   get 'employers/account' => 'employers#account'
   put 'employers/account' => 'employers#update'
   get 'employers/profile' => 'employers#profile'
+  get 'employers/payment/verify' => 'employers#add_payment_method'
+  post 'employers/payment' => 'employers#insert_payment_method'
   
   # Routes for jobs
   get 'employer_jobs' => 'jobs#employer_index', as: 'employer_jobs'
@@ -67,6 +69,8 @@ Rails.application.routes.draw do
   # ToDo: send_intro is not in used, will remove this later
   # get 'jobs/:id/send_candidate_intro/:candidate_id' => 'jobs#send_intro', as: 'send_job_candidate_intro'
   get 'employer_job_disable' => 'jobs#list_disable_jobs', as: 'employer_job_disable'
+  post 'employer_payment/:id' => 'jobs#payment', as: 'employer_job_payment'
+
   # Routes for pages
   root to: 'pages#index'
   get 'contact' => 'pages#contact'
