@@ -3,14 +3,15 @@ class JobsController < ApplicationController
                                  :inactivate_job, :employer_show,
                                  :employer_show_actions, :employer_show_matches,
                                  :employer_show_shortlists, :employer_show_remove,
-                                 :email_match_candidates]
+                                 :email_match_candidates, :payment]
   before_action :authenticate_employer!, only: [:new, :create, :edit, :update,
                                                  :destroy, :employer_archive,
                                                  :employer_show, :employer_show_actions,
                                                  :employer_show_matches, :employer_show_shortlists,
                                                  :employer_index, :employer_archive,
                                                  :list_disable_jobs, :inactivate_job,
-                                                 :employer_show_remove, :email_match_candidates
+                                                 :employer_show_remove, :email_match_candidates,
+                                                 :payment
                                                ]
   # GET /jobs
   # GET /jobs.json
@@ -239,6 +240,16 @@ class JobsController < ApplicationController
     end
   end
 
+  # pay and enable the job
+  # Todo: add test cases
+  def payment
+    # authorize(@job)
+    customer = current_employer.customer
+    service_pay = Services::Pay.new(current_employer, @job, nil, customer.stripe_customer_id)
+    service_pay.process_payment
+    redirect_to :back
+  end
+
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_job
@@ -249,10 +260,10 @@ class JobsController < ApplicationController
   def job_params
     params.require(:job).permit(:distance, :job_function_id,:employer_id, :city, :state_id,
                                 :salary_low, :salary_high, :zip, :is_remote, :title, :description, 
-                                :is_active, :experience_years, :stripe_token,
-                                :payment_attributes => [
-                                  :id, :stripe_card_token
-                                ]
+                                :is_active, :experience_years#, :stripe_token,
+                                # :payment_attributes => [
+                                #   :id, :stripe_card_token
+                                # ]
                                 )
   end
 end
