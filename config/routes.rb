@@ -69,7 +69,7 @@ Rails.application.routes.draw do
   # ToDo: send_intro is not in used, will remove this later
   # get 'jobs/:id/send_candidate_intro/:candidate_id' => 'jobs#send_intro', as: 'send_job_candidate_intro'
   get 'employer_job_expired' => 'jobs#list_expired_jobs', as: 'employer_job_expired'
-  post 'employer_payment/:id' => 'jobs#payment', as: 'employer_job_payment'
+  post 'employer_payment/:id' => 'jobs#pay_to_enable_expired_job', as: 'employer_job_payment'
 
   # Routes for pages
   root to: 'pages#index'
