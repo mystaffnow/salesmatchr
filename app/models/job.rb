@@ -36,7 +36,7 @@ class Job < ActiveRecord::Base
   has_many :job_candidates, dependent: :destroy
   has_many :candidate_job_actions, dependent: :destroy
   belongs_to :job_function
-  has_one :payment, dependent: :destroy
+  has_many :payments, dependent: :destroy
 
   # validation
   validates :employer_id, :title, :description, :city, :zip, presence: true
@@ -123,7 +123,7 @@ class Job < ActiveRecord::Base
                               .where("candidate_profiles.is_active_match_subscription=true")
 
     candidates.map {|candidate| CandidateMailer.send_job_match(candidate, self).deliver_later}
-    return error_code
+    return error_codes
     
     rescue => e
       return error_code = 500
