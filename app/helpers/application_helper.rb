@@ -110,4 +110,10 @@ module ApplicationHelper
                                      .where("candidate_profiles.is_incognito=false").pluck(:id)
     CandidateJobAction.where(job_id: job.id, candidate_id: visible_candidate_ids)
   end
+
+  # ensure if payment details of employer is already filled
+  def submitted_payment_details?(employer)
+    customer = employer.customer
+    customer.present? && (customer.stripe_card_token.present? && customer.stripe_customer_id.present?)
+  end
 end
