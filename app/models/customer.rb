@@ -11,5 +11,10 @@
 #
 
 class Customer < ActiveRecord::Base
+  # association
   belongs_to :employer
+
+  # validates
+  validates :employer_id, :stripe_card_token, :stripe_customer_id, presence: true
+  validates :employer_id, uniqueness: true
 end
