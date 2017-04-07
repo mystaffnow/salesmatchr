@@ -32,6 +32,30 @@ class EmployersController < ApplicationController
     @employer = Employer.find(params[:id])
     @profile = @employer.try(:employer_profile)
   end
+
+  # Employer has to add valid payment information to use services like making job active  
+  # current_employer can access this
+  def add_payment_method
+    @customer = Customer.new
+  end
+
+  def insert_payment_method
+    @customer = Customer.new(customer_params.merge(employer_id: current_employer.id))
+    pay = Services::Pay.new(current_employer, nil, @customer.stripe_card_token, nil)
+    stripe_customer = pay.create_stripe_customer
+    redirect_to :back if stripe_customer.blank?
+    
+    stripe_customer_id = stripe_customer.id
+    
+    if stripe_customer_id.present?
+      @customer.stripe_customer_id = stripe_customer_id
+      if @customer.save
+        redirect_to :back
+      else
+        render :add_payment_method
+      end
+    end
+  end
   
   private
 
@@ -42,6 +66,10 @@ class EmployersController < ApplicationController
           :id, :website, :ziggeo_token, :avatar, :zip, :city, :state_id, :description
         ]
       )
+  end
+
+  def customer_params
+    params.require(:customer).permit(:stripe_card_token)
   end
 
   def set_profile

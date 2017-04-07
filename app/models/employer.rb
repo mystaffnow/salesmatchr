@@ -27,6 +27,7 @@ class Employer < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
   has_one :employer_profile, dependent: :destroy
   has_many :jobs, dependent: :destroy
+  has_one :customer, dependent: :destroy
 
   accepts_nested_attributes_for :employer_profile
 
