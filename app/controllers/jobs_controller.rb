@@ -233,10 +233,10 @@ class JobsController < ApplicationController
     authorize @job
     result = @job.send_email
     case result
-    when 0
+    when 0, 500
       redirect_to employer_show_matches_path(@job.id), notice: 'Email send to all matched candidates who have subscribed to receive email.'
-    when 500
-      redirect_to employer_archive_jobs_path, notice: 'Oops! we cannot process your request, please contact techical support.'
+    # when 500
+    #   redirect_to employer_archive_jobs_path, notice: 'Oops! we cannot process your request, please contact techical support.'
     end
   end
 
