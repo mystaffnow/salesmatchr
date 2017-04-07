@@ -11,7 +11,13 @@ module Services
 		# this method is used when employer open add payment details form to verify payment details
 		def create_stripe_customer
 			return nil if stripe_card_token.nil?
+			
 			stripe_customer = Stripe::Customer.create(card: stripe_card_token)
+
+			# while creating customer there is error response from stripe e.g: invalid token, etc
+			rescue => e
+				Rails.logger.warn e.message
+				return nil
 		end
 
 		# when expired jobs are to make enable then system need to deduct predefined amount from customer's card
