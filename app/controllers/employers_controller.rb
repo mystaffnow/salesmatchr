@@ -41,19 +41,20 @@ class EmployersController < ApplicationController
 
   def insert_payment_method
     @customer = Customer.new(customer_params.merge(employer_id: current_employer.id))
-    pay = Services::Pay.new(current_employer, nil, @customer.stripe_card_token, nil)
+    
+    pay = Services::Pay.new(current_employer, nil, @customer.stripe_card_token)
     stripe_customer = pay.create_stripe_customer
-    redirect_to :back if stripe_customer.blank?
     
-    stripe_customer_id = stripe_customer.id
-    
-    if stripe_customer_id.present?
+    if stripe_customer.present?
+      stripe_customer_id = stripe_customer.id
       @customer.stripe_customer_id = stripe_customer_id
       if @customer.save
-        redirect_to :back
+        redirect_to :back, notice: 'You have successfully added your payment information!'
       else
         render :add_payment_method
       end
+    else
+      redirect_to :back, notice: 'Oops! we cannot process your request, please contact techical support.'
     end
   end
   
