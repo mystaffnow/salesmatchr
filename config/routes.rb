@@ -68,7 +68,7 @@ Rails.application.routes.draw do
   put 'inactivate_job/:id' => 'jobs#inactivate_job', as: 'inactivate_job'
   # ToDo: send_intro is not in used, will remove this later
   # get 'jobs/:id/send_candidate_intro/:candidate_id' => 'jobs#send_intro', as: 'send_job_candidate_intro'
-  get 'employer_job_disable' => 'jobs#list_disable_jobs', as: 'employer_job_disable'
+  get 'employer_job_expired' => 'jobs#list_expired_jobs', as: 'employer_job_expired'
   post 'employer_payment/:id' => 'jobs#payment', as: 'employer_job_payment'
 
   # Routes for pages

@@ -43,7 +43,7 @@ class Job < ActiveRecord::Base
   # validation
 
   # define enum for job statuses
-  enum status: [:enable, :disable]
+  enum status: [:enable, :expired]
 
   # assign archetype scores values from job function before rec save
   before_save :add_archetype_score

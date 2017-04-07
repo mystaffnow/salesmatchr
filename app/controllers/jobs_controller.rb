@@ -9,7 +9,7 @@ class JobsController < ApplicationController
                                                  :employer_show, :employer_show_actions,
                                                  :employer_show_matches, :employer_show_shortlists,
                                                  :employer_index, :employer_archive,
-                                                 :list_disable_jobs, :inactivate_job,
+                                                 :list_expired_jobs, :inactivate_job,
                                                  :employer_show_remove, :email_match_candidates,
                                                  :payment
                                                ]
@@ -195,7 +195,7 @@ class JobsController < ApplicationController
   def employer_index
     @jobs = Job.enable.where(employer_id: current_employer.id, is_active: true).page(params[:page])
     @inactive_job_count = Job.enable.where(employer_id: current_employer.id, is_active: false ).count
-    @disable_job_count = Job.disable.where(employer_id: current_employer.id).count
+    @expired_job_count = Job.expired.where(employer_id: current_employer.id).count
   end
 
   # signed_in employer is required
@@ -203,13 +203,13 @@ class JobsController < ApplicationController
   def employer_archive
     @jobs = Job.enable.where(employer_id: current_employer.id, is_active: false).page(params[:page])
     @active_job_count = Job.enable.where(employer_id: current_employer.id, is_active: true ).count
-    @disable_job_count = Job.disable.where(employer_id: current_employer.id).count
+    @expired_job_count = Job.expired.where(employer_id: current_employer.id).count
   end
 
   # signed_in employer is required
-  # list of employer's job which is disable by admin
-  def list_disable_jobs
-    @jobs = Job.disable.where(employer_id: current_employer.id).page(params[:page])
+  # list of employer's job which is expired by admin
+  def list_expired_jobs
+    @jobs = Job.expired.where(employer_id: current_employer.id).page(params[:page])
     @active_job_count = Job.enable.where(employer_id: current_employer.id, is_active: true ).count
     @inactive_job_count = Job.enable.where(employer_id: current_employer.id, is_active: false ).count
   end
