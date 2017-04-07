@@ -61,4 +61,8 @@ class JobPolicy < ApplicationPolicy
 	def email_match_candidates?
 		user.is_owner_of?(job)
 	end
+
+	def pay_to_enable_expired_job?
+		user.is_owner_of?(job)
+	end
 end
