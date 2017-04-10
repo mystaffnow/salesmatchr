@@ -3,15 +3,15 @@ class JobsController < ApplicationController
                                  :inactivate_job, :employer_show,
                                  :employer_show_actions, :employer_show_matches,
                                  :employer_show_shortlists, :employer_show_remove,
-                                 :email_match_candidates, :payment]
+                                 :email_match_candidates, :pay_to_enable_expired_job]
   before_action :authenticate_employer!, only: [:new, :create, :edit, :update,
                                                  :destroy, :employer_archive,
                                                  :employer_show, :employer_show_actions,
                                                  :employer_show_matches, :employer_show_shortlists,
                                                  :employer_index, :employer_archive,
-                                                 :list_disable_jobs, :inactivate_job,
+                                                 :list_expired_jobs, :inactivate_job,
                                                  :employer_show_remove, :email_match_candidates,
-                                                 :payment
+                                                 :pay_to_enable_expired_job
                                                ]
   # GET /jobs
   # GET /jobs.json
@@ -195,7 +195,7 @@ class JobsController < ApplicationController
   def employer_index
     @jobs = Job.enable.where(employer_id: current_employer.id, is_active: true).page(params[:page])
     @inactive_job_count = Job.enable.where(employer_id: current_employer.id, is_active: false ).count
-    @disable_job_count = Job.disable.where(employer_id: current_employer.id).count
+    @expired_job_count = Job.expired.where(employer_id: current_employer.id).count
   end
 
   # signed_in employer is required
@@ -203,13 +203,13 @@ class JobsController < ApplicationController
   def employer_archive
     @jobs = Job.enable.where(employer_id: current_employer.id, is_active: false).page(params[:page])
     @active_job_count = Job.enable.where(employer_id: current_employer.id, is_active: true ).count
-    @disable_job_count = Job.disable.where(employer_id: current_employer.id).count
+    @expired_job_count = Job.expired.where(employer_id: current_employer.id).count
   end
 
   # signed_in employer is required
-  # list of employer's job which is disable by admin
-  def list_disable_jobs
-    @jobs = Job.disable.where(employer_id: current_employer.id).page(params[:page])
+  # list of employer's job which is expired by admin
+  def list_expired_jobs
+    @jobs = Job.expired.where(employer_id: current_employer.id).page(params[:page])
     @active_job_count = Job.enable.where(employer_id: current_employer.id, is_active: true ).count
     @inactive_job_count = Job.enable.where(employer_id: current_employer.id, is_active: false ).count
   end
@@ -233,21 +233,37 @@ class JobsController < ApplicationController
     authorize @job
     result = @job.send_email
     case result
-    when 0
+    when 0, 500
       redirect_to employer_show_matches_path(@job.id), notice: 'Email send to all matched candidates who have subscribed to receive email.'
-    when 500
-      redirect_to employer_archive_jobs_path, notice: 'Oops! we cannot process your request, please contact techical support.'
+    # when 500
+    #   redirect_to employer_archive_jobs_path, notice: 'Oops! we cannot process your request, please contact techical support.'
     end
   end
 
   # pay and enable the job
   # Todo: add test cases
-  def payment
-    # authorize(@job)
+  def pay_to_enable_expired_job
+    authorize(@job)
+    
     customer = current_employer.customer
-    service_pay = Services::Pay.new(current_employer, @job, nil, customer.stripe_customer_id)
-    service_pay.process_payment
-    redirect_to :back
+    # return if employer does not verify payment method
+    service_pay = Services::Pay.new(current_employer, @job)
+    
+    if service_pay.payment_processed?
+      # now payment is successfully happened, so enable the job,
+      # then send email to matched candidates
+       @job.update(status: Job.statuses['enable'],
+                   activated_at: Time.now)
+
+      # send email to matched candidates
+      result = @job.send_email
+      case result
+      when 0, 500
+        redirect_to employer_jobs_path, notice: 'Job is activated and email is sent to all matched candidates who have subscribed to our job match alert.'
+      end
+    else
+      redirect_to employer_job_expired_path, notice: 'Oops! we cannot process your request, please contact techical support.'
+    end
   end
 
   private

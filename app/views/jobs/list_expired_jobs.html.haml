@@ -2,7 +2,7 @@
   .container
     .row
       .col-md-10
-        %h2 My jobs disabled by Admin
+        %h2 My expired jobs
       .col-md-2
         = link_to 'Create New Job', new_job_path, class: 'btn btn-default'
 
@@ -13,7 +13,7 @@
       |
       = link_to "Inactive Jobs (#{@inactive_job_count})", employer_archive_jobs_path
       |
-      = "Disable Jobs (#{@jobs.count})"
+      = "Expired Jobs (#{@jobs.count})"
       %hr
   - @jobs.each do |job|
     .row

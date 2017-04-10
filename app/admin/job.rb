@@ -43,7 +43,7 @@ ActiveAdmin.register Job do
     column :is_active
     column :status
     column :action do |j|
-    	str = j.disable? ? 'Enable' : 'Disable'
+    	str = j.expired? ? 'Enable' : 'Expired'
     	link_to str, change_status_staffnow_job_path(j.id), method: :put
     end
     column :activated_at
@@ -206,11 +206,11 @@ ActiveAdmin.register Job do
   # if job is active, visible/invisible, admin can make it inactive
 	# if job is inactive, admin can make it active
   member_action :change_status, method: :put do
-  	if resource.disable?
+  	if resource.expired?
   		resource.update(status: Job.statuses['enable'],
   										activated_at: Time.now)
   	else
-  		resource.update(status: Job.statuses['disable'])
+  		resource.update(status: Job.statuses['expired'])
   	end
   	redirect_to staffnow_jobs_path, notice: 'Status is updated successfully!'
   end
