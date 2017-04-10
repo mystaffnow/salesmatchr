@@ -19,7 +19,7 @@
   -@jobs.each do |job|
     .row
       .col-md-8
-        %h3= job.title
+        %h3= link_to job.title, job_path(job)
         %p= strip_tags(truncate(job.description, length: 600, omission: "...", escape: false))
         .stat
           = link_to employer_show_actions_path(job) do
