@@ -13,5 +13,14 @@
 require 'rails_helper'
 
 RSpec.describe Customer, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe '.validation' do
+    it {should validate_presence_of :employer_id}
+    it {should validate_presence_of :stripe_card_token}
+    it {should validate_presence_of :stripe_customer_id}
+    it {should validate_uniqueness_of :employer_id}
+  end
+
+  describe 'association' do
+    it {should belong_to :employer}
+  end
 end
