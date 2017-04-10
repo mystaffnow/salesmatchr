@@ -25,6 +25,8 @@ class Employer < ActiveRecord::Base
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
+  
+  # association
   has_one :employer_profile, dependent: :destroy
   has_many :jobs, dependent: :destroy
   has_one :customer, dependent: :destroy
