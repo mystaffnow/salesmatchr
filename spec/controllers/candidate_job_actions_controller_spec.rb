@@ -24,21 +24,22 @@ RSpec.describe CandidateJobActionsController, :type => :controller do
         state3 = create(:state, name: 'Test3')
         state4 = create(:state, name: 'Test4')
         job1 = job
-        job2 = create(:job, state_id: state2.id)
-        job3 = create(:job, state_id: state3.id)
-        job4 = create(:job, state_id: state4.id)
+        job2 = create(:job, state_id: state2.id, is_active: true, status: Job.statuses["enable"])
+        job3 = create(:job, state_id: state3.id, is_active: true, status: Job.statuses["enable"])
+        job4 = create(:job, state_id: state4.id, is_active: true, status: Job.statuses["enable"])
         create(:candidate_job_action, candidate_id: candidate.id, job_id: job1.id, is_saved: true)
         create(:candidate_job_action, candidate_id: candidate.id, job_id: job2.id, is_saved: true)
         create(:candidate_job_action, candidate_id: candidate.id, job_id: job3.id, is_saved: true)
         create(:candidate_job_action, candidate_id: candidate.id, job_id: job4.id, is_saved: false)
         get :candidate_job_saved
-        expect(assigns(:jobs)).to eq([job1, job2, job3])
+        expect(assigns(:jobs)).to eq([job2, job3])
+        expect(assigns(:jobs)).not_to eq([job, job4]) # job is inactive and job4 is not saved just viewed
       end
 
       it 'should assign max 25 records on variable' do
         30.times do |i|
           state = create(:state, name: "State #{i}")
-          job = create(:job, state_id: state.id)
+          job = create(:job, state_id: state.id, is_active: true, status: Job.statuses["enable"])
           create(:candidate_job_action, candidate_id: candidate.id, job_id: job.id, is_saved: true)
         end
         get :candidate_job_saved
@@ -76,21 +77,22 @@ RSpec.describe CandidateJobActionsController, :type => :controller do
         state3 = create(:state, name: 'Test3')
         state4 = create(:state, name: 'Test4')
         job1 = job
-        job2 = create(:job, state_id: state2.id)
-        job3 = create(:job, state_id: state3.id)
-        job4 = create(:job, state_id: state4.id)
+        job2 = create(:job, state_id: state2.id, is_active: true, status: Job.statuses["enable"])
+        job3 = create(:job, state_id: state3.id, is_active: true, status: Job.statuses["enable"])
+        job4 = create(:job, state_id: state4.id, is_active: true, status: Job.statuses["enable"])
         create(:candidate_job_action, candidate_id: candidate.id, job_id: job1.id, is_saved: true)
         create(:candidate_job_action, candidate_id: candidate.id, job_id: job2.id, is_saved: false)
         create(:candidate_job_action, candidate_id: candidate.id, job_id: job3.id, is_saved: false)
         create(:candidate_job_action, candidate_id: candidate.id, job_id: job4.id, is_saved: false)
         get :candidate_job_viewed
-        expect(assigns(:jobs)).to eq([job4, job3, job2, job1])
+        expect(assigns(:jobs)).to eq([job4, job3, job2])
+        expect(assigns(:jobs)).not_to eq([job1])
       end
 
       it 'should assign max 25 records on variable' do
         30.times do |i|
           state = create(:state, name: "State #{i}")
-          job = create(:job, state_id: state.id)
+          job = create(:job, state_id: state.id, is_active: true, status: Job.statuses["enable"])
           create(:candidate_job_action, candidate_id: candidate.id, job_id: job.id, is_saved: false)
         end
         get :candidate_job_viewed

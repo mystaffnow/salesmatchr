@@ -7,7 +7,7 @@ RSpec.describe JobCandidatesController, :type => :controller do
   let(:candidate) {create(:candidate, archetype_score: 35)}
   let(:job_function) {create(:job_function)}
   let(:employer) {create(:employer, first_name: 'user', last_name: 'test')}
-  let(:job) {create(:job, employer_id: employer.id, salary_low: 50000, salary_high: 150000, state_id: state.id, job_function_id: job_function.id)}
+  let(:job) {create(:job, employer_id: employer.id, salary_low: 50000, salary_high: 150000, state_id: state.id, job_function_id: job_function.id, is_active: true)}
 
   describe '#withdrawn_job_candidates' do
     context '.when candidate is sign_in' do

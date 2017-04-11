@@ -314,14 +314,14 @@ RSpec.describe CandidatesController, :type => :controller do
       }
 
       it 'should update the requested param info' do
-        get :incognito, { is_incognito: "true" }
+        get :incognito, format: :js
         expect(Candidate.count).to eq(1)
         expect(Candidate.last.candidate_profile(candidate).is_incognito).to eq(true)
       end
 
       it 'should not call check_candidate' do
         candidate.update(archetype_score: nil)
-        get :incognito, { is_incognito: "true" }
+        get :incognito, format: :js
         expect(response).not_to redirect_to(candidates_archetype_path)
       end
     end
