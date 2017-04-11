@@ -1107,6 +1107,7 @@ RSpec.describe JobsController, :type => :controller do
           @candidate5 = create(:candidate, archetype_score: 101)
 
           post :email_match_candidates, id: job.id
+          
           expect(response).to redirect_to(employer_show_matches_path(job.id))
           expect(response).not_to redirect_to(employer_archive_jobs_path(job.id))
         end
