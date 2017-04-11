@@ -11,3 +11,9 @@ def generate_stripe_card_token
 
 	result.id
 end
+
+def generate_stripe_customer(stripe_card_token)
+	Stripe.api_key = "sk_test_4Bqn5DAx7IfmDeECYppLl1PY"
+	result = Stripe::Customer.create(card: stripe_card_token)
+	result.id
+end
