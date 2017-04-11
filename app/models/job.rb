@@ -116,6 +116,10 @@ class Job < ActiveRecord::Base
   # send email to job matched candidates
   def send_email
     error_code = 0
+
+    # email alert should not work for expired job
+    return error_code if self.expired?
+    
     candidates = Candidate.where("candidates.archetype_score >= ? and
                                   candidates.archetype_score <= ?", self.archetype_low,
                                                                     self.archetype_high)

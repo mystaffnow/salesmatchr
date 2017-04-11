@@ -421,28 +421,45 @@ RSpec.describe Job do
 
   describe '#send_email' do
     let(:inside_sales) {create(:inside_sales)} # low: 11, high: 100
-    let(:inside_sales_job) {create(:job, state_id: state.id, employer_id: employer.id, job_function_id: inside_sales.id)}
+    let(:inside_sales_job) {create(:job, state_id: state.id, employer_id: employer.id, job_function_id: inside_sales.id, is_active: true, status: Job.statuses['enable'])}
 
-    it 'should send email to matched candidates who have email subscription ON' do
-      @candidate1 = create(:candidate, archetype_score: 11)
+    it 'should send email to matched candidates who have made email subscription ON' do
+      @candidate1 = create(:candidate, archetype_score: 11) # matched but no email alert
       CandidateProfile.first.update(is_active_match_subscription: false)
-      @candidate2 = create(:candidate, archetype_score: 35)
+      @candidate2 = create(:candidate, archetype_score: 35) # matched but no email alert
       CandidateProfile.second.update(is_active_match_subscription: false)
-      @candidate3 = create(:candidate, archetype_score: 90)
+      @candidate3 = create(:candidate, archetype_score: 90) # matched & alert
       CandidateProfile.third.update(is_active_match_subscription: true)
+      @candidate4 = create(:candidate, archetype_score: 34) # matched & alert
+      CandidateProfile.fourth.update(is_active_match_subscription: true)
+      @candidate5 = create(:candidate, archetype_score: 100) # matched & alert
+      CandidateProfile.fifth.update(is_active_match_subscription: true)
+      @candidate6 = create(:candidate, archetype_score: 11) # matched & alert
+      CandidateProfile.order("id asc").limit(1).offset(5).first.update(is_active_match_subscription: true)
+      @candidate7 = create(:candidate, archetype_score: 101) # not matched & no alert
+      CandidateProfile.order("id asc").limit(1).offset(6).first.update(is_active_match_subscription: true)
+      @candidate8 = create(:candidate, archetype_score: -10) # not matched & no alert
+      CandidateProfile.order("id asc").limit(1).offset(7).first.update(is_active_match_subscription: true)
 
-      expect(CandidateProfile.count).to eq(3)
-      expect(CandidateProfile.where(is_active_match_subscription: true).count).to eq(1)
+      expect(CandidateProfile.count).to eq(8)
+      expect(CandidateProfile.where(is_active_match_subscription: true).count).to eq(6)
       expect(CandidateProfile.where(is_active_match_subscription: false).count).to eq(2)
-      expect {inside_sales_job.send_email}.to change { ActionMailer::Base.deliveries.count }.by(1)
+      expect {inside_sales_job.send_email}.to change { ActionMailer::Base.deliveries.count }.by(4)
     end
 
     it 'should not send email to unmatched candidates' do
       @candidate1 = create(:candidate, archetype_score: -10)
       CandidateProfile.first.update(is_active_match_subscription: true)
-      @candidate2 = create(:candidate, archetype_score: -10)
+      @candidate2 = create(:candidate, archetype_score: -0)
       CandidateProfile.second.update(is_active_match_subscription: true)
       
+      expect {inside_sales_job.send_email}.to change { ActionMailer::Base.deliveries.count }.by(0)
+    end
+
+    it 'job matched alert should not work for expired job' do
+      inside_sales_job.update(status: Job.statuses['expired'])
+      @candidate8 = create(:candidate, archetype_score: 35) # no alert
+      CandidateProfile.first.update(is_active_match_subscription: true)
       expect {inside_sales_job.send_email}.to change { ActionMailer::Base.deliveries.count }.by(0)
     end
 
