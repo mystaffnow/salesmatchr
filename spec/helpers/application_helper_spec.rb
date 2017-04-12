@@ -132,4 +132,23 @@ RSpec.describe ApplicationHelper, type: :helper do
 		  expect(helper.list_job_viewed_by_visible_candidates(nil)).to eq([])
 		end
 	end
+
+	it '#submitted_payment_details' do
+		state = create(:state, name: 'title 1')
+		employer = create(:employer)
+	  employer1 = create(:employer)
+	  job_function = create(:job_function, name: 'title 1')
+	  job1 = create(:job, employer_id: employer.id, salary_low: 45000, salary_high: 280000, zip: "10900", 
+	                   city: 'city1', state_id: state.id,job_function_id: job_function.id, is_active: true, status: Job.statuses["enable"])
+	  stripe_card_token = generate_stripe_card_token
+
+		pay_service = Services::Pay.new(employer, job, stripe_card_token)
+    stripe_cus = pay_service.create_stripe_customer
+    create(:customer, employer_id: employer.id,
+                      stripe_customer_id: stripe_cus.id,
+                      stripe_card_token: stripe_card_token)
+  	expect(Customer.count).to eq(1)
+  	expect(helper.submitted_payment_details?(employer)).to be_truthy
+  	expect(helper.submitted_payment_details?(employer1)).to be_falsy
+	end
 end
