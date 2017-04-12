@@ -11,12 +11,12 @@ RSpec.describe JobPolicy do
 													job_function_id: job_function.id,
 													state_id: state.id,
 													city: 'test city',
-													zip: 5020)}
+													zip: 5020, is_active: true)}
 	let(:employer1) {create(:employer)}
 	
 	permissions :edit?, :update?, :destroy?, :employer_show?, :employer_show_actions?,
 							:employer_show_shortlists?, :employer_show_remove?, :employer_show_matches?,
-							:inactivate_job?, :email_match_candidates? do
+							:inactivate_job?, :email_match_candidates?, :pay_to_enable_expired_job? do
 
 		it 'denies access when resource owner not found' do
 			expect(subject).not_to permit(candidate, job)
