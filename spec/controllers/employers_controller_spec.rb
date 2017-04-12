@@ -170,14 +170,81 @@ RSpec.describe EmployersController, :type => :controller do
         end
       end
 
-      context 'with invalid params' do
-        pending("Pending Validation") do
-          before { sign_in(employer)}
-          it 'should render account page' do
-            put :update, { employer: invalid_attributes }
-            expect(response).to render_template("account")
-          end
+    context 'with invalid params' do
+      pending("Pending Validation") do
+        before { sign_in(employer)}
+        it 'should render account page' do
+          put :update, { employer: invalid_attributes }
+          expect(response).to render_template("account")
         end
       end
+    end
+  end
+
+  describe '#add_payment_method' do
+    context '.when candidate is signed in' do
+      before { sign_in(candidate) }
+
+      it 'should redirect_to employers sign_in page' do
+        get :add_payment_method
+        expect(response).to redirect_to("/employers/sign_in")
+      end
+    end
+
+    context '.when employer is signed in' do
+      before { 
+        sign_in(employer)
+        employer_profile(employer)
+        }
+
+      it 'should assign customer' do
+        get :add_payment_method
+        expect(assigns(:customer)).to be_a_new(Customer)
+      end
+
+      it 'should not call check_employer and should not redirect to /employers/account' do
+        EmployerProfile.first.update(zip: nil, state_id: nil, city: nil, website: nil)
+        get :add_payment_method
+        expect(response).not_to redirect_to("/employers/account")
+      end
+    end
+  end
+
+  describe '#insert_payment_method' do
+    let(:customer_params) {
+      {stripe_card_token: generate_stripe_card_token}
+    }
+
+    context '.when candidate is signed in' do
+      before { sign_in(candidate) }
+
+      it 'should redirect_to employers sign_in page' do
+        post :insert_payment_method, {customer: customer_params}
+        expect(response).to redirect_to("/employers/sign_in")
+      end
+    end
+
+    context '.when employer is signed in' do
+      before { 
+        sign_in(employer)
+        employer_profile(employer)
+        }
+
+      it 'should create customer details' do
+        post :insert_payment_method, {customer: customer_params}
+        expect(Employer.count).to eq(1)
+        expect(Customer.count).to eq(1)
+        expect(Customer.first.employer_id).to eq(Employer.first.id)
+        expect(Customer.first.stripe_card_token).not_to be_nil
+        expect(Customer.first.stripe_customer_id).not_to be_nil
+        expect(response).to redirect_to(employers_payment_verify_path)
+      end
+
+      it 'should not call check_employer and should not redirect to /employers/account' do
+        EmployerProfile.first.update(zip: nil, state_id: nil, city: nil, website: nil)
+        post :insert_payment_method, {customer: customer_params}
+        expect(response).not_to redirect_to("/employers/account")
+      end
+    end
   end
 end
