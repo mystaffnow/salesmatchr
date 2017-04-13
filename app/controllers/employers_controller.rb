@@ -1,6 +1,9 @@
 class EmployersController < ApplicationController
-  skip_before_filter :check_employer, only: [:account, :update]
-  before_action :authenticate_employer!, only: [:profile, :update, :account]
+  skip_before_filter :check_employer, only: [:account, :update, :add_payment_method,
+                                                :insert_payment_method]
+  before_action :authenticate_employer!, only: [:profile, :update,
+                                                :account, :add_payment_method,
+                                                :insert_payment_method]
   before_action :set_profile, only: [:profile, :account, :update]
 
   # view employer's profile, signed in employer can access this
@@ -49,12 +52,12 @@ class EmployersController < ApplicationController
       stripe_customer_id = stripe_customer.id
       @customer.stripe_customer_id = stripe_customer_id
       if @customer.save
-        redirect_to :back, notice: 'You have successfully added your payment information!'
+        redirect_to employers_payment_verify_path, notice: 'You have successfully added your payment information!'
       else
         render :add_payment_method
       end
     else
-      redirect_to :back, notice: 'Oops! we cannot process your request, please contact techical support.'
+      redirect_to employers_payment_verify_path, notice: 'Oops! we cannot process your request, please contact techical support.'
     end
   end
   
