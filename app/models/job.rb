@@ -89,6 +89,26 @@ class Job < ActiveRecord::Base
               .order(id: :asc)
   end
 
+  # send email to job matched candidates who have subscribe to matched alert
+  def send_email
+    error_code = 0
+
+    # email alert should not work for expired job
+    return error_code if self.expired?
+    
+    candidates = Candidate.where("candidates.archetype_score >= ? and
+                                  candidates.archetype_score <= ?", self.archetype_low,
+                                                                    self.archetype_high)
+                              .joins(:candidate_profile)
+                              .where("candidate_profiles.is_active_match_subscription=true")
+
+    candidates.map {|candidate| CandidateMailer.send_job_match(candidate, self).deliver_later}
+    return error_code
+    
+    rescue => e
+      return error_code = 500
+  end
+
   def applicants
     arr = Array.new
     arr << JobCandidate.statuses[:shortlist] << JobCandidate.statuses[:deleted]
@@ -111,26 +131,6 @@ class Job < ActiveRecord::Base
 
   def full_street_address
     self.city + " " + self.state.name + " " + self.zip
-  end
-
-  # send email to job matched candidates
-  def send_email
-    error_code = 0
-
-    # email alert should not work for expired job
-    return error_code if self.expired?
-    
-    candidates = Candidate.where("candidates.archetype_score >= ? and
-                                  candidates.archetype_score <= ?", self.archetype_low,
-                                                                    self.archetype_high)
-                              .joins(:candidate_profile)
-                              .where("candidate_profiles.is_active_match_subscription=true")
-
-    candidates.map {|candidate| CandidateMailer.send_job_match(candidate, self).deliver_later}
-    return error_code
-    
-    rescue => e
-      return error_code = 500
   end
 
   # Created to test expired jobs from TestCase
