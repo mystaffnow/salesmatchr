@@ -5,7 +5,7 @@ RSpec.describe JobsController, :type => :controller do
   let(:job_function) {create(:job_function)}
   let(:state) {create(:state)}
   let(:employer) {create(:employer, first_name: 'user', last_name: 'test')}
-  let(:job) {create(:job, employer_id: employer.id, salary_low: 50000, salary_high: 150000, state_id: state.id, job_function_id: job_function.id)}
+  let(:job) {create(:job, employer_id: employer.id, salary_low: 50000, salary_high: 150000, state_id: state.id, job_function_id: job_function.id, is_active: true)}
   let(:candidate_job_action) {create(:candidate_job_action, candidate_id: candidate.id, job_id: job.id) }
 
   let(:valid_attributes) {
@@ -95,7 +95,7 @@ RSpec.describe JobsController, :type => :controller do
 
       it 'should create new candidate_job_action with is_saved status false when candidate_job_action is nil' do
         employer = create(:employer)
-        job = create(:job, employer_id: employer.id, city: 'my city', state_id: state.id, zip: 1200, job_function_id: job_function.id)
+        job = create(:job, employer_id: employer.id, city: 'my city', state_id: state.id, zip: 1200, job_function_id: job_function.id, is_active: true)
         get :show, id: job.id
         expect(assigns(CandidateJobAction.last.is_saved)).to be_falsy
       end
@@ -162,11 +162,11 @@ RSpec.describe JobsController, :type => :controller do
         expect(assigns(:job)[:id]).to eq(nil)
       end
 
-      it 'should build payment for each job' do
-        get :new
-        job = assigns(:job)
-        expect(job.payment).to be_a_new(Payment)
-      end
+      # it 'should build payment for each job' do
+      #   get :new
+      #   job = assigns(:job)
+      #   expect(job.payment).to be_a_new(Payment)
+      # end
 
       it 'should redirect to /employers/account' do
         EmployerProfile.first.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
@@ -628,10 +628,9 @@ RSpec.describe JobsController, :type => :controller do
       end
 
       it 'should count disable jobs' do
-        create(:job, employer_id: employer.id, salary_low: 50000, salary_high: 150000, state_id: state.id, job_function_id: job_function.id, status: Job.statuses['disable'])
+        create(:job, employer_id: employer.id, salary_low: 50000, salary_high: 150000, state_id: state.id, job_function_id: job_function.id, is_active: true, status: Job.statuses['expired'])
         get :employer_index
-        get :employer_index
-        expect(assigns(:disable_job_count)).to eq(1)
+        expect(assigns(:expired_job_count)).to eq(1)
       end
 
       it 'should redirect to /employers/account' do
@@ -688,11 +687,11 @@ RSpec.describe JobsController, :type => :controller do
         expect(assigns(:active_job_count)).to eq(1)
       end
 
-      it 'should count disable jobs' do
-        job.update(status: Job.statuses['disable'])
+      it 'should count expired jobs' do
+        job.update(status: Job.statuses['expired'])
         job.reload
         get :employer_archive
-        expect(assigns(:disable_job_count)).to eq(1)
+        expect(assigns(:expired_job_count)).to eq(1)
       end
 
       it 'should redirect to /employers/account' do
@@ -703,12 +702,12 @@ RSpec.describe JobsController, :type => :controller do
     end
   end
 
-  describe '#list_disable_jobs' do
+  describe '#list_expired_jobs' do
     context '.when candidate is sign_in' do
       before{ sign_in(candidate) }
 
       it 'should redirect_to employers sign_in page' do
-        get :list_disable_jobs
+        get :list_expired_jobs
         expect(response).to redirect_to("/employers/sign_in")
       end
     end
@@ -719,31 +718,31 @@ RSpec.describe JobsController, :type => :controller do
         employer_profile(employer)
       }
 
-      it 'should return list of jobs disable by admin' do
-        job.update(status: Job.statuses['disable'])
+      it 'should return list of jobs expired by admin' do
+        job.update(status: Job.statuses['expired'])
         state1 = create(:state, name: 'title1')
-        job1 = create(:job, employer_id: employer.id, state_id: state1.id, status: Job.statuses['disable'])
+        job1 = create(:job, employer_id: employer.id, state_id: state1.id, status: Job.statuses['expired'])
         state2 = create(:state, name: 'title2')
         job2 = create(:job, employer_id: employer.id, state_id: state2.id, status: Job.statuses['enable'])
         state3 = create(:state, name: 'title3')
-        job3 = create(:job, employer_id: employer.id, state_id: state3.id, status: Job.statuses['disable'])
-        get :list_disable_jobs
+        job3 = create(:job, employer_id: employer.id, state_id: state3.id, status: Job.statuses['expired'])
+        get :list_expired_jobs
         expect(assigns(:jobs)).to eq([job, job1, job3])
       end
 
       it 'should return 25 records only' do
         30.times do |i|
           state = create(:state, name: "title#{i}")
-          job = create(:job, employer_id: employer.id, state_id: state.id, is_active: true, status: Job.statuses['disable'])
+          job = create(:job, employer_id: employer.id, state_id: state.id, is_active: true, status: Job.statuses['expired'])
         end
-        get :list_disable_jobs
+        get :list_expired_jobs
         expect(assigns(:jobs).count).to eq(25)
       end
 
       it 'should count active jobs' do
         job.update(is_active: true)
         job.reload
-        get :list_disable_jobs
+        get :list_expired_jobs
         expect(Job.count).to eq(1)
         expect(assigns(:active_job_count)).to eq(1)
       end
@@ -751,13 +750,13 @@ RSpec.describe JobsController, :type => :controller do
       it 'should count inactive jobs' do
         job.update(is_active: false)
         job.reload
-        get :list_disable_jobs
+        get :list_expired_jobs
         expect(assigns(:inactive_job_count)).to eq(1)
       end
 
       it 'should redirect to /employers/account' do
         EmployerProfile.first.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
-        get :list_disable_jobs, id: job.id
+        get :list_expired_jobs, id: job.id
         expect(response).to redirect_to("/employers/account")
       end
     end
@@ -842,31 +841,31 @@ RSpec.describe JobsController, :type => :controller do
 
         it 'should redirect to employer_archive_jobs_path' do
           post :create, {job: valid_attributes}
-          expect(response).to redirect_to(employer_jobs_path)
+          expect(response).to redirect_to(employer_archive_jobs_path)
         end
 
-        it 'should store payment' do
-          post :create, {job: valid_attributes}
-          expect(Payment.count).to eq(1)
-          expect(Payment.last.employer_id).to eq(employer.id)
-          expect(Payment.last.job_id).to eq(Job.last.id)
-          expect(Payment.last.stripe_card_token).to eq(valid_attributes[:payment][:stripe_card_token])
-          expect(Payment.last.stripe_customer_id).not_to be_blank
-          expect(Payment.last.stripe_charge_id).not_to be_blank
-          expect(Payment.last.status).to eq("charged")
-          expect(Payment.last.amount).to eq(JOB_POSTING_FEE.to_f)
-        end
+        # it 'should store payment' do
+        #   post :create, {job: valid_attributes}
+        #   expect(Payment.count).to eq(1)
+        #   expect(Payment.last.employer_id).to eq(employer.id)
+        #   expect(Payment.last.job_id).to eq(Job.last.id)
+        #   expect(Payment.last.stripe_card_token).to eq(valid_attributes[:payment][:stripe_card_token])
+        #   expect(Payment.last.stripe_customer_id).not_to be_blank
+        #   expect(Payment.last.stripe_charge_id).not_to be_blank
+        #   expect(Payment.last.status).to eq("charged")
+        #   expect(Payment.last.amount).to eq(JOB_POSTING_FEE.to_f)
+        # end
 
-        it 'should send email to matches candidates' do
-          @candidate = create(:candidate, archetype_score: 30)
-          @candidate1 = create(:candidate, archetype_score: 31)
-          @candidate2 = create(:candidate, archetype_score: 50)
-          @candidate3 = create(:candidate, archetype_score: 80)
-          @candidate4 = create(:candidate, archetype_score: 100)
-          @candidate5 = create(:candidate, archetype_score: 101)
+        # it 'should send email to matches candidates' do
+        #   @candidate = create(:candidate, archetype_score: 30)
+        #   @candidate1 = create(:candidate, archetype_score: 31)
+        #   @candidate2 = create(:candidate, archetype_score: 50)
+        #   @candidate3 = create(:candidate, archetype_score: 80)
+        #   @candidate4 = create(:candidate, archetype_score: 100)
+        #   @candidate5 = create(:candidate, archetype_score: 101)
 
-          expect {post :create, {job: valid_attributes}}.to change { ActionMailer::Base.deliveries.count }.by(5)
-        end
+        #   expect {post :create, {job: valid_attributes}}.to change { ActionMailer::Base.deliveries.count }.by(5)
+        # end
 
         it 'should redirect to /employers/account' do
           EmployerProfile.first.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
@@ -1108,6 +1107,7 @@ RSpec.describe JobsController, :type => :controller do
           @candidate5 = create(:candidate, archetype_score: 101)
 
           post :email_match_candidates, id: job.id
+
           expect(response).to redirect_to(employer_show_matches_path(job.id))
           expect(response).not_to redirect_to(employer_archive_jobs_path(job.id))
         end
@@ -1122,6 +1122,81 @@ RSpec.describe JobsController, :type => :controller do
           post :email_match_candidates, id: job.id
           expect(response).to redirect_to("/employers/account")
         end
+      end
+    end
+  end
+
+  describe "#pay_to_enable_expired_job" do
+    context '.when candidate is sign_in' do
+      before{ sign_in(candidate) }
+
+      it 'should redirect_to employers login page' do
+        post :pay_to_enable_expired_job, id: job.id
+        expect(response).to redirect_to("/employers/sign_in")
+      end
+    end
+
+    context 'when employer signed in' do
+      before {
+        sign_in(employer)
+        employer_profile(employer)
+      }
+
+      it 'should pay to enable expired job & send matched alert to subscriber' do
+        stripe_card_token = generate_stripe_card_token
+        
+        stripe_customer_id = generate_stripe_customer(stripe_card_token)
+        
+        customer = create(:customer, stripe_card_token: stripe_card_token,
+                                     stripe_customer_id: stripe_customer_id,
+                                     employer_id: employer.id)
+        
+        post :pay_to_enable_expired_job, id: job.id
+        
+        expect(response).to redirect_to(employer_jobs_path)
+        expect(response).not_to redirect_to(employer_job_expired_path)
+        expect(Job.count).to eq(1)
+        expect(Job.first.enable?).to be_truthy
+        expect(Job.first.activated_at > 1.minutes.ago).to be_truthy
+        
+        expect(Job.first.payments.count).to eq(1)
+        expect(Job.first.payments.first.stripe_customer_id).to eq(stripe_customer_id)
+        expect(Job.first.payments.first.stripe_charge_id).not_to be_nil
+        expect(Job.first.payments.first.amount).to eq("#{JOB_POSTING_FEE}".to_i)
+
+        expect(Customer.count).to eq(1)
+        expect(Customer.first.stripe_card_token).to eq(stripe_card_token)
+        expect(Customer.first.stripe_customer_id).to eq(stripe_customer_id)
+        expect(Customer.first.employer_id).to eq(employer.id)
+
+        @candidate1 = create(:candidate, archetype_score: 11) # match alert
+        CandidateProfile.first.update(is_active_match_subscription: true)
+
+        @candidate2 = create(:candidate, archetype_score: 31) # match, alert
+        CandidateProfile.second.update(is_active_match_subscription: true)
+
+        @candidate3 = create(:candidate, archetype_score: 50) # match, no alert
+        CandidateProfile.third.update(is_active_match_subscription: false)
+
+        @candidate4 = create(:candidate, archetype_score: 80) # match, no alert
+        CandidateProfile.fourth.update(is_active_match_subscription: false)
+
+        @candidate5 = create(:candidate, archetype_score: 100) # match, alert
+        CandidateProfile.fifth.update(is_active_match_subscription: true)
+
+        @candidate6 = create(:candidate, archetype_score: 101) # no match, no alert
+        CandidateProfile.order("id asc").limit(1).offset(5).first.update(is_active_match_subscription: true)
+
+        @candidate7 = create(:candidate, archetype_score: -10) # no match, no alert
+        CandidateProfile.order("id asc").limit(1).offset(6).first.update(is_active_match_subscription: true)
+        
+        expect {post :pay_to_enable_expired_job, id: job.id}.to change { ActionMailer::Base.deliveries.count }.by(3)
+      end
+
+      it 'should redirect to /employers/account when profile info are blank' do
+        EmployerProfile.first.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
+        post :email_match_candidates, id: job.id
+        expect(response).to redirect_to("/employers/account")
       end
     end
   end

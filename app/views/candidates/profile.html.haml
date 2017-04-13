@@ -104,7 +104,7 @@
     var profile_picture_url = "#{@profile.avatar_url}";
     $(function(){
       $('#incognito').on('switchChange.bootstrapSwitch', function(event, state) {
-        var url = '/candidates/incognito/' + $('#incognito').bootstrapSwitch('state');
+        var url = '/candidates/incognito/'
         $.get(url)
         if (state){
           $('#avatar').hide();

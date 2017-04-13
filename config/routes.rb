@@ -28,7 +28,7 @@ Rails.application.routes.draw do
   get 'candidates/archetype_result' => 'candidates#archetype_result'
   put 'candidates/archetype' => 'candidates#update_archetype'
   get 'candidates/profile/:id' => 'candidates#profile', as: 'candidates_profile'
-  get 'candidates/incognito/:is_incognito' => 'candidates#incognito'
+  get 'candidates/incognito' => 'candidates#incognito'
   get 'candidates/subscription' => 'candidates#subscription'
 
   # Routes for candidate_job_actions
