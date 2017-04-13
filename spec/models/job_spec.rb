@@ -480,7 +480,7 @@ RSpec.describe Job do
   # This test case ensure email are sending only to matched candidates.
   # criteria: All candidates whose archetype score falls on this job's archetype scale &&
   # who have subscribe to receive our matched alert are called matched candidates to receive matched alert
-  describe '#send_email' do
+  describe '#send_email_to_matched_candidates' do
     context "When job's function is inside_sales" do
       # if job function is inside sale
       let(:inside_sales) {create(:inside_sales)} # low: 11, high: 100
@@ -509,7 +509,7 @@ RSpec.describe Job do
         expect(CandidateProfile.count).to eq(8)
         expect(CandidateProfile.where(is_active_match_subscription: true).count).to eq(5)
         expect(CandidateProfile.where(is_active_match_subscription: false).count).to eq(3)
-        expect {inside_sales_job.send_email}.to change { ActionMailer::Base.deliveries.count }.by(4)
+        expect {inside_sales_job.send_email_to_matched_candidates}.to change { ActionMailer::Base.deliveries.count }.by(4)
       end
 
       it 'should not send email to unmatched candidates' do
@@ -518,26 +518,26 @@ RSpec.describe Job do
         @candidate2 = create(:candidate, archetype_score: -0)
         CandidateProfile.second.update(is_active_match_subscription: true)
         
-        expect {inside_sales_job.send_email}.to change { ActionMailer::Base.deliveries.count }.by(0)
+        expect {inside_sales_job.send_email_to_matched_candidates}.to change { ActionMailer::Base.deliveries.count }.by(0)
       end
 
       it 'job matched alert should not work for expired job' do
         inside_sales_job.update(status: Job.statuses['expired'])
         @candidate8 = create(:candidate, archetype_score: 35) # no alert
         CandidateProfile.first.update(is_active_match_subscription: true)
-        expect {inside_sales_job.send_email}.to change { ActionMailer::Base.deliveries.count }.by(0)
+        expect {inside_sales_job.send_email_to_matched_candidates}.to change { ActionMailer::Base.deliveries.count }.by(0)
       end
 
       it 'should return status 0 when success' do
-        expect(inside_sales_job.send_email).to eq(0)
+        expect(inside_sales_job.send_email_to_matched_candidates).to eq(0)
       end
 
       it 'should not return status 500 when success' do
-        expect(inside_sales_job.send_email).not_to eq(500)
+        expect(inside_sales_job.send_email_to_matched_candidates).not_to eq(500)
       end
 
       it 'on success' do
-        inside_sales_job.send_email
+        inside_sales_job.send_email_to_matched_candidates
         expect(Job.count).to eq(1)
       end
     end
@@ -569,7 +569,7 @@ RSpec.describe Job do
         expect(CandidateProfile.count).to eq(8)
         expect(CandidateProfile.where(is_active_match_subscription: true).count).to eq(5)
         expect(CandidateProfile.where(is_active_match_subscription: false).count).to eq(3)
-        expect {outside_sales_job.send_email}.to change { ActionMailer::Base.deliveries.count }.by(4)
+        expect {outside_sales_job.send_email_to_matched_candidates}.to change { ActionMailer::Base.deliveries.count }.by(4)
       end
 
       it 'should not send email to unmatched candidates' do
@@ -578,7 +578,7 @@ RSpec.describe Job do
         @candidate2 = create(:candidate, archetype_score: -0)
         CandidateProfile.second.update(is_active_match_subscription: true)
         
-        expect {outside_sales_job.send_email}.to change { ActionMailer::Base.deliveries.count }.by(0)
+        expect {outside_sales_job.send_email_to_matched_candidates}.to change { ActionMailer::Base.deliveries.count }.by(0)
       end
     end
 
@@ -609,7 +609,7 @@ RSpec.describe Job do
         expect(CandidateProfile.count).to eq(8)
         expect(CandidateProfile.where(is_active_match_subscription: true).count).to eq(5)
         expect(CandidateProfile.where(is_active_match_subscription: false).count).to eq(3)
-        expect {business_developement_job.send_email}.to change { ActionMailer::Base.deliveries.count }.by(4)
+        expect {business_developement_job.send_email_to_matched_candidates}.to change { ActionMailer::Base.deliveries.count }.by(4)
       end
 
       it 'should not send email to unmatched candidates' do
@@ -618,7 +618,7 @@ RSpec.describe Job do
         @candidate2 = create(:candidate, archetype_score: 80)
         CandidateProfile.second.update(is_active_match_subscription: true)
         
-        expect {business_developement_job.send_email}.to change { ActionMailer::Base.deliveries.count }.by(0)
+        expect {business_developement_job.send_email_to_matched_candidates}.to change { ActionMailer::Base.deliveries.count }.by(0)
       end
     end
 
@@ -649,7 +649,7 @@ RSpec.describe Job do
         expect(CandidateProfile.count).to eq(8)
         expect(CandidateProfile.where(is_active_match_subscription: true).count).to eq(5)
         expect(CandidateProfile.where(is_active_match_subscription: false).count).to eq(3)
-        expect {sales_manager_job.send_email}.to change { ActionMailer::Base.deliveries.count }.by(4)
+        expect {sales_manager_job.send_email_to_matched_candidates}.to change { ActionMailer::Base.deliveries.count }.by(4)
       end
 
       it 'should not send email to unmatched candidates' do
@@ -658,7 +658,7 @@ RSpec.describe Job do
         @candidate2 = create(:candidate, archetype_score: 80)
         CandidateProfile.second.update(is_active_match_subscription: true)
         
-        expect {sales_manager_job.send_email}.to change { ActionMailer::Base.deliveries.count }.by(0)
+        expect {sales_manager_job.send_email_to_matched_candidates}.to change { ActionMailer::Base.deliveries.count }.by(0)
       end
     end
 
@@ -689,7 +689,7 @@ RSpec.describe Job do
         expect(CandidateProfile.count).to eq(8)
         expect(CandidateProfile.where(is_active_match_subscription: true).count).to eq(5)
         expect(CandidateProfile.where(is_active_match_subscription: false).count).to eq(3)
-        expect {sales_operations_job.send_email}.to change { ActionMailer::Base.deliveries.count }.by(4)
+        expect {sales_operations_job.send_email_to_matched_candidates}.to change { ActionMailer::Base.deliveries.count }.by(4)
       end
 
       it 'should not send email to unmatched candidates' do
@@ -698,7 +698,7 @@ RSpec.describe Job do
         @candidate2 = create(:candidate, archetype_score: 20)
         CandidateProfile.second.update(is_active_match_subscription: true)
         
-        expect {sales_operations_job.send_email}.to change { ActionMailer::Base.deliveries.count }.by(0)
+        expect {sales_operations_job.send_email_to_matched_candidates}.to change { ActionMailer::Base.deliveries.count }.by(0)
       end
     end
 
@@ -729,7 +729,7 @@ RSpec.describe Job do
         expect(CandidateProfile.count).to eq(8)
         expect(CandidateProfile.where(is_active_match_subscription: true).count).to eq(5)
         expect(CandidateProfile.where(is_active_match_subscription: false).count).to eq(3)
-        expect {customer_service_job.send_email}.to change { ActionMailer::Base.deliveries.count }.by(4)
+        expect {customer_service_job.send_email_to_matched_candidates}.to change { ActionMailer::Base.deliveries.count }.by(4)
       end
 
       it 'should not send email to unmatched candidates' do
@@ -738,7 +738,7 @@ RSpec.describe Job do
         @candidate2 = create(:candidate, archetype_score: 20)
         CandidateProfile.second.update(is_active_match_subscription: true)
         
-        expect {customer_service_job.send_email}.to change { ActionMailer::Base.deliveries.count }.by(0)
+        expect {customer_service_job.send_email_to_matched_candidates}.to change { ActionMailer::Base.deliveries.count }.by(0)
       end
     end
 
@@ -769,7 +769,7 @@ RSpec.describe Job do
         expect(CandidateProfile.count).to eq(8)
         expect(CandidateProfile.where(is_active_match_subscription: true).count).to eq(5)
         expect(CandidateProfile.where(is_active_match_subscription: false).count).to eq(3)
-        expect {account_manager_job.send_email}.to change { ActionMailer::Base.deliveries.count }.by(4)
+        expect {account_manager_job.send_email_to_matched_candidates}.to change { ActionMailer::Base.deliveries.count }.by(4)
       end
 
       it 'should not send email to unmatched candidates' do
@@ -778,7 +778,7 @@ RSpec.describe Job do
         @candidate2 = create(:candidate, archetype_score: 0)
         CandidateProfile.second.update(is_active_match_subscription: false)
         
-        expect {account_manager_job.send_email}.to change { ActionMailer::Base.deliveries.count }.by(0)
+        expect {account_manager_job.send_email_to_matched_candidates}.to change { ActionMailer::Base.deliveries.count }.by(0)
       end
     end
   end

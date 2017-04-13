@@ -90,7 +90,7 @@ class Job < ActiveRecord::Base
   end
 
   # send email to job matched candidates who have subscribe to matched alert
-  def send_email
+  def send_email_to_matched_candidates
     error_code = 0
 
     # email alert should not work for expired job

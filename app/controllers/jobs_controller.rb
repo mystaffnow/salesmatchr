@@ -77,7 +77,7 @@ class JobsController < ApplicationController
         #   @job.destroy 
         #   format.html { redirect_to employer_jobs_path, notice: 'Oops! there is some issue while process payment, please contact techical support.' }        
         # else
-        #   result = @job.send_email
+        #   result = @job.send_email_to_matched_candidates
         #   case result
         #   when 0
         #     tracker = Mixpanel::Tracker.new(ENV["NT_MIXPANEL_TOKEN"])
@@ -231,7 +231,7 @@ class JobsController < ApplicationController
   # Send email to all candidates who matches the job and who have only subscribed to alert feature
   def email_match_candidates
     authorize @job
-    result = @job.send_email
+    result = @job.send_email_to_matched_candidates
     case result
     when 0, 500
       redirect_to employer_show_matches_path(@job.id), notice: 'Email send to all matched candidates who have subscribed to receive email.'
@@ -256,7 +256,7 @@ class JobsController < ApplicationController
                    activated_at: Time.now)
 
       # send email to matched candidates
-      result = @job.send_email
+      result = @job.send_email_to_matched_candidates
       case result
       when 0, 500
         redirect_to employer_jobs_path, notice: 'Job is activated and email is sent to all matched candidates who have subscribed to our job match alert.'
