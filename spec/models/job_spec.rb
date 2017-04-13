@@ -207,6 +207,9 @@ RSpec.describe Job do
     end
   end
 
+  # This test case ensure, it correctly returning the job's candidate matches list for each job function
+  # criteria: candidate profile should be visible to get matched to any job
+  # criteria: candidate's archetype score should lies on the job archtype scale
   describe '#candidate_matches_list' do
     context '.Inside sales' do
       let(:inside_sales) {create(:inside_sales)} # low: 11, high: 100
@@ -223,10 +226,20 @@ RSpec.describe Job do
         CandidateProfile.fourth.update(is_incognito: false)
         @candidate4 = create(:candidate, archetype_score: 100)
         CandidateProfile.fifth.update(is_incognito: false)
-        @candidate5 = create(:candidate, archetype_score: 101)
 
-        expect(CandidateProfile.count).to eq(6)
+        @candidate6 = create(:candidate, archetype_score: 101) # not lies on the scale
+        CandidateProfile.order("id asc").offset(5).limit(1).first.update(is_incognito: false)
+        
+        @candidate7 = create(:candidate, archetype_score: 10) # not lies on the scale
+        CandidateProfile.order("id asc").offset(6).limit(1).first.update(is_incognito: false)
+
+        @candidate8 = create(:candidate, archetype_score: 11) # profile is hidden
+        CandidateProfile.order("id asc").offset(7).limit(1).first.update(is_incognito: true)
+
+
+        expect(CandidateProfile.count).to eq(8)
         expect(inside_sales_job.candidate_matches_list).to eq([@candidate, @candidate1, @candidate2, @candidate3, @candidate4])
+        expect(inside_sales_job.candidate_matches_list).not_to eq([@candidate6, @candidate7, @candidate8])
       end
     end
 
@@ -245,9 +258,18 @@ RSpec.describe Job do
         CandidateProfile.fourth.update(is_incognito: false)
         @candidate4 = create(:candidate, archetype_score: 100)
         CandidateProfile.fifth.update(is_incognito: false)
-        @candidate5 = create(:candidate, archetype_score: 101)
+
+        @candidate6 = create(:candidate, archetype_score: 101) # not lies on the scale
+        CandidateProfile.order("id asc").offset(5).limit(1).first.update(is_incognito: false)
+        
+        @candidate7 = create(:candidate, archetype_score: 10) # not lies on the scale
+        CandidateProfile.order("id asc").offset(6).limit(1).first.update(is_incognito: false)
+
+        @candidate8 = create(:candidate, archetype_score: 11) # profile is hidden
+        CandidateProfile.order("id asc").offset(7).limit(1).first.update(is_incognito: true)
 
         expect(outside_sales_job.candidate_matches_list).to eq([@candidate, @candidate1, @candidate2, @candidate3, @candidate4])
+        expect(outside_sales_job.candidate_matches_list).not_to eq([@candidate6, @candidate7, @candidate8])
       end
     end
 
@@ -256,8 +278,9 @@ RSpec.describe Job do
       let(:business_developement_job) {create(:job, state_id: state.id, employer_id: employer.id, job_function_id: business_developement.id)}
 
       it 'should match candidates scale between -10 to 70' do
-        @candidate = create(:candidate, archetype_score: -20)
+        @candidate = create(:candidate, archetype_score: -20) # score not lies on the scale
         CandidateProfile.first.update(is_incognito: false)
+
         @candidate1 = create(:candidate, archetype_score: -10)
         CandidateProfile.second.update(is_incognito: false)
         @candidate2 = create(:candidate, archetype_score: 10)
@@ -266,9 +289,15 @@ RSpec.describe Job do
         CandidateProfile.fourth.update(is_incognito: false)
         @candidate4 = create(:candidate, archetype_score: 70)
         CandidateProfile.fifth.update(is_incognito: false)
-        @candidate5 = create(:candidate, archetype_score: 71)
+
+        @candidate5 = create(:candidate, archetype_score: 71) # score not lies on the scale
+        CandidateProfile.order("id asc").limit(1).offset(5).first.update(is_incognito: false)
+
+        @candidate6 = create(:candidate, archetype_score: 50) # score lies on the scale but profile is hidden
+        CandidateProfile.order("id asc").limit(1).offset(5).first.update(is_incognito: true)
 
         expect(business_developement_job.candidate_matches_list).to eq([@candidate1, @candidate2, @candidate3, @candidate4])
+        expect(business_developement_job.candidate_matches_list).not_to eq([@candidate, @candidate5, @candidate6])
       end
     end
 
@@ -277,8 +306,9 @@ RSpec.describe Job do
       let(:sales_manager_job) {create(:job, state_id: state.id, employer_id: employer.id, job_function_id: sales_manager.id)}
 
       it 'should match candidates scale between -30 to 70' do
-        @candidate = create(:candidate, archetype_score: -40)
+        @candidate = create(:candidate, archetype_score: -40) # score not lies on the scale
         CandidateProfile.first.update(is_incognito: false)
+
         @candidate1 = create(:candidate, archetype_score: -30)
         CandidateProfile.second.update(is_incognito: false)
         @candidate2 = create(:candidate, archetype_score: -10)
@@ -287,9 +317,15 @@ RSpec.describe Job do
         CandidateProfile.fourth.update(is_incognito: false)
         @candidate4 = create(:candidate, archetype_score: 70)
         CandidateProfile.fifth.update(is_incognito: false)
-        @candidate5 = create(:candidate, archetype_score: 71)
+
+        @candidate5 = create(:candidate, archetype_score: 71) # score not lies on the scale
+        CandidateProfile.order("id asc").limit(1).offset(5).first.update(is_incognito: false)
+
+        @candidate6 = create(:candidate, archetype_score: 60) # score lies on the scale but profile is hidden
+        CandidateProfile.order("id asc").limit(1).offset(6).first.update(is_incognito: true)
 
         expect(sales_manager_job.candidate_matches_list).to eq([@candidate1, @candidate2, @candidate3, @candidate4])
+        expect(sales_manager_job.candidate_matches_list).not_to eq([@candidate, @candidate5, @candidate6])
       end
     end
 
@@ -298,8 +334,9 @@ RSpec.describe Job do
       let(:sales_operations_job) {create(:job, state_id: state.id, employer_id: employer.id, job_function_id: sales_operations.id)}
 
       it 'should match candidates scale between -100 to 10' do
-        @candidate = create(:candidate, archetype_score: -110)
+        @candidate = create(:candidate, archetype_score: -110) # not lies on the scale
         CandidateProfile.first.update(is_incognito: false)
+
         @candidate1 = create(:candidate, archetype_score: -100)
         CandidateProfile.second.update(is_incognito: false)
         @candidate2 = create(:candidate, archetype_score: -10)
@@ -308,9 +345,16 @@ RSpec.describe Job do
         CandidateProfile.fourth.update(is_incognito: false)
         @candidate4 = create(:candidate, archetype_score: 10)
         CandidateProfile.fifth.update(is_incognito: false)
-        @candidate5 = create(:candidate, archetype_score: 11)
+
+        @candidate5 = create(:candidate, archetype_score: 11) # score not lies on the scale
+        CandidateProfile.order("id asc").limit(1).offset(5).first.update(is_incognito: false)
+
+        @candidate6 = create(:candidate, archetype_score: 5) # score lies on the scale but profile is hidden
+        CandidateProfile.order("id asc").limit(1).offset(6).first.update(is_incognito: true)
+
 
         expect(sales_operations_job.candidate_matches_list).to eq([@candidate1, @candidate2, @candidate3, @candidate4])
+        expect(sales_operations_job.candidate_matches_list).not_to eq([@candidate, @candidate5, @candidate6])
       end
     end
 
@@ -319,8 +363,9 @@ RSpec.describe Job do
       let(:customer_service_job) {create(:job, state_id: state.id, employer_id: employer.id, job_function_id: customer_service.id)}
 
       it 'should match candidates scale between -100 to 10' do
-        @candidate = create(:candidate, archetype_score: -110)
+        @candidate = create(:candidate, archetype_score: -110) # score not lies on the scale
         CandidateProfile.first.update(is_incognito: false)
+
         @candidate1 = create(:candidate, archetype_score: -100)
         CandidateProfile.second.update(is_incognito: false)
         @candidate2 = create(:candidate, archetype_score: -10)
@@ -329,10 +374,16 @@ RSpec.describe Job do
         CandidateProfile.fourth.update(is_incognito: false)
         @candidate4 = create(:candidate, archetype_score: 10)
         CandidateProfile.fifth.update(is_incognito: false)
-        @candidate5 = create(:candidate, archetype_score: 11)
+
+        @candidate5 = create(:candidate, archetype_score: 11) # score not lies on the scale
+        CandidateProfile.order("id asc").limit(1).offset(5).first.update(is_incognito: false)
+
+        @candidate6 = create(:candidate, archetype_score: 5) # score lies on the scale but profile is hidden
+        CandidateProfile.order("id asc").limit(1).offset(6).first.update(is_incognito: true)
 
         expect(customer_service_job.candidate_matches_list.count).to eq(4)
         expect(customer_service_job.candidate_matches_list).to eq([@candidate1, @candidate2, @candidate3, @candidate4])
+        expect(customer_service_job.candidate_matches_list).not_to eq([@candidate, @candidate5, @candidate6])
       end
     end
 
@@ -341,8 +392,9 @@ RSpec.describe Job do
       let(:account_manager_job) {create(:job, state_id: state.id, employer_id: employer.id, job_function_id: account_manager.id)}
 
       it 'should match candidates scale between -100 to -11' do
-        @candidate = create(:candidate, archetype_score: -110)
+        @candidate = create(:candidate, archetype_score: -110) # score not lies on the scale
         CandidateProfile.first.update(is_incognito: false)
+
         @candidate1 = create(:candidate, archetype_score: -100)
         CandidateProfile.second.update(is_incognito: false)
         @candidate2 = create(:candidate, archetype_score: -50)
@@ -351,9 +403,15 @@ RSpec.describe Job do
         CandidateProfile.fourth.update(is_incognito: false)
         @candidate4 = create(:candidate, archetype_score: -11)
         CandidateProfile.fifth.update(is_incognito: false)
-        @candidate5 = create(:candidate, archetype_score: -9)
+
+        @candidate5 = create(:candidate, archetype_score: -7) # score not lies on the scale
+        CandidateProfile.order("id asc").limit(1).offset(5).first.update(is_incognito: false)
+
+        @candidate6 = create(:candidate, archetype_score: -15) # score lies on the scale but profile is hidden
+        CandidateProfile.order("id asc").limit(1).offset(6).first.update(is_incognito: true)
 
         expect(account_manager_job.candidate_matches_list).to eq([@candidate1, @candidate2, @candidate3, @candidate4])
+        expect(account_manager_job.candidate_matches_list).not_to eq([@candidate, @candidate5, @candidate6])
       end
     end
   end
@@ -419,61 +477,309 @@ RSpec.describe Job do
     expect(@job.full_street_address).to eq("city1 Alaska 10900")
   end
 
+  # This test case ensure email are sending only to matched candidates.
+  # criteria: All candidates whose archetype score falls on this job's archetype scale &&
+  # who have subscribe to receive our matched alert are called matched candidates to receive matched alert
   describe '#send_email' do
-    let(:inside_sales) {create(:inside_sales)} # low: 11, high: 100
-    let(:inside_sales_job) {create(:job, state_id: state.id, employer_id: employer.id, job_function_id: inside_sales.id, is_active: true, status: Job.statuses['enable'])}
+    context "When job's function is inside_sales" do
+      # if job function is inside sale
+      let(:inside_sales) {create(:inside_sales)} # low: 11, high: 100
+      let(:inside_sales_job) {create(:job, state_id: state.id, employer_id: employer.id, job_function_id: inside_sales.id, is_active: true, status: Job.statuses['enable'])}
 
-    it 'should send email to matched candidates who have made email subscription ON' do
-      @candidate1 = create(:candidate, archetype_score: 11) # matched but no email alert
-      CandidateProfile.first.update(is_active_match_subscription: false)
-      @candidate2 = create(:candidate, archetype_score: 35) # matched but no email alert
-      CandidateProfile.second.update(is_active_match_subscription: false)
-      @candidate3 = create(:candidate, archetype_score: 90) # matched & alert
-      CandidateProfile.third.update(is_active_match_subscription: true)
-      @candidate4 = create(:candidate, archetype_score: 34) # matched & alert
-      CandidateProfile.fourth.update(is_active_match_subscription: true)
-      @candidate5 = create(:candidate, archetype_score: 100) # matched & alert
-      CandidateProfile.fifth.update(is_active_match_subscription: true)
-      @candidate6 = create(:candidate, archetype_score: 11) # matched & alert
-      CandidateProfile.order("id asc").limit(1).offset(5).first.update(is_active_match_subscription: true)
-      @candidate7 = create(:candidate, archetype_score: 101) # not matched & no alert
-      CandidateProfile.order("id asc").limit(1).offset(6).first.update(is_active_match_subscription: true)
-      @candidate8 = create(:candidate, archetype_score: -10) # not matched & no alert
-      CandidateProfile.order("id asc").limit(1).offset(7).first.update(is_active_match_subscription: true)
+      it 'should send email to matched candidates who have made email subscription ON' do
+        @candidate1 = create(:candidate, archetype_score: 11) # matched but not subscribed
+        CandidateProfile.first.update(is_active_match_subscription: false)
+        @candidate2 = create(:candidate, archetype_score: 35) # matched but not subscribed
+        CandidateProfile.second.update(is_active_match_subscription: false)
 
-      expect(CandidateProfile.count).to eq(8)
-      expect(CandidateProfile.where(is_active_match_subscription: true).count).to eq(6)
-      expect(CandidateProfile.where(is_active_match_subscription: false).count).to eq(2)
-      expect {inside_sales_job.send_email}.to change { ActionMailer::Base.deliveries.count }.by(4)
+        @candidate3 = create(:candidate, archetype_score: 90) # matched & subscribed
+        CandidateProfile.third.update(is_active_match_subscription: true)
+        @candidate4 = create(:candidate, archetype_score: 34) # matched &  subscribed
+        CandidateProfile.fourth.update(is_active_match_subscription: true)
+        @candidate5 = create(:candidate, archetype_score: 100) # matched & subscribed
+        CandidateProfile.fifth.update(is_active_match_subscription: true)
+        @candidate6 = create(:candidate, archetype_score: 11) # matched & subscribed
+        CandidateProfile.order("id asc").limit(1).offset(5).first.update(is_active_match_subscription: true)
+
+        @candidate7 = create(:candidate, archetype_score: 101) # not matched & not subscribed
+        CandidateProfile.order("id asc").limit(1).offset(6).first.update(is_active_match_subscription: false)
+        @candidate8 = create(:candidate, archetype_score: -10) # not matched & subscribed
+        CandidateProfile.order("id asc").limit(1).offset(7).first.update(is_active_match_subscription: true)
+
+        expect(CandidateProfile.count).to eq(8)
+        expect(CandidateProfile.where(is_active_match_subscription: true).count).to eq(5)
+        expect(CandidateProfile.where(is_active_match_subscription: false).count).to eq(3)
+        expect {inside_sales_job.send_email}.to change { ActionMailer::Base.deliveries.count }.by(4)
+      end
+
+      it 'should not send email to unmatched candidates' do
+        @candidate1 = create(:candidate, archetype_score: -10)
+        CandidateProfile.first.update(is_active_match_subscription: true)
+        @candidate2 = create(:candidate, archetype_score: -0)
+        CandidateProfile.second.update(is_active_match_subscription: true)
+        
+        expect {inside_sales_job.send_email}.to change { ActionMailer::Base.deliveries.count }.by(0)
+      end
+
+      it 'job matched alert should not work for expired job' do
+        inside_sales_job.update(status: Job.statuses['expired'])
+        @candidate8 = create(:candidate, archetype_score: 35) # no alert
+        CandidateProfile.first.update(is_active_match_subscription: true)
+        expect {inside_sales_job.send_email}.to change { ActionMailer::Base.deliveries.count }.by(0)
+      end
+
+      it 'should return status 0 when success' do
+        expect(inside_sales_job.send_email).to eq(0)
+      end
+
+      it 'should not return status 500 when success' do
+        expect(inside_sales_job.send_email).not_to eq(500)
+      end
+
+      it 'on success' do
+        inside_sales_job.send_email
+        expect(Job.count).to eq(1)
+      end
     end
 
-    it 'should not send email to unmatched candidates' do
-      @candidate1 = create(:candidate, archetype_score: -10)
-      CandidateProfile.first.update(is_active_match_subscription: true)
-      @candidate2 = create(:candidate, archetype_score: -0)
-      CandidateProfile.second.update(is_active_match_subscription: true)
-      
-      expect {inside_sales_job.send_email}.to change { ActionMailer::Base.deliveries.count }.by(0)
+    context "when job's function is outside_sales" do
+      let(:outside_sales) {create(:outside_sales)} # low: 11, high: 100
+      let(:outside_sales_job) {create(:job, state_id: state.id, employer_id: employer.id, job_function_id: outside_sales.id, is_active: true, status: Job.statuses['enable'])}
+
+      it 'should send email to matched candidates who have made email subscription ON' do
+        @candidate1 = create(:candidate, archetype_score: 11) # matched but not subscribed
+        CandidateProfile.first.update(is_active_match_subscription: false)
+        @candidate2 = create(:candidate, archetype_score: 35) # matched but not subscribed
+        CandidateProfile.second.update(is_active_match_subscription: false)
+
+        @candidate3 = create(:candidate, archetype_score: 90) # matched & subscribed
+        CandidateProfile.third.update(is_active_match_subscription: true)
+        @candidate4 = create(:candidate, archetype_score: 34) # matched &  subscribed
+        CandidateProfile.fourth.update(is_active_match_subscription: true)
+        @candidate5 = create(:candidate, archetype_score: 100) # matched & subscribed
+        CandidateProfile.fifth.update(is_active_match_subscription: true)
+        @candidate6 = create(:candidate, archetype_score: 11) # matched & subscribed
+        CandidateProfile.order("id asc").limit(1).offset(5).first.update(is_active_match_subscription: true)
+
+        @candidate7 = create(:candidate, archetype_score: 101) # not matched & not subscribed
+        CandidateProfile.order("id asc").limit(1).offset(6).first.update(is_active_match_subscription: false)
+        @candidate8 = create(:candidate, archetype_score: -10) # not matched & subscribed
+        CandidateProfile.order("id asc").limit(1).offset(7).first.update(is_active_match_subscription: true)
+
+        expect(CandidateProfile.count).to eq(8)
+        expect(CandidateProfile.where(is_active_match_subscription: true).count).to eq(5)
+        expect(CandidateProfile.where(is_active_match_subscription: false).count).to eq(3)
+        expect {outside_sales_job.send_email}.to change { ActionMailer::Base.deliveries.count }.by(4)
+      end
+
+      it 'should not send email to unmatched candidates' do
+        @candidate1 = create(:candidate, archetype_score: -10)
+        CandidateProfile.first.update(is_active_match_subscription: true)
+        @candidate2 = create(:candidate, archetype_score: -0)
+        CandidateProfile.second.update(is_active_match_subscription: true)
+        
+        expect {outside_sales_job.send_email}.to change { ActionMailer::Base.deliveries.count }.by(0)
+      end
     end
 
-    it 'job matched alert should not work for expired job' do
-      inside_sales_job.update(status: Job.statuses['expired'])
-      @candidate8 = create(:candidate, archetype_score: 35) # no alert
-      CandidateProfile.first.update(is_active_match_subscription: true)
-      expect {inside_sales_job.send_email}.to change { ActionMailer::Base.deliveries.count }.by(0)
+    context "when job's function is Bizdiv" do
+      let(:business_developement) {create(:business_developement)} # low: -10, high: 70
+      let(:business_developement_job) {create(:job, state_id: state.id, employer_id: employer.id, job_function_id: business_developement.id, is_active: true, status: Job.statuses['enable'])}
+
+      it 'should send email to matched candidates who have made email subscription ON' do
+        @candidate1 = create(:candidate, archetype_score: -10) # matched but not subscribed
+        CandidateProfile.first.update(is_active_match_subscription: false)
+        @candidate2 = create(:candidate, archetype_score: 10) # matched but not subscribed
+        CandidateProfile.second.update(is_active_match_subscription: false)
+
+        @candidate3 = create(:candidate, archetype_score: -10) # matched & subscribed
+        CandidateProfile.third.update(is_active_match_subscription: true)
+        @candidate4 = create(:candidate, archetype_score: 70) # matched &  subscribed
+        CandidateProfile.fourth.update(is_active_match_subscription: true)
+        @candidate5 = create(:candidate, archetype_score: 0) # matched & subscribed
+        CandidateProfile.fifth.update(is_active_match_subscription: true)
+        @candidate6 = create(:candidate, archetype_score: 20) # matched & subscribed
+        CandidateProfile.order("id asc").limit(1).offset(5).first.update(is_active_match_subscription: true)
+
+        @candidate7 = create(:candidate, archetype_score: 75) # not matched & not subscribed
+        CandidateProfile.order("id asc").limit(1).offset(6).first.update(is_active_match_subscription: false)
+        @candidate8 = create(:candidate, archetype_score: -20) # not matched & subscribed
+        CandidateProfile.order("id asc").limit(1).offset(7).first.update(is_active_match_subscription: true)
+
+        expect(CandidateProfile.count).to eq(8)
+        expect(CandidateProfile.where(is_active_match_subscription: true).count).to eq(5)
+        expect(CandidateProfile.where(is_active_match_subscription: false).count).to eq(3)
+        expect {business_developement_job.send_email}.to change { ActionMailer::Base.deliveries.count }.by(4)
+      end
+
+      it 'should not send email to unmatched candidates' do
+        @candidate1 = create(:candidate, archetype_score: -15)
+        CandidateProfile.first.update(is_active_match_subscription: false)
+        @candidate2 = create(:candidate, archetype_score: 80)
+        CandidateProfile.second.update(is_active_match_subscription: true)
+        
+        expect {business_developement_job.send_email}.to change { ActionMailer::Base.deliveries.count }.by(0)
+      end
     end
 
-    it 'should return status 0 when success' do
-      expect(inside_sales_job.send_email).to eq(0)
+    context "when job's function is SalesManager" do
+      let(:sales_manager) {create(:sales_manager)} # low: -30, high: 70
+      let(:sales_manager_job) {create(:job, state_id: state.id, employer_id: employer.id, job_function_id: sales_manager.id, is_active: true, status: Job.statuses['enable'])}
+
+      it 'should send email to matched candidates who have made email subscription ON' do
+        @candidate1 = create(:candidate, archetype_score: -30) # matched but not subscribed
+        CandidateProfile.first.update(is_active_match_subscription: false)
+        @candidate2 = create(:candidate, archetype_score: 10) # matched but not subscribed
+        CandidateProfile.second.update(is_active_match_subscription: false)
+
+        @candidate3 = create(:candidate, archetype_score: -30) # matched & subscribed
+        CandidateProfile.third.update(is_active_match_subscription: true)
+        @candidate4 = create(:candidate, archetype_score: 70) # matched &  subscribed
+        CandidateProfile.fourth.update(is_active_match_subscription: true)
+        @candidate5 = create(:candidate, archetype_score: 0) # matched & subscribed
+        CandidateProfile.fifth.update(is_active_match_subscription: true)
+        @candidate6 = create(:candidate, archetype_score: 20) # matched & subscribed
+        CandidateProfile.order("id asc").limit(1).offset(5).first.update(is_active_match_subscription: true)
+
+        @candidate7 = create(:candidate, archetype_score: 75) # not matched & not subscribed
+        CandidateProfile.order("id asc").limit(1).offset(6).first.update(is_active_match_subscription: false)
+        @candidate8 = create(:candidate, archetype_score: -40) # not matched & subscribed
+        CandidateProfile.order("id asc").limit(1).offset(7).first.update(is_active_match_subscription: true)
+
+        expect(CandidateProfile.count).to eq(8)
+        expect(CandidateProfile.where(is_active_match_subscription: true).count).to eq(5)
+        expect(CandidateProfile.where(is_active_match_subscription: false).count).to eq(3)
+        expect {sales_manager_job.send_email}.to change { ActionMailer::Base.deliveries.count }.by(4)
+      end
+
+      it 'should not send email to unmatched candidates' do
+        @candidate1 = create(:candidate, archetype_score: -40)
+        CandidateProfile.first.update(is_active_match_subscription: false)
+        @candidate2 = create(:candidate, archetype_score: 80)
+        CandidateProfile.second.update(is_active_match_subscription: true)
+        
+        expect {sales_manager_job.send_email}.to change { ActionMailer::Base.deliveries.count }.by(0)
+      end
     end
 
-    it 'should not return status 500 when success' do
-      expect(inside_sales_job.send_email).not_to eq(500)
+    context "when job's function is SalesOperations" do
+      let(:sales_operations) {create(:sales_operations)} # low: -100, high: 10
+      let(:sales_operations_job) {create(:job, state_id: state.id, employer_id: employer.id, job_function_id: sales_operations.id, is_active: true, status: Job.statuses['enable'])}
+
+      it 'should send email to matched candidates who have made email subscription ON' do
+        @candidate1 = create(:candidate, archetype_score: -100) # matched but not subscribed
+        CandidateProfile.first.update(is_active_match_subscription: false)
+        @candidate2 = create(:candidate, archetype_score: 0) # matched but not subscribed
+        CandidateProfile.second.update(is_active_match_subscription: false)
+
+        @candidate3 = create(:candidate, archetype_score: -100) # matched & subscribed
+        CandidateProfile.third.update(is_active_match_subscription: true)
+        @candidate4 = create(:candidate, archetype_score: 0) # matched &  subscribed
+        CandidateProfile.fourth.update(is_active_match_subscription: true)
+        @candidate5 = create(:candidate, archetype_score: 10) # matched & subscribed
+        CandidateProfile.fifth.update(is_active_match_subscription: true)
+        @candidate6 = create(:candidate, archetype_score: 5) # matched & subscribed
+        CandidateProfile.order("id asc").limit(1).offset(5).first.update(is_active_match_subscription: true)
+
+        @candidate7 = create(:candidate, archetype_score: -110) # not matched & not subscribed
+        CandidateProfile.order("id asc").limit(1).offset(6).first.update(is_active_match_subscription: false)
+        @candidate8 = create(:candidate, archetype_score: 20) # not matched & subscribed
+        CandidateProfile.order("id asc").limit(1).offset(7).first.update(is_active_match_subscription: true)
+
+        expect(CandidateProfile.count).to eq(8)
+        expect(CandidateProfile.where(is_active_match_subscription: true).count).to eq(5)
+        expect(CandidateProfile.where(is_active_match_subscription: false).count).to eq(3)
+        expect {sales_operations_job.send_email}.to change { ActionMailer::Base.deliveries.count }.by(4)
+      end
+
+      it 'should not send email to unmatched candidates' do
+        @candidate1 = create(:candidate, archetype_score: -110)
+        CandidateProfile.first.update(is_active_match_subscription: false)
+        @candidate2 = create(:candidate, archetype_score: 20)
+        CandidateProfile.second.update(is_active_match_subscription: true)
+        
+        expect {sales_operations_job.send_email}.to change { ActionMailer::Base.deliveries.count }.by(0)
+      end
     end
 
-    it 'on success' do
-      inside_sales_job.send_email
-      expect(Job.count).to eq(1)
+    context "when job's function is Customer Service" do
+      let(:customer_service) {create(:customer_service)} # low: -100, high: 10
+      let(:customer_service_job) {create(:job, state_id: state.id, employer_id: employer.id, job_function_id: customer_service.id, is_active: true, status: Job.statuses['enable'])}
+
+      it 'should send email to matched candidates who have made email subscription ON' do
+        @candidate1 = create(:candidate, archetype_score: -100) # matched but not subscribed
+        CandidateProfile.first.update(is_active_match_subscription: false)
+        @candidate2 = create(:candidate, archetype_score: 0) # matched but not subscribed
+        CandidateProfile.second.update(is_active_match_subscription: false)
+
+        @candidate3 = create(:candidate, archetype_score: -100) # matched & subscribed
+        CandidateProfile.third.update(is_active_match_subscription: true)
+        @candidate4 = create(:candidate, archetype_score: 0) # matched &  subscribed
+        CandidateProfile.fourth.update(is_active_match_subscription: true)
+        @candidate5 = create(:candidate, archetype_score: 10) # matched & subscribed
+        CandidateProfile.fifth.update(is_active_match_subscription: true)
+        @candidate6 = create(:candidate, archetype_score: 5) # matched & subscribed
+        CandidateProfile.order("id asc").limit(1).offset(5).first.update(is_active_match_subscription: true)
+
+        @candidate7 = create(:candidate, archetype_score: -110) # not matched & not subscribed
+        CandidateProfile.order("id asc").limit(1).offset(6).first.update(is_active_match_subscription: false)
+        @candidate8 = create(:candidate, archetype_score: 20) # not matched & subscribed
+        CandidateProfile.order("id asc").limit(1).offset(7).first.update(is_active_match_subscription: true)
+
+        expect(CandidateProfile.count).to eq(8)
+        expect(CandidateProfile.where(is_active_match_subscription: true).count).to eq(5)
+        expect(CandidateProfile.where(is_active_match_subscription: false).count).to eq(3)
+        expect {customer_service_job.send_email}.to change { ActionMailer::Base.deliveries.count }.by(4)
+      end
+
+      it 'should not send email to unmatched candidates' do
+        @candidate1 = create(:candidate, archetype_score: -110)
+        CandidateProfile.first.update(is_active_match_subscription: false)
+        @candidate2 = create(:candidate, archetype_score: 20)
+        CandidateProfile.second.update(is_active_match_subscription: true)
+        
+        expect {customer_service_job.send_email}.to change { ActionMailer::Base.deliveries.count }.by(0)
+      end
+    end
+
+    context "when job's function is Account Manager" do
+      let(:account_manager) {create(:account_manager)} # low: -100, high: -11
+      let(:account_manager_job) {create(:job, state_id: state.id, employer_id: employer.id, job_function_id: account_manager.id, is_active: true, status: Job.statuses['enable'])}
+
+      it 'should send email to matched candidates who have made email subscription ON' do
+        @candidate1 = create(:candidate, archetype_score: -100) # matched but not subscribed
+        CandidateProfile.first.update(is_active_match_subscription: false)
+        @candidate2 = create(:candidate, archetype_score: -11) # matched but not subscribed
+        CandidateProfile.second.update(is_active_match_subscription: false)
+
+        @candidate3 = create(:candidate, archetype_score: -100) # matched & subscribed
+        CandidateProfile.third.update(is_active_match_subscription: true)
+        @candidate4 = create(:candidate, archetype_score: -50) # matched &  subscribed
+        CandidateProfile.fourth.update(is_active_match_subscription: true)
+        @candidate5 = create(:candidate, archetype_score: -65) # matched & subscribed
+        CandidateProfile.fifth.update(is_active_match_subscription: true)
+        @candidate6 = create(:candidate, archetype_score: -12) # matched & subscribed
+        CandidateProfile.order("id asc").limit(1).offset(5).first.update(is_active_match_subscription: true)
+
+        @candidate7 = create(:candidate, archetype_score: -110) # not matched & not subscribed
+        CandidateProfile.order("id asc").limit(1).offset(6).first.update(is_active_match_subscription: false)
+        @candidate8 = create(:candidate, archetype_score: 0) # not matched & subscribed
+        CandidateProfile.order("id asc").limit(1).offset(7).first.update(is_active_match_subscription: true)
+
+        expect(CandidateProfile.count).to eq(8)
+        expect(CandidateProfile.where(is_active_match_subscription: true).count).to eq(5)
+        expect(CandidateProfile.where(is_active_match_subscription: false).count).to eq(3)
+        expect {account_manager_job.send_email}.to change { ActionMailer::Base.deliveries.count }.by(4)
+      end
+
+      it 'should not send email to unmatched candidates' do
+        @candidate1 = create(:candidate, archetype_score: -110)
+        CandidateProfile.first.update(is_active_match_subscription: true)
+        @candidate2 = create(:candidate, archetype_score: 0)
+        CandidateProfile.second.update(is_active_match_subscription: false)
+        
+        expect {account_manager_job.send_email}.to change { ActionMailer::Base.deliveries.count }.by(0)
+      end
     end
   end
 
