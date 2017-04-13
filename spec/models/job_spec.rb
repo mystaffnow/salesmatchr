@@ -54,11 +54,11 @@ RSpec.describe Job do
     it {should have_many(:job_candidates).dependent(:destroy)}
     it {should have_many(:candidate_job_actions).dependent(:destroy)}
     it {should belong_to :job_function}
-    it {should have_one(:payment).dependent(:destroy)}
+    it {should have_many(:payments).dependent(:destroy)}
   end
 
   it 'should have enum status' do
-    expect(Job.statuses).to eq({"enable"=>0, "disable"=>1})
+    expect(Job.statuses).to eq({"enable"=>0, "expired"=>1})
   end
 
   it '#add_archetype_score .assign job function value to archetype scale' do
@@ -78,23 +78,25 @@ RSpec.describe Job do
     it 'should return job list which are active & matched to candidate' do
       @inside_sales = create(:inside_sales)
       @candidate = create(:candidate, archetype_score: 35)
-      @job1 = create(:job, job_function_id: @inside_sales.id)
+      @job1 = create(:job, job_function_id: @inside_sales.id, is_active: true, status: Job.statuses["enable"])
 
       @job_function1 = create(:outside_sales)
       @state1 = create(:state, name: 'Test')
-      @job2 = create(:job, job_function_id: @job_function1.id, state_id: @state1.id, is_active: false)
+      @job2 = create(:job, job_function_id: @job_function1.id, state_id: @state1.id, is_active: false, status: Job.statuses["enable"])
       expect(Job.job_matched_list(@candidate)).to eq([@job1])
     end
 
     it 'should return nil when job is inactive and disabled' do
       @inside_sales = create(:inside_sales)
       @candidate = create(:candidate, archetype_score: 35)
-      @job1 = create(:job, job_function_id: @inside_sales.id, is_active: false, status: Job.statuses["disable"])
+      @job1 = create(:job, job_function_id: @inside_sales.id, is_active: false, status: Job.statuses["expired"])
+      
       state = create(:state, name: 'Title 1')
-      @job = create(:job, state_id: state.id, job_function_id: @inside_sales.id)
+      @job = create(:job, state_id: state.id, job_function_id: @inside_sales.id, is_active: true, status: Job.statuses["enable"])
+      
       expect(Job.job_matched_list(@candidate)).to eq([@job])
       expect(Job.first.is_active).to be_falsy
-      expect(Job.first.status).to eq('disable')
+      expect(Job.first.status).to eq('expired')
       expect(Job.job_matched_list(@candidate)).not_to eq([@job1])
     end
   end
@@ -106,21 +108,38 @@ RSpec.describe Job do
     end
 
     it 'should return jobs list' do
-      @job = create(:job)
+      @job1 = create(:job, is_active: false, status: Job.statuses["enable"])
       @candidate = create(:candidate)
-      @candidate_job_action = create(:candidate_job_action, job_id: @job.id, candidate_id: @candidate.id)
-      expect(Job.job_viewed_list(@candidate)).to eq([@job])
+      @candidate_job_action = create(:candidate_job_action, job_id: @job1.id, candidate_id: @candidate.id)
+      
+      @inside_sales = create(:inside_sales)
+      @state1 = create(:state, name: 'Title 11')
+      @job2 = create(:job, state_id: @state1.id, job_function_id: @inside_sales.id, is_active: true, status: Job.statuses["expired"])
+      @candidate_job_action = create(:candidate_job_action, job_id: @job2.id, candidate_id: @candidate.id)
+
+      @outside_sales = create(:inside_sales, name: 'job function1')
+      @state2 = create(:state, name: 'Title 21')
+      @job3 = create(:job, state_id: @state2.id, job_function_id: @outside_sales.id, is_active: true, status: Job.statuses["enable"])
+      @candidate_job_action = create(:candidate_job_action, job_id: @job3.id, candidate_id: @candidate.id)
+
+      expect(Job.count).to eq(3)
+      expect(Job.job_viewed_list(@candidate)).to eq([@job3])
     end
 
-    it 'should return nil when job is inactive and disabled' do
+    it 'should return nil when job is inactive and expired' do
       @inside_sales = create(:inside_sales)
       @candidate = create(:candidate, archetype_score: 35)
-      @job1 = create(:job, job_function_id: @inside_sales.id, is_active: false, status: Job.statuses["disable"])
+      @job1 = create(:job, job_function_id: @inside_sales.id, is_active: false, status: Job.statuses["expired"])
+      @candidate_job_action = create(:candidate_job_action, job_id: @job1.id, candidate_id: @candidate.id)
+      
       state = create(:state, name: 'Title 1')
-      @job = create(:job, state_id: state.id, job_function_id: @inside_sales.id)
-      expect(Job.job_matched_list(@candidate)).to eq([@job])
+      @job = create(:job, state_id: state.id, job_function_id: @inside_sales.id, is_active: true, status: Job.statuses["enable"])
+      @candidate_job_action = create(:candidate_job_action, job_id: @job.id, candidate_id: @candidate.id)
+      
+      expect(Job.count).to eq(2)
+      expect(Job.job_viewed_list(@candidate)).to eq([@job])
       expect(Job.first.is_active).to be_falsy
-      expect(Job.first.status).to eq('disable')
+      expect(Job.first.status).to eq('expired')
       expect(Job.job_viewed_list(@candidate)).not_to eq([@job1])
     end
   end
@@ -133,11 +152,11 @@ RSpec.describe Job do
 
     it 'should return jobs list' do
       @job_function = create(:inside_sales)
-      @job = create(:job, job_function_id: @job_function.id)
+      @job = create(:job, job_function_id: @job_function.id, is_active: true, status: Job.statuses["enable"])
 
       @job_function1 = create(:outside_sales)
       @state1 = create(:state, name: 'Test')
-      @job1 = create(:job, job_function_id: @job_function1.id, state_id: @state1.id)
+      @job1 = create(:job, job_function_id: @job_function1.id, state_id: @state1.id, is_active: false, status: Job.statuses["disable"])
       
       @candidate = create(:candidate)
       
@@ -150,15 +169,17 @@ RSpec.describe Job do
       expect(Job.job_saved_list(@candidate)).to eq([@job])
     end
 
-    it 'should return nil when job is inactive and disabled' do
+    it 'should return nil when job is inactive and expired' do
       @inside_sales = create(:inside_sales)
       @candidate = create(:candidate, archetype_score: 35)
-      @job1 = create(:job, job_function_id: @inside_sales.id, is_active: false, status: Job.statuses["disable"])
+      @job1 = create(:job, job_function_id: @inside_sales.id, is_active: false, status: Job.statuses["expired"])
+      
       state = create(:state, name: 'Title 1')
-      @job = create(:job, state_id: state.id, job_function_id: @inside_sales.id)
+      @job = create(:job, state_id: state.id, job_function_id: @inside_sales.id, is_active: true, status: Job.statuses["enable"])
+      
       expect(Job.job_matched_list(@candidate)).to eq([@job])
       expect(Job.first.is_active).to be_falsy
-      expect(Job.first.status).to eq('disable')
+      expect(Job.first.status).to eq('expired')
       expect(Job.job_saved_list(@candidate)).not_to eq([@job1])
     end
   end

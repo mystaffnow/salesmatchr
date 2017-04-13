@@ -39,6 +39,8 @@ RSpec.describe Employer do
   describe "Association" do
     it {should have_one(:employer_profile).dependent(:destroy)}
     it {should have_many(:jobs).dependent(:destroy)}
+    it {should have_one(:customer).dependent(:destroy)}
+    it {should have_many(:payments).dependent(:destroy)}
   end
 
   it 'should build profile automatically' do

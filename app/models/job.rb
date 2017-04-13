@@ -123,7 +123,7 @@ class Job < ActiveRecord::Base
                               .where("candidate_profiles.is_active_match_subscription=true")
 
     candidates.map {|candidate| CandidateMailer.send_job_match(candidate, self).deliver_later}
-    return error_codes
+    return error_code
     
     rescue => e
       return error_code = 500

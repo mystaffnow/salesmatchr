@@ -18,7 +18,7 @@
   - @jobs.each do |job|
     .row
       .col-md-8
-        %h3= job.title
+        %h3= link_to job.title, job_path(job)
         %p= strip_tags(truncate(job.description, length: 600, omission: "...", escape: false))
       .col-md-4.job-actions
         = link_to "#", {class: 'btn btn-info',"data-target" => "#enable-job-#{job.id}", "data-toggle" => "modal", :type => "button"} do
