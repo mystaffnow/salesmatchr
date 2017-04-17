@@ -58,6 +58,12 @@ module Services
 				return false
 		end
 
+		# get card last4 digit
+		def get_card_last4(stripe_token)
+		 	tok = Stripe::Token.retrieve(stripe_token)
+			tok.card.last4
+		end
+
 		private
 
 		# stripe will deduct amount as per requested data
