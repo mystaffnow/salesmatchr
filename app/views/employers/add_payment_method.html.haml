@@ -3,14 +3,18 @@
     .account-header
       %h2 Add payment details
     .account-content
-      .text-center 
+      .text-center
       %hr
       - if submitted_payment_details?(current_employer)
-        %h4 You have already submitted payment details. You are ready to use our premium services.
+        %p You have already submitted payment details with following information.
+        %p Your card is *********#{current_employer.customer.last4} which is registered and ready to use our premium services. Thank you!
       - else
         = form_for @customer, url: employers_payment_path, :role=>"form", :html => {:id => "new_user"} do |f|
+          - if @customer.errors.any?
+            - @customer.errors.full_messages.each do |message|
+              %div.alert.alert-danger
+                = message
           = f.hidden_field :stripe_card_token
-
           #c1c-fields
             #stripe_error.text-danger.alert.alert-danger
             .field
