@@ -14,9 +14,11 @@ RSpec.describe Services::Pay do
   	obj = Services::Pay.new(employer, job, stripe_card_token)
   	expect(obj.stripe_card_token).to eq(stripe_card_token)
     stripe_cus = obj.create_stripe_customer
+    card_last4 = obj.get_card_last4(stripe_card_token)
     create(:customer, employer_id: employer.id,
                       stripe_customer_id: stripe_cus.id,
-                      stripe_card_token: stripe_card_token)
+                      stripe_card_token: stripe_card_token,
+                      last4: card_last4)
   	expect(obj.payment_processed?).to be_truthy
     expect(Customer.count).to eq(1)
     expect(Customer.first.stripe_card_token).to eq(obj.stripe_card_token)
@@ -27,6 +29,7 @@ RSpec.describe Services::Pay do
     expect(Payment.first.amount).to eq("#{JOB_POSTING_FEE}".to_i)
     expect(Payment.first.stripe_charge_id).not_to be_nil
     expect(Payment.first.stripe_customer_id).to eq(stripe_cus.id)
+    expect(Customer.first.last4).not_to be_nil
   end
 
   it 'should return nil' do

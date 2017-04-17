@@ -237,6 +237,7 @@ RSpec.describe EmployersController, :type => :controller do
         expect(Customer.first.employer_id).to eq(Employer.first.id)
         expect(Customer.first.stripe_card_token).not_to be_nil
         expect(Customer.first.stripe_customer_id).not_to be_nil
+        expect(Customer.first.last4).not_to be_nil
         expect(response).to redirect_to(employers_payment_verify_path)
       end
 
