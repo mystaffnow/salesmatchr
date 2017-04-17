@@ -51,6 +51,11 @@ class EmployersController < ApplicationController
     if stripe_customer.present?
       stripe_customer_id = stripe_customer.id
       @customer.stripe_customer_id = stripe_customer_id
+
+      # save card's last 4 digit
+      card_last4 = pay.get_card_last4(@customer.stripe_card_token)
+      @customer.last4 = card_last4
+
       if @customer.save
         redirect_to employers_payment_verify_path, notice: 'You have successfully added your payment information!'
       else
