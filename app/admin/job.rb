@@ -80,13 +80,15 @@ ActiveAdmin.register Job do
 	  end
 
     panel 'Job Payment' do
-	    attributes_table_for job.payment do
-		  	row :employer_id
-		  	row :amount
-		  	row :stripe_card_token
-		  	row :stripe_customer_id
-		  	row :stripe_charge_id
-		  	row :status
+	    table_for job.payments do
+		  	column :employer_id do |obj|
+          obj.employer.present? ? obj.employer.name : ''
+        end
+		  	column :amount
+		  	# column :stripe_card_token
+		  	column :stripe_customer_id
+		  	column :stripe_charge_id
+		  	column :status
 		  end
 	  end
 
