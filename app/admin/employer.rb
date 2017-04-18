@@ -82,6 +82,15 @@ ActiveAdmin.register Employer do
     	end
     end
 
+    panel 'customer' do
+      attributes_table_for emp.customer do
+        row :employer_id
+        row :stripe_card_token
+        row :stripe_customer_id
+        row :last4
+      end
+    end
+
     panel 'payments' do
       table_for emp.payments do |obj|
         column :id
