@@ -81,6 +81,23 @@ ActiveAdmin.register Employer do
         column :activated_at
     	end
     end
+
+    panel 'payments' do
+      table_for emp.payments do |obj|
+        column :id
+        column :employer_id do
+          obj.employer.present? ? obj.employer.name : nil
+        end
+        column :job_id do |jb|
+          jb.job.present? ? jb.job.title : nil
+        end
+        column :amount
+        column :stripe_customer_id
+        column :stripe_charge_id
+        column :status
+        column :customer_id
+      end
+    end
   end
 
   csv do |employer|
