@@ -8,6 +8,7 @@
 #  stripe_customer_id :string
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
+#  last4              :integer
 #
 
 FactoryGirl.define do

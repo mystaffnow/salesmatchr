@@ -8,6 +8,7 @@
 #  stripe_customer_id :string
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
+#  last4              :integer
 #
 
 class Customer < ActiveRecord::Base
@@ -15,6 +16,6 @@ class Customer < ActiveRecord::Base
   belongs_to :employer
 
   # validates
-  validates :employer_id, :stripe_card_token, :stripe_customer_id, presence: true
+  validates :employer_id, :stripe_card_token, :stripe_customer_id, :last4, presence: true
   validates :employer_id, uniqueness: true
 end

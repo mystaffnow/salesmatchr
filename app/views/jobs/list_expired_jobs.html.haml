@@ -37,8 +37,9 @@
             %p
               = strip_tags(truncate(job.description, length: 600, omission: "...", escape: false))
             %hr
-            %p By clicking on "Pay and submit" button our system will automatically deduct $#{JOB_POSTING_FEE} to enable this job for next 30 days. Click on "Cancel" button to return back.
-            %p 
+
+            %p Your card last four digit is: #{@customer.last4}. By clicking on "Pay and submit" button our system will automatically deduct $#{JOB_POSTING_FEE} from this card to enable this job for next 30 days. Click on "Cancel" button to return back.
+            %p
 
             %hr
             
