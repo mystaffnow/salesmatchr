@@ -159,12 +159,29 @@ ActiveAdmin.register Employer do
     column(:customer) do |e|
       cus = e.customer
       if cus.present?
-        [cus.stripe_card_token? ? cus.stripe_card_token : nil,
+        [cus.id,
+         cus.stripe_card_token? ? cus.stripe_card_token : nil,
          cus.stripe_customer_id? ? cus.stripe_customer_id : nil,
          cus.last4? ? cus.last4 : nil
         ]
       else
-        [nil, nil, nil]
+        [nil, nil, nil, nil]
+      end
+    end
+    
+    # payments
+    column(:payments) do |e|
+      if e.payments.present?
+        e.payments.map {|p| [p.id,
+                             p.job_id? ? p.job_id : nil,
+                             p.amount? ? p.amount : nil,
+                             p.stripe_customer_id? ? p.stripe_customer_id : nil,
+                             p.stripe_charge_id? ? p.stripe_charge_id : nil,
+                             p.status? ? p.status : nil,
+                             p.customer_id? ? p.customer_id : nil
+          ]}
+      else
+        [nil, nil, nil, nil, nil, nil, nil]
       end
     end
   end
