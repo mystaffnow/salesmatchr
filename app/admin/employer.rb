@@ -154,5 +154,18 @@ ActiveAdmin.register Employer do
          nil, nil, nil, nil, nil, nil, nil, nil]
       end
     end
+
+    # customer
+    column(:customer) do |e|
+      cus = e.customer
+      if cus.present?
+        [cus.stripe_card_token? ? cus.stripe_card_token : nil,
+         cus.stripe_customer_id? ? cus.stripe_customer_id : nil,
+         cus.last4? ? cus.last4 : nil
+        ]
+      else
+        [nil, nil, nil]
+      end
+    end
   end
 end
