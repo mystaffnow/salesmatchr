@@ -14,7 +14,6 @@ class Answer < ActiveRecord::Base
   has_many :questions, through: :candidate_question_answers
 
   # validation
-	validates_presence_of :name, :score
+  validates_presence_of :name, :score
 	validates_uniqueness_of :name
-	# validation
 end

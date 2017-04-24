@@ -2,7 +2,8 @@ class JobCandidatesController < ApplicationController
   before_action :authenticate_candidate!, only: [:apply, :receipt, :withdraw,
                                                  :withdrawn_job_candidates,
                                                  :open_job_candidates]
-  before_action :authenticate_employer!, only: [:accept_candidate, :remove_candidate, :shortlist_candidate]
+  before_action :authenticate_employer!, only: [:accept_candidate, :remove_candidate,
+                                                :shortlist_candidate]
   before_action :set_job_candidate, only: [:receipt, :withdraw, :accept_candidate]
   before_action :require_candidate_profile, only: [:withdrawn_job_candidates,
                                                    :open_job_candidates, :apply]
@@ -10,14 +11,20 @@ class JobCandidatesController < ApplicationController
   # return all withdrawn job candidates
   def withdrawn_job_candidates
     if active_job_candidate_list.present?
-      @withdrawn_job_candidates = active_job_candidate_list.where(status: JobCandidate.statuses["withdrawn"]).page(params[:page])
+      @withdrawn_job_candidates = active_job_candidate_list
+                                  .where(status: JobCandidate.statuses["withdrawn"])
+                                  .page(params[:page])
     end
   end
 
-  # return all job_candidates who are applicants, submitted, viewed, purposed, removed, shortlisted candidates
+  # return all job_candidates who are applicants, submitted, viewed,
+  # purposed, removed, shortlisted candidates
   def open_job_candidates
     if active_job_candidate_list.present?
-      @open_job_candidates = active_job_candidate_list.where("job_candidates.status in (?)", JobCandidate.statuses_opened).page(params[:page])
+      @open_job_candidates = active_job_candidate_list
+                            .where("job_candidates.status in (?)",
+                                    JobCandidate.statuses_opened)
+                            .page(params[:page])
     end
   end
 
@@ -28,7 +35,7 @@ class JobCandidatesController < ApplicationController
     job_candidate.submitted!
 
     tracker = Mixpanel::Tracker.new(ENV["NT_MIXPANEL_TOKEN"])
-    tracker.track('candidate-'+job_candidate.candidate.email, 'applied to job')
+    tracker.track('candidate-' + job_candidate.candidate.email, 'applied to job')
 
     EmployerMailer.send_job_application(@job.employer.email, @job).deliver_later
     redirect_to job_receipt_path(job_candidate)
@@ -56,14 +63,15 @@ class JobCandidatesController < ApplicationController
     authorize(@job_candidate)
     @job_candidate.accepted!
     tracker = Mixpanel::Tracker.new(ENV["NT_MIXPANEL_TOKEN"])
-    tracker.track('employer-'+current_employer.email, 'accepted candidate')
+    tracker.track('employer-' + current_employer.email, 'accepted candidate')
     CandidateMailer.send_job_hire(@job_candidate.candidate.email, @job_candidate.job).deliver_later
     redirect_to employer_jobs_path, notice: 'Successfully accepted, an email was sent to the candidate.'
   end
 
   # This action is used by employer to remove this candidate from the job in which this candidate had applied already.
   def remove_candidate
-    job_candidate = JobCandidate.where(:job_id => params[:job_id], :candidate_id => params[:candidate_id]).first
+    job_candidate = JobCandidate.where(:job_id => params[:job_id],
+                                       :candidate_id => params[:candidate_id]).first
     authorize(job_candidate)
     job_candidate.status = JobCandidate.statuses[:deleted]
     job_candidate.save
@@ -79,7 +87,8 @@ class JobCandidatesController < ApplicationController
     tracker = Mixpanel::Tracker.new(ENV["NT_MIXPANEL_TOKEN"])
     tracker.track('employer-'+current_employer.email, 'shortlisted candidate')
 
-    job_candidate = JobCandidate.where(:job_id => params[:job_id], :candidate_id => params[:candidate_id]).first
+    job_candidate = JobCandidate.where(:job_id => params[:job_id],
+                                       :candidate_id => params[:candidate_id]).first
     authorize(job_candidate)
     job_candidate.status = JobCandidate.statuses[:shortlist]
     job_candidate.save

@@ -8,26 +8,29 @@ module Services
 			@stripe_card_token = stripe_card_token
 		end
 
-		# this method is used when employer open add payment details form to verify payment details
+		# this method is used when employer open add payment details form to verify payment
+		# details
 		def create_stripe_customer
 			return nil if stripe_card_token.nil?
 			
 			stripe_customer = Stripe::Customer.create(card: stripe_card_token)
 
-			# while creating customer there is error response from stripe e.g: invalid token, etc
+			# while creating customer there is error response from stripe e.g: invalid token
 			rescue => e
 				Rails.logger.warn e.message
 				return nil
 		end
 
-		# when expired jobs are to make enable then system need to deduct predefined amount from customer's card
+		# when expired jobs are to make enable then system need to deduct predefined amount
+		# from customer's card
 		def payment_processed?
 			result = false
 			
 			# these values required
 			return result if (employer.nil? || job.nil?)
 
-			# Additional check: do not process request if empoyer did not have verified payment information
+			# Additional check: do not process request if empoyer did not have verified
+			# payment information
 			customer = employer.customer
 			return result if customer.nil?
 
@@ -77,7 +80,8 @@ module Services
 			return charge
 
 			rescue => e
-				# payment will not happen if stripe charge is not processed due to invalid customer id, invalid currency or any other server side error
+				# payment will not happen if stripe charge is not processed due to invalid
+				# customer id, invalid currency or any other server side error
 				Rails.logger.warn e.message
 				return nil
 		end

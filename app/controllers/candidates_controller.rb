@@ -1,12 +1,12 @@
 class CandidatesController < ApplicationController
-  skip_before_filter :check_candidate, only: [:archetype, :update_archetype, :update, :incognito, :subscription]
+  skip_before_filter :check_candidate, only: [:archetype, :update_archetype, :update,
+                                              :incognito, :subscription]
   before_action :authenticate_candidate!, only: [:archetype, :account, :update,
                                                  :update_archetype, :archetype_result,
                                                  :incognito, :subscription]
   # submit archetype
   # only signed_in candidate access this
   def archetype
-
   end
 
   # view profile
@@ -36,7 +36,8 @@ class CandidatesController < ApplicationController
     respond_to do |format|
       if current_candidate.update(candidate_params)
         current_candidate.save
-        format.html { redirect_to candidates_profile_path(current_candidate), notice: 'Profile was successfully updated.' }
+        format.html { redirect_to candidates_profile_path(current_candidate),
+                      notice: 'Profile was successfully updated.' }
       else
         format.html { render :account }
       end
@@ -51,7 +52,12 @@ class CandidatesController < ApplicationController
 
     respond_to do |format|
       if current_candidate.update(candidate_params)
-        current_candidate.archetype_score = CandidateQuestionAnswer.joins(:answer).where("candidate_question_answers.candidate_id = ?",current_candidate.id).sum :"answers.score"
+        current_candidate.archetype_score = CandidateQuestionAnswer
+                                            .joins(:answer)
+                                            .where("candidate_question_answers
+                                                    .candidate_id = ?",
+                                                    current_candidate.id)
+                                            .sum :"answers.score"
         current_candidate.save
         format.html { redirect_to candidates_archetype_result_path }
       else
@@ -92,15 +98,18 @@ class CandidatesController < ApplicationController
   private
     # Never trust parameters from the scary internet, only allow the white list through.
     def candidate_params
-      params.require(:candidate).permit(:year_experience_id, :archetype_score, :first_name, :last_name,
-                                        candidate_profile_attributes: [:id, :avatar, :is_incognito, 
-                                                            :zip, :city, :state_id, 
-                                                            :ziggeo_token, :education_level_id], 
-                                        :experiences_attributes => [:id, :position, :company,
-                                         :start_date, :end_date, :description, :is_sales,
-                                          :sales_type_id, :is_current, :_destroy], educations_attributes: [:id,
-                                           :college_id, :college_other, :education_level_id,
-                                            :description, :_destroy], candidate_question_answers_attributes: [:question_id, 
+      params.require(:candidate)
+            .permit(:year_experience_id, :archetype_score, :first_name, :last_name,
+                    candidate_profile_attributes: [:id, :avatar, :is_incognito, 
+                                                   :zip, :city, :state_id, :ziggeo_token,
+                                                   :education_level_id], 
+                                        :experiences_attributes => [:id, :position,
+                                        :company, :start_date, :end_date, :description,
+                                        :is_sales, :sales_type_id, :is_current, :_destroy],
+                                        educations_attributes: [:id, :college_id,
+                                          :college_other, :education_level_id, :description,
+                                          :_destroy],
+                                        candidate_question_answers_attributes: [:question_id,
                                               :id, :answer_id] )
     end
 end

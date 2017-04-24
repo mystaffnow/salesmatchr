@@ -11,9 +11,9 @@ class CandidateProfilePolicy < ApplicationPolicy
 	# ToDo: Testcase is remaining to modify
 	def profile? 
 		case user.class.name.to_s
-			when "Candidate"
+			when 'Candidate'
 				user.is_owner_of?(profile) || (profile.is_incognito == false) 
-			when "Employer"
+			when 'Employer'
 				candidate_has_applied_employers_job?(profile, user) ||
 				(profile.is_incognito == false)
 			else
