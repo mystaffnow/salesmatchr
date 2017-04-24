@@ -60,6 +60,8 @@ group :development, :test do
 
   # static code, security, vulnerability analyser
   gem 'brakeman', :require => false
+  # static code analyzer
+  gem 'rubocop', require: false
 end
 
 gem 'rmagick', '~> 2.16.0'
