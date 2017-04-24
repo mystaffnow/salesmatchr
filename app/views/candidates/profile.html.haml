@@ -9,7 +9,7 @@
           %h2= @candidate.name
           %h4= get_archetype_from_score @candidate.archetype_score
           %p
-            = (get_archetype_description_from_score @candidate.archetype_score).html_safe
+            = get_archetype_description_from_score @candidate.archetype_score#.html_safe
             %br
             %br
             = link_to "Edit Profile", candidates_account_path, class: "btn btn-default"
