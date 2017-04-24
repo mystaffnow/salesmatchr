@@ -60,35 +60,35 @@ module ApplicationHelper
       return "Your SalesMatchr™ assessment shows that you are an Aggressive Hunter. <br/>An
               Aggressive Hunter is constantly burning through tasks and objectives, but
               sometimes he fails to think through all the details. Aggressive Hunters are
-              CLOSERS, inside or outside - enough said!"
+              CLOSERS, inside or outside - enough said!".html_safe
     elsif score > 31
       return 'Your SalesMatchr™ assessment shows that you are a Relaxed Hunter. <br/>A Relaxed
               Hunter quickly completes tasks and objectives and is collaborative in nature and
               thrives in both sales "hunting" and Account Management roles, but can fall short
-              with the little details since they are more hungry for the thrill of the hunt!'
+              with the little details since they are more hungry for the thrill of the hunt!'.html_safe
     elsif score > 11
       return "Your SalesMatchr™ assessment shows that you are an Aggressive Fisherman. <br/>An
               Aggressive Fisherman likes to tackle objectives head on, but is willing to sit
-              down and think things through before throwing a wide net to catch new Leads."
+              down and think things through before throwing a wide net to catch new Leads.".html_safe
     elsif score > -10
       return "Your SalesMatchr™ assessment shows that you are a Balanced Fisherman. <br/>A
               Balanced Fisherman likes to spend some time planning and strategizing, and then
-              efficiently carries out the work at hand."
+              efficiently carries out the work at hand.".html_safe
     elsif score > -30
       return "Your SalesMatchr™ assessment shows that you are a Relaxed Fisherman. <br/>A Relaxed
               Fisherman likes to sit down and think things through, but is not afraid to work fast
               when needed.  You thrive in business development type rolls where building long term
-              relationships is crucial."
+              relationships is crucial.".html_safe
     elsif score > -70
       return "Your SalesMatchr™ assessment shows that you are an Aggressive Farmer. <br/>An
               Aggressive Farmer strengths lie in developing and maintaining relationships with
               customers.  You earn your Customer's trust by making sure all the details are
-              handled well and that they're happy!"
+              handled well and that they're happy!".html_safe
     else
       return "Your SalesMatchr™ assessment shows that you are a Relaxed Farmer. <br/>A Relaxed
               Farmer works slowly and carefully, putting plenty of thought into every decision.
               You thrive in account management and business development positions and have great
-              relationships"
+              relationships".html_safe
     end
   end
 
