@@ -62,6 +62,12 @@ group :development, :test do
   gem 'brakeman', :require => false
   # static code analyzer
   gem 'rubocop', require: false
+  # Ruby code quality reporter
+  gem "rubycritic", :require => false
+
+
+  gem 'execjs'
+  gem 'therubyracer'
 end
 
 gem 'rmagick', '~> 2.16.0'
