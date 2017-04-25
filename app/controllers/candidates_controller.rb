@@ -52,12 +52,7 @@ class CandidatesController < ApplicationController
 
     respond_to do |format|
       if current_candidate.update(candidate_params)
-        current_candidate.archetype_score = CandidateQuestionAnswer
-                                            .joins(:answer)
-                                            .where("candidate_question_answers
-                                                    .candidate_id = ?",
-                                                    current_candidate.id)
-                                            .sum :"answers.score"
+        current_candidate.archetype_score = CandidateQuestionAnswer.calculate_archetype_score(current_candidate)
         current_candidate.save
         format.html { redirect_to candidates_archetype_result_path }
       else
@@ -94,15 +89,15 @@ class CandidatesController < ApplicationController
       format.js {render layout: false}
     end
   end
-  
+
   private
     # Never trust parameters from the scary internet, only allow the white list through.
     def candidate_params
       params.require(:candidate)
             .permit(:year_experience_id, :archetype_score, :first_name, :last_name,
-                    candidate_profile_attributes: [:id, :avatar, :is_incognito, 
+                    candidate_profile_attributes: [:id, :avatar, :is_incognito,
                                                    :zip, :city, :state_id, :ziggeo_token,
-                                                   :education_level_id], 
+                                                   :education_level_id],
                                         :experiences_attributes => [:id, :position,
                                         :company, :start_date, :end_date, :description,
                                         :is_sales, :sales_type_id, :is_current, :_destroy],
