@@ -13,7 +13,7 @@ ActiveAdmin.register Job do
 #   permitted
 # end
   actions :all, :except => [:new, :create, :edit, :update]
-  
+
   filter :title
   filter :city
 
@@ -154,7 +154,7 @@ ActiveAdmin.register Job do
 		# column(:amount) do |j|
 		# 	payment = j.payment
 		# 	if payment.present?
-		# 		payment.amount? ? payment.amount : nil 
+		# 		payment.amount? ? payment.amount : nil
 		# 	else
 		# 		nil
 		# 	end
@@ -163,7 +163,7 @@ ActiveAdmin.register Job do
 		# column(:stripe_card_token) do |j|
 		# 	payment = j.payment
 		# 	if payment.present?
-		# 		payment.stripe_card_token? ? payment.stripe_card_token : nil 
+		# 		payment.stripe_card_token? ? payment.stripe_card_token : nil
 		# 	else
 		# 		nil
 		# 	end
@@ -172,7 +172,7 @@ ActiveAdmin.register Job do
 		# column(:stripe_customer_id) do |j|
 		# 	payment = j.payment
 		# 	if payment.present?
-		# 		payment.stripe_customer_id? ? payment.stripe_customer_id : nil 
+		# 		payment.stripe_customer_id? ? payment.stripe_customer_id : nil
 		# 	else
 		# 		nil
 		# 	end
@@ -181,7 +181,7 @@ ActiveAdmin.register Job do
 		# column(:stripe_charge_id) do |j|
 		# 	payment = j.payment
 		# 	if payment.present?
-		# 		payment.stripe_charge_id? ? payment.stripe_charge_id : nil 
+		# 		payment.stripe_charge_id? ? payment.stripe_charge_id : nil
 		# 	else
 		# 		nil
 		# 	end
@@ -190,7 +190,7 @@ ActiveAdmin.register Job do
 		# column(:status) do |j|
 		# 	payment = j.payment
 		# 	if payment.present?
-		# 		payment.status 
+		# 		payment.status
 		# 	else
 		# 		nil
 		# 	end
