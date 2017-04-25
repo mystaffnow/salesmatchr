@@ -65,6 +65,7 @@ group :development, :test do
   # Ruby code quality reporter
   gem "rubycritic", :require => false
 
+  gem "rails_best_practices"
 
   gem 'execjs'
   gem 'therubyracer'

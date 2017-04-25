@@ -102,6 +102,8 @@ GEM
       activesupport (>= 3.0)
     cocaine (0.5.7)
       climate_control (>= 0.0.3, < 1.0)
+    code_analyzer (0.4.7)
+      sexp_processor
     codeclimate-engine-rb (0.3.1)
       virtus (~> 1.0)
     coderay (1.1.1)
@@ -277,6 +279,14 @@ GEM
     rails_12factor (0.0.3)
       rails_serve_static_assets
       rails_stdout_logging
+    rails_best_practices (1.18.0)
+      activesupport
+      code_analyzer (>= 0.4.3)
+      erubis
+      i18n
+      json
+      require_all
+      ruby-progressbar
     rails_serve_static_assets (0.0.5)
     rails_stdout_logging (0.0.5)
     railties (4.2.0)
@@ -300,6 +310,7 @@ GEM
       private_attr (~> 1.1)
       rainbow (~> 2.0)
     ref (2.0.0)
+    require_all (1.4.0)
     responders (2.1.0)
       railties (>= 4.2.0, < 5)
     rest-client (1.7.3)
@@ -436,6 +447,7 @@ DEPENDENCIES
   pundit
   rails (= 4.2.0)
   rails_12factor
+  rails_best_practices
   rmagick (~> 2.16.0)
   rolify (~> 3.5.2)
   rspec-rails (~> 3.5)
