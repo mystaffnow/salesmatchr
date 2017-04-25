@@ -1,7 +1,6 @@
 Rails.application.routes.draw do
-  get 'home/index'
-
   devise_for :admin_users, ActiveAdmin::Devise.config
+  
   ActiveAdmin.routes(self)
 
   resources :candidate_job_actions, only: [
@@ -33,7 +32,7 @@ Rails.application.routes.draw do
                                     ]
 
   devise_for :employers, :controllers => { :sessions => "employers/sessions", :registrations => "employers/registrations"}
-  devise_for :candidates, :controllers => { :sessions => "candidates/sessions", :omniauth_callbacks => "candidates/omniauth_callbacks", :registrations => "candidates/registrations"}
+  devise_for :candidates, :controllers => { :sessions => "candidates/sessions", :registrations => "candidates/registrations"}
 
   # Routes for candidates
   get 'candidates/account' => 'candidates#account'
