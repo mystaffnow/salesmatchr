@@ -92,21 +92,22 @@ module ApplicationHelper
     end
   end
 
-  def format_date(date)
-    if date.present?
-      date.strftime('%B %Y')
-    else
-      ''
-    end
-  end
+  # Following methods are unused meanwhile
+  # def format_date(date)
+  #   if date.present?
+  #     date.strftime('%B %Y')
+  #   else
+  #     ''
+  #   end
+  # end
 
-  def format_date_time(date_time)
-    date_time.strftime('\ %I:%M%P')
-  end
+  # def format_date_time(date_time)
+  #   date_time.strftime('\ %I:%M%P')
+  # end
 
-  def format_time(date)
-    date.strftime('%I:%M%P')
-  end
+  # def format_time(date)
+  #   date.strftime('%I:%M%P')
+  # end
 
   def get_location(resource)
     if resource.state.present?
@@ -116,9 +117,9 @@ module ApplicationHelper
     end
   end
 
-  def get_status_key_by_value(value)
-    JobCandidate.statuses.keys[value]
-  end
+  # def get_status_key_by_value(value)
+  #   JobCandidate.statuses.keys[value]
+  # end
 
   # check if candidate_job is saved or just viewed
   def job_candidate_saved?(candidate_id, job_id)
