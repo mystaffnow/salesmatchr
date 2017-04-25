@@ -92,15 +92,15 @@ module ApplicationHelper
     end
   end
 
-  # Following methods are unused meanwhile
-  # def format_date(date)
-  #   if date.present?
-  #     date.strftime('%B %Y')
-  #   else
-  #     ''
-  #   end
-  # end
+  def format_date(date)
+    if date.present?
+      date.strftime('%B %Y')
+    else
+      ''
+    end
+  end
 
+  # Following methods are unused meanwhile
   # def format_date_time(date_time)
   #   date_time.strftime('\ %I:%M%P')
   # end
