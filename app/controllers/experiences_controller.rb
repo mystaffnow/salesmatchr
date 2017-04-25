@@ -15,7 +15,7 @@ class ExperiencesController < ApplicationController
   end
 
   private
-  
+
   # Use callbacks to share common setup or constraints between actions.
   def set_experience
     @experience = Experience.find(params[:id])

@@ -71,12 +71,11 @@ class JobsController < ApplicationController
         tracker.track('employer-' + @job.employer.email, 'job created')
         format.html { redirect_to employer_archive_jobs_path, notice: 'Job was successfully created.' }
         # payment_service = Services::Pay.new(current_employer, @job, stripe_card_token)
-        
         # ps = payment_service.process_payment
 
         # if ps.nil? # if there is an error while payment
-        #   @job.destroy 
-        #   format.html { redirect_to employer_jobs_path, notice: 'Oops! there is some issue while process payment, please contact techical support.' }        
+        #   @job.destroy
+        #   format.html { redirect_to employer_jobs_path, notice: 'Oops! there is some issue while process payment, please contact techical support.' }
         # else
         #   result = @job.send_email_to_matched_candidates
         #   case result
@@ -107,11 +106,13 @@ class JobsController < ApplicationController
   def update
     authorize(@job)
     job_function = JobFunction.find(job_params[:job_function_id])
-    @job.archetype_low = job_function.low
-    @job.archetype_high = job_function.high
-    @job.job_function_id = job_function.id
+    # @job.archetype_low = job_function.low
+    # @job.archetype_high = job_function.high
+    # @job.job_function_id = job_function.id
     respond_to do |format|
-      if @job.update(job_params)
+      if @job.update(job_params.merge(archetype_low: job_function.low,
+                                      archetype_high: job_function.high,
+                                      job_function_id: job_function.id))
         format.html { redirect_to employer_jobs_path, notice: 'Job was successfully updated.' }
         format.json { render :show, status: :ok, location: @job }
       else
@@ -215,7 +216,7 @@ class JobsController < ApplicationController
     @inactive_job_count = Job.enable.where(employer_id: current_employer.id, is_active: false ).count
     @customer = current_employer.customer
   end
-  
+
   # toggle is_active
   def inactivate_job
     authorize @job
@@ -246,11 +247,11 @@ class JobsController < ApplicationController
   # Todo: add test cases
   def pay_to_enable_expired_job
     authorize(@job)
-    
+
     customer = current_employer.customer
     # return if employer does not verify payment method
     service_pay = Services::Pay.new(current_employer, @job)
-    
+
     if service_pay.payment_processed?
       # now payment is successfully happened, so enable the job,
       # then send email to matched candidates
@@ -280,7 +281,7 @@ class JobsController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def job_params
     params.require(:job).permit(:distance, :job_function_id,:employer_id, :city, :state_id,
-                                :salary_low, :salary_high, :zip, :is_remote, :title, :description, 
+                                :salary_low, :salary_high, :zip, :is_remote, :title, :description,
                                 :is_active, :experience_years#, :stripe_token,
                                 # :payment_attributes => [
                                 #   :id, :stripe_card_token

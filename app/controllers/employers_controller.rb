@@ -37,7 +37,7 @@ class EmployersController < ApplicationController
     @profile = @employer.try(:employer_profile)
   end
 
-  # Employer has to add valid payment information to use services like making job active  
+  # Employer has to add valid payment information to use services like making job active
   # current_employer can access this
   def add_payment_method
     @customer = Customer.new
@@ -45,10 +45,10 @@ class EmployersController < ApplicationController
 
   def insert_payment_method
     @customer = Customer.new(customer_params.merge(employer_id: current_employer.id))
-    
+
     pay = Services::Pay.new(current_employer, nil, @customer.stripe_card_token)
     stripe_customer = pay.create_stripe_customer
-    
+
     if stripe_customer.present?
       stripe_customer_id = stripe_customer.id
       @customer.stripe_customer_id = stripe_customer_id
@@ -68,7 +68,7 @@ class EmployersController < ApplicationController
                   notice: 'Oops! we cannot process your request, please contact techical support.'
     end
   end
-  
+
   private
 
   # Never trust parameters from the scary internet, only allow the white list through.
