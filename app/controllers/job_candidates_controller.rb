@@ -54,7 +54,7 @@ class JobCandidatesController < ApplicationController
     authorize @job_candidate
     @job_candidate.withdrawn!
     EmployerMailer.send_job_withdrawn(@job_candidate.job.employer.email, @job_candidate.job).deliver_later
-    redirect_to job_candidates_path, notice: 'Successfully withdrawn.'
+    redirect_to my_jobs_path, notice: 'Successfully withdrawn.'
   end
 
   # signed_in employer is required
