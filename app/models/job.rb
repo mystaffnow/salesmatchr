@@ -17,7 +17,6 @@
 #  job_function_id  :integer
 #  latitude         :float
 #  longitude        :float
-#  stripe_token     :string
 #  experience_years :integer
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
