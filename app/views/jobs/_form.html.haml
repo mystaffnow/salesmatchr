@@ -15,12 +15,12 @@
     %label
       Minimum Years of Experience
     %br
-    = f.select(:experience_years, options_for_select(0..25),  {:class => 'form-control'})
+    = f.select(:experience_years, options_for_select(0..25, selected: f.object.experience_years),  {:class => 'form-control'})
   .field
     = f.label "Salary range (Drag each triangle to create the range for this position)"
     %br
     %input#salaries{:'data-slider-handle' => 'triangle'}
-    = f.hidden_field :salary_low, id: 'salary_low'
+    = f.hidden_field :salary_low,id: 'salary_low'
     = f.hidden_field :salary_high, id: 'salary_high'
     %br
     %br
@@ -39,36 +39,16 @@
     %h5 Is this a telecommuting position?
     Yes
     = f.check_box :is_remote, style: 'width:15px'
-    /   %br
-    /   %br
-    / %hr
-    /   .account-content
-    /     .text-center
-    /       Each job posting is only $#{JOB_POSTING_FEE}.  After purchasing the job, you can edit it at anytime!
-    / %hr
     %br
     %br
-    // display:none will hide current #waiting div
-    / remove it to fix current issue
-    // or create a button to toggle this form
-    / #waiting{style: 'display:none;text-align:center'}
-    /   %h3
-    /     Your credit card is being processed, this could take up to 3 minutes, please don't leave this page and wait for the request to finish.
-    / = f.fields_for :payment do |form|
-    /   = render 'payment_fields', f: form
-  /= f.submit 'Pay and Submit', class: 'btn btn-default', id: 'pay-btn'
-  = f.submit 'Submit', class: 'btn btn-default', id: 'btn-insert'
-  /= render 'card_js'
-
+  = f.submit 'Submit', class: 'btn btn-default', id: 'save-btn'
 :javascript
   $(function(){
-    $('.wysihtml5').each(function(i, elem) {
-      $(elem).wysihtml5();
-    });
-
-    $('#btn-insert').click(function(e) {
+    $('#save-btn').on('click', function(){
       $('#salary_low').val(salary_slider.slider('getValue')[0]);
       $('#salary_high').val(salary_slider.slider('getValue')[1]);
-      $('#new_user').submit();
+    })
+    $('.wysihtml5').each(function(i, elem) {
+      $(elem).wysihtml5();
     });
   });
