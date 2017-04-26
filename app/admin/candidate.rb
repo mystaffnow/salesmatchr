@@ -56,7 +56,7 @@ ActiveAdmin.register Candidate do
         row :avatar do |img|
           image_tag img.avatar.url(:medium)
         end
-      end 
+      end
     end
 
     panel 'Work history' do

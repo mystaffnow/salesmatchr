@@ -30,7 +30,7 @@
 class Job < ActiveRecord::Base
   geocoded_by :full_street_address   # can also be an IP address
   after_validation :geocode          # auto-fetch coordinates
-  
+
   belongs_to :state
   belongs_to :employer
   has_many :job_candidates, dependent: :destroy
@@ -56,14 +56,14 @@ class Job < ActiveRecord::Base
                                     :archetype_score <= archetype_high and
                                     jobs.is_active = true',
                                     archetype_score: current_candidate.archetype_score)}
-  
+
   # List of the enable jobs which are viewed by candidate
   scope :job_viewed_list, ->(current_candidate) {
     enable.active.joins(:candidate_job_actions)
     .where('candidate_job_actions.candidate_id=?', current_candidate.id)
     .order('created_at DESC')
   }
-  
+
   # list of enable jobs saved by candidate
   scope :job_saved_list, ->(current_candidate) {
     enable.active.joins(:candidate_job_actions)
@@ -96,7 +96,7 @@ class Job < ActiveRecord::Base
 
     # email alert should not work for expired job
     return error_code if self.expired?
-    
+
     candidates = Candidate.where('candidates.archetype_score >= ? and
                                   candidates.archetype_score <= ?', self.archetype_low,
                                                                     self.archetype_high)
@@ -105,7 +105,7 @@ class Job < ActiveRecord::Base
 
     candidates.map {|candidate| CandidateMailer.send_job_match(candidate, self).deliver_later}
     return error_code
-    
+
     rescue => e
       return error_code = 500
   end

@@ -1,6 +1,6 @@
 class EmployerMailer < ApplicationMailer
   default :from => 'donotreply@salesmatchr.com'
-  
+
   def send_job_application(email, job)
     @job = job
     template_id(ENV['SENDGRID_TEMPLATE_ID'])

@@ -16,9 +16,7 @@
     - else
       .text-center
         %h2= @candidate.name
-
     %hr
-    
     .wrapper-sm
       .container
         .row
@@ -31,7 +29,7 @@
                   #incognito-content
                     %input{:checked => "", :name => "my-checkbox", :type => "checkbox", :id => 'subscribe', checked: @profile.is_active_match_subscription}/
                     #subscription-toggle
-                      = render 'subscription'
+                      = render 'subscription', profile: @profile
                   %br
                   %br
             .col-md-12.text-center
@@ -42,7 +40,7 @@
                   #incognito-content
                     %input{:checked => "", :name => "my-checkbox", :type => "checkbox", :id => 'incognito', checked: @profile.is_incognito}/
                     #incognito-toggle
-                      = render 'incognito'
+                      = render 'incognito', profile: @profile
             .col-md-6
               = image_tag @profile.avatar.url(:medium), id: 'avatar', style: "display:" + (!@profile.is_incognito ? 'block' : 'none'), class: 'profile-image'
               %img{src: '/img/incognito.png', style: "display:" + (@profile.is_incognito ? 'block' : 'none'), id: 'incognito-img', class: 'profile-image'}
@@ -74,8 +72,6 @@
                       %p
                         - if @candidate.year_experience
                           = @candidate.year_experience.name
-
-          
           // Work Experience & Education
           .col-md-6
             %div.tabpanel{:role => "tabpanel"}
@@ -114,7 +110,6 @@
           $('#incognito-img').hide();
         }
       })
-    
     $('#subscribe').on('switchChange.bootstrapSwitch', function(event, state) {
         var url = '/candidates/subscription/'
         $.get(url)

@@ -33,4 +33,10 @@ class JobCandidate < ActiveRecord::Base
   	arr << JobCandidate.statuses['purposed']
   	return arr
   end
+
+  # Todo: implement testcase
+  # used by views
+  def is_applicants?
+    (self.submitted? || self.viewed? || self.purposed?)
+  end
 end

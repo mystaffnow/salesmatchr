@@ -26,7 +26,7 @@ class Candidate < ActiveRecord::Base
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable, :omniauthable,
   :recoverable, :rememberable, :trackable, :validatable
-  
+
   # association
   has_one :candidate_profile, dependent: :destroy
   has_many :experiences, dependent: :destroy
@@ -35,7 +35,7 @@ class Candidate < ActiveRecord::Base
   has_many :job_candidates, dependent: :destroy
   has_many :candidate_job_actions, dependent: :destroy
   belongs_to :year_experience
-  
+
   accepts_nested_attributes_for :candidate_profile
   accepts_nested_attributes_for :experiences, allow_destroy: true
   accepts_nested_attributes_for :educations, allow_destroy: true
@@ -44,7 +44,7 @@ class Candidate < ActiveRecord::Base
 
   # validation
   validates_presence_of :first_name, :last_name
-  
+
   after_save :add_candidate_profile
 
   def name
@@ -78,7 +78,7 @@ class Candidate < ActiveRecord::Base
   def email_required?
     super #&& provider.blank?
   end
-  
+
   def archetype_string
     if !self.archetype_score
       return 'n/a'
@@ -99,7 +99,7 @@ class Candidate < ActiveRecord::Base
     # score between -10-10
     elsif self.archetype_score > -10
       return 'Balanced Fisherman'
-    
+
     # score between -30-(-11)
     elsif self.archetype_score > -30
       return 'Relaxed Fisherman'
@@ -107,7 +107,7 @@ class Candidate < ActiveRecord::Base
     # score between -70-(-31)
     elsif self.archetype_score > -70
       return 'Aggressive Farmer'
-    
+
     # score between -100-(-71)
     else
       return 'Relaxed Farmer'

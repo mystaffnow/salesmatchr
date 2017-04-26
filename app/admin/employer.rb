@@ -51,7 +51,7 @@ ActiveAdmin.register Employer do
         row :avatar do |img|
           image_tag img.avatar.url(:medium)
         end
-      end 
+      end
     end
 
     panel "Jobs" do
@@ -168,7 +168,7 @@ ActiveAdmin.register Employer do
         [nil, nil, nil, nil]
       end
     end
-    
+
     # payments
     column(:payments) do |e|
       if e.payments.present?

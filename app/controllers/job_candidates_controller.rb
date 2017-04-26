@@ -54,7 +54,7 @@ class JobCandidatesController < ApplicationController
     authorize @job_candidate
     @job_candidate.withdrawn!
     EmployerMailer.send_job_withdrawn(@job_candidate.job.employer.email, @job_candidate.job).deliver_later
-    redirect_to job_candidates_path, notice: 'Successfully withdrawn.'
+    redirect_to my_jobs_path, notice: 'Successfully withdrawn.'
   end
 
   # signed_in employer is required
@@ -94,7 +94,7 @@ class JobCandidatesController < ApplicationController
     job_candidate.save
 
     redirect_to employer_show_path(params[:job_id]), notice: 'Candidate shortlisted'
-  end 
+  end
 
   private
 
@@ -102,13 +102,13 @@ class JobCandidatesController < ApplicationController
     @job_candidate = JobCandidate.find(params[:id])
   end
 
-  def job_candidate_params
-    params.require(:job_candidate).permit(:is_hired, :status, :job_id, :candidate_id)
-  end
+  # def job_candidate_params
+  #   params.require(:job_candidate).permit(:is_hired, :status, :job_id, :candidate_id)
+  # end
 
   # return job_candidates of current_candidate where are jobs are active and enable
   def active_job_candidate_list
-    @job_candidates = JobCandidate.active_job_candidate_list(current_candidate) 
+    @job_candidates = JobCandidate.active_job_candidate_list(current_candidate)
   end
 
   # candidate should save his profile info before applying any job of employer because employer can view candidate's profile.

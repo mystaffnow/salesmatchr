@@ -1,10 +1,14 @@
 Rails.application.routes.draw do
-  get 'home/index'
-
   devise_for :admin_users, ActiveAdmin::Devise.config
+  
   ActiveAdmin.routes(self)
 
-  resources :candidate_job_actions
+  resources :candidate_job_actions, only: [
+                                            :candidate_job_saved,
+                                            :candidate_job_viewed,
+                                            :candidate_matches,
+                                            :candidate_save_job
+  ]
 
   resources :jobs do
     member do
@@ -16,10 +20,19 @@ Rails.application.routes.draw do
 
   resources :experiences, only: [:destroy]
 
-  resources :job_candidates
+  resources :job_candidates, only: [
+                                      :withdrawn_job_candidates,
+                                      :open_job_candidates,
+                                      :receipt,
+                                      :shortlist_candidate,
+                                      :remove_candidate,
+                                      :withdraw,
+                                      :accept_candidate,
+                                      :apply
+                                    ]
 
   devise_for :employers, :controllers => { :sessions => "employers/sessions", :registrations => "employers/registrations"}
-  devise_for :candidates, :controllers => { :sessions => "candidates/sessions", :omniauth_callbacks => "candidates/omniauth_callbacks", :registrations => "candidates/registrations"}
+  devise_for :candidates, :controllers => { :sessions => "candidates/sessions", :registrations => "candidates/registrations"}
 
   # Routes for candidates
   get 'candidates/account' => 'candidates#account'
@@ -55,7 +68,7 @@ Rails.application.routes.draw do
   get 'employers/profile' => 'employers#profile'
   get 'employers/payment/verify' => 'employers#add_payment_method'
   post 'employers/payment' => 'employers#insert_payment_method'
-  
+
   # Routes for jobs
   get 'employer_jobs' => 'jobs#employer_index', as: 'employer_jobs'
   get 'employer_jobs/archive' => 'jobs#employer_archive', as: 'employer_archive_jobs'

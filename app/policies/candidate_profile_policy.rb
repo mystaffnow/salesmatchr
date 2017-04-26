@@ -9,10 +9,10 @@ class CandidateProfilePolicy < ApplicationPolicy
 	# if incognito ON, profile is visible to profile-owner and employers whose jobs profile-owner has applied
 	# if incognito OFF, anyone can see the profile
 	# ToDo: Testcase is remaining to modify
-	def profile? 
+	def profile?
 		case user.class.name.to_s
 			when 'Candidate'
-				user.is_owner_of?(profile) || (profile.is_incognito == false) 
+				user.is_owner_of?(profile) || (profile.is_incognito == false)
 			when 'Employer'
 				candidate_has_applied_employers_job?(profile, user) ||
 				(profile.is_incognito == false)

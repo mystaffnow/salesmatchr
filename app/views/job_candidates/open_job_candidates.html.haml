@@ -20,7 +20,7 @@
           -	@open_job_candidates.each do |job_candidate|
             .row
               .col-md-8
-                %h3= link_to job_candidate.job.title, job_path(job_candidate.job) 
+                %h3= link_to job_candidate.job.title, job_path(job_candidate.job)
                 %p= job_candidate.job.description
                 %p
                 - if job_candidate.submitted?

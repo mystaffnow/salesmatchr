@@ -3,9 +3,9 @@
     .account-header
       %h2 Create New Job
     .account-content
-      .text-center 
+      .text-center
         Please provide a title, description, salary range and any relevant information for the position. Be as specific as possible so we can find the best match!
       %br
       %hr
       %br
-      = render 'form'
+      = render 'edit', job: @job

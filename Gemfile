@@ -60,11 +60,18 @@ group :development, :test do
 
   # static code, security, vulnerability analyser
   gem 'brakeman', :require => false
+  
   # static code analyzer
   gem 'rubocop', require: false
+  
   # Ruby code quality reporter
   gem "rubycritic", :require => false
 
+  # a code metric tool
+  gem "rails_best_practices"
+
+  # A Rake task gem that helps you find the unused routes and controller actions
+  gem 'traceroute'
 
   gem 'execjs'
   gem 'therubyracer'
