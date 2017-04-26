@@ -1,4 +1,4 @@
-ActiveAdmin.register Payment do
+ActiveAdmin.register Customer do
 
 # See permitted parameters documentation:
 # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
@@ -12,35 +12,26 @@ ActiveAdmin.register Payment do
 #   permitted << :other if resource.something?
 #   permitted
 # end
-
   actions :all, :except => [:new, :create, :edit, :update, :destroy]
 
   index do
-  	id_column
+    id_column
 
-  	column :employer_id do |pay|
-  		pay.employer.present? ? pay.employer.name : ''
-  	end
-  	column :job_id do |pay|
-  		pay.job.present? ? pay.job.title : ''
-  	end
-  	column :amount
-  	# column :stripe_card_token
-  	column :stripe_customer_id
-  	column :stripe_charge_id
-  	column :status
+    column :employer_id
+    column :stripe_card_token
+    column :stripe_customer_id
+    column :last4
 
-  	actions
+    actions
   end
 
-  show do |payment|
+  show do
     attributes_table do
+      row :id
       row :employer_id
-      row :job_id
-      row :amount
+      row :stripe_card_token
       row :stripe_customer_id
-      row :stripe_charge_id
-      row :status
+      row :last4
     end
   end
 end

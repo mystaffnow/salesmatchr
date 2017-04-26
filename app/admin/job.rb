@@ -80,13 +80,15 @@ ActiveAdmin.register Job do
 	  end
 
     panel 'Job Payment' do
-	    attributes_table_for job.payment do
-		  	row :employer_id
-		  	row :amount
-		  	row :stripe_card_token
-		  	row :stripe_customer_id
-		  	row :stripe_charge_id
-		  	row :status
+	    table_for job.payments do
+		  	column :employer_id do |obj|
+          obj.employer.present? ? obj.employer.name : ''
+        end
+		  	column :amount
+		  	# column :stripe_card_token
+		  	column :stripe_customer_id
+		  	column :stripe_charge_id
+		  	column :status
 		  end
 	  end
 
@@ -129,54 +131,70 @@ ActiveAdmin.register Job do
 		column :updated_at
 
 		# payment
-		column(:employer_id) do |j|
-			j.employer_id
-		end
+    column(:payments) do |j|
+      if j.payments.present?
+        j.payments.map {|p| [p.id,
+                              p.employer_id? ? p.employer_id : nil,
+                              p.job_id? ? p.job_id : nil,
+                              p.amount? ? p.amount : nil,
+                              p.stripe_customer_id? ? p.stripe_customer_id : nil,
+                              p.stripe_charge_id? ? p.stripe_charge_id : nil,
+                              p.status? ? p.status : nil,
+                              p.customer_id? ? p.customer_id : nil
+          ]}
+      else
+        [nil, nil, nil, nil, nil, nil, nil, nil]
+      end
+    end
 
-		column(:amount) do |j|
-			payment = j.payment
-			if payment.present?
-				payment.amount? ? payment.amount : nil 
-			else
-				nil
-			end
-		end
+		# column(:employer_id) do |j|
+		# 	j.employer_id
+		# end
 
-		column(:stripe_card_token) do |j|
-			payment = j.payment
-			if payment.present?
-				payment.stripe_card_token? ? payment.stripe_card_token : nil 
-			else
-				nil
-			end
-		end
+		# column(:amount) do |j|
+		# 	payment = j.payment
+		# 	if payment.present?
+		# 		payment.amount? ? payment.amount : nil 
+		# 	else
+		# 		nil
+		# 	end
+		# end
 
-		column(:stripe_customer_id) do |j|
-			payment = j.payment
-			if payment.present?
-				payment.stripe_customer_id? ? payment.stripe_customer_id : nil 
-			else
-				nil
-			end
-		end
+		# column(:stripe_card_token) do |j|
+		# 	payment = j.payment
+		# 	if payment.present?
+		# 		payment.stripe_card_token? ? payment.stripe_card_token : nil 
+		# 	else
+		# 		nil
+		# 	end
+		# end
 
-		column(:stripe_charge_id) do |j|
-			payment = j.payment
-			if payment.present?
-				payment.stripe_charge_id? ? payment.stripe_charge_id : nil 
-			else
-				nil
-			end
-		end
+		# column(:stripe_customer_id) do |j|
+		# 	payment = j.payment
+		# 	if payment.present?
+		# 		payment.stripe_customer_id? ? payment.stripe_customer_id : nil 
+		# 	else
+		# 		nil
+		# 	end
+		# end
 
-		column(:status) do |j|
-			payment = j.payment
-			if payment.present?
-				payment.status 
-			else
-				nil
-			end
-		end
+		# column(:stripe_charge_id) do |j|
+		# 	payment = j.payment
+		# 	if payment.present?
+		# 		payment.stripe_charge_id? ? payment.stripe_charge_id : nil 
+		# 	else
+		# 		nil
+		# 	end
+		# end
+
+		# column(:status) do |j|
+		# 	payment = j.payment
+		# 	if payment.present?
+		# 		payment.status 
+		# 	else
+		# 		nil
+		# 	end
+		# end
 
 		# Job Candidates
 		column(:job_candidates) do |j|
