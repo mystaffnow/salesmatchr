@@ -47,7 +47,6 @@ class JobsController < ApplicationController
       @job.assign_attributes(attributes)
       @job.id = nil
     end
-    # @job.build_payment
   end
 
   # signed_in employer required
@@ -60,33 +59,12 @@ class JobsController < ApplicationController
                               activated_at: DateTime.now,
                               employer_id: current_employer.id,
                               job_function_id: job_function.id))
-    # @job.employer_id = current_employer.id
-    # @job.job_function_id = job_function.id
-
-    # stripe_card_token = params["job"]["payment"]["stripe_card_token"]
     authorize(@job)
     respond_to do |format|
       if @job.save
         tracker = Mixpanel::Tracker.new(ENV["NT_MIXPANEL_TOKEN"])
         tracker.track('employer-' + @job.employer.email, 'job created')
         format.html { redirect_to employer_archive_jobs_path, notice: 'Job was successfully created.' }
-        # payment_service = Services::Pay.new(current_employer, @job, stripe_card_token)
-        # ps = payment_service.process_payment
-
-        # if ps.nil? # if there is an error while payment
-        #   @job.destroy
-        #   format.html { redirect_to employer_jobs_path, notice: 'Oops! there is some issue while process payment, please contact techical support.' }
-        # else
-        #   result = @job.send_email_to_matched_candidates
-        #   case result
-        #   when 0
-        #     tracker = Mixpanel::Tracker.new(ENV["NT_MIXPANEL_TOKEN"])
-        #     tracker.track('employer-'+@job.employer.email, 'job created')
-        #     format.html { redirect_to employer_jobs_path, notice: 'Job was successfully created.' }
-        #   when 500
-        #     format.html { redirect_to employer_jobs_path, notice: 'Oops! job was successfully created but email send to matched candidates failed, please contact techical support.' }
-        #   end
-        # end
       else
         format.html { render :new }
         format.json { render json: @job.errors, status: :unprocessable_entity }
@@ -106,9 +84,6 @@ class JobsController < ApplicationController
   def update
     authorize(@job)
     job_function = JobFunction.find(job_params[:job_function_id])
-    # @job.archetype_low = job_function.low
-    # @job.archetype_high = job_function.high
-    # @job.job_function_id = job_function.id
     respond_to do |format|
       if @job.update(job_params.merge(archetype_low: job_function.low,
                                       archetype_high: job_function.high,
@@ -238,8 +213,6 @@ class JobsController < ApplicationController
     case result
     when 0, 500
       redirect_to employer_show_matches_path(@job.id), notice: 'Email send to all matched candidates who have subscribed to receive email.'
-    # when 500
-    #   redirect_to employer_archive_jobs_path, notice: 'Oops! we cannot process your request, please contact techical support.'
     end
   end
 
@@ -282,10 +255,7 @@ class JobsController < ApplicationController
   def job_params
     params.require(:job).permit(:distance, :job_function_id,:employer_id, :city, :state_id,
                                 :salary_low, :salary_high, :zip, :is_remote, :title, :description,
-                                :is_active, :experience_years#, :stripe_token,
-                                # :payment_attributes => [
-                                #   :id, :stripe_card_token
-                                # ]
+                                :is_active, :experience_years
                                 )
   end
 end

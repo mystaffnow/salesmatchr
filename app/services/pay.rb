@@ -48,7 +48,6 @@ module Services
 				amount: stripe_charge.amount / 100,
 				employer_id: employer.id,
 				job_id: job.id,
-				stripe_customer_id: stripe_customer_id,
 				stripe_charge_id: stripe_charge.id,
 				status: Payment.statuses['charged'],
 				customer_id: customer.id

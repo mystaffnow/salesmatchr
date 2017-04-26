@@ -10,7 +10,6 @@
 #  is_remote        :boolean
 #  title            :string
 #  description      :text
-#  view_count       :integer
 #  state_id         :integer
 #  city             :string
 #  archetype_low    :integer
@@ -18,7 +17,6 @@
 #  job_function_id  :integer
 #  latitude         :float
 #  longitude        :float
-#  stripe_token     :string
 #  experience_years :integer
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null

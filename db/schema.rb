@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170417081424) do
+ActiveRecord::Schema.define(version: 20170426055631) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -207,7 +207,6 @@ ActiveRecord::Schema.define(version: 20170417081424) do
     t.boolean  "is_remote"
     t.string   "title"
     t.text     "description"
-    t.integer  "view_count"
     t.integer  "state_id"
     t.string   "city"
     t.integer  "archetype_low"
@@ -215,7 +214,6 @@ ActiveRecord::Schema.define(version: 20170417081424) do
     t.integer  "job_function_id"
     t.float    "latitude"
     t.float    "longitude"
-    t.string   "stripe_token"
     t.integer  "experience_years"
     t.datetime "created_at",                       null: false
     t.datetime "updated_at",                       null: false
@@ -227,13 +225,11 @@ ActiveRecord::Schema.define(version: 20170417081424) do
   create_table "payments", force: :cascade do |t|
     t.integer  "employer_id"
     t.integer  "job_id"
-    t.decimal  "amount",             precision: 18, scale: 4
-    t.string   "stripe_card_token"
-    t.string   "stripe_customer_id"
+    t.decimal  "amount",           precision: 18, scale: 4
     t.string   "stripe_charge_id"
     t.integer  "status"
-    t.datetime "created_at",                                  null: false
-    t.datetime "updated_at",                                  null: false
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
     t.integer  "customer_id"
   end
 
