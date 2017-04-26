@@ -11,7 +11,7 @@
 #
 
 class JobFunction < ActiveRecord::Base
-	has_many :jobs
+  has_many :jobs
 
 	# validation
 	validates_presence_of :name, :low, :high

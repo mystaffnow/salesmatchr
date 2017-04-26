@@ -57,6 +57,17 @@ group :development, :test do
   gem 'shoulda-matchers', '~> 3.1'
   gem 'factory_girl_rails'
   gem 'database_cleaner'
+
+  # static code, security, vulnerability analyser
+  gem 'brakeman', :require => false
+  # static code analyzer
+  gem 'rubocop', require: false
+  # Ruby code quality reporter
+  gem "rubycritic", :require => false
+
+
+  gem 'execjs'
+  gem 'therubyracer'
 end
 
 gem 'rmagick', '~> 2.16.0'

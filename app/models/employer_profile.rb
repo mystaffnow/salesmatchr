@@ -24,6 +24,6 @@ class EmployerProfile < ActiveRecord::Base
 
 	validates :employer_id, uniqueness: true
 
-	has_attached_file :avatar,  :default_url => "/img/missing.png", :styles => { :medium => "200x200#" }
+	has_attached_file :avatar,  :default_url => '/img/missing.png', :styles => { :medium => "200x200#" }
   validates_attachment_content_type :avatar, :content_type => /\Aimage\/.*\Z/
 end

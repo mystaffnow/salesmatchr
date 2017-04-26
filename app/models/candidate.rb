@@ -25,7 +25,9 @@ class Candidate < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable, :omniauthable,
-  :recoverable, :rememberable, :trackable, :validatable,:omniauth_providers => [:linkedin]
+  :recoverable, :rememberable, :trackable, :validatable
+  
+  # association
   has_one :candidate_profile, dependent: :destroy
   has_many :experiences, dependent: :destroy
   has_many :educations, dependent: :destroy
@@ -33,19 +35,20 @@ class Candidate < ActiveRecord::Base
   has_many :job_candidates, dependent: :destroy
   has_many :candidate_job_actions, dependent: :destroy
   belongs_to :year_experience
+  
   accepts_nested_attributes_for :candidate_profile
   accepts_nested_attributes_for :experiences, allow_destroy: true
   accepts_nested_attributes_for :educations, allow_destroy: true
   accepts_nested_attributes_for :candidate_question_answers, allow_destroy: true
   # attr_accessor :flash_notice
 
-  after_save :add_candidate_profile
-
   # validation
   validates_presence_of :first_name, :last_name
+  
+  after_save :add_candidate_profile
 
   def name
-    return self.first_name + " " + self.last_name
+    return self.first_name + ' ' + self.last_name
   end
 
   def is_owner_of?(obj)
@@ -80,33 +83,34 @@ class Candidate < ActiveRecord::Base
     if !self.archetype_score
       return 'n/a'
     end
+
     # score between 71-100
     if self.archetype_score > 71
-      return "Aggressive Hunter"
+      return 'Aggressive Hunter'
 
     # score between 31-70
     elsif self.archetype_score > 31
-      return "Relaxed Hunter"
+      return 'Relaxed Hunter'
 
     # score between 11-30
     elsif self.archetype_score > 11
-      return "Aggressive Fisherman"
+      return 'Aggressive Fisherman'
 
     # score between -10-10
     elsif self.archetype_score > -10
-      return "Balanced Fisherman"
+      return 'Balanced Fisherman'
     
     # score between -30-(-11)
     elsif self.archetype_score > -30
-      return "Relaxed Fisherman"
-    
+      return 'Relaxed Fisherman'
+
     # score between -70-(-31)
     elsif self.archetype_score > -70
-      return "Aggressive Farmer"
+      return 'Aggressive Farmer'
     
     # score between -100-(-71)
     else
-      return "Relaxed Farmer"
+      return 'Relaxed Farmer'
     end
   end
 

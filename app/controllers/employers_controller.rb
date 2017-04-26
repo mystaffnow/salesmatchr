@@ -23,7 +23,8 @@ class EmployersController < ApplicationController
     respond_to do |format|
       if current_employer.update(employer_params)
         current_employer.save
-        format.html { redirect_to employers_profile_path, notice: 'Profile was successfully updated.' }
+        format.html { redirect_to employers_profile_path,
+                      notice: 'Profile was successfully updated.' }
       else
         format.html { render :account }
       end
@@ -57,12 +58,14 @@ class EmployersController < ApplicationController
       @customer.last4 = card_last4
 
       if @customer.save
-        redirect_to employers_payment_verify_path, notice: 'You have successfully added your payment information!'
+        redirect_to employers_payment_verify_path,
+                    notice: 'You have successfully added your payment information!'
       else
         render :add_payment_method
       end
     else
-      redirect_to employers_payment_verify_path, notice: 'Oops! we cannot process your request, please contact techical support.'
+      redirect_to employers_payment_verify_path,
+                  notice: 'Oops! we cannot process your request, please contact techical support.'
     end
   end
   
@@ -73,8 +76,7 @@ class EmployersController < ApplicationController
     params.require(:employer).permit(:first_name, :last_name,
         :employer_profile_attributes => [
           :id, :website, :ziggeo_token, :avatar, :zip, :city, :state_id, :description
-        ]
-      )
+        ])
   end
 
   def customer_params

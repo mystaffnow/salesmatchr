@@ -25,7 +25,8 @@ class JobsController < ApplicationController
   def show
     authorize(@job)
     if current_candidate
-      @candidate_job_action = CandidateJobAction.where(candidate_id: current_candidate.id, job_id: @job.id).first
+      @candidate_job_action = CandidateJobAction.where(candidate_id: current_candidate.id,
+                                                       job_id: @job.id).first
       if !@candidate_job_action
         current_candidate.view_job(@job)
       end
@@ -260,10 +261,13 @@ class JobsController < ApplicationController
       result = @job.send_email_to_matched_candidates
       case result
       when 0, 500
-        redirect_to employer_jobs_path, notice: 'Job is activated and email is sent to all matched candidates who have subscribed to our job match alert.'
+        redirect_to employer_jobs_path, notice: 'Job is activated and email is sent to
+                                                 all matched candidates who have
+                                                 subscribed to our job match alert.'
       end
     else
-      redirect_to employer_job_expired_path, notice: 'Oops! we cannot process your request, please contact techical support.'
+      redirect_to employer_job_expired_path, notice: 'Oops! we cannot process your request,
+                                                      please contact techical support.'
     end
   end
 

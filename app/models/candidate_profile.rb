@@ -34,7 +34,7 @@ class CandidateProfile < ActiveRecord::Base
     if is_incognito
       '/img/incognito.png'
     else
-      if self.avatar.to_s == "/img/missing.png" && self.linkedin_picture_url
+      if self.avatar.to_s == '/img/missing.png' && self.linkedin_picture_url
         self.linkedin_picture_url
       else
         self.avatar.url(:medium)
