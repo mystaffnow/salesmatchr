@@ -36,16 +36,16 @@
             %p
               = strip_tags(truncate(job.description, length: 600, omission: "...", escape: false))
             %hr
-
-            %p Your card last four digit is: #{@customer.last4}. By clicking on "Pay and submit" button our system will automatically deduct $#{JOB_POSTING_FEE} from this card to enable this job for next 30 days. Click on "Cancel" button to return back.
-            %p
-
-            %hr
-          .modal-footer
-            = form_tag employer_job_payment_path(job.id) do
-              = submit_tag "Pay and submit", class: "btn btn-default pull-left"
-            %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Cancel
-    %hr
+            - if @customer.present?
+              %p Your card last four digit is: #{@customer.last4}. By clicking on "Pay and submit" button our system will automatically deduct $#{JOB_POSTING_FEE} from this card to enable this job for next 30 days. Click on "Cancel" button to return back.
+              %p
+              .modal-footer
+                = form_tag employer_job_payment_path(job.id) do
+                  = submit_tag "Pay and submit", class: "btn btn-default pull-left"
+                %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Cancel
+            - else
+              %p You need to add payment method first to activate the expired job. Click below button to continue. Thank you!
+              = link_to "Add payment method", employers_payment_verify_path, class: 'btn btn-xs btn-info'
   = paginate @jobs
 
 :css
