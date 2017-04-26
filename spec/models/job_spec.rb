@@ -10,7 +10,6 @@
 #  is_remote        :boolean
 #  title            :string
 #  description      :text
-#  view_count       :integer
 #  state_id         :integer
 #  city             :string
 #  archetype_low    :integer
