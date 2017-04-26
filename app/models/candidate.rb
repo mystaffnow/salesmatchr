@@ -40,7 +40,6 @@ class Candidate < ActiveRecord::Base
   accepts_nested_attributes_for :experiences, allow_destroy: true
   accepts_nested_attributes_for :educations, allow_destroy: true
   accepts_nested_attributes_for :candidate_question_answers, allow_destroy: true
-  # attr_accessor :flash_notice
 
   # validation
   validates_presence_of :first_name, :last_name

@@ -102,10 +102,6 @@ class JobCandidatesController < ApplicationController
     @job_candidate = JobCandidate.find(params[:id])
   end
 
-  # def job_candidate_params
-  #   params.require(:job_candidate).permit(:is_hired, :status, :job_id, :candidate_id)
-  # end
-
   # return job_candidates of current_candidate where are jobs are active and enable
   def active_job_candidate_list
     @job_candidates = JobCandidate.active_job_candidate_list(current_candidate)
