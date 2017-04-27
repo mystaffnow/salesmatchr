@@ -314,14 +314,14 @@ RSpec.describe CandidatesController, :type => :controller do
       }
 
       it 'should update the requested param info' do
-        get :incognito, format: :js
+        xhr :get, :incognito, format: :js
         expect(Candidate.count).to eq(1)
         expect(Candidate.last.candidate_profile(candidate).is_incognito).to eq(true)
       end
 
       it 'should not call check_candidate' do
         candidate.update(archetype_score: nil)
-        get :incognito, format: :js
+        xhr :get, :incognito, format: :js
         expect(response).not_to redirect_to(candidates_archetype_path)
       end
     end
@@ -333,8 +333,8 @@ RSpec.describe CandidatesController, :type => :controller do
       }
 
       it 'should redirects to candidates sign_in page' do
-        get :incognito, { is_incognito: "true" }
-        expect(response).to redirect_to("/candidates/sign_in")
+        xhr :get, :incognito, { is_incognito: "true" }
+        expect(response.code).to eq("401")
       end
     end
   end
@@ -359,12 +359,12 @@ RSpec.describe CandidatesController, :type => :controller do
       }
 
       it 'should_not call check_candidate' do
-        get :subscription, format: :js
+        xhr :get, :subscription, format: :js
         expect(response).not_to redirect_to(candidates_archetype_path)
       end
 
       it 'should update subscription' do
-        get :subscription, format: :js
+        xhr :get, :subscription, format: :js
         expect(assigns(:profile)).to eq(CandidateProfile.first)
         expect(CandidateProfile.count).to eq(1)
         expect(CandidateProfile.first.is_active_match_subscription).to be_falsy
