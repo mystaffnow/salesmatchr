@@ -40,7 +40,7 @@ class EmployersController < ApplicationController
   # Employer has to add valid payment information to use services like making job active
   # current_employer can access this
   def add_payment_method
-    @customer = Customer.new
+    @customer = current_employer.customer || Customer.new
   end
 
   # add payment information of employer
