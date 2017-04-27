@@ -7,7 +7,7 @@
       %hr
       - if submitted_payment_details?(current_employer)
         %p You have already submitted payment details with following information.
-        %p Your card is *********#{current_employer.customer.last4 if current_employer.customer} which is registered and ready to use our premium services. Thank you!
+        %p Dear #{@customer.card_holder_name if @customer}, your card is *********#{@customer.last4 if @customer} which is expired on (-------) is registered and ready to use our premium services. Thank you!
       - else
         = form_for @customer, url: employers_payment_path, :role=>"form", :html => {:id => "new_user"} do |f|
           - if @customer.errors.any?
