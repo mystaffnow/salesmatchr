@@ -225,7 +225,7 @@ class JobsController < ApplicationController
     # return if employer does not verify payment method
     service_pay = Services::Pay.new(current_employer, @job)
 
-    if service_pay.payment_processed?
+    if service_pay.is_payment_processed?
       # now payment is successfully happened, so enable the job,
       # then send email to matched candidates
        @job.update(status: Job.statuses['enable'],
