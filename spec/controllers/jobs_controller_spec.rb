@@ -1149,7 +1149,8 @@ RSpec.describe JobsController, :type => :controller do
         
         customer = create(:customer, stripe_card_token: stripe_card_token,
                                      stripe_customer_id: stripe_customer_id,
-                                     employer_id: employer.id)
+                                     employer_id: employer.id,
+                                     last4: '4242')
         
         post :pay_to_enable_expired_job, id: job.id
         
@@ -1160,13 +1161,10 @@ RSpec.describe JobsController, :type => :controller do
         expect(Job.first.activated_at > 1.minutes.ago).to be_truthy
         
         expect(Job.first.payments.count).to eq(1)
-        expect(Job.first.payments.first.stripe_customer_id).to eq(stripe_customer_id)
         expect(Job.first.payments.first.stripe_charge_id).not_to be_nil
         expect(Job.first.payments.first.amount).to eq("#{JOB_POSTING_FEE}".to_i)
 
         expect(Customer.count).to eq(1)
-        expect(Customer.first.stripe_card_token).to eq(stripe_card_token)
-        expect(Customer.first.stripe_customer_id).to eq(stripe_customer_id)
         expect(Customer.first.employer_id).to eq(employer.id)
 
         @candidate1 = create(:candidate, archetype_score: 11) # match alert
