@@ -7,7 +7,7 @@
       %hr
       - if submitted_payment_details?(current_employer)
         %p You have already submitted payment details with following information.
-        %p Your card is *********#{current_employer.customer.last4} which is registered and ready to use our premium services. Thank you!
+        %p Your card is *********#{current_employer.customer.last4 if current_employer.customer} which is registered and ready to use our premium services. Thank you!
       - else
         = form_for @customer, url: employers_payment_path, :role=>"form", :html => {:id => "new_user"} do |f|
           - if @customer.errors.any?
@@ -18,14 +18,17 @@
           #c1c-fields
             #stripe_error.text-danger.alert.alert-danger
             .field
+              = label_tag :card_name, "Card holder name"
+              = text_field_tag :card_name, nil, name: nil, value: '', class: 'form-control', required: true
+            .field
               = label_tag :card_number, "Credit Card Number "
-              = text_field_tag :card_number, nil, name: nil, value: '', class: 'form-control',:maxlength => "16", :onkeydown => "isNumber(this);"
+              = text_field_tag :card_number, nil, name: nil, value: '', class: 'form-control',:maxlength => "16", required: true, :onkeydown => "isNumber(this);"
             .field
               = label_tag :card_code, "Security Code on Card (CVV)"
-              = text_field_tag :card_code, nil, name: nil, value: '', class: 'form-control', maxlength: "3", :onkeydown => "isNumber(this);"
+              = text_field_tag :card_code, nil, name: nil, value: '', class: 'form-control', maxlength: "3", required: true, :onkeydown => "isNumber(this);"
             .field
               = label_tag :card_month, "Card Expiration"
               = select_month nil, {add_month_numbers_true: true}, {name: nil, id: "card_month"}
               = select_year nil, {start_year: Date.today.year, end_year: Date.today.year+15}, {name: nil, id: "card_year"}
-          = f.submit "Submit payment detail", class: 'btn btn-default'
+          = f.submit "Submit payment detail", class: 'btn btn-default', id: 'payment-btn'
           = render 'card_js'
