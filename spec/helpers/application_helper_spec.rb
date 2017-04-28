@@ -143,10 +143,8 @@ RSpec.describe ApplicationHelper, type: :helper do
 	  stripe_card_token = generate_stripe_card_token
 
 		pay_service = Services::Pay.new(employer, job, stripe_card_token)
-    stripe_cus = pay_service.create_stripe_customer
-    create(:customer, employer_id: employer.id,
-                      stripe_customer_id: stripe_cus.id,
-                      stripe_card_token: stripe_card_token)
+    stripe_cus = pay_service.is_customer_saved?
+    
   	expect(Customer.count).to eq(1)
   	expect(helper.submitted_payment_details?(employer)).to be_truthy
   	expect(helper.submitted_payment_details?(employer1)).to be_falsy
