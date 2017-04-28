@@ -66,6 +66,7 @@ Rails.application.routes.draw do
   get 'employers/account' => 'employers#account'
   put 'employers/account' => 'employers#update'
   get 'employers/profile' => 'employers#profile'
+  get 'employers/payment_methods' => 'employers#list_payment_method'
   get 'employers/payment/verify' => 'employers#add_payment_method'
   post 'employers/payment' => 'employers#insert_payment_method'
 
