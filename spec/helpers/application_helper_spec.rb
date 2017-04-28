@@ -151,4 +151,15 @@ RSpec.describe ApplicationHelper, type: :helper do
   	expect(helper.submitted_payment_details?(employer)).to be_truthy
   	expect(helper.submitted_payment_details?(employer1)).to be_falsy
 	end
+
+	it '#card_expiry_date' do
+		employer = create(:employer)
+	  
+	  stripe_card_token = generate_stripe_card_token
+
+		pay_service = Services::Pay.new(employer, job, stripe_card_token)
+    stripe_cus = pay_service.is_customer_saved?
+   	
+   	expect(helper.card_expiry_date(Customer.first)).to eq("2 / 2018")
+	end
 end
