@@ -29,7 +29,7 @@ class Employer < ActiveRecord::Base
   # association
   has_one :employer_profile, dependent: :destroy
   has_many :jobs, dependent: :destroy
-  has_one :customer, dependent: :destroy
+  has_many :customers, dependent: :destroy
   has_many :payments, dependent: :destroy
 
   accepts_nested_attributes_for :employer_profile
