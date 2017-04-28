@@ -20,6 +20,8 @@ RSpec.describe Services::Pay do
     expect(Customer.first.last4).not_to be_nil
     expect(Customer.first.stripe_customer_id).not_to be_nil
     expect(Customer.first.stripe_card_token).to eq(obj.stripe_card_token)
+    expect(Customer.first.exp_month).not_to be_nil
+    expect(Customer.first.exp_year).not_to be_nil
     # payment
     expect(obj.is_payment_processed?).to be_truthy
     expect(Payment.count).to eq(1)
