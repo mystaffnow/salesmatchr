@@ -23,7 +23,9 @@ module Services
 				stripe_card_token: @stripe_card_token,
 				stripe_customer_id: stripe_customer.id,
 				last4: stripe_card_info.last4,
-				card_holder_name: stripe_card_info.name
+				card_holder_name: stripe_card_info.name,
+				exp_month: stripe_card_info.exp_month,
+				exp_year: stripe_card_info.exp_year
 				)
 
 			result = true if customer.present?
