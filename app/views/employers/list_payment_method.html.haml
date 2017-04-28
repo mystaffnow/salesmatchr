@@ -1,0 +1,11 @@
+.container.padded-container
+  .account-panel
+    .account-header
+      %h2 Payment Methods
+    .account-content
+      .text-center
+        = link_to "Add payment method", employers_payment_verify_path
+        - @payment_methods.each do |payment_method|
+          %p You have already submitted payment details with following information.
+          %p Dear #{payment_method.card_holder_name.present? ? payment_method.card_holder_name : current_employer.name}, your card is *********#{payment_method.last4 if payment_method}, expired on #{card_expiry_date(payment_method)}, which is registered on our site and ready to use our premium services. Thank you!
+        %hr
