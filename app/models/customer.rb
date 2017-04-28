@@ -9,6 +9,9 @@
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
 #  last4              :integer
+#  card_holder_name   :string
+#  exp_month          :integer
+#  exp_year           :integer
 #
 
 class Customer < ActiveRecord::Base
