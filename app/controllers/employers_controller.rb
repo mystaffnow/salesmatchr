@@ -59,8 +59,20 @@ class EmployersController < ApplicationController
   end
 
   # list payment methods
+  # required current_employer
   def list_payment_method
-    @payment_methods = Customer.all
+    @payment_methods = current_employer.customers
+  end
+
+  # def choose_payment_method
+  # required current_employer
+  def choose_payment_method
+    @customer = Customer.find(params[:id])
+    current_employer.customers.update_all(is_selected: false)
+    @customer.update(is_selected: true)
+    respond_to do |format|
+      format.js
+    end
   end
 
   private
