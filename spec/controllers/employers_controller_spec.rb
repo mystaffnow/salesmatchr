@@ -212,7 +212,8 @@ RSpec.describe EmployersController, :type => :controller do
 
   describe '#insert_payment_method' do
     let(:customer_params) {
-      {stripe_card_token: generate_stripe_card_token}
+      {stripe_card_token: generate_stripe_card_token,
+       card_number: '4242424242424242'}
     }
 
     context '.when candidate is signed in' do
@@ -238,7 +239,7 @@ RSpec.describe EmployersController, :type => :controller do
         expect(Customer.first.stripe_card_token).not_to be_nil
         expect(Customer.first.stripe_customer_id).not_to be_nil
         expect(Customer.first.last4).not_to be_nil
-        expect(response).to redirect_to(employers_payment_verify_path)
+        expect(response).to redirect_to(employers_payment_methods_path)
       end
 
       it 'should not call check_employer and should not redirect to /employers/account' do
