@@ -189,7 +189,7 @@ class JobsController < ApplicationController
     @jobs = Job.expired.where(employer_id: current_employer.id).page(params[:page])
     @active_job_count = Job.enable.where(employer_id: current_employer.id, is_active: true ).count
     @inactive_job_count = Job.enable.where(employer_id: current_employer.id, is_active: false ).count
-    customer = current_employer.selected_card
+    @customer = current_employer.selected_card
   end
 
   # toggle is_active
@@ -224,7 +224,7 @@ class JobsController < ApplicationController
     customer = current_employer.selected_card
     if customer.nil?
       redirect_to employer_job_expired_path, notice: 'Oops! we cannot process your request,
-                                                      we have not found valid card.'
+                                                      we have not found valid card.' and return
     end
     # return if employer does not verify payment method
     service_pay = Services::Pay.new(current_employer, @job)
