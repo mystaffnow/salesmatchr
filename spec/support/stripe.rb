@@ -6,7 +6,8 @@ def generate_stripe_card_token
 	    :number => "4242424242424242",
 	    :exp_month => 2,
 	    :exp_year => 2018,
-	    :cvc => "314"
+	    :cvc => "314",
+	    :name => 'Test User'
 	  },
 	)
 	result.id

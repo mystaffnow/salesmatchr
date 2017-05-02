@@ -1,14 +1,10 @@
 .container.padded-container
   .account-panel
     .account-header
-      %h2 Add payment details
+      %h2 Payment Methods
     .account-content
       .text-center
       %hr
-      - if submitted_payment_details?(current_employer)
-        %p You have already submitted payment details with following information.
-        %p Dear #{@customer.card_holder_name.present? ? @customer.card_holder_name : current_employer.name}, your card is *********#{@customer.last4 if @customer} which is expired on (-------), which is registered on our site and ready to use our premium services. Thank you!
-      - else
         = form_for @customer, url: employers_payment_path, :role=>"form", :html => {:id => "new_user"} do |f|
           - if @customer.errors.any?
             - @customer.errors.full_messages.each do |message|
@@ -32,3 +28,4 @@
               = select_year nil, {start_year: Date.today.year, end_year: Date.today.year+15}, {name: nil, id: "card_year"}
           = f.submit "Submit payment detail", class: 'btn btn-default', id: 'payment-btn'
           = render 'card_js'
+          

@@ -40,7 +40,7 @@ class EmployersController < ApplicationController
   # Employer has to add valid payment information to use services like making job active
   # current_employer can access this
   def add_payment_method
-    @customer = current_employer.customer || Customer.new
+    @customer = Customer.new
   end
 
   # add payment information of employer
@@ -49,11 +49,16 @@ class EmployersController < ApplicationController
     pay_service = Services::Pay.new(current_employer, nil, @customer.stripe_card_token)
 
     if pay_service.is_customer_saved?
-      redirect_to employers_payment_verify_path,
+      redirect_to employers_payment_methods_path,
                   notice: 'You have successfully added your payment information!'
     else
       render :add_payment_method
     end
+  end
+
+  # list payment methods
+  def list_payment_method
+    @payment_methods = Customer.all
   end
 
   private

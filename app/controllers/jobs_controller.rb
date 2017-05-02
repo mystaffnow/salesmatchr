@@ -189,7 +189,7 @@ class JobsController < ApplicationController
     @jobs = Job.expired.where(employer_id: current_employer.id).page(params[:page])
     @active_job_count = Job.enable.where(employer_id: current_employer.id, is_active: true ).count
     @inactive_job_count = Job.enable.where(employer_id: current_employer.id, is_active: false ).count
-    @customer = current_employer.customer
+    @customer = current_employer.customers.first
   end
 
   # toggle is_active

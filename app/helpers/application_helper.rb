@@ -151,4 +151,10 @@ module ApplicationHelper
     customer.present? && (customer.stripe_card_token.present? &&
                           customer.stripe_customer_id.present?)
   end
+
+  # return card's expiry month & date
+  def card_expiry_date(obj)
+    return '' if obj.nil?
+    "#{obj.exp_month} / #{obj.exp_year}"
+  end
 end
