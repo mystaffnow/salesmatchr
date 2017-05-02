@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170428075214) do
+ActiveRecord::Schema.define(version: 20170501100258) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -107,12 +107,14 @@ ActiveRecord::Schema.define(version: 20170428075214) do
     t.integer  "employer_id"
     t.string   "stripe_card_token"
     t.string   "stripe_customer_id"
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
     t.integer  "last4"
     t.string   "card_holder_name"
     t.integer  "exp_month"
     t.integer  "exp_year"
+    t.string   "card_number"
+    t.boolean  "is_selected",        default: false
   end
 
   add_index "customers", ["employer_id"], name: "index_customers_on_employer_id", using: :btree

@@ -69,6 +69,7 @@ Rails.application.routes.draw do
   get 'employers/payment_methods' => 'employers#list_payment_method'
   get 'employers/payment/verify' => 'employers#add_payment_method'
   post 'employers/payment' => 'employers#insert_payment_method'
+  get 'employers/choose_pay_method' => 'employers#choose_payment_method'
 
   # Routes for jobs
   get 'employer_jobs' => 'jobs#employer_index', as: 'employer_jobs'

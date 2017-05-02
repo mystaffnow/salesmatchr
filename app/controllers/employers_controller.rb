@@ -1,9 +1,12 @@
 class EmployersController < ApplicationController
   skip_before_filter :check_employer, only: [:account, :update, :add_payment_method,
-                                                :insert_payment_method]
+                                             :insert_payment_method, :list_payment_method,
+                                             :choose_payment_method]
   before_action :authenticate_employer!, only: [:profile, :update,
                                                 :account, :add_payment_method,
-                                                :insert_payment_method]
+                                                :insert_payment_method,
+                                                :list_payment_method,
+                                                :choose_payment_method]
   before_action :set_profile, only: [:profile, :account, :update]
 
   # view employer's profile, signed in employer can access this
@@ -48,7 +51,9 @@ class EmployersController < ApplicationController
     @customer = Customer.new(customer_params)
     pay_service = Services::Pay.new(current_employer, nil, @customer.stripe_card_token)
 
-    if pay_service.is_customer_saved?
+    card = customer_params["card_number"]
+
+    if pay_service.is_customer_saved?(card)
       redirect_to employers_payment_methods_path,
                   notice: 'You have successfully added your payment information!'
     else
@@ -57,8 +62,22 @@ class EmployersController < ApplicationController
   end
 
   # list payment methods
+  # required current_employer
+  # Todo: TestCase
   def list_payment_method
-    @payment_methods = Customer.all
+    @payment_methods = current_employer.customers
+  end
+
+  # Select any one payment method to pay by using service, eg: job active
+  # required current_employer
+  # Todo: TestCase 
+  def choose_payment_method
+    @customer = Customer.find(params[:id])
+    current_employer.customers.update_all(is_selected: false)
+    @customer.update(is_selected: true)
+    respond_to do |format|
+      format.js
+    end
   end
 
   private
@@ -72,7 +91,7 @@ class EmployersController < ApplicationController
   end
 
   def customer_params
-    params.require(:customer).permit(:stripe_card_token)
+    params.require(:customer).permit(:stripe_card_token, :card_number)
   end
 
   def set_profile

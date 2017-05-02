@@ -20,5 +20,6 @@ class Customer < ActiveRecord::Base
 
   # validates
   validates :employer_id, :stripe_card_token, :stripe_customer_id, :last4, presence: true
+  validates :card_number, presence: true, uniqueness: true
   # validates :employer_id, uniqueness: true
 end
