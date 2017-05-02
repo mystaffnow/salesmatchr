@@ -1150,7 +1150,8 @@ RSpec.describe JobsController, :type => :controller do
         customer = create(:customer, stripe_card_token: stripe_card_token,
                                      stripe_customer_id: stripe_customer_id,
                                      employer_id: employer.id,
-                                     last4: '4242')
+                                     last4: '4242',
+                                     card_number: '4242424242424242')
         
         post :pay_to_enable_expired_job, id: job.id
         
