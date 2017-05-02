@@ -19,5 +19,11 @@ FactoryGirl.define do
     employer_id 1
     stripe_card_token "tok_1X4o93YoWV3K0HedHthku2Z"
     stripe_customer_id "cus_SShOhdOXXXS6fI"
+    last4 ''
+    card_holder_name ''
+    exp_month ''
+    exp_year ''
+    card_number ''
+    is_selected false
   end
 end
