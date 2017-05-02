@@ -52,6 +52,13 @@ class Employer < ActiveRecord::Base
     self.employer_profile.state.present? && self.employer_profile.city.present? && self.employer_profile.zip.present? && self.employer_profile.website.present? && self.name.present? && self.email.present?
   end
 
+  # find the selected card of an employer for payment
+  # ToDo: TestCase
+  def selected_card
+    # it will return nil if no customers || customer
+    self.customers.where("is_selected=?", true).try(:first) 
+  end
+
   private
 
   def add_employer_profile
