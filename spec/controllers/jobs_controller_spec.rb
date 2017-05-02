@@ -1142,6 +1142,11 @@ RSpec.describe JobsController, :type => :controller do
         employer_profile(employer)
       }
 
+      it 'should redirect to expired job path when customer object is nil' do
+        post :pay_to_enable_expired_job, id: job.id
+        expect(response).to redirect_to(employer_job_expired_path)
+      end
+
       it 'should pay to enable expired job & send matched alert to subscriber' do
         stripe_card_token = generate_stripe_card_token
         
@@ -1151,7 +1156,8 @@ RSpec.describe JobsController, :type => :controller do
                                      stripe_customer_id: stripe_customer_id,
                                      employer_id: employer.id,
                                      last4: '4242',
-                                     card_number: '4242424242424242')
+                                     card_number: '4242424242424242',
+                                     is_selected: true)
         
         post :pay_to_enable_expired_job, id: job.id
         
