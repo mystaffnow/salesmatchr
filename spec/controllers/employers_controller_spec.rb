@@ -303,15 +303,27 @@ RSpec.describe EmployersController, :type => :controller do
         sign_in(employer)
         employer_profile(employer)
         }
-
-      it '' do
+      let(:customer) {
         pay_service = Services::Pay.new(employer, nil, stripe_card_token)
         card = "4242424242424242"
-        pay_service.is_customer_saved?(card)                             
+        pay_service.is_customer_saved?(card)
+      }
+
+      it '' do
+        customer                          
         expect(Customer.count).to eq(1)
         expect(Customer.first.is_selected).to be_falsy
         xhr :get, :choose_payment_method, id: Customer.first.id, format: :js
         expect(Customer.first.is_selected).to be_truthy
+      end
+
+      it 'should not call check_employer and should not redirect to /employers/account' do
+        EmployerProfile.first.update(zip: nil, state_id: nil, city: nil, website: nil)
+        customer                            
+        expect(Customer.count).to eq(1)
+        expect(Customer.first.is_selected).to be_falsy
+        xhr :get, :choose_payment_method, id: Customer.first.id, format: :js
+        expect(response).not_to redirect_to("/employers/account")
       end
     end
   end
