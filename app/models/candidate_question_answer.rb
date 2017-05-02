@@ -17,7 +17,6 @@ class CandidateQuestionAnswer < ActiveRecord::Base
 
   # calculate archetype_score
   # used in views file while updating archetype_score
-  # ToDo: implement TestCase
   scope :calculate_archetype_score, ->(candidate) {
     self.joins(:answer)
     .where("candidate_question_answers

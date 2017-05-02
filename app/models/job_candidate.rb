@@ -34,7 +34,6 @@ class JobCandidate < ActiveRecord::Base
   	return arr
   end
 
-  # Todo: implement testcase
   # used by views
   def is_applicants?
     (self.submitted? || self.viewed? || self.purposed?)

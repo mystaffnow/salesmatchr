@@ -40,32 +40,19 @@ class EmployersController < ApplicationController
   # Employer has to add valid payment information to use services like making job active
   # current_employer can access this
   def add_payment_method
-    @customer = Customer.new
+    @customer = current_employer.customer || Customer.new
   end
 
+  # add payment information of employer
   def insert_payment_method
-    @customer = Customer.new(customer_params.merge(employer_id: current_employer.id))
+    @customer = Customer.new(customer_params)
+    pay_service = Services::Pay.new(current_employer, nil, @customer.stripe_card_token)
 
-    pay = Services::Pay.new(current_employer, nil, @customer.stripe_card_token)
-    stripe_customer = pay.create_stripe_customer
-
-    if stripe_customer.present?
-      stripe_customer_id = stripe_customer.id
-      @customer.stripe_customer_id = stripe_customer_id
-
-      # save card's last 4 digit
-      card_last4 = pay.get_card_last4(@customer.stripe_card_token)
-      @customer.last4 = card_last4
-
-      if @customer.save
-        redirect_to employers_payment_verify_path,
-                    notice: 'You have successfully added your payment information!'
-      else
-        render :add_payment_method
-      end
-    else
+    if pay_service.is_customer_saved?
       redirect_to employers_payment_verify_path,
-                  notice: 'Oops! we cannot process your request, please contact techical support.'
+                  notice: 'You have successfully added your payment information!'
+    else
+      render :add_payment_method
     end
   end
 

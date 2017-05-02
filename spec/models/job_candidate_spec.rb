@@ -83,4 +83,18 @@ RSpec.describe JobCandidate do
   it "should have statuses_opened array" do
     expect(JobCandidate.statuses_opened).to eq([0, 1, 4, 2, 5, 6])
   end
+
+  context '#is_applicants?' do
+    it '' do
+      job_candidate.submitted!
+      expect(job_candidate.status).to eq("submitted")
+      expect(job_candidate.is_applicants?).to be_truthy
+    end
+
+    it '' do
+      job_candidate.withdrawn!
+      expect(job_candidate.status).to eq("withdrawn")
+      expect(job_candidate.is_applicants?).to be_falsy
+    end
+  end
 end

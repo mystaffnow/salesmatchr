@@ -254,9 +254,9 @@ RSpec.describe JobCandidatesController, :type => :controller do
         expect { put :withdraw, id: job_candidate.id }.to change { ActionMailer::Base.deliveries.count }.by(1)
       end
 
-      it 'should redirect_to job_candidates_path' do
+      it 'should redirect_to my_jobs_path' do
         put :withdraw, id: job_candidate.id
-        expect(response).to redirect_to(job_candidates_path)
+        expect(response).to redirect_to(my_jobs_path)
       end
 
       it 'should redirect to candidates_archetype_path' do

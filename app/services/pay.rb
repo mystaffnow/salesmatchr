@@ -8,22 +8,35 @@ module Services
 			@stripe_card_token = stripe_card_token
 		end
 
-		# this method is used when employer open add payment details form to verify payment
-		# details
-		def create_stripe_customer
-			return nil if stripe_card_token.nil?
-			
-			stripe_customer = Stripe::Customer.create(card: stripe_card_token)
+		# return true if customer is saved to corressponding table otherwise false
+		def is_customer_saved?
+			result = false
 
-			# while creating customer there is error response from stripe e.g: invalid token
+			stripe_customer = create_stripe_customer
+			return result if stripe_customer.nil?
+
+			stripe_card_info = get_stripe_card_token_info(@stripe_card_token)
+			return result if stripe_card_info.nil?
+
+			customer = Customer.create(
+				employer_id: @employer.id,
+				stripe_card_token: @stripe_card_token,
+				stripe_customer_id: stripe_customer.id,
+				last4: stripe_card_info.last4,
+				card_holder_name: stripe_card_info.name
+				)
+
+			result = true if customer.present?
+			return result
+
 			rescue => e
 				Rails.logger.warn e.message
-				return nil
+				return false
 		end
 
 		# when expired jobs are to make enable then system need to deduct predefined amount
 		# from customer's card
-		def payment_processed?
+		def is_payment_processed?
 			result = false
 			
 			# these values required
@@ -34,7 +47,7 @@ module Services
 			customer = employer.customer
 			return result if customer.nil?
 
-			return result unless customer_info_verified?(customer)
+			return result unless is_customer_info_verified?(customer)
 			
 			stripe_customer_id = customer.stripe_customer_id
 
@@ -61,12 +74,25 @@ module Services
 		end
 
 		# get card last4 digit
-		def get_card_last4(stripe_token)
-		 	tok = Stripe::Token.retrieve(stripe_token)
-			tok.card.last4
-		end
+		# def get_card_last4(stripe_token)
+		#  	tok = Stripe::Token.retrieve(stripe_token)
+		# 	tok.card.last4
+		# end
 
 		private
+		# this method is used when employer open add payment details form to verify payment
+		# details
+		def create_stripe_customer
+			return nil if stripe_card_token.nil?
+			
+			stripe_customer = Stripe::Customer.create(card: stripe_card_token)
+
+			# while creating customer there is error response from stripe e.g: invalid token
+			rescue => e
+				Rails.logger.warn e.message
+				return nil
+		end
+
 
 		# stripe will deduct amount as per requested data
 		def create_stripe_charge(stripe_customer_id)
@@ -86,8 +112,18 @@ module Services
 		end
 
 		# verify that stripe card token and stripe customer id exist
-		def customer_info_verified?(customer)
+		def is_customer_info_verified?(customer)
 			customer.stripe_card_token.present? || customer.stripe_customer_id.present?
+		end
+
+		# Get card info
+		def get_stripe_card_token_info(stripe_token)
+		 	tok = Stripe::Token.retrieve(stripe_token)
+			tok.card
+
+			rescue => e
+				Rails.logger.warn e.message
+				return nil
 		end
 	end
 end
