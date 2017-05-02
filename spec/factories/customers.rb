@@ -12,6 +12,8 @@
 #  card_holder_name   :string
 #  exp_month          :integer
 #  exp_year           :integer
+#  card_number        :string
+#  is_selected        :boolean          default(FALSE)
 #
 
 FactoryGirl.define do
