@@ -30,7 +30,6 @@ module Services
 				exp_year: stripe_card_info.exp_year,
 				card_number: card
 				)
-
 			return result if customer.errors.any?
 
 			result = true # if customer.present?
@@ -43,16 +42,16 @@ module Services
 
 		# when expired jobs are to make enable then system need to deduct predefined amount
 		# from customer's card
-		def is_payment_processed?
+		def is_payment_processed?(customer)
 			result = false
 			
 			# these values required
-			return result if (employer.nil? || job.nil?)
+			return result if (customer.nil? || employer.nil? || job.nil?)
 
 			# Additional check: do not process request if empoyer did not have verified
 			# payment information
-			customer = employer.customer
-			return result if customer.nil?
+			# binding.pry
+			# customer = employer.customer
 
 			return result unless is_customer_info_verified?(customer)
 			
@@ -72,6 +71,7 @@ module Services
 				status: Payment.statuses['charged'],
 				customer_id: customer.id
 				)
+			
 			result = true if payment.present?
 			return result
 
