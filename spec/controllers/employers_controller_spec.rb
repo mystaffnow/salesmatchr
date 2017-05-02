@@ -248,4 +248,71 @@ RSpec.describe EmployersController, :type => :controller do
       end
     end
   end
+
+  describe "#list_payment_method" do
+    let(:stripe_card_token) {
+       generate_stripe_card_token
+    }
+
+    context '.when candidate is signed in' do
+      before { sign_in(candidate) }
+
+      it 'should redirect_to employers sign_in page' do
+        post :list_payment_method
+        expect(response).to redirect_to("/employers/sign_in")
+      end
+    end
+
+    context '.when employer is signed in' do
+      before { 
+        sign_in(employer)
+        employer_profile(employer)
+        }
+
+      it 'should return customer list' do
+        pay_service = Services::Pay.new(employer, nil, stripe_card_token)
+        card = "4242424242424242"
+        pay_service.is_customer_saved?(card)                             
+        expect(Customer.count).to eq(1)
+      end
+
+      it 'should not call check_employer and should not redirect to /employers/account' do
+        EmployerProfile.first.update(zip: nil, state_id: nil, city: nil, website: nil)
+        post :list_payment_method
+        expect(response).not_to redirect_to("/employers/account")
+      end
+    end
+  end
+
+  describe ".choose_payment_method" do
+    let(:stripe_card_token) {
+      generate_stripe_card_token
+    }
+
+    context '.when candidate is signed in' do
+      before { sign_in(candidate) }
+
+      it 'should redirect_to employers sign_in page' do
+        get :choose_payment_method
+        expect(response).to redirect_to("/employers/sign_in")
+      end
+    end
+
+    context '.when employer is signed in' do
+      before { 
+        sign_in(employer)
+        employer_profile(employer)
+        }
+
+      it '' do
+        pay_service = Services::Pay.new(employer, nil, stripe_card_token)
+        card = "4242424242424242"
+        pay_service.is_customer_saved?(card)                             
+        expect(Customer.count).to eq(1)
+        expect(Customer.first.is_selected).to be_falsy
+        xhr :get, :choose_payment_method, id: Customer.first.id, format: :js
+        expect(Customer.first.is_selected).to be_truthy
+      end
+    end
+  end
 end

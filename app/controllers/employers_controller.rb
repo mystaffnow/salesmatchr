@@ -63,14 +63,12 @@ class EmployersController < ApplicationController
 
   # list payment methods
   # required current_employer
-  # Todo: TestCase
   def list_payment_method
     @payment_methods = current_employer.customers
   end
 
   # Select any one payment method to pay by using service, eg: job active
   # required current_employer
-  # Todo: TestCase 
   def choose_payment_method
     @customer = Customer.find(params[:id])
     current_employer.customers.update_all(is_selected: false)
