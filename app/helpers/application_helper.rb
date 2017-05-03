@@ -147,7 +147,7 @@ module ApplicationHelper
 
   # ensure if payment details of employer is already filled
   def submitted_payment_details?(employer)
-    customer = employer.customer
+    customer = employer.selected_card
     customer.present? && (customer.stripe_card_token.present? &&
                           customer.stripe_customer_id.present?)
   end

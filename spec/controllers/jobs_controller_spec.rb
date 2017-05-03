@@ -754,6 +754,25 @@ RSpec.describe JobsController, :type => :controller do
         expect(assigns(:inactive_job_count)).to eq(1)
       end
 
+      it 'should return customer obj' do
+        job.update(is_active: false)
+        job.reload
+
+        stripe_card_token = generate_stripe_card_token
+        
+        stripe_customer_id = generate_stripe_customer(stripe_card_token)
+        
+        customer = create(:customer, stripe_card_token: stripe_card_token,
+                                     stripe_customer_id: stripe_customer_id,
+                                     employer_id: employer.id,
+                                     last4: '4242',
+                                     card_number: '4242424242424242',
+                                     is_selected: true)
+
+        get :list_expired_jobs
+        expect(assigns(:customer)).to eq(customer)
+      end
+
       it 'should redirect to /employers/account' do
         EmployerProfile.first.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
         get :list_expired_jobs, id: job.id
@@ -1142,6 +1161,11 @@ RSpec.describe JobsController, :type => :controller do
         employer_profile(employer)
       }
 
+      it 'should redirect to expired job path when customer object is nil' do
+        post :pay_to_enable_expired_job, id: job.id
+        expect(response).to redirect_to(employer_job_expired_path)
+      end
+
       it 'should pay to enable expired job & send matched alert to subscriber' do
         stripe_card_token = generate_stripe_card_token
         
@@ -1150,7 +1174,9 @@ RSpec.describe JobsController, :type => :controller do
         customer = create(:customer, stripe_card_token: stripe_card_token,
                                      stripe_customer_id: stripe_customer_id,
                                      employer_id: employer.id,
-                                     last4: '4242')
+                                     last4: '4242',
+                                     card_number: '4242424242424242',
+                                     is_selected: true)
         
         post :pay_to_enable_expired_job, id: job.id
         

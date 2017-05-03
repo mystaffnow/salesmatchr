@@ -163,8 +163,10 @@ RSpec.describe ApplicationHelper, type: :helper do
 	  stripe_card_token = generate_stripe_card_token
 
 		pay_service = Services::Pay.new(employer, job, stripe_card_token)
-    stripe_cus = pay_service.is_customer_saved?
-
+    card = "4242424242424242"
+    stripe_cus = pay_service.is_customer_saved?(card)
+    # default is false
+    Customer.first.update(is_selected: true)
   	expect(Customer.count).to eq(1)
   	expect(helper.submitted_payment_details?(employer)).to be_truthy
   	expect(helper.submitted_payment_details?(employer1)).to be_falsy
@@ -176,7 +178,8 @@ RSpec.describe ApplicationHelper, type: :helper do
 	  stripe_card_token = generate_stripe_card_token
 
 		pay_service = Services::Pay.new(employer, job, stripe_card_token)
-    stripe_cus = pay_service.is_customer_saved?
+		card = "4242424242424242"
+    stripe_cus = pay_service.is_customer_saved?(card)
    	
    	expect(helper.card_expiry_date(Customer.first)).to eq("2 / 2018")
 	end
