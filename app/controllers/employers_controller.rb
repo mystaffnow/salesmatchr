@@ -55,7 +55,7 @@ class EmployersController < ApplicationController
       redirect_to employers_payment_methods_path,
                   notice: 'You have successfully added your payment information!'
     else
-      render :add_payment_method
+      redirect_to employers_payment_verify_path, alert: "There was an error processing your card. Contact support."
     end
   end
 
