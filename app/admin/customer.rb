@@ -21,6 +21,10 @@ ActiveAdmin.register Customer do
     column :stripe_card_token
     column :stripe_customer_id
     column :last4
+    column :card_holder_name
+    column :exp_month
+    column :exp_year
+    column :is_selected
 
     actions
   end
@@ -32,6 +36,10 @@ ActiveAdmin.register Customer do
       row :stripe_card_token
       row :stripe_customer_id
       row :last4
+      row :card_holder_name
+      row :exp_month
+      row :exp_year
+      row :is_selected
     end
   end
 end

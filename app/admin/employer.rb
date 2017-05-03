@@ -83,11 +83,15 @@ ActiveAdmin.register Employer do
     end
 
     panel 'customer' do
-      attributes_table_for emp.customer do
-        row :employer_id
-        row :stripe_card_token
-        row :stripe_customer_id
-        row :last4
+      table_for emp.customers do
+        column :employer_id
+        column :stripe_card_token
+        column :stripe_customer_id
+        column :last4
+        column :card_holder_name
+        column :exp_month
+        column :exp_year
+        column :is_selected
       end
     end
 
@@ -101,7 +105,6 @@ ActiveAdmin.register Employer do
           jb.job.present? ? jb.job.title : nil
         end
         column :amount
-        column :stripe_customer_id
         column :stripe_charge_id
         column :status
         column :customer_id
