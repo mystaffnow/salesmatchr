@@ -16,7 +16,7 @@
               %br
               = f.fields_for :employer_profile do |profile_fields|
                 = f.label :first_name
-                = f.text_field :first_name, class: 'form_control'
+                = f.text_field :first_name, class: 'form-control'
                 = f.label :last_name
                 = f.text_field :last_name, class: 'form-control'
                 = render 'profile_fields', profile_fields: profile_fields
