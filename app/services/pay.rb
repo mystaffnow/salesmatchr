@@ -9,10 +9,8 @@ module Services
 		end
 
 		# return true if customer is saved to corressponding table otherwise false
-		def is_customer_saved?(card)
+		def is_customer_saved?
 			result = false
-
-			return result if card.nil?
 
 			stripe_customer = create_stripe_customer
 			return result if stripe_customer.nil?
@@ -27,8 +25,7 @@ module Services
 				last4: stripe_card_info.last4,
 				card_holder_name: stripe_card_info.name,
 				exp_month: stripe_card_info.exp_month,
-				exp_year: stripe_card_info.exp_year,
-				card_number: card
+				exp_year: stripe_card_info.exp_year
 				)
 			return result if customer.errors.any?
 

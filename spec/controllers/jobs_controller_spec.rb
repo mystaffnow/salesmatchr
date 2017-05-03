@@ -765,9 +765,7 @@ RSpec.describe JobsController, :type => :controller do
         customer = create(:customer, stripe_card_token: stripe_card_token,
                                      stripe_customer_id: stripe_customer_id,
                                      employer_id: employer.id,
-                                     last4: '4242',
-                                     card_number: '4242424242424242',
-                                     is_selected: true)
+                                     )
 
         get :list_expired_jobs
         expect(assigns(:customer)).to eq(customer)
@@ -1173,10 +1171,7 @@ RSpec.describe JobsController, :type => :controller do
         
         customer = create(:customer, stripe_card_token: stripe_card_token,
                                      stripe_customer_id: stripe_customer_id,
-                                     employer_id: employer.id,
-                                     last4: '4242',
-                                     card_number: '4242424242424242',
-                                     is_selected: true)
+                                     employer_id: employer.id)
         
         post :pay_to_enable_expired_job, id: job.id
         

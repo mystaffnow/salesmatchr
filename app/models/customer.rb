@@ -12,7 +12,6 @@
 #  card_holder_name   :string
 #  exp_month          :integer
 #  exp_year           :integer
-#  card_number        :string
 #  is_selected        :boolean          default(FALSE)
 #
 
@@ -23,6 +22,6 @@ class Customer < ActiveRecord::Base
   # validates
   validates :employer_id, :stripe_card_token, :stripe_customer_id,
            :last4, :card_holder_name, :exp_month,
-           :exp_year, :card_number, presence: true
-  validates :card_number, uniqueness: true
+           :exp_year, presence: true
+  validates :employer_id, uniqueness: { scope: :last4 }
 end

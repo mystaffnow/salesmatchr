@@ -212,8 +212,7 @@ RSpec.describe EmployersController, :type => :controller do
 
   describe '#insert_payment_method' do
     let(:customer_params) {
-      {stripe_card_token: generate_stripe_card_token,
-       card_number: '4242424242424242'}
+      {stripe_card_token: generate_stripe_card_token}
     }
 
     context '.when candidate is signed in' do
@@ -272,8 +271,7 @@ RSpec.describe EmployersController, :type => :controller do
 
       it 'should return customer list' do
         pay_service = Services::Pay.new(employer, nil, stripe_card_token)
-        card = "4242424242424242"
-        pay_service.is_customer_saved?(card)                             
+        pay_service.is_customer_saved?                             
         expect(Customer.count).to eq(1)
       end
 
@@ -306,8 +304,7 @@ RSpec.describe EmployersController, :type => :controller do
         }
       let(:customer) {
         pay_service = Services::Pay.new(employer, nil, stripe_card_token)
-        card = "4242424242424242"
-        pay_service.is_customer_saved?(card)
+        pay_service.is_customer_saved?
       }
 
       it '' do

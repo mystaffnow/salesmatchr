@@ -30,7 +30,6 @@
     handleStripeResponse: function(status, response) {
       if (status === 200) {
         $('#customer_stripe_card_token').val(response.id);
-        $('#customer_card_number').val($('#card_number').val())
         $('#new_user')[0].submit();
       } else {
         $('input[type=submit]').attr('disabled', false);
