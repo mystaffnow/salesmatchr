@@ -14,16 +14,14 @@ RSpec.describe Services::Pay do
   	# constructor
     obj = Services::Pay.new(employer, job, stripe_card_token)
   	expect(obj.stripe_card_token).to eq(stripe_card_token)
-    card = "4242424242424242"
     # customer
-    expect(obj.is_customer_saved?(card)).to be_truthy    
+    expect(obj.is_customer_saved?).to be_truthy    
     expect(Customer.count).to eq(1)
     expect(Customer.first.last4).not_to be_nil
     expect(Customer.first.stripe_customer_id).not_to be_nil
     expect(Customer.first.stripe_card_token).to eq(obj.stripe_card_token)
     expect(Customer.first.exp_month).not_to be_nil
     expect(Customer.first.exp_year).not_to be_nil
-    expect(Customer.first.card_number).not_to be_nil
     # payment
     expect(obj.is_payment_processed?(Customer.first)).to be_truthy
     expect(Payment.count).to eq(1)
@@ -38,6 +36,6 @@ RSpec.describe Services::Pay do
   it 'should return nil' do
   	stripe_cus = Services::Pay.new(nil, nil, nil)
   	expect(stripe_cus.is_payment_processed?(nil)).to be_falsy
-  	expect(stripe_cus.is_customer_saved?(nil)).to be_falsy
+  	expect(stripe_cus.is_customer_saved?).to be_falsy
   end
 end

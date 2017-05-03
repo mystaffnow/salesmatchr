@@ -12,7 +12,6 @@
 #  card_holder_name   :string
 #  exp_month          :integer
 #  exp_year           :integer
-#  card_number        :string
 #  is_selected        :boolean          default(FALSE)
 #
 
@@ -27,8 +26,7 @@ RSpec.describe Customer, type: :model do
     it {should validate_presence_of :card_holder_name}
     it {should validate_presence_of :exp_month}
     it {should validate_presence_of :exp_year}
-    it {should validate_presence_of :card_number}
-    it {should validate_uniqueness_of :card_number}
+    it { should validate_uniqueness_of(:employer_id).scoped_to(:last4) }
   end
 
   describe 'association' do

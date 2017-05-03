@@ -85,8 +85,6 @@ ActiveAdmin.register Job do
           obj.employer.present? ? obj.employer.name : ''
         end
 		  	column :amount
-		  	# column :stripe_card_token
-		  	column :stripe_customer_id
 		  	column :stripe_charge_id
 		  	column :status
 		  end
@@ -137,7 +135,6 @@ ActiveAdmin.register Job do
                               p.employer_id? ? p.employer_id : nil,
                               p.job_id? ? p.job_id : nil,
                               p.amount? ? p.amount : nil,
-                              p.stripe_customer_id? ? p.stripe_customer_id : nil,
                               p.stripe_charge_id? ? p.stripe_charge_id : nil,
                               p.status? ? p.status : nil,
                               p.customer_id? ? p.customer_id : nil

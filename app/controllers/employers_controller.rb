@@ -51,13 +51,11 @@ class EmployersController < ApplicationController
     @customer = Customer.new(customer_params)
     pay_service = Services::Pay.new(current_employer, nil, @customer.stripe_card_token)
 
-    card = customer_params["card_number"]
-
-    if pay_service.is_customer_saved?(card)
+    if pay_service.is_customer_saved?
       redirect_to employers_payment_methods_path,
                   notice: 'You have successfully added your payment information!'
     else
-      render :add_payment_method
+      redirect_to employers_payment_verify_path, alert: "There was an error processing your card. Contact support."
     end
   end
 
@@ -89,7 +87,7 @@ class EmployersController < ApplicationController
   end
 
   def customer_params
-    params.require(:customer).permit(:stripe_card_token, :card_number)
+    params.require(:customer).permit(:stripe_card_token)
   end
 
   def set_profile

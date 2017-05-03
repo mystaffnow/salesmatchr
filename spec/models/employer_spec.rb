@@ -110,10 +110,7 @@ RSpec.describe Employer do
     stripe_customer_id = generate_stripe_customer(stripe_card_token)
     customer = create(:customer, stripe_card_token: stripe_card_token,
                                  stripe_customer_id: stripe_customer_id,
-                                 employer_id: employer.id,
-                                 last4: '4242',
-                                 card_number: '4242424242424242',
-                                 is_selected: true)
+                                 employer_id: employer.id)
     expect(employer.selected_card).to eq(customer)
   end
 end
