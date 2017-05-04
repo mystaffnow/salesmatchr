@@ -10,13 +10,11 @@ module Services
 
 		# return true if customer is saved to corressponding table otherwise false
 		def is_customer_saved?
-			result = false
-
 			stripe_customer = create_stripe_customer
-			return result if stripe_customer.nil?
+			return false if stripe_customer.nil?
 
 			stripe_card_info = get_stripe_card_token_info(@stripe_card_token)
-			return result if stripe_card_info.nil?
+			return false if stripe_card_info.nil?
 
 			customer = Customer.create(
 				employer_id: @employer.id,
@@ -27,10 +25,9 @@ module Services
 				exp_month: stripe_card_info.exp_month,
 				exp_year: stripe_card_info.exp_year
 				)
-			return result if customer.errors.any?
+			return false if customer.errors.any?
 
-			result = true # if customer.present?
-			return result
+			return true # if customer.present?
 
 			rescue => e
 				Rails.logger.warn e.message
