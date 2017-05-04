@@ -111,4 +111,5 @@ gem 'rails_12factor', group: :production
 
 # paginator solution
 gem 'kaminari'
+# freeze time
 gem 'timecop'
