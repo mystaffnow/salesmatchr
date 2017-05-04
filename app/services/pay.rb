@@ -41,7 +41,7 @@ module Services
 			return false if (customer.nil? || employer.nil? || job.nil?)
 
 			# don't pay when card is expired
-			return false if is_card_expired?(customer)
+			return false if customer.card_is_expired?
 
 			# Additional check: do not process request if empoyer did not have verified
 			# payment information
@@ -81,11 +81,6 @@ module Services
 		# end
 
 		private
-		
-		def is_card_expired?(customer)
-			return true if (customer.exp_month <= Time.now.month && customer.exp_year <= Time.now.year)
-			return false
-		end
 
 		# this method is used when employer open add payment details form to verify payment
 		# details
