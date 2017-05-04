@@ -111,3 +111,4 @@ gem 'rails_12factor', group: :production
 
 # paginator solution
 gem 'kaminari'
+gem 'timecop'
