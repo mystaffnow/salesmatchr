@@ -43,7 +43,7 @@ RSpec.describe Customer, type: :model do
               }
     let(:stripe_card_token) {generate_stripe_card_token}
     
-    it '#is_card_not_expired?' do
+    it '#card_is_expired?' do
       # constructor
       obj = Services::Pay.new(employer, job, stripe_card_token)
       expect(obj.stripe_card_token).to eq(stripe_card_token)
@@ -53,15 +53,15 @@ RSpec.describe Customer, type: :model do
       
       Customer.first.update(exp_month: Timecop.freeze(Time.now.month))
       Customer.first.update(exp_year: Timecop.freeze(Time.now.year))
-      expect(Customer.first.is_card_not_expired?).to be_truthy
+      expect(Customer.first.card_is_expired?).to be_falsy
 
       Customer.first.update(exp_month: 1.years.from_now.month)
       Customer.first.update(exp_year: 1.years.from_now.year)
-      expect(Customer.first.is_card_not_expired?).to be_truthy
+      expect(Customer.first.card_is_expired?).to be_falsy
 
       Customer.first.update(exp_month: 1.months.ago.month)
       Customer.first.update(exp_year: 1.years.ago.year)
-      expect(Customer.first.is_card_not_expired?).to be_falsy
+      expect(Customer.first.card_is_expired?).to be_truthy
     end
   end
 end
