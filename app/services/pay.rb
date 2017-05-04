@@ -40,24 +40,25 @@ module Services
 		# when expired jobs are to make enable then system need to deduct predefined amount
 		# from customer's card
 		def is_payment_processed?(customer)
-			result = false
-			
 			# these values required
-			return result if (customer.nil? || employer.nil? || job.nil?)
+			return false if (customer.nil? || employer.nil? || job.nil?)
+
+			# don't pay when card is expired
+			return false if is_card_expired?(customer)
 
 			# Additional check: do not process request if empoyer did not have verified
 			# payment information
 			# binding.pry
 			# customer = employer.customer
 
-			return result unless is_customer_info_verified?(customer)
+			return false unless is_customer_info_verified?(customer)
 			
 			stripe_customer_id = customer.stripe_customer_id
 
 			# connect to stripe and charge from card
 			stripe_charge = create_stripe_charge(stripe_customer_id)
 
-			return result if stripe_charge.nil?
+			return false if stripe_charge.nil?
 
 			# if stripe has deducted amount from card then save some information to our database
 			payment = Payment.create(
@@ -69,8 +70,7 @@ module Services
 				customer_id: customer.id
 				)
 			
-			result = true if payment.present?
-			return result
+			return true if payment.present?
 
 			rescue => e
 				Rails.logger.warn e.message
@@ -84,6 +84,12 @@ module Services
 		# end
 
 		private
+		
+		def is_card_expired?(customer)
+			return true if (customer.exp_month <= Time.now.month && customer.exp_year <= Time.now.year)
+			return false
+		end
+
 		# this method is used when employer open add payment details form to verify payment
 		# details
 		def create_stripe_customer
