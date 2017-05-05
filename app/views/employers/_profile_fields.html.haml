@@ -12,7 +12,7 @@
 %br
 = profile_fields.collection_select(:state_id, State.all, :id, :name,  {:class => 'form-control selectpickers'})
 %br
-= profile_fields.label "Zipcode"
+= profile_fields.label "Zip code"
 = profile_fields.text_field :zip, class: 'form-control'
 = profile_fields.label "Company Bio"
 = profile_fields.text_area :description, class: 'form-control'
