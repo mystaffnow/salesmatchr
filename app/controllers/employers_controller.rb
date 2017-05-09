@@ -1,7 +1,5 @@
 class EmployersController < ApplicationController
-  skip_before_filter :check_employer, only: [:account, :update, :add_payment_method,
-                                             :insert_payment_method, :list_payment_method,
-                                             :choose_payment_method]
+  skip_before_filter :check_employer, only: [:account, :update]
   before_action :authenticate_employer!, only: [:profile, :update,
                                                 :account, :add_payment_method,
                                                 :insert_payment_method,
