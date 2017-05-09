@@ -18,7 +18,7 @@
     %script{type:"text/javascript", src: "https://js.stripe.com/v2/"}
     = tag :meta, :name => "stripe-key", :content => STRIPE_PUBLIC_KEY
     = csrf_meta_tags
-    = render "layouts/mixpanel_script"
+    /= render "layouts/mixpanel_script"
   %body
 
   %nav.navbar
@@ -112,4 +112,4 @@
           %button.close &times;
           .text-center= msg if msg.is_a?(String)
   = yield
-  = render 'layouts/footer'
+  /= render 'layouts/footer'
