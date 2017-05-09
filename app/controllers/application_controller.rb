@@ -39,7 +39,7 @@ class ApplicationController < ActionController::Base
   def check_employer
     if employer_signed_in?
       if !current_employer.can_proceed
-        redirect_to employers_account_path
+        redirect_to employers_account_path, alert: 'Complete your profile details before continue.'
       end
     end
   end
