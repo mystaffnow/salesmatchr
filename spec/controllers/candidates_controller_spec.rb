@@ -275,10 +275,10 @@ RSpec.describe CandidatesController, :type => :controller do
           expect(response).to redirect_to(candidates_profile_path(candidate))
         end
 
-        it 'should not call check_candidate' do
+        it 'should not call check_candidate, need to complete archetype form before continue' do
           candidate.update(archetype_score: nil)
           put :update, {candidate: valid_attributes}
-          expect(response).not_to redirect_to(candidates_archetype_path)
+          expect(response).to redirect_to(candidates_archetype_path)
         end
       end
 
@@ -322,7 +322,7 @@ RSpec.describe CandidatesController, :type => :controller do
       it 'should not call check_candidate' do
         candidate.update(archetype_score: nil)
         xhr :get, :incognito, format: :js
-        expect(response).not_to redirect_to(candidates_archetype_path)
+        expect(response).to redirect_to(candidates_archetype_path)
       end
     end
 
@@ -358,9 +358,10 @@ RSpec.describe CandidatesController, :type => :controller do
         sign_in(candidate)
       }
 
-      it 'should_not call check_candidate' do
+      it 'should call check_candidate' do
+        candidate.update(archetype_score: nil)
         xhr :get, :subscription, format: :js
-        expect(response).not_to redirect_to(candidates_archetype_path)
+        expect(response).to redirect_to(candidates_archetype_path)
       end
 
       it 'should update subscription' do
