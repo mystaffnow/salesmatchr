@@ -1,6 +1,5 @@
 class CandidatesController < ApplicationController
-  skip_before_filter :check_candidate, only: [:archetype, :update_archetype, :update,
-                                              :incognito, :subscription]
+  skip_before_filter :check_candidate, only: [:archetype, :update_archetype]
   before_action :authenticate_candidate!, only: [:archetype, :account, :update,
                                                  :update_archetype, :archetype_result,
                                                  :incognito, :subscription]
