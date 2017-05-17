@@ -86,7 +86,7 @@ ActiveAdmin.register Job do
 	  end
 
     panel 'Job Payment' do
-	    table_for job.payments do
+	    table_for job.payments.includes(:employer) do
 		  	column :employer_id do |obj|
           obj.employer.present? ? obj.employer.name : ''
         end
