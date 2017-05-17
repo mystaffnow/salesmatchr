@@ -58,7 +58,8 @@ class Job < ActiveRecord::Base
 
   # List of the enable jobs which are viewed by candidate
   scope :job_viewed_list, ->(current_candidate) {
-    enable.active.joins(:candidate_job_actions)
+    enable.active.includes(:state)
+    .joins(:candidate_job_actions)
     .where('candidate_job_actions.candidate_id=?', current_candidate.id)
     .order('created_at DESC')
   }
