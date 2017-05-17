@@ -79,7 +79,7 @@ ActiveAdmin.register Candidate do
     end
 
     panel 'Education' do
-      table_for cd.educations do
+      table_for cd.educations.includes([:college, :education_level]) do
         column :college_id do |cd|
           cd.college.present? ? cd.college.name : ''
         end
