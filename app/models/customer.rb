@@ -24,4 +24,10 @@ class Customer < ActiveRecord::Base
            :last4, :card_holder_name, :exp_month,
            :exp_year, presence: true
   validates :employer_id, uniqueness: { scope: :last4 }
+
+  # return true if card is expired
+  def card_is_expired?
+    return true if (self.exp_month <= Time.now.month && self.exp_year <= Time.now.year)
+    return false
+  end
 end
