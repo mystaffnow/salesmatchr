@@ -104,7 +104,7 @@ ActiveAdmin.register Job do
 	  end
 
 	  panel 'Candidate Job Actions' do
-	  	attributes_table_for job.candidate_job_actions do
+	  	attributes_table_for job.candidate_job_actions.includes(:candidate) do
 	  		row :candidate_id
 	  		row :is_saved
 	  	end
