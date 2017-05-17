@@ -17,6 +17,12 @@ ActiveAdmin.register Job do
   filter :title
   filter :city
 
+  controller do
+    def scoped_collection
+      super.includes([:employer, :state, :job_function])
+    end
+  end
+
   index do
     id_column
     column :title
