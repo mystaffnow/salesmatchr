@@ -140,11 +140,11 @@ class JobsController < ApplicationController
   def employer_show
     authorize @job
 
-    @job.job_candidates
+    @job.job_candidates.includes(:candidate)
         .where(status: JobCandidate.statuses[:submitted])
         .map { |jc| jc.viewed! }
 
-    @job_candidates = @job.job_candidates.where("status NOT IN (?)",
+    @job_candidates = @job.job_candidates.includes(:candidate).where("status NOT IN (?)",
                                                 [JobCandidate.statuses[:shortlist],
                                                 JobCandidate.statuses[:deleted]])
                                           .page(params[:page])
