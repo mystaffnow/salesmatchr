@@ -10,8 +10,7 @@
     margin-top: 100px
     margin-bottom: 20px
     color: #fff
-    font-size: 50px !important
-    font-family: serif, Helvetica, Arial
+    font-size: 40px !important
     letter-spacing: 0.06em
   p
     font-size: 20px !important
@@ -31,8 +30,8 @@
 .benefit1, .benefit2, .benefit3, .call-to-action
   padding: 90px 0
   p
-    font-family: serif, Helvetica, Arial
-    font-size: 18px
+    font-size: 17px
+    letter-spacing: 0.04em
   img
     margin: auto
     height: 500px
@@ -44,17 +43,31 @@
 
 .benefit1, .benefit2, .benefit3
   h2
-    font-size: 27px !important
-    font-family: serif, Helvetica, Arial
+    font-size: 25px !important
     letter-spacing: 0.03em
     margin-bottom: 15px
 
-.benefit1, .benefit3
+.benefit1
   background-color: white
   img
-    margin-bottom: 0px
+    margin-bottom: -44px
     // box-shadow: 5px 4px 40px rgba(153, 153, 153, 0.75)
     height: 240px
+  @media (max-width:  989px)
+    img
+      margin-bottom: -15px
+
+.benefit3
+  background-color: white
+  img
+    margin-bottom: -31px
+    margin-top: -27px
+    height: 255px
+  h2
+    margin-top: 2px
+  @media (max-width: 989px)
+    h2
+      margin-top: 32px    
 
 
 .benefit1
@@ -62,7 +75,10 @@
     width: 25%
     margin: 70px auto
     border-color: #e4e4e4
-
+  img
+    margin-top: -42px
+  h2.caliber
+    margin-top: -60px
 
 .benefit2
   background-color: #617886
@@ -72,14 +88,15 @@
     padding-right: 30px
   img
     height: 270px
-
-  @media (max-width: 767px)
+    margin-top: -40px
+    margin-bottom: -44px
+  h2
+    margin-top: -18px
+  @media (max-width: 989px)
     p
       padding: 0
-
     img
       margin-top: 50px
-
 
 .call-to-action
   //background-image: image-url('balloon-bg.png')
@@ -88,8 +105,8 @@
     color: white
   h1
     margin-bottom: 15px
-    font-size: 35px !important
-    font-family: serif, Helvetica, Arial
+    margin-top: -18px
+    font-size: 25px !important
     letter-spacing: 0.05em
   p
     margin-bottom: 50px
@@ -146,3 +163,7 @@
     margin-top: 5px
   a.btn-default:hover
     background-color: #1abc9c !important
+
+.call-to-action
+  .btn
+    margin-bottom: -23px

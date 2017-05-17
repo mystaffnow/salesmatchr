@@ -1,7 +1,7 @@
 .container.padded-container
   .row
     .col-md-12
-      %h1 FAQ (Hustler)
+      %h2 FAQ (Hustler)
       %hr
 
       %br
@@ -31,3 +31,49 @@
         Fill out a profile
         = link_to "here", new_candidate_registration_path
         and you’re on your way!
+  %hr
+  .row
+    .col-md-12
+      #accordion.panel-group{"aria-multiselectable" => "true", :role => "tablist"}
+        .panel.panel-default
+          #headingOne.panel-heading{:role => "tab"}
+            %h5.panel-title
+              %a{"aria-controls" => "collapseOne", "aria-expanded" => "true", "data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#collapseOne", :role => "button"}
+                How does SalesMatchr differ from job boards such as Indeed or Monster?
+          #collapseOne.panel-collapse.collapse.in{"aria-labelledby" => "headingOne", :role => "tabpanel"}
+            .panel-body
+              SalesMatchr is a matching platform. Unlike Indeed or Monster, we don’t just show you an endless list of jobs that have no relevance to you or your skills. Instead, we match you with only the jobs that align with your particular set of traits and skills, thereby streamlining your job search.
+        .panel.panel-default
+          #headingTwo.panel-heading{:role => "tab"}
+            %h5.panel-title
+              %a.collapsed{"aria-controls" => "collapseTwo", "aria-expanded" => "false", "data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#collapseTwo", :role => "button"}
+                How soon will I get a match?
+          #collapseTwo.panel-collapse.collapse{"aria-labelledby" => "headingTwo", :role => "tabpanel"}
+            .panel-body
+              Once you fill out a profile, you will be ready to be matched to potential job opportunities. When an appropriate job is submitted into our system, you will be immediately matched to that position.
+        .panel.panel-default
+          #headingThree.panel-heading{:role => "tab"}
+            %h5.panel-title
+              %a.collapsed{"aria-controls" => "collapseThree", "aria-expanded" => "false", "data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#collapseThree", :role => "button"}
+                What if I don’t my current employer to know that I’m looking to see what other jobs are out there?
+          #collapseThree.panel-collapse.collapse{"aria-labelledby" => "headingThree", :role => "tabpanel"}
+            .panel-body
+              Salesmatchr has an incognito mode so that when you get matched your information is hidden and you choose whether you want to connect with the employer or not.
+        .panel.panel-default
+          #headingFour.panel-heading{:role => "tab"}
+            %h5.panel-title
+              %a.collapsed{"aria-controls" => "collapseFour", "aria-expanded" => "false", "data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#collapseFour", :role => "button"}
+                I’m busy!  How long is the personality assessment?
+          #collapseFour.panel-collapse.collapse{"aria-labelledby" => "headingFour", :role => "tabpanel"}
+            .panel-body
+              It should take about five minutes.  It’s a very small investment of time for more accurate job search results!
+        .panel.panel-default
+          #headingFive.panel-heading{:role => "tab"}
+            %h5.panel-title
+              %a.collapsed{"aria-controls" => "collapseFive", "aria-expanded" => "false", "data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#collapseFive", :role => "button"}
+                Sign me up! How do I get started?
+          #collapseFive.panel-collapse.collapse{"aria-labelledby" => "headingFive", :role => "tabpanel"}
+            .panel-body
+              Fill out a profile
+              = link_to "here", new_candidate_registration_path
+              and you’re on your way!
