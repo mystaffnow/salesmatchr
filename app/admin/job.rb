@@ -97,7 +97,7 @@ ActiveAdmin.register Job do
 	  end
 
 	  panel 'Job Candidates' do
-	  	attributes_table_for job.job_candidates do
+	  	attributes_table_for job.job_candidates.includes(:candidate) do
 	  		row :candidate_id
 	  		row :status
 	  	end
