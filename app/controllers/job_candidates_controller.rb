@@ -11,7 +11,7 @@ class JobCandidatesController < ApplicationController
   # return all withdrawn job candidates
   def withdrawn_job_candidates
     if active_job_candidate_list.present?
-      @withdrawn_job_candidates = active_job_candidate_list
+      @withdrawn_job_candidates = active_job_candidate_list.includes(:job)
                                   .where(status: JobCandidate.statuses["withdrawn"])
                                   .page(params[:page])
     end
@@ -21,7 +21,7 @@ class JobCandidatesController < ApplicationController
   # purposed, removed, shortlisted candidates
   def open_job_candidates
     if active_job_candidate_list.present?
-      @open_job_candidates = active_job_candidate_list
+      @open_job_candidates = active_job_candidate_list.includes(:job)
                             .where("job_candidates.status in (?)",
                                     JobCandidate.statuses_opened)
                             .page(params[:page])
