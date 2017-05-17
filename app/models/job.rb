@@ -66,7 +66,8 @@ class Job < ActiveRecord::Base
 
   # list of enable jobs saved by candidate
   scope :job_saved_list, ->(current_candidate) {
-    enable.active.joins(:candidate_job_actions)
+    enable.active.includes(:state)
+    .joins(:candidate_job_actions)
     .where('candidate_job_actions.candidate_id=?
             and candidate_job_actions.is_saved=true', current_candidate.id)
   }
