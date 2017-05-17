@@ -93,7 +93,7 @@
 
                 #education.tab-pane{:role => "tabpanel"}
                   .account-content
-                    - @candidate.educations.each do |education|
+                    - @candidate.educations.includes([:college, :education_level]).each do |education|
                       = render 'candidates/education_item', education: education
 - if @profile.present?
   :javascript
