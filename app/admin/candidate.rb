@@ -19,6 +19,12 @@ ActiveAdmin.register Candidate do
   filter :year_experience
   filter :email
 
+  controller do
+    def scoped_collection
+      super.includes(:year_experience)
+    end
+  end
+
   index do
     id_column
     column :first_name
