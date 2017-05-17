@@ -20,7 +20,7 @@
       .col-md-12
         %table.table.table-responsive
           - if @candidates.present?
-            - @candidates.each do |candidate|
+            - @candidates.includes(:candidate_profile => [:state, :education_level]).each do |candidate|
               .row
                 .col-md-2
                   = link_to candidates_profile_path(candidate) do
