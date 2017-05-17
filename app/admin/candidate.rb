@@ -66,7 +66,7 @@ ActiveAdmin.register Candidate do
     end
 
     panel 'Work history' do
-      table_for cd.experiences do
+      table_for cd.experiences.includes(:sales_type) do
         column :position
         column :company
         column :description
