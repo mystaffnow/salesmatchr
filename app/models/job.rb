@@ -71,7 +71,7 @@ class Job < ActiveRecord::Base
 
   # list of all visible candidates who have viewed particular job
   scope :visible_candidate_viewed_list, ->(job) {
-    Candidate.joins(:candidate_job_actions)
+    Candidate.includes(:candidate_profile).joins(:candidate_job_actions)
     .joins(:candidate_profile)
     .where('job_id=? and candidate_profiles.is_incognito=false', job.id)
   }
@@ -79,7 +79,7 @@ class Job < ActiveRecord::Base
   # this method returns all the candidates who matches the job and having their
   # profile visible
   def candidate_matches_list
-    Candidate.where('candidates.archetype_score >= ?
+    Candidate.includes(:candidate_profile).where('candidates.archetype_score >= ?
                      and candidates.archetype_score <= ?',
                     self.archetype_low,
                     self.archetype_high)
