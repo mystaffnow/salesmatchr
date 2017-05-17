@@ -50,7 +50,8 @@ class Job < ActiveRecord::Base
 
   # List all jobs which are active and matched to the candidate
   # Candidate should not see inactive jobs in matched list, although they matched to it
-  scope :job_matched_list, ->(current_candidate) {enable.where(':archetype_score >= archetype_low and
+  scope :job_matched_list, ->(current_candidate) {enable.includes(:state)
+                                    .where(':archetype_score >= archetype_low and
                                     :archetype_score <= archetype_high and
                                     jobs.is_active = true',
                                     archetype_score: current_candidate.archetype_score)}
