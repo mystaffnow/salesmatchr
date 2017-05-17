@@ -94,7 +94,7 @@ ActiveAdmin.register Candidate do
     end
 
     panel 'Candidate Question Answers' do
-      table_for cd.candidate_question_answers do
+      table_for cd.candidate_question_answers.includes([:question, :answer]) do
         column :question_id do |qus|
           qus.question.name if qus.question
         end
