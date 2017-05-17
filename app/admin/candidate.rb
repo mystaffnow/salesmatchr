@@ -56,7 +56,7 @@ ActiveAdmin.register Candidate do
         row :city
         row :state_id
         row :zip
-        row :eduction_level_id
+        row :education_level_id
         row :ziggeo_token
         row :is_incognito
         row :avatar do |img|
