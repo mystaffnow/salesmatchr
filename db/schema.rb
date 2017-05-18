@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170503103101) do
+ActiveRecord::Schema.define(version: 20170518111207) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -49,6 +49,10 @@ ActiveRecord::Schema.define(version: 20170503103101) do
     t.datetime "updated_at",   null: false
   end
 
+  add_index "candidate_job_actions", ["candidate_id", "job_id"], name: "index_candidate_job_actions_on_candidate_id_and_job_id", unique: true, using: :btree
+  add_index "candidate_job_actions", ["candidate_id"], name: "index_candidate_job_actions_on_candidate_id", using: :btree
+  add_index "candidate_job_actions", ["job_id"], name: "index_candidate_job_actions_on_job_id", using: :btree
+
   create_table "candidate_profiles", force: :cascade do |t|
     t.integer  "candidate_id"
     t.string   "city"
@@ -67,6 +71,10 @@ ActiveRecord::Schema.define(version: 20170503103101) do
     t.boolean  "is_active_match_subscription", default: true
   end
 
+  add_index "candidate_profiles", ["candidate_id"], name: "index_candidate_profiles_on_candidate_id", unique: true, using: :btree
+  add_index "candidate_profiles", ["education_level_id"], name: "index_candidate_profiles_on_education_level_id", using: :btree
+  add_index "candidate_profiles", ["state_id"], name: "index_candidate_profiles_on_state_id", using: :btree
+
   create_table "candidate_question_answers", force: :cascade do |t|
     t.integer  "candidate_id"
     t.integer  "question_id"
@@ -74,6 +82,11 @@ ActiveRecord::Schema.define(version: 20170503103101) do
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
   end
+
+  add_index "candidate_question_answers", ["answer_id"], name: "index_candidate_question_answers_on_answer_id", using: :btree
+  add_index "candidate_question_answers", ["candidate_id", "question_id"], name: "uniq_index_candidate_id_and_question_id", unique: true, using: :btree
+  add_index "candidate_question_answers", ["candidate_id"], name: "index_candidate_question_answers_on_candidate_id", using: :btree
+  add_index "candidate_question_answers", ["question_id"], name: "index_candidate_question_answers_on_question_id", using: :btree
 
   create_table "candidates", force: :cascade do |t|
     t.string   "first_name"
@@ -96,6 +109,7 @@ ActiveRecord::Schema.define(version: 20170503103101) do
 
   add_index "candidates", ["email"], name: "index_candidates_on_email", unique: true, using: :btree
   add_index "candidates", ["reset_password_token"], name: "index_candidates_on_reset_password_token", unique: true, using: :btree
+  add_index "candidates", ["year_experience_id"], name: "index_candidates_on_year_experience_id", using: :btree
 
   create_table "colleges", force: :cascade do |t|
     t.string   "name"
@@ -136,6 +150,10 @@ ActiveRecord::Schema.define(version: 20170503103101) do
     t.datetime "updated_at",         null: false
   end
 
+  add_index "educations", ["candidate_id"], name: "index_educations_on_candidate_id", using: :btree
+  add_index "educations", ["college_id"], name: "index_educations_on_college_id", using: :btree
+  add_index "educations", ["education_level_id"], name: "index_educations_on_education_level_id", using: :btree
+
   create_table "employer_profiles", force: :cascade do |t|
     t.integer  "employer_id"
     t.string   "website"
@@ -151,6 +169,9 @@ ActiveRecord::Schema.define(version: 20170503103101) do
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
   end
+
+  add_index "employer_profiles", ["employer_id"], name: "index_employer_profiles_on_employer_id", unique: true, using: :btree
+  add_index "employer_profiles", ["state_id"], name: "index_employer_profiles_on_state_id", using: :btree
 
   create_table "employers", force: :cascade do |t|
     t.string   "first_name"
@@ -187,6 +208,9 @@ ActiveRecord::Schema.define(version: 20170503103101) do
     t.datetime "updated_at",    null: false
   end
 
+  add_index "experiences", ["candidate_id"], name: "index_experiences_on_candidate_id", using: :btree
+  add_index "experiences", ["sales_type_id"], name: "index_experiences_on_sales_type_id", using: :btree
+
   create_table "job_candidates", force: :cascade do |t|
     t.integer  "candidate_id"
     t.integer  "job_id"
@@ -194,6 +218,10 @@ ActiveRecord::Schema.define(version: 20170503103101) do
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
   end
+
+  add_index "job_candidates", ["candidate_id", "job_id"], name: "index_job_candidates_on_candidate_id_and_job_id", unique: true, using: :btree
+  add_index "job_candidates", ["candidate_id"], name: "index_job_candidates_on_candidate_id", using: :btree
+  add_index "job_candidates", ["job_id"], name: "index_job_candidates_on_job_id", using: :btree
 
   create_table "job_functions", force: :cascade do |t|
     t.string   "name"
@@ -226,6 +254,10 @@ ActiveRecord::Schema.define(version: 20170503103101) do
     t.datetime "activated_at"
   end
 
+  add_index "jobs", ["employer_id"], name: "index_jobs_on_employer_id", using: :btree
+  add_index "jobs", ["job_function_id"], name: "index_jobs_on_job_function_id", using: :btree
+  add_index "jobs", ["state_id"], name: "index_jobs_on_state_id", using: :btree
+
   create_table "payments", force: :cascade do |t|
     t.integer  "employer_id"
     t.integer  "job_id"
@@ -238,6 +270,8 @@ ActiveRecord::Schema.define(version: 20170503103101) do
   end
 
   add_index "payments", ["customer_id"], name: "index_payments_on_customer_id", using: :btree
+  add_index "payments", ["employer_id"], name: "index_payments_on_employer_id", using: :btree
+  add_index "payments", ["job_id"], name: "index_payments_on_job_id", using: :btree
 
   create_table "questions", force: :cascade do |t|
     t.string   "name"
