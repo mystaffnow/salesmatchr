@@ -11,6 +11,7 @@
 #
 
 class JobFunction < ActiveRecord::Base
+  # association
   has_many :jobs
 
 	# validation
