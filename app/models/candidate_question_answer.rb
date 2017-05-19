@@ -11,9 +11,14 @@
 #
 
 class CandidateQuestionAnswer < ActiveRecord::Base
+  # association
   belongs_to :candidate
   belongs_to :question
   belongs_to :answer
+
+  # validation
+  # same mirror record cannot be created again
+  validates_uniqueness_of :candidate_id, scope: :question_id
 
   # calculate archetype_score
   # used in views file while updating archetype_score
