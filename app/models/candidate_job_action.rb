@@ -11,6 +11,12 @@
 #
 
 class CandidateJobAction < ActiveRecord::Base
+  # association
   belongs_to :candidate
   belongs_to :job
+
+  # validation
+  validates_presence_of :candidate_id, :job_id, :is_saved
+  # same mirror record should not be created again
+  validates_uniqueness_of :candidate_id, scope: :job_id
 end
