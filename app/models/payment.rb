@@ -14,8 +14,13 @@
 #
 
 class Payment < ActiveRecord::Base
+  # association
 	belongs_to :job
 	belongs_to :employer
+
+  # validation
+  validates_presence_of :employer_id, :job_id, :amount,
+                        :stripe_charge_id, :status, :customer_id
 
 	enum status: ['charged']
 end
