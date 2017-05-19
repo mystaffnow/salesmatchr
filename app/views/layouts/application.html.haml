@@ -92,8 +92,8 @@
                   = link_to 'Create Your Account', new_candidate_registration_path
                 %li
                   = link_to 'Sign in', new_candidate_session_path
-            %li
-              = link_to "Blog", 'http://salesmatchrblog.com/'
+            /%li
+            /= link_to "Blog", 'http://salesmatchrblog.com/'
             - if params[:action].in?(["hustlers", "hustlers_faq"])
               %li
                 = link_to "Sign up", new_candidate_registration_path
