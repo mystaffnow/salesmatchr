@@ -11,10 +11,16 @@
 #
 
 class JobCandidate < ActiveRecord::Base
+  # association
   belongs_to :job
   belongs_to :candidate
 
-  enum status: [:submitted, :viewed, :accepted, :withdrawn, :shortlist, :deleted, :purposed]
+  # validation
+  validates_presence_of :candidate_id, :job_id, :status
+  validates_uniqueness_of :candidate_id, scope: :job_id
+
+  enum status: [:submitted, :viewed, :accepted, :withdrawn,
+                :shortlist, :deleted, :purposed]
 
   # method returns job_candidates record for active and enable job
   scope :active_job_candidate_list, ->(current_candidate) {
