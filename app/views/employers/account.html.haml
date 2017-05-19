@@ -19,6 +19,8 @@
                 = f.text_field :first_name, class: 'form-control'
                 = f.label :last_name
                 = f.text_field :last_name, class: 'form-control'
+                = f.label :company
+                = f.text_field :company, class: 'form-control'
                 = render 'profile_fields', profile_fields: profile_fields
 :javascript
   function account(){
