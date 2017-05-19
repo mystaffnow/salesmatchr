@@ -48,6 +48,8 @@
                 %li
                   = link_to 'Profile', candidates_profile_path(current_candidate)
                 %li
+                  = link_to "Settings", edit_candidate_registration_path
+                %li
                   = link_to "Sign out", destroy_candidate_session_path, :method => :delete
           - elsif employer_signed_in?
             %li
