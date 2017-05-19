@@ -30,7 +30,7 @@ class ApplicationController < ActionController::Base
   def check_candidate
     if candidate_signed_in?
       if !current_candidate.can_proceed
-        redirect_to candidates_archetype_path, alert: 'Answer the question below before continuing.'
+        redirect_to candidates_archetype_path, alert: 'Answer the questions below before continuing.'
       end
     end
   end
