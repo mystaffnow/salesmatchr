@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe ApplicationController, :type => :controller do
+	let(:state) {create(:state)}
+
 	controller do
     def index
       render text: 'Success'
@@ -34,22 +36,24 @@ RSpec.describe ApplicationController, :type => :controller do
 
 	context "when signed in employer" do
 		before do
-			@employer = create(:employer)
+			@employer = create(:employer, first_name: 'user', last_name: 'test', company: 'test company')
 			sign_in @employer
+			employer_profile(@employer)
 		end
 
 		it 'should redirect to employers_account_path' do
-			get :index
 			expect(Employer.count).to eq(1)
 			expect(EmployerProfile.count).to eq(1)
+			blank_profile(EmployerProfile.first)
+			get :index
 			expect(EmployerProfile.first.employer_id).to eq(@employer.id)
+			expect(Employer.first.can_proceed).to be_falsy
 			expect(response).to redirect_to(employers_account_path)
 			expect(response.status).to eq(302)
 		end
 
 		it 'should call index action' do
-			@state = create(:state)
-			EmployerProfile.first.update(city: 'test city', zip: 10200, state_id: @state.id, website: 'www.test.example.com')
+			EmployerProfile.first.update(city: 'test city', zip: 10200, state_id: state.id, website: 'www.test.example.com')
 			get :index
 			expect(response.status).to eq(200)
 			expect(response.body).to eq("Success")
