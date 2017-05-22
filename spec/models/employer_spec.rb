@@ -43,17 +43,10 @@ RSpec.describe Employer do
     it {should have_many(:payments).dependent(:destroy)}
   end
 
-  it 'should build profile automatically' do
-    @employer = create(:employer)
-    @employer.reload
-    expect(@employer.employer_profile).to be_a(EmployerProfile)
-    expect(@employer.employer_profile.employer_id).to eq(@employer.id)
-    expect(@employer.employer_profile.city).to be_nil
-  end
-
-  it 'should not build employer profile when already there' do
-    @employer = build(:employer)
-    @employer.employer_profile = build(:employer_profile)
+  it 'should create profile' do
+    @employer = employer
+    @profile1 = create(:employer_profile, employer_id: @employer.id, :state_id => state.id, :city => 'my city',
+                         :zip => '97140', :website => 'http://www.mywebsite.com')
     @employer.save
     expect(Employer.count).to eq(1)
     expect(EmployerProfile.count).to eq(1)
@@ -67,16 +60,16 @@ RSpec.describe Employer do
 
   it '#is_owner_of?' do
     @employer = employer
-    EmployerProfile.first.update(employer_id: @employer.id)
+    @profile1 = create(:employer_profile, employer_id: @employer.id, :state_id => state.id, :city => 'Sherwood',
+                         :zip => '97140', :website => 'http://www.mywebsite.com')
     expect(@employer.is_owner_of?(EmployerProfile.first)).to be_truthy
   end
   
   context '.can_proceed' do
     it 'should return true' do
       @employer = create(:employer)
-      @profile1 = EmployerProfile.first
-      @profile1.update_attributes(:state_id => state.id, :city => 'Sherwood', :zip => '97140', :website => 'http://www.mywebsite.com')
-      @profile1.reload
+      @profile1 = create(:employer_profile, employer_id: @employer.id, :state_id => state.id, :city => 'Sherwood',
+                         :zip => '97140', :website => 'http://www.mywebsite.com')
       expect(Employer.first.can_proceed).to be_truthy
     end
 
