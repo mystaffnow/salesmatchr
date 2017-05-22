@@ -26,6 +26,12 @@ RSpec.describe EmployerProfile, type: :model do
 
   describe "Validation" do
     it {should validate_uniqueness_of(:employer_id)}
+    it {should validate_presence_of(:employer_id)}
+    it {should validate_presence_of(:website)}
+    it {should validate_presence_of(:zip)}
+    it {should validate_presence_of(:city)}
+    it {should validate_presence_of(:state_id)}
+    it {should validate_presence_of(:description)}
   end
 
   describe "Association" do
@@ -41,6 +47,8 @@ RSpec.describe EmployerProfile, type: :model do
       
     it 'should return default avatar' do
       @employer1 = create(:employer, first_name: "test1", last_name: "employer1")
+      create(:employer_profile, employer_id: @employer1.id, website: 'www.example.com',
+              zip: '90010', city: 'dhn', state_id: state.id, description: 'Test')
       expect(EmployerProfile.first.avatar.url).to eq('/img/missing.png')
     end
   end
