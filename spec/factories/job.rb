@@ -8,5 +8,6 @@ FactoryGirl.define do
     zip "10900"
     salary_low 45000
     salary_high 280000
+    experience_years 10
   end
 end
