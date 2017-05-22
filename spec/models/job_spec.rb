@@ -34,7 +34,7 @@ RSpec.describe Job do
   let(:job) {
       create(:job, employer_id: @employer.id, salary_low: 45000, salary_high: 280000, zip: "10900",
                     archetype_low: -30, archetype_high: 70, city: 'city1', state_id: @state.id,
-                    job_function_id: job_function.id
+                    job_function_id: job_function.id, experience_years: 10
                     )
             }
   
@@ -44,6 +44,8 @@ RSpec.describe Job do
     it {validate_presence_of :description}
     it {validate_presence_of :city}
     it {validate_presence_of :zip}
+    it {validate_presence_of :job_function_id}
+    it {validate_presence_of :experience_years}
   end
 
   describe "Association" do
@@ -106,7 +108,7 @@ RSpec.describe Job do
     end
 
     it 'should return jobs list' do
-      @job1 = create(:job, is_active: false, status: Job.statuses["enable"])
+      @job1 = create(:job, job_function_id: job_function.id, is_active: false, status: Job.statuses["enable"])
       @candidate = create(:candidate)
       @candidate_job_action = create(:candidate_job_action, job_id: @job1.id, candidate_id: @candidate.id)
       
@@ -157,13 +159,13 @@ RSpec.describe Job do
       @job1 = create(:job, job_function_id: @job_function1.id, state_id: @state1.id, is_active: false, status: Job.statuses["disable"])
       
       @candidate = create(:candidate)
+      @candidate1 = create(:candidate)
       
       @candidate_job_action1 = create(:candidate_job_action, job_id: @job.id,
                                                            candidate_id: @candidate.id,
                                                            is_saved: true)
-      @candidate_job_action2 = create(:candidate_job_action, job_id: @job1 .id,
-                                                           candidate_id: @candidate.id,
-                                                           is_saved: false)
+      @candidate_job_action2 = create(:candidate_job_action, job_id: @job1.id,
+                                                           candidate_id: @candidate1.id)
       expect(Job.job_saved_list(@candidate)).to eq([@job])
     end
 
@@ -189,7 +191,7 @@ RSpec.describe Job do
     end
 
     it 'should return candidates list' do
-      @job = create(:job)
+      @job = create(:job, job_function_id: job_function.id)
       @candidate = create(:candidate)
       CandidateProfile.first.update_attribute(:is_incognito, false)
       @candidate1 = create(:candidate) # incognito ON
@@ -417,7 +419,8 @@ RSpec.describe Job do
   context 'applicants.' do
     it 'should return list of candidates, when job_candidate status is not deleted/shortlisted' do
       @job = create(:job, employer_id: employer.id, salary_low: 45000, salary_high: 280000, zip: "10900",
-                    archetype_low: -30, archetype_high: 70, city: 'city1', state_id: state.id
+                    archetype_low: -30, archetype_high: 70, city: 'city1', state_id: state.id,
+                    job_function_id: job_function.id
                     )
       @candidate1 = create(:candidate, archetype_score: 21)
         CandidateProfile.first.update(is_incognito: false)
