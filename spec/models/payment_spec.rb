@@ -21,6 +21,14 @@ RSpec.describe Payment, type: :model do
   	it {should belong_to :employer}
   end
 
+  describe 'Validation' do
+    it {should validate_presence_of :employer_id}
+    it {should validate_presence_of :job_id}
+    it {should validate_presence_of :amount}
+    it {should validate_presence_of :stripe_charge_id}
+    it {should validate_presence_of :customer_id}
+  end
+
   it 'require enum status' do
   	expect(Payment.statuses).to eq({"charged"=>0})
   end
