@@ -17,6 +17,12 @@ ActiveAdmin.register Job do
   filter :title
   filter :city
 
+  controller do
+    def scoped_collection
+      super.includes([:employer, :state, :job_function])
+    end
+  end
+
   index do
     id_column
     column :title
@@ -80,7 +86,7 @@ ActiveAdmin.register Job do
 	  end
 
     panel 'Job Payment' do
-	    table_for job.payments do
+	    table_for job.payments.includes(:employer) do
 		  	column :employer_id do |obj|
           obj.employer.present? ? obj.employer.name : ''
         end
@@ -91,14 +97,14 @@ ActiveAdmin.register Job do
 	  end
 
 	  panel 'Job Candidates' do
-	  	attributes_table_for job.job_candidates do
+	  	attributes_table_for job.job_candidates.includes(:candidate) do
 	  		row :candidate_id
 	  		row :status
 	  	end
 	  end
 
 	  panel 'Candidate Job Actions' do
-	  	attributes_table_for job.candidate_job_actions do
+	  	attributes_table_for job.candidate_job_actions.includes(:candidate) do
 	  		row :candidate_id
 	  		row :is_saved
 	  	end

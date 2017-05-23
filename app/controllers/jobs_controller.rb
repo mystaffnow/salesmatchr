@@ -140,11 +140,11 @@ class JobsController < ApplicationController
   def employer_show
     authorize @job
 
-    @job.job_candidates
+    @job.job_candidates.includes(:candidate)
         .where(status: JobCandidate.statuses[:submitted])
         .map { |jc| jc.viewed! }
 
-    @job_candidates = @job.job_candidates.where("status NOT IN (?)",
+    @job_candidates = @job.job_candidates.includes(:candidate).where("status NOT IN (?)",
                                                 [JobCandidate.statuses[:shortlist],
                                                 JobCandidate.statuses[:deleted]])
                                           .page(params[:page])
@@ -155,7 +155,7 @@ class JobsController < ApplicationController
   # List of all job_candidates whose profile is shortlisted
   def employer_show_shortlists
     authorize @job
-    @shortlists = JobCandidate.where(:job_id => params[:id], :status => JobCandidate.statuses[:shortlist]).page(params[:page])
+    @shortlists = JobCandidate.includes(:candidate).where(:job_id => params[:id], :status => JobCandidate.statuses[:shortlist]).page(params[:page])
   end
 
   # GET: employer_job_remove/1
@@ -163,7 +163,7 @@ class JobsController < ApplicationController
   # List of all job_candidates whose profile is rejected or deleted
   def employer_show_remove
     authorize @job
-    @removed_job_candidates = JobCandidate.where(:job_id => params[:id], :status => JobCandidate.statuses[:deleted]).page(params[:page])
+    @removed_job_candidates = JobCandidate.includes(:candidate).where(:job_id => params[:id], :status => JobCandidate.statuses[:deleted]).page(params[:page])
   end
 
   # signed_in employer is required

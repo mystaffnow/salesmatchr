@@ -19,6 +19,12 @@ ActiveAdmin.register Candidate do
   filter :year_experience
   filter :email
 
+  controller do
+    def scoped_collection
+      super.includes(:year_experience)
+    end
+  end
+
   index do
     id_column
     column :first_name
@@ -50,7 +56,7 @@ ActiveAdmin.register Candidate do
         row :city
         row :state_id
         row :zip
-        row :eduction_level_id
+        row :education_level_id
         row :ziggeo_token
         row :is_incognito
         row :avatar do |img|
@@ -60,7 +66,7 @@ ActiveAdmin.register Candidate do
     end
 
     panel 'Work history' do
-      table_for cd.experiences do
+      table_for cd.experiences.includes(:sales_type) do
         column :position
         column :company
         column :description
@@ -73,7 +79,7 @@ ActiveAdmin.register Candidate do
     end
 
     panel 'Education' do
-      table_for cd.educations do
+      table_for cd.educations.includes([:college, :education_level]) do
         column :college_id do |cd|
           cd.college.present? ? cd.college.name : ''
         end
@@ -88,7 +94,7 @@ ActiveAdmin.register Candidate do
     end
 
     panel 'Candidate Question Answers' do
-      table_for cd.candidate_question_answers do
+      table_for cd.candidate_question_answers.includes([:question, :answer]) do
         column :question_id do |qus|
           qus.question.name if qus.question
         end

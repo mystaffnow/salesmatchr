@@ -15,6 +15,12 @@ ActiveAdmin.register Payment do
 
   actions :all, :except => [:new, :create, :edit, :update, :destroy]
 
+  controller do
+    def scoped_collection
+      super.includes([:employer, :job])
+    end
+  end
+
   index do
   	id_column
 

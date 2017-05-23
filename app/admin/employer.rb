@@ -55,7 +55,7 @@ ActiveAdmin.register Employer do
     end
 
     panel "Jobs" do
-    	table_for emp.jobs do
+    	table_for emp.jobs.includes([:state, :job_function]) do
     		column :id
     		column :title
     		column :description do |job|
@@ -96,7 +96,7 @@ ActiveAdmin.register Employer do
     end
 
     panel 'payments' do
-      table_for emp.payments do |obj|
+      table_for emp.payments.includes(:job) do |obj|
         column :id
         column :employer_id do
           obj.employer.present? ? obj.employer.name : nil

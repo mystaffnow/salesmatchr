@@ -50,28 +50,31 @@ class Job < ActiveRecord::Base
 
   # List all jobs which are active and matched to the candidate
   # Candidate should not see inactive jobs in matched list, although they matched to it
-  scope :job_matched_list, ->(current_candidate) {enable.where(':archetype_score >= archetype_low and
+  scope :job_matched_list, ->(current_candidate) {enable.includes(:state)
+                                    .where(':archetype_score >= archetype_low and
                                     :archetype_score <= archetype_high and
                                     jobs.is_active = true',
                                     archetype_score: current_candidate.archetype_score)}
 
   # List of the enable jobs which are viewed by candidate
   scope :job_viewed_list, ->(current_candidate) {
-    enable.active.joins(:candidate_job_actions)
+    enable.active.includes(:state)
+    .joins(:candidate_job_actions)
     .where('candidate_job_actions.candidate_id=?', current_candidate.id)
     .order('created_at DESC')
   }
 
   # list of enable jobs saved by candidate
   scope :job_saved_list, ->(current_candidate) {
-    enable.active.joins(:candidate_job_actions)
+    enable.active.includes(:state)
+    .joins(:candidate_job_actions)
     .where('candidate_job_actions.candidate_id=?
             and candidate_job_actions.is_saved=true', current_candidate.id)
   }
 
   # list of all visible candidates who have viewed particular job
   scope :visible_candidate_viewed_list, ->(job) {
-    Candidate.joins(:candidate_job_actions)
+    Candidate.includes(:candidate_profile).joins(:candidate_job_actions)
     .joins(:candidate_profile)
     .where('job_id=? and candidate_profiles.is_incognito=false', job.id)
   }
@@ -79,7 +82,7 @@ class Job < ActiveRecord::Base
   # this method returns all the candidates who matches the job and having their
   # profile visible
   def candidate_matches_list
-    Candidate.where('candidates.archetype_score >= ?
+    Candidate.includes(:candidate_profile).where('candidates.archetype_score >= ?
                      and candidates.archetype_score <= ?',
                     self.archetype_low,
                     self.archetype_high)

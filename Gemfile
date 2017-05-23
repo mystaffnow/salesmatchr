@@ -117,3 +117,6 @@ gem 'timecop'
 
 # using font-awesome web fonts and stylesheets
 gem 'font-awesome-sass', '~> 4.7.0'
+
+# remove N+1 query refactoring & remove unused eager loading
+gem 'bullet', group: 'development'
