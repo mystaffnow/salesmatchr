@@ -13,9 +13,9 @@ ActiveAdmin.register Employer do
 #   permitted
 # end
 
-  permit_params :first_name, :last_name, :company
+  permit_params :first_name, :last_name, :company, :email, :password, :password_confirmation
 
-	actions :all, :except => [:new, :create]
+	# actions :all, :except => [:new, :create]
 
   menu priority: 1, parent: 'Employer'
 
@@ -40,6 +40,11 @@ ActiveAdmin.register Employer do
       f.input :first_name
       f.input :last_name
       f.input :company
+      if params[:controller]=="staffnow/employers" && params[:action]=="new"
+        f.input :email
+        f.input :password
+        f.input :password_confirmation
+      end
       f.submit
     end
   end
@@ -64,7 +69,7 @@ ActiveAdmin.register Employer do
         row :zip
         row :description
         row :avatar do |img|
-          image_tag img.avatar.url(:medium)
+          image_tag img.avatar.url(:medium) if img.present?
         end
       end
     end
