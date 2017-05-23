@@ -12,7 +12,13 @@ ActiveAdmin.register Job do
 #   permitted << :other if resource.something?
 #   permitted
 # end
-  actions :all, :except => [:new, :create, :edit, :update]
+  # actions :all, :except => [:new, :create, :edit, :update]
+
+  permit_params :title, :description, :employer_id, :salary_low, :salary_high,
+                :zip, :is_remote, :state_id, :city, :job_function_id,
+                :experience_years
+  
+  menu priority: 4, parent: 'Employer'
 
   filter :title
   filter :city
@@ -52,9 +58,25 @@ ActiveAdmin.register Job do
     	str = j.expired? ? 'Enable' : 'Expired'
     	link_to str, change_status_staffnow_job_path(j.id), method: :put
     end
-    column :activated_at
 
     actions
+  end
+
+  form do |f|
+    f.inputs 'Fill out the form' do
+      f.input :title
+      f.input :description
+      f.input :employer, as: :select, include_blank: "Select from list"
+      f.input :salary_low
+      f.input :salary_high
+      f.input :zip
+      f.input :is_remote
+      f.input :state_id, as: :select, collection: State.all.map {|state| [state.name, state.id]}, include_blank: false
+      f.input :city
+      f.input :job_function_id, as: :select, collection: JobFunction.all.map {|jf| [jf.name, jf.id]}, include_blank: false
+      f.input :experience_years, as: :select, collection: YearExperience.all.map {|ey| [ey.name, ey.id]}, include_blank: false
+      f.actions
+    end
   end
 
   show do |job|
