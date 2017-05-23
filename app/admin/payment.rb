@@ -15,6 +15,8 @@ ActiveAdmin.register Payment do
 
   actions :all, :except => [:new, :create, :edit, :update, :destroy]
 
+  menu priority: 5, parent: 'Employer'
+
   controller do
     def scoped_collection
       super.includes([:employer, :job])
