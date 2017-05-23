@@ -14,6 +14,8 @@ ActiveAdmin.register Customer do
 # end
   actions :all, :except => [:new, :create, :edit, :update, :destroy]
 
+  menu priority: 3, parent: 'Employer'
+
   index do
     id_column
 
