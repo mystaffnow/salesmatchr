@@ -62,9 +62,11 @@ ActiveAdmin.register Candidate do
       f.input :first_name
       f.input :last_name
       f.input :year_experience, as: :select, collection: YearExperience.all.map { |x| [x.name, x.id] }, include_blank: false
-      f.input :email
-      f.input :password
-      f.input :password_confirmation
+      if params[:controller]=="staffnow/candidates" && (params[:action]=="new" || params[:action] == "create")
+        f.input :email
+        f.input :password
+        f.input :password_confirmation
+      end
       f.submit
     end
   end
