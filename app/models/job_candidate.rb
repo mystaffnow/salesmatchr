@@ -16,7 +16,7 @@ class JobCandidate < ActiveRecord::Base
   belongs_to :candidate
 
   # validation
-  validates_presence_of :candidate_id, :job_id, :status
+  validates_presence_of :candidate_id, :job_id
   validates_uniqueness_of :candidate_id, scope: :job_id
 
   enum status: [:submitted, :viewed, :accepted, :withdrawn,

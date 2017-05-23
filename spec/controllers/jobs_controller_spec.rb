@@ -4,7 +4,7 @@ RSpec.describe JobsController, :type => :controller do
   let(:candidate) {create(:candidate, archetype_score: 35)}
   let(:job_function) {create(:job_function)}
   let(:state) {create(:state)}
-  let(:employer) {create(:employer, first_name: 'user', last_name: 'test')}
+  let(:employer) {create(:employer, first_name: 'user', last_name: 'test', company: 'test company')}
   let(:job) {create(:job, employer_id: employer.id, salary_low: 50000, salary_high: 150000, state_id: state.id, job_function_id: job_function.id, is_active: true)}
   let(:candidate_job_action) {create(:candidate_job_action, candidate_id: candidate.id, job_id: job.id) }
 
@@ -64,7 +64,8 @@ RSpec.describe JobsController, :type => :controller do
       end
 
       it 'should redirect to /employers/account' do
-        EmployerProfile.first.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
+        blank_profile(EmployerProfile.first)
+        # EmployerProfile.first.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
         get :index
         expect(response).to redirect_to("/employers/account")
       end
@@ -124,7 +125,8 @@ RSpec.describe JobsController, :type => :controller do
       end
 
       it 'should redirect to /employers/account' do
-        EmployerProfile.first.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
+        blank_profile(EmployerProfile.first)
+        # EmployerProfile.first.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
         get :show, id: job.id
         expect(response).to redirect_to("/employers/account")
       end
@@ -169,7 +171,8 @@ RSpec.describe JobsController, :type => :controller do
       # end
 
       it 'should redirect to /employers/account' do
-        EmployerProfile.first.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
+        blank_profile(EmployerProfile.first)
+        # EmployerProfile.first.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
         get :new
         expect(response).to redirect_to("/employers/account")
       end
@@ -275,7 +278,8 @@ RSpec.describe JobsController, :type => :controller do
         end
 
         it 'should redirect to /employers/account' do
-          EmployerProfile.first.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
+          blank_profile(EmployerProfile.first)
+          # EmployerProfile.first.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
           get :edit, id: job.id
           expect(response).to redirect_to("/employers/account")
         end
@@ -343,7 +347,8 @@ RSpec.describe JobsController, :type => :controller do
       end     
 
       it 'should redirect to /employers/account' do
-        EmployerProfile.first.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
+        blank_profile(EmployerProfile.first)
+        # EmployerProfile.first.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
         get :employer_show, id: job.id
         expect(response).to redirect_to("/employers/account")
       end
@@ -377,7 +382,8 @@ RSpec.describe JobsController, :type => :controller do
       end
 
       it 'should redirect to /employers/account' do
-        EmployerProfile.first.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
+        blank_profile(EmployerProfile.first)
+        # EmployerProfile.first.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
         get :employer_show_actions, id: job.id
         expect(response).to redirect_to("/employers/account")
       end
@@ -439,7 +445,8 @@ RSpec.describe JobsController, :type => :controller do
       end
 
       it 'should redirect to /employers/account' do
-        EmployerProfile.first.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
+        blank_profile(EmployerProfile.first)
+        # EmployerProfile.first.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
         get :employer_show_matches, id: job.id
         expect(response).to redirect_to("/employers/account")
       end
@@ -521,7 +528,8 @@ RSpec.describe JobsController, :type => :controller do
       end
 
       it 'should redirect to /employers/account' do
-        EmployerProfile.first.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
+        blank_profile(EmployerProfile.first)
+        # EmployerProfile.first.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
         get :employer_show_shortlists, id: job.id
         expect(response).to redirect_to("/employers/account")
       end
@@ -575,7 +583,8 @@ RSpec.describe JobsController, :type => :controller do
       end
 
       it 'should redirect to /employers/account' do
-        EmployerProfile.first.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
+        blank_profile(EmployerProfile.first)
+        # EmployerProfile.first.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
         get :employer_show_remove, id: job.id
         expect(response).to redirect_to("/employers/account")
       end
@@ -602,11 +611,11 @@ RSpec.describe JobsController, :type => :controller do
         job.update(is_active: true, status: Job.statuses['enable'])
         job.reload
         state1 = create(:state, name: 'title1')
-        job1 = create(:job, employer_id: employer.id, state_id: state1.id, is_active: true, status: Job.statuses['disable'])
+        job1 = create(:job, employer_id: employer.id, state_id: state1.id, is_active: true, job_function_id: job_function.id, status: Job.statuses['disable'])
         state2 = create(:state, name: 'title2')
-        job2 = create(:job, employer_id: employer.id, state_id: state2.id, is_active: false, status: Job.statuses['disable'])
+        job2 = create(:job, employer_id: employer.id, state_id: state2.id, is_active: false, job_function_id: job_function.id, status: Job.statuses['disable'])
         state3 = create(:state, name: 'title3')
-        job3 = create(:job, employer_id: employer.id, state_id: state3.id, is_active: false, status: Job.statuses['enable'])
+        job3 = create(:job, employer_id: employer.id, state_id: state3.id, is_active: false, job_function_id: job_function.id, status: Job.statuses['enable'])
         get :employer_index
         expect(assigns(:jobs)).to eq([job])
       end
@@ -614,7 +623,7 @@ RSpec.describe JobsController, :type => :controller do
       it 'should return 25 records only' do
         30.times do |i|
           state = create(:state, name: "title#{i}")
-          job = create(:job, employer_id: employer.id, state_id: state.id, is_active: true, status: Job.statuses['enable'])
+          job = create(:job, employer_id: employer.id, state_id: state.id, is_active: true, job_function_id: job_function.id, status: Job.statuses['enable'])
         end
         get :employer_index
         expect(assigns(:jobs).count).to eq(25)
@@ -634,7 +643,8 @@ RSpec.describe JobsController, :type => :controller do
       end
 
       it 'should redirect to /employers/account' do
-        EmployerProfile.first.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
+        blank_profile(EmployerProfile.first)
+        # EmployerProfile.first.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
         get :employer_index, id: job.id
         expect(response).to redirect_to("/employers/account")
       end
@@ -661,11 +671,11 @@ RSpec.describe JobsController, :type => :controller do
         job.update(is_active: false, status: Job.statuses['enable'])
         job.reload
         state1 = create(:state, name: 'title1')
-        job1 = create(:job, employer_id: employer.id, state_id: state1.id, is_active: true, status: Job.statuses['disable'])
+        job1 = create(:job, employer_id: employer.id, state_id: state1.id, is_active: true, job_function_id: job_function.id, status: Job.statuses['disable'])
         state2 = create(:state, name: 'title2')
-        job2 = create(:job, employer_id: employer.id, state_id: state2.id, is_active: false, status: Job.statuses['disable'])
+        job2 = create(:job, employer_id: employer.id, state_id: state2.id, is_active: false, job_function_id: job_function.id, status: Job.statuses['disable'])
         state3 = create(:state, name: 'title3')
-        job3 = create(:job, employer_id: employer.id, state_id: state3.id, is_active: false, status: Job.statuses['enable'])
+        job3 = create(:job, employer_id: employer.id, state_id: state3.id, is_active: false, job_function_id: job_function.id, status: Job.statuses['enable'])
         get :employer_archive
         expect(assigns(:jobs)).to eq([job, job3])
       end
@@ -673,7 +683,7 @@ RSpec.describe JobsController, :type => :controller do
       it 'should return 25 records only' do
         30.times do |i|
           state = create(:state, name: "title#{i}")
-          job = create(:job, employer_id: employer.id, state_id: state.id, is_active: false, status: Job.statuses['enable'])
+          job = create(:job, employer_id: employer.id, state_id: state.id, is_active: false, job_function_id: job_function.id, status: Job.statuses['enable'])
         end
         get :employer_archive
         expect(assigns(:jobs).count).to eq(25)
@@ -695,7 +705,8 @@ RSpec.describe JobsController, :type => :controller do
       end
 
       it 'should redirect to /employers/account' do
-        EmployerProfile.first.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
+        blank_profile(EmployerProfile.first)
+        # EmployerProfile.first.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
         get :employer_archive, id: job.id
         expect(response).to redirect_to("/employers/account")
       end
@@ -721,11 +732,11 @@ RSpec.describe JobsController, :type => :controller do
       it 'should return list of jobs expired by admin' do
         job.update(status: Job.statuses['expired'])
         state1 = create(:state, name: 'title1')
-        job1 = create(:job, employer_id: employer.id, state_id: state1.id, status: Job.statuses['expired'])
+        job1 = create(:job, employer_id: employer.id, state_id: state1.id,  job_function_id: job_function.id, status: Job.statuses['expired'])
         state2 = create(:state, name: 'title2')
-        job2 = create(:job, employer_id: employer.id, state_id: state2.id, status: Job.statuses['enable'])
+        job2 = create(:job, employer_id: employer.id, state_id: state2.id, job_function_id: job_function.id, status: Job.statuses['enable'])
         state3 = create(:state, name: 'title3')
-        job3 = create(:job, employer_id: employer.id, state_id: state3.id, status: Job.statuses['expired'])
+        job3 = create(:job, employer_id: employer.id, state_id: state3.id,  job_function_id: job_function.id, status: Job.statuses['expired'])
         get :list_expired_jobs
         expect(assigns(:jobs)).to eq([job, job1, job3])
       end
@@ -733,7 +744,7 @@ RSpec.describe JobsController, :type => :controller do
       it 'should return 25 records only' do
         30.times do |i|
           state = create(:state, name: "title#{i}")
-          job = create(:job, employer_id: employer.id, state_id: state.id, is_active: true, status: Job.statuses['expired'])
+          job = create(:job, employer_id: employer.id, state_id: state.id, is_active: true, job_function_id: job_function.id, status: Job.statuses['expired'])
         end
         get :list_expired_jobs
         expect(assigns(:jobs).count).to eq(25)
@@ -772,7 +783,8 @@ RSpec.describe JobsController, :type => :controller do
       end
 
       it 'should redirect to /employers/account' do
-        EmployerProfile.first.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
+        blank_profile(EmployerProfile.first)
+        # EmployerProfile.first.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
         get :list_expired_jobs, id: job.id
         expect(response).to redirect_to("/employers/account")
       end
@@ -823,7 +835,8 @@ RSpec.describe JobsController, :type => :controller do
       end
 
       it 'should redirect to /employers/account' do
-        EmployerProfile.first.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
+        blank_profile(EmployerProfile.first)
+        # EmployerProfile.first.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
         get :inactivate_job, id: job.id
         expect(response).to redirect_to("/employers/account")
       end
@@ -885,7 +898,8 @@ RSpec.describe JobsController, :type => :controller do
         # end
 
         it 'should redirect to /employers/account' do
-          EmployerProfile.first.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
+          blank_profile(EmployerProfile.first)
+          # EmployerProfile.first.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
           post :create, {job: valid_attributes}
           expect(response).to redirect_to("/employers/account")
         end
@@ -1069,7 +1083,8 @@ RSpec.describe JobsController, :type => :controller do
         end
 
         it 'should redirect to /employers/account' do
-          EmployerProfile.first.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
+          #EmployerProfile.first.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
+          blank_profile(EmployerProfile.first)
           delete :destroy, id: job.id
           expect(response).to redirect_to("/employers/account")
         end
@@ -1135,7 +1150,8 @@ RSpec.describe JobsController, :type => :controller do
         end
 
         it 'should redirect to /employers/account' do
-          EmployerProfile.first.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
+          # employer_profile(employer)
+          blank_profile(EmployerProfile.first)
           post :email_match_candidates, id: job.id
           expect(response).to redirect_to("/employers/account")
         end
@@ -1156,6 +1172,9 @@ RSpec.describe JobsController, :type => :controller do
     context 'when employer signed in' do
       before {
         sign_in(employer)
+        # create(:employer_profile, city: 'test city', zip: '99501', state_id: state.id,
+        #        employer_id: employer.id, website: 'www.salesmatchr.com', description: 'General description')
+        # employer_profile_new
         employer_profile(employer)
       }
 
@@ -1213,8 +1232,8 @@ RSpec.describe JobsController, :type => :controller do
       end
 
       it 'should redirect to /employers/account when profile info are blank' do
-        EmployerProfile.first.update(employer_id: employer.id, zip: nil, state_id: nil, city: nil, website: nil)
-        post :email_match_candidates, id: job.id
+        blank_profile(EmployerProfile.first)
+        post :pay_to_enable_expired_job, id: job.id
         expect(response).to redirect_to("/employers/account")
       end
     end

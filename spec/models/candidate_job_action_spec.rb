@@ -17,4 +17,10 @@ RSpec.describe CandidateJobAction do
     it {should belong_to :candidate}
     it {should belong_to :job}
   end
+
+  describe '.validation' do
+    it {should validate_presence_of :candidate_id}
+    it {should validate_presence_of :job_id}
+    it {should validate_uniqueness_of(:candidate_id).scoped_to(:job_id)}
+  end
 end

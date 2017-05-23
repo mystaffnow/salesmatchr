@@ -6,7 +6,7 @@ RSpec.describe JobCandidatesController, :type => :controller do
   let(:education_level) {create(:education_level)}
   let(:candidate) {create(:candidate, archetype_score: 35)}
   let(:job_function) {create(:job_function)}
-  let(:employer) {create(:employer, first_name: 'user', last_name: 'test')}
+  let(:employer) {create(:employer, first_name: 'user', last_name: 'test', company: 'test company')}
   let(:job) {create(:job, employer_id: employer.id, salary_low: 50000, salary_high: 150000, state_id: state.id, job_function_id: job_function.id, is_active: true)}
 
   describe '#withdrawn_job_candidates' do
@@ -24,7 +24,9 @@ RSpec.describe JobCandidatesController, :type => :controller do
 
       it 'should list all job candidates whose job are active, enable and withdrawn' do
         job_candidate = create(:job_candidate, job_id: job.id, candidate_id: candidate.id, status: 'withdrawn')
-        job_candidate1 = create(:job_candidate, job_id: job.id, candidate_id: candidate.id, status: 'submitted')
+        job2 = create(:job, employer_id: employer.id, salary_low: 50000, salary_high: 150000, state_id: state.id,
+                      job_function_id: job_function.id, is_active: true)
+        job_candidate1 = create(:job_candidate, job_id: job2.id, candidate_id: candidate.id, status: 'submitted')
         get :withdrawn_job_candidates
         expect(assigns(:withdrawn_job_candidates)).to eq([job_candidate])
       end
@@ -82,7 +84,9 @@ RSpec.describe JobCandidatesController, :type => :controller do
       end
 
       it 'should list all job candidates whose job are active, enable and opened' do
-        job_candidate = create(:job_candidate, job_id: job.id, candidate_id: candidate.id, status: 'withdrawn')
+        job2 = create(:job, employer_id: employer.id, salary_low: 50000, salary_high: 150000, state_id: state.id,
+                      job_function_id: job_function.id, is_active: true)
+        job_candidate = create(:job_candidate, job_id: job2.id, candidate_id: candidate.id, status: 'withdrawn')
         job_candidate1 = create(:job_candidate, job_id: job.id, candidate_id: candidate.id, status: 'submitted')
         get :open_job_candidates
         expect(assigns(:open_job_candidates)).to eq([job_candidate1])
@@ -151,7 +155,9 @@ RSpec.describe JobCandidatesController, :type => :controller do
       end
 
       it 'should redirect_to job_receipt_path' do
-        job_candidate = create(:job_candidate, job_id: job.id, candidate_id: candidate.id)
+        job2 = create(:job, employer_id: employer.id, salary_low: 50000, salary_high: 150000, state_id: state.id,
+                      job_function_id: job_function.id, is_active: true)
+        job_candidate = create(:job_candidate, job_id: job2.id, candidate_id: candidate.id)
         get :apply, id: job.id
         expect(response).to redirect_to(job_receipt_path(JobCandidate.last))
       end
@@ -316,7 +322,8 @@ RSpec.describe JobCandidatesController, :type => :controller do
       end
 
       it 'should redirect to /employers/account' do
-        EmployerProfile.first.update(zip: nil, state_id: nil, city: nil, website: nil)
+        blank_profile(EmployerProfile.first)
+        # EmployerProfile.first.update(zip: nil, state_id: nil, city: nil, website: nil)
         put :accept_candidate, id: job_candidate.id
         expect(response).to redirect_to("/employers/account")
       end
@@ -358,7 +365,8 @@ RSpec.describe JobCandidatesController, :type => :controller do
       end
 
       it 'should redirect to /employers/account' do
-        EmployerProfile.first.update(zip: nil, state_id: nil, city: nil, website: nil)
+        blank_profile(EmployerProfile.first)
+        # EmployerProfile.first.update(zip: nil, state_id: nil, city: nil, website: nil)
         post :remove_candidate, { job_id: job.id, candidate_id: candidate.id }
         expect(response).to redirect_to("/employers/account")
       end
@@ -399,7 +407,8 @@ RSpec.describe JobCandidatesController, :type => :controller do
       end
 
       it 'should redirect to /employers/account' do
-        EmployerProfile.first.update(zip: nil, state_id: nil, city: nil, website: nil)
+        blank_profile(EmployerProfile.first)
+        # EmployerProfile.first.update(zip: nil, state_id: nil, city: nil, website: nil)
         post :shortlist_candidate, { job_id: job.id, candidate_id: candidate.id }
         expect(response).to redirect_to("/employers/account")
       end

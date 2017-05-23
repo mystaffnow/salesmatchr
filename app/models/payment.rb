@@ -20,7 +20,7 @@ class Payment < ActiveRecord::Base
 
   # validation
   validates_presence_of :employer_id, :job_id, :amount,
-                        :stripe_charge_id, :status, :customer_id
+                        :stripe_charge_id, :customer_id
 
 	enum status: ['charged']
 end

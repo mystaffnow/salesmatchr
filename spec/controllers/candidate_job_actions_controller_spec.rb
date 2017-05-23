@@ -24,9 +24,9 @@ RSpec.describe CandidateJobActionsController, :type => :controller do
         state3 = create(:state, name: 'Test3')
         state4 = create(:state, name: 'Test4')
         job1 = job
-        job2 = create(:job, state_id: state2.id, is_active: true, status: Job.statuses["enable"])
-        job3 = create(:job, state_id: state3.id, is_active: true, status: Job.statuses["enable"])
-        job4 = create(:job, state_id: state4.id, is_active: true, status: Job.statuses["enable"])
+        job2 = create(:job, state_id: state2.id, is_active: true, job_function_id: job_function.id, status: Job.statuses["enable"])
+        job3 = create(:job, state_id: state3.id, is_active: true, job_function_id: job_function.id, status: Job.statuses["enable"])
+        job4 = create(:job, state_id: state4.id, is_active: true, job_function_id: job_function.id, status: Job.statuses["enable"])
         create(:candidate_job_action, candidate_id: candidate.id, job_id: job1.id, is_saved: true)
         create(:candidate_job_action, candidate_id: candidate.id, job_id: job2.id, is_saved: true)
         create(:candidate_job_action, candidate_id: candidate.id, job_id: job3.id, is_saved: true)
@@ -39,7 +39,7 @@ RSpec.describe CandidateJobActionsController, :type => :controller do
       it 'should assign max 25 records on variable' do
         30.times do |i|
           state = create(:state, name: "State #{i}")
-          job = create(:job, state_id: state.id, is_active: true, status: Job.statuses["enable"])
+          job = create(:job, state_id: state.id, is_active: true, job_function_id: job_function.id, status: Job.statuses["enable"])
           create(:candidate_job_action, candidate_id: candidate.id, job_id: job.id, is_saved: true)
         end
         get :candidate_job_saved
@@ -77,9 +77,9 @@ RSpec.describe CandidateJobActionsController, :type => :controller do
         state3 = create(:state, name: 'Test3')
         state4 = create(:state, name: 'Test4')
         job1 = job
-        job2 = create(:job, state_id: state2.id, is_active: true, status: Job.statuses["enable"])
-        job3 = create(:job, state_id: state3.id, is_active: true, status: Job.statuses["enable"])
-        job4 = create(:job, state_id: state4.id, is_active: true, status: Job.statuses["enable"])
+        job2 = create(:job, state_id: state2.id, is_active: true, job_function_id: job_function.id, status: Job.statuses["enable"])
+        job3 = create(:job, state_id: state3.id, is_active: true, job_function_id: job_function.id, status: Job.statuses["enable"])
+        job4 = create(:job, state_id: state4.id, is_active: true, job_function_id: job_function.id, status: Job.statuses["enable"])
         create(:candidate_job_action, candidate_id: candidate.id, job_id: job1.id, is_saved: true)
         create(:candidate_job_action, candidate_id: candidate.id, job_id: job2.id, is_saved: false)
         create(:candidate_job_action, candidate_id: candidate.id, job_id: job3.id, is_saved: false)
@@ -92,7 +92,7 @@ RSpec.describe CandidateJobActionsController, :type => :controller do
       it 'should assign max 25 records on variable' do
         30.times do |i|
           state = create(:state, name: "State #{i}")
-          job = create(:job, state_id: state.id, is_active: true, status: Job.statuses["enable"])
+          job = create(:job, state_id: state.id, is_active: true, job_function_id: job_function.id, status: Job.statuses["enable"])
           create(:candidate_job_action, candidate_id: candidate.id, job_id: job.id, is_saved: false)
         end
         get :candidate_job_viewed

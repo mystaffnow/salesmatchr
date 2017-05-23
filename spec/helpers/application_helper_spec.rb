@@ -2,7 +2,8 @@ require 'rails_helper'
 
 RSpec.describe ApplicationHelper, type: :helper do
 	let(:candidate) {create(:candidate)}
-	let(:job) {create(:job)}
+	let(:job_function) {create(:job_function)}
+	let(:job) {create(:job, job_function_id: job_function.id)}
 
 	it '#get_archetype_from_score' do
 		expect(helper.get_archetype_from_score(nil)).to eq('n/a')
@@ -164,7 +165,7 @@ RSpec.describe ApplicationHelper, type: :helper do
 
 		pay_service = Services::Pay.new(employer, job, stripe_card_token)
     card = "4242424242424242"
-    stripe_cus = pay_service.is_customer_saved?(card)
+    stripe_cus = pay_service.is_customer_saved?
     # default is false
     Customer.first.update(is_selected: true)
   	expect(Customer.count).to eq(1)
@@ -179,7 +180,7 @@ RSpec.describe ApplicationHelper, type: :helper do
 
 		pay_service = Services::Pay.new(employer, job, stripe_card_token)
 		card = "4242424242424242"
-    stripe_cus = pay_service.is_customer_saved?(card)
+    stripe_cus = pay_service.is_customer_saved?
    	
    	expect(helper.card_expiry_date(Customer.first)).to eq("2 / 2018")
 	end

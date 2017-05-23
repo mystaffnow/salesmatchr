@@ -19,6 +19,10 @@ RSpec.describe CandidateQuestionAnswer do
     it {should belong_to :answer}
   end
 
+  describe "Validation" do
+    it {should validate_uniqueness_of(:candidate_id).scoped_to(:question_id)}
+  end
+
   it '#calculate_archetype_score' do
     candidate = create(:candidate)
     
