@@ -13,7 +13,11 @@ ActiveAdmin.register Employer do
 #   permitted
 # end
 
-	actions :all, :except => [:new, :create, :edit, :update]
+  permit_params :first_name, :last_name, :company
+
+	actions :all, :except => [:new, :create]
+
+  menu priority: 1, parent: 'Employer'
 
   filter :first_name
   filter :last_name
@@ -29,6 +33,17 @@ ActiveAdmin.register Employer do
   	column :email
   	actions
   end
+
+  # form code starts
+  form do |f|
+    f.inputs 'Fill out the form' do
+      f.input :first_name
+      f.input :last_name
+      f.input :company
+      f.submit
+    end
+  end
+  # form code ends
 
   show do |emp|
     attributes_table do
