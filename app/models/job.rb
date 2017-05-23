@@ -46,6 +46,8 @@ class Job < ActiveRecord::Base
 
   # assign archetype scores values from job function before rec save
   before_save :add_archetype_score
+  # before create add activated_at value
+  before_create :add_activated_at
 
   scope :active, -> {where(is_active: true)}
 
@@ -150,5 +152,9 @@ class Job < ActiveRecord::Base
       self.archetype_low = job_function.low
       self.archetype_high = job_function.high
     end
+  end
+
+  def add_activated_at
+    self.activated_at = DateTime.now
   end
 end
