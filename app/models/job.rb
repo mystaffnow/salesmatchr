@@ -37,7 +37,8 @@ class Job < ActiveRecord::Base
   has_many :payments, dependent: :destroy
 
   # validation
-  validates :employer_id, :title, :description, :city, :zip, presence: true
+  validates_presence_of :employer_id, :title, :description, :city, :zip,
+                        :job_function_id, :experience_years
   # validation
 
   # define enum for job statuses

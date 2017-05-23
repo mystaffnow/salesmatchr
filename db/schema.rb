@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170518111207) do
+ActiveRecord::Schema.define(version: 20170519071644) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -239,6 +239,7 @@ ActiveRecord::Schema.define(version: 20170518111207) do
     t.boolean  "is_remote"
     t.string   "title"
     t.text     "description"
+    t.boolean  "is_active",        default: false
     t.integer  "state_id"
     t.string   "city"
     t.integer  "archetype_low"
@@ -250,7 +251,6 @@ ActiveRecord::Schema.define(version: 20170518111207) do
     t.datetime "created_at",                       null: false
     t.datetime "updated_at",                       null: false
     t.integer  "status",           default: 0
-    t.boolean  "is_active",        default: false
     t.datetime "activated_at"
   end
 
@@ -275,7 +275,6 @@ ActiveRecord::Schema.define(version: 20170518111207) do
 
   create_table "questions", force: :cascade do |t|
     t.string   "name"
-    t.integer  "answer_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
