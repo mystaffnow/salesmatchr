@@ -32,8 +32,8 @@ RSpec.describe Job do
   let(:employer) {create(:employer)}
   let(:job_function) {create(:job_function, name: 'test', low: -30, high: 70)}
   let(:job) {
-      create(:job, employer_id: @employer.id, salary_low: 45000, salary_high: 280000, zip: "10900",
-                    archetype_low: -30, archetype_high: 70, city: 'city1', state_id: @state.id,
+      create(:job, employer_id: employer.id, salary_low: 45000, salary_high: 280000, zip: "10900",
+                    archetype_low: -30, archetype_high: 70, city: 'city1', state_id: state.id,
                     job_function_id: job_function.id, experience_years: 10
                     )
             }
@@ -67,6 +67,27 @@ RSpec.describe Job do
     expect(Job.count).to eq(1)
     expect(Job.first.archetype_low).to eq(@job.job_function.low)
     expect(Job.first.archetype_high).to eq(@job.job_function.high)
+  end
+
+  describe '#add_activated_at' do
+    it '.when job is saved, activated_at should auto save' do
+      job
+      expect(Job.count).to eq(1)
+      expect(Job.first.activated_at).not_to be_nil
+    end
+
+    it '.when job is updated, activated_at should not auto update until some value is passed' do
+      job
+      Job.first.update(activated_at: nil)
+      expect(Job.count).to eq(1)
+      expect(Job.first.activated_at).to be_nil
+
+      Job.first.update(title: 'test title', description: 'test description')
+      expect(Job.first.activated_at).to be_nil
+      
+      Job.first.update(title: 'old title', description: 'old description', activated_at: DateTime.now)
+      expect(Job.first.activated_at).not_to be_nil
+    end
   end
 
   context '#job_matched_list' do
