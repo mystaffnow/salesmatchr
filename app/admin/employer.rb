@@ -40,7 +40,7 @@ ActiveAdmin.register Employer do
       f.input :first_name
       f.input :last_name
       f.input :company
-      if params[:controller]=="staffnow/employers" && params[:action]=="new"
+      if params[:controller]=="staffnow/employers" && (params[:action]=="new" || params[:action] == "create")
         f.input :email
         f.input :password
         f.input :password_confirmation
