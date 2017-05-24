@@ -24,6 +24,18 @@ ActiveAdmin.register Employer do
   filter :company
   filter :email
 
+  controller do
+    def create
+      super
+
+      unless resource.errors.any?
+        if resource.save
+          resource.send_reset_password_instructions
+        end
+      end
+    end
+  end
+
   index do
   	id_column
 
