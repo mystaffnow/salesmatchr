@@ -20,7 +20,7 @@ class JobCandidate < ActiveRecord::Base
   validates_uniqueness_of :candidate_id, scope: :job_id
 
   enum status: [:submitted, :viewed, :accepted, :withdrawn,
-                :shortlist, :deleted, :purposed]
+                :shortlist, :deleted]
 
   # method returns job_candidates record for active and enable job
   scope :active_job_candidate_list, ->(current_candidate) {
@@ -36,12 +36,11 @@ class JobCandidate < ActiveRecord::Base
   	arr << JobCandidate.statuses['shortlist']
   	arr << JobCandidate.statuses['accepted']
   	arr << JobCandidate.statuses['deleted']
-  	arr << JobCandidate.statuses['purposed']
   	return arr
   end
 
   # used by views
   def is_applicants?
-    (self.submitted? || self.viewed? || self.purposed?)
+    (self.submitted? || self.viewed?)
   end
 end
