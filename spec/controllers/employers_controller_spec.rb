@@ -100,13 +100,14 @@ RSpec.describe EmployersController, :type => :controller do
       }
 
       it 'should correctly assign employer' do
-        employer_profile(employer)
+        # employer_profile(employer)
         get :public, id: employer.id
         expect(assigns(:employer)).to eq(employer)
       end
 
       it 'should redirect to /employers/account' do
-        EmployerProfile.first.update(zip: nil, state_id: nil, city: nil, website: nil)
+        blank_profile(EmployerProfile.first)
+        # EmployerProfile.first.update(zip: nil, state_id: nil, city: nil, website: nil)
         get :public, id: candidate.id
         expect(response).to redirect_to("/employers/account")
       end
