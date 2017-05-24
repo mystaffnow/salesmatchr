@@ -127,11 +127,6 @@ RSpec.describe Candidate do
 			@job_candidate.status = 5
 			expect(@job_candidate.status).to eq("deleted")
 		end
-
-		it 'should equals purposed' do
-			@job_candidate.status = 6
-			expect(@job_candidate.status).to eq("purposed")
-		end
 	end
 
 	context 'view_job-job' do

@@ -52,12 +52,6 @@
                     deleted
                 - else
                   deleted
-                |
-                - if job_candidate.purposed?
-                  %b.secondary-color
-                    Purposed
-                - else
-                  Purposed
               .col-md-4.job-actions
                 - if !job_candidate.withdrawn?
                   = link_to "Withdraw", withdraw_candidate_path(job_candidate.id), method: :put, data: {confirm: 'Do you want to withdraw this application?'}, class: 'button btn btn-info', id: 'hire'
