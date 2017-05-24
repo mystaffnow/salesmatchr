@@ -321,7 +321,8 @@ RSpec.describe EmployersController, :type => :controller do
       end
 
       it 'should not call check_employer and should not redirect to /employers/account' do
-        EmployerProfile.first.update(zip: nil, state_id: nil, city: nil, website: nil)
+        blank_profile(EmployerProfile.first)
+        # EmployerProfile.first.update(zip: nil, state_id: nil, city: nil, website: nil)
         customer                            
         expect(Customer.count).to eq(1)
         expect(Customer.first.is_selected).to be_falsy
