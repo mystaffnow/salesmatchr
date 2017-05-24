@@ -280,7 +280,8 @@ RSpec.describe EmployersController, :type => :controller do
       end
 
       it 'should not call check_employer and should not redirect to /employers/account' do
-        EmployerProfile.first.update(zip: nil, state_id: nil, city: nil, website: nil)
+        blank_profile(EmployerProfile.first)
+        # EmployerProfile.first.update(zip: nil, state_id: nil, city: nil, website: nil)
         post :list_payment_method
         expect(response).to redirect_to("/employers/account")
       end
