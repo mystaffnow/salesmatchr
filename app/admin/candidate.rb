@@ -12,7 +12,14 @@ ActiveAdmin.register Candidate do
 #   permitted << :other if resource.something?
 #   permitted
 # end
-  actions :all, :except => [:new, :create, :edit, :update]
+  # actions :all, :except => [:new, :create]
+
+  menu priority: 1, parent: 'Candidate'
+
+  permit_params :first_name, :last_name, :email, :year_experience_id,
+                :password, :password_confirmation, candidate_question_answers_attributes: [
+                  :question_id, :id, :answer_id
+                ]
 
   filter :first_name
   filter :last_name
@@ -22,6 +29,17 @@ ActiveAdmin.register Candidate do
   controller do
     def scoped_collection
       super.includes(:year_experience)
+    end
+
+    def create
+      super
+
+      unless resource.errors.any?
+        Question.all.each do |question|
+          resource.candidate_question_answers.build question_id: question.id
+        end
+        resource.save
+      end
     end
   end
 
@@ -37,6 +55,22 @@ ActiveAdmin.register Candidate do
     column :email
     actions
   end
+
+  # form code starts
+  form do |f|
+    f.inputs 'Fill out the form' do
+      f.input :first_name
+      f.input :last_name
+      f.input :year_experience, as: :select, collection: YearExperience.all.map { |x| [x.name, x.id] }, include_blank: false
+      if params[:controller]=="staffnow/candidates" && (params[:action]=="new" || params[:action] == "create")
+        f.input :email
+        f.input :password
+        f.input :password_confirmation
+      end
+      f.submit
+    end
+  end
+  # form code ends
 
   show do |cd|
     attributes_table do
