@@ -21,7 +21,7 @@ RSpec.describe JobCandidate do
   end
 
   it 'should have enum status' do
-    expect(JobCandidate.statuses).to eq({"submitted"=>0, "viewed"=>1, "accepted"=>2, "withdrawn"=>3, "shortlist"=>4, "deleted"=>5, "purposed"=>6})
+    expect(JobCandidate.statuses).to eq({"submitted"=>0, "viewed"=>1, "accepted"=>2, "withdrawn"=>3, "shortlist"=>4, "deleted"=>5})
   end
 
   it "should save status 'submitted'" do
@@ -54,11 +54,6 @@ RSpec.describe JobCandidate do
     expect(job_candidate.status).to eq("deleted")
   end
 
-  it "should save status 'purposed'" do
-    job_candidate.update_attributes(status: 'purposed')
-    expect(job_candidate.status).to eq("purposed")
-  end
-
   it "should not save invalid status" do
     expect{job_candidate.update_attributes(status: 'invalid')}.to raise_error("'invalid' is not a valid status")
   end
@@ -81,7 +76,7 @@ RSpec.describe JobCandidate do
   end
 
   it "should have statuses_opened array" do
-    expect(JobCandidate.statuses_opened).to eq([0, 1, 4, 2, 5, 6])
+    expect(JobCandidate.statuses_opened).to eq([0, 1, 4, 2, 5])
   end
 
   context '#is_applicants?' do
