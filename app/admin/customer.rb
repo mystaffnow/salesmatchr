@@ -19,7 +19,7 @@ ActiveAdmin.register Customer do
   index do
     id_column
 
-    column :employer_id
+    column :employer
     column :stripe_card_token
     column :stripe_customer_id
     column :last4
