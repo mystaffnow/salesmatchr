@@ -22,11 +22,11 @@ ActiveAdmin.register CandidateProfile do
   index do
     id_column
 
-    column :candidate_id
+    column :candidate
     column :city
-    column :state_id
+    column :state
     column :zip
-    column :education_level_id
+    column :education_level
     column :avatar do |img|
       image_tag img.avatar.url(:medium)
     end
