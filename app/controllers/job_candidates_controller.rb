@@ -18,7 +18,7 @@ class JobCandidatesController < ApplicationController
   end
 
   # return all job_candidates who are applicants, submitted, viewed,
-  # purposed, removed, shortlisted candidates
+  # removed, shortlisted candidates
   def open_job_candidates
     if active_job_candidate_list.present?
       @open_job_candidates = active_job_candidate_list.includes(:job)

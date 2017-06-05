@@ -22,7 +22,8 @@ RSpec.describe EmployersController, :type => :controller do
       }
 
       it 'should redirect to /employers/account' do
-        EmployerProfile.first.update(zip: nil, state_id: nil, city: nil, website: nil)
+        blank_profile(EmployerProfile.first)
+        # EmployerProfile.first.update(zip: nil, state_id: nil, city: nil, website: nil)
         get :profile
         expect(response).to redirect_to("/employers/account")
       end
@@ -99,13 +100,14 @@ RSpec.describe EmployersController, :type => :controller do
       }
 
       it 'should correctly assign employer' do
-        employer_profile(employer)
+        # employer_profile(employer)
         get :public, id: employer.id
         expect(assigns(:employer)).to eq(employer)
       end
 
       it 'should redirect to /employers/account' do
-        EmployerProfile.first.update(zip: nil, state_id: nil, city: nil, website: nil)
+        blank_profile(EmployerProfile.first)
+        # EmployerProfile.first.update(zip: nil, state_id: nil, city: nil, website: nil)
         get :public, id: candidate.id
         expect(response).to redirect_to("/employers/account")
       end
@@ -203,7 +205,8 @@ RSpec.describe EmployersController, :type => :controller do
       end
 
       it 'should not call check_employer and should not redirect to /employers/account' do
-        EmployerProfile.first.update(zip: nil, state_id: nil, city: nil, website: nil)
+        blank_profile(EmployerProfile.first)
+        # EmployerProfile.first.update(zip: nil, state_id: nil, city: nil, website: nil)
         get :add_payment_method
         expect(response).to redirect_to("/employers/account")
       end
@@ -242,7 +245,8 @@ RSpec.describe EmployersController, :type => :controller do
       end
 
       it 'should not call check_employer and should not redirect to /employers/account' do
-        EmployerProfile.first.update(zip: nil, state_id: nil, city: nil, website: nil)
+        blank_profile(EmployerProfile.first)
+        # EmployerProfile.first.update(zip: nil, state_id: nil, city: nil, website: nil)
         post :insert_payment_method, {customer: customer_params}
         expect(response).to redirect_to("/employers/account")
       end
@@ -276,7 +280,8 @@ RSpec.describe EmployersController, :type => :controller do
       end
 
       it 'should not call check_employer and should not redirect to /employers/account' do
-        EmployerProfile.first.update(zip: nil, state_id: nil, city: nil, website: nil)
+        blank_profile(EmployerProfile.first)
+        # EmployerProfile.first.update(zip: nil, state_id: nil, city: nil, website: nil)
         post :list_payment_method
         expect(response).to redirect_to("/employers/account")
       end
@@ -316,7 +321,8 @@ RSpec.describe EmployersController, :type => :controller do
       end
 
       it 'should not call check_employer and should not redirect to /employers/account' do
-        EmployerProfile.first.update(zip: nil, state_id: nil, city: nil, website: nil)
+        blank_profile(EmployerProfile.first)
+        # EmployerProfile.first.update(zip: nil, state_id: nil, city: nil, website: nil)
         customer                            
         expect(Customer.count).to eq(1)
         expect(Customer.first.is_selected).to be_falsy

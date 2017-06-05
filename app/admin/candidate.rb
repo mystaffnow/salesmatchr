@@ -38,7 +38,9 @@ ActiveAdmin.register Candidate do
         Question.all.each do |question|
           resource.candidate_question_answers.build question_id: question.id
         end
-        resource.save
+        if resource.save
+          resource.send_reset_password_instructions
+        end
       end
     end
   end
