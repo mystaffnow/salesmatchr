@@ -113,6 +113,22 @@ class Candidate < ActiveRecord::Base
     end
   end
 
+  # instead of deleting, indicate the candidate requested a delete
+  # and timestamp it
+  def archive
+    update_attribute(:deleted_at, Time.current)
+  end
+
+  # ensure candidate account is active
+  def active_for_authentication?
+    super && !deleted_at
+  end
+
+  # provide a custom message for a deleted account
+  def inactive_message
+    !deleted_at ? super : :deleted_account
+  end
+
   private
 
   def add_candidate_profile
