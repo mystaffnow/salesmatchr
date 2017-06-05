@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170519071644) do
+ActiveRecord::Schema.define(version: 20170605074632) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -105,6 +105,7 @@ ActiveRecord::Schema.define(version: 20170519071644) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
+    t.datetime "deleted_at"
   end
 
   add_index "candidates", ["email"], name: "index_candidates_on_email", unique: true, using: :btree
@@ -239,7 +240,6 @@ ActiveRecord::Schema.define(version: 20170519071644) do
     t.boolean  "is_remote"
     t.string   "title"
     t.text     "description"
-    t.boolean  "is_active",        default: false
     t.integer  "state_id"
     t.string   "city"
     t.integer  "archetype_low"
@@ -251,6 +251,7 @@ ActiveRecord::Schema.define(version: 20170519071644) do
     t.datetime "created_at",                       null: false
     t.datetime "updated_at",                       null: false
     t.integer  "status",           default: 0
+    t.boolean  "is_active",        default: false
     t.datetime "activated_at"
   end
 
