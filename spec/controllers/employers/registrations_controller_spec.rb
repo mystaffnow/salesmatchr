@@ -30,4 +30,29 @@ RSpec.describe Employers::RegistrationsController, :type => :controller do
       end
     end
   end
+
+  describe "#destroy" do
+    before {
+      @request.env["devise.mapping"] = Devise.mappings[:employer]
+    }
+    
+    let(:state) {create(:state)}
+    let(:employer) {create(:employer)}
+
+    it 'should archive the record' do
+      sign_in(employer)
+      employer_profile(employer)
+      delete :destroy
+      expect(Employer.first.deleted_at).not_to be_nil
+    end
+
+    it '' do
+      sign_in(employer)
+      expect(subject.current_employer).to eq(employer)
+      employer_profile(employer)
+      delete :destroy
+      sign_in(employer)
+      expect { subject.current_employer }.to raise_error(UncaughtThrowError)
+    end
+  end
 end
