@@ -22,12 +22,12 @@ ActiveAdmin.register EmployerProfile do
   index do
     id_column
 
-    column :employer_id
+    column :employer
     column :website
     column :ziggeo_token
     column :zip
     column :city
-    column :state_id, as: :select, collection: State.all.map {|x| [x.name, x.id]}, included_blank: false
+    column :state
     column :description
     column :avatar do |img|
       image_tag img.avatar.url(:medium)
