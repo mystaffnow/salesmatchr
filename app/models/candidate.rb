@@ -50,8 +50,14 @@ class Candidate < ActiveRecord::Base
     return self.first_name + ' ' + self.last_name
   end
 
+  # authorization
   def is_owner_of?(obj)
-    self.id == obj.try(:candidate_id) && obj.candidate.deleted_at.blank?
+    self.id == obj.try(:candidate_id)
+  end
+
+  # authorization: use this method to check object's parent is archived or not archived
+  def archived?
+    self.deleted_at.present?
   end
 
   def has_applied(job)
