@@ -14,15 +14,17 @@ class JobCandidatePolicy < ApplicationPolicy
 		user.is_owner_of?(job_candidate.job)
 	end
 
+	# candidate side
 	def withdraw?
-		user.is_owner_of?(job_candidate)
+		user.is_owner_of?(job_candidate) && !user.archived?
 	end
 
 	def accept_candidate?
 		user.is_owner_of?(job_candidate.job)
 	end
 
+	# candidate side
 	def receipt?
-		user.is_owner_of?(job_candidate)
+		user.is_owner_of?(job_candidate) && !user.archived?
 	end
 end
