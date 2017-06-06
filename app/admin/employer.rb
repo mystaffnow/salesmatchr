@@ -36,6 +36,11 @@ ActiveAdmin.register Employer do
     end
   end
 
+  member_action :archive, method: :put do
+    resource.update(deleted_at: Time.now)
+    redirect_to staffnow_employers_path, notice: "Employer record is archived"
+  end
+
   index do
   	id_column
 
@@ -43,6 +48,13 @@ ActiveAdmin.register Employer do
   	column :last_name
   	column :company
   	column :email
+    column :archive do |obj|
+      if obj.deleted_at.nil?
+        link_to "Archive", archive_staffnow_employer_path(obj), method: :put
+      else
+        "Archived"
+      end
+    end
   	actions
   end
 
