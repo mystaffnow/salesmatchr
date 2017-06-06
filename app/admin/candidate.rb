@@ -45,6 +45,11 @@ ActiveAdmin.register Candidate do
     end
   end
 
+  member_action :archive, method: :put do
+    resource.update(deleted_at: Time.now)
+    redirect_to staffnow_candidates_path, notice: "Candidate record is archived"
+  end
+
   index do
     id_column
     column :first_name
@@ -55,6 +60,13 @@ ActiveAdmin.register Candidate do
     column :archetype_score
     column :archetype_string
     column :email
+    column :archive do |obj|
+      if obj.deleted_at.nil?
+        link_to "Archive", archive_staffnow_candidate_path(obj), method: :put
+      else
+        "Archived"
+      end
+    end
     actions
   end
 
