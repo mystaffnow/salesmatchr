@@ -39,5 +39,18 @@ RSpec.describe JobCandidatePolicy do
 		it 'grant access to resource-owner' do
 			expect(subject).to permit(candidate, job_candidate)
 		end
+
+		it 'denies access to profile owner if owner is archived' do
+			candidate
+			candidate.update deleted_at: Time.now
+			expect(Candidate.first.deleted_at).not_to be_nil
+			expect(subject).not_to permit(candidate, job_candidate)
+		end
+
+		it 'grant access to profile owner if owner is not archived' do
+			candidate
+			expect(Candidate.first.deleted_at).to be_nil
+			expect(subject).to permit(candidate, job_candidate)
+		end
 	end
 end
