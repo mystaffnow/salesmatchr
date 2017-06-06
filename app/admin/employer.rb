@@ -48,6 +48,7 @@ ActiveAdmin.register Employer do
   	column :last_name
   	column :company
   	column :email
+    column :deleted_at
     column :archive do |obj|
       if obj.deleted_at.nil?
         link_to "Archive", archive_staffnow_employer_path(obj), method: :put
