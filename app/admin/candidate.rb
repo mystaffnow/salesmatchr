@@ -60,6 +60,7 @@ ActiveAdmin.register Candidate do
     column :archetype_score
     column :archetype_string
     column :email
+    column :deleted_at
     column :archive do |obj|
       if obj.deleted_at.nil?
         link_to "Archive", archive_staffnow_candidate_path(obj), method: :put
