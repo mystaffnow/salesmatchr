@@ -7,6 +7,6 @@ class EducationPolicy < ApplicationPolicy
 	end
 
 	def destroy?
-		user.is_owner_of?(education)
+		user.is_owner_of?(education) && !user.archived?
 	end
 end
