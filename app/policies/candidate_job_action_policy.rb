@@ -7,6 +7,6 @@ class CandidateJobActionPolicy < ApplicationPolicy
 	end
 
 	def candidate_save_job?
-		user.is_owner_of?(candidate_job_action)
+    user.is_owner_of?(candidate_job_action) && !user.archived?
 	end
 end
