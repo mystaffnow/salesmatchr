@@ -51,7 +51,7 @@ class Candidate < ActiveRecord::Base
   end
 
   def is_owner_of?(obj)
-    self.id == obj.try(:candidate_id)
+    self.id == obj.try(:candidate_id) && obj.candidate.deleted_at.blank?
   end
 
   def has_applied(job)
