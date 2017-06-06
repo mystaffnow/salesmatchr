@@ -7,6 +7,6 @@ class ExperiencePolicy < ApplicationPolicy
 	end
 
 	def destroy?
-		user.is_owner_of?(experience)
+		user.is_owner_of?(experience) && !user.archived?
 	end
 end
