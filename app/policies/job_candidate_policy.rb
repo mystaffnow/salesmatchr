@@ -7,11 +7,11 @@ class JobCandidatePolicy < ApplicationPolicy
 	end
 
 	def remove_candidate?
-		user.is_owner_of?(job_candidate.job)
+		user.is_owner_of?(job_candidate.job) && !user.archived?
 	end
 
 	def shortlist_candidate?
-		user.is_owner_of?(job_candidate.job)
+		user.is_owner_of?(job_candidate.job) && !user.archived?
 	end
 
 	# candidate side
@@ -20,7 +20,7 @@ class JobCandidatePolicy < ApplicationPolicy
 	end
 
 	def accept_candidate?
-		user.is_owner_of?(job_candidate.job)
+		user.is_owner_of?(job_candidate.job) && !user.archived?
 	end
 
 	# candidate side
