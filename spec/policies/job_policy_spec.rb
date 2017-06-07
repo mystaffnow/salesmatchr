@@ -26,6 +26,21 @@ RSpec.describe JobPolicy do
 		it 'grant acess when resource owner found' do
 			expect(subject).to permit(employer, job)
 		end
+
+		it 'denies access when resource owner is archived' do
+			employer
+			employer_profile(employer)
+			employer.update(deleted_at: Time.now)
+			expect(Employer.first.deleted_at).not_to be_nil
+			expect(subject).not_to permit(employer, job)
+		end
+		
+		it 'grant access when resource owner is not archived' do
+			employer
+			employer_profile(employer)
+			expect(Employer.first.deleted_at).to be_nil
+			expect(subject).to permit(employer, job)
+		end
 	end
 
 	permissions :new?, :create? do
@@ -35,6 +50,21 @@ RSpec.describe JobPolicy do
 
 		it 'grant access when employer is signed in' do
 			expect(subject).to permit(employer)
+		end
+
+		it 'denies access when resource owner is archived' do
+			employer
+			employer_profile(employer)
+			employer.update(deleted_at: Time.now)
+			expect(Employer.first.deleted_at).not_to be_nil
+			expect(subject).not_to permit(employer, job)
+		end
+		
+		it 'grant access when resource owner is not archived' do
+			employer
+			employer_profile(employer)
+			expect(Employer.first.deleted_at).to be_nil
+			expect(subject).to permit(employer, job)
 		end
 	end
 
@@ -85,6 +115,26 @@ RSpec.describe JobPolicy do
 		it 'permit resource owner when job inactive and disable' do
 			job.update(is_active: false, status: 1)
 			expect(subject).to permit(employer, job)
+		end
+
+		it 'denies access to resource owner, visitors, candidates when owner is archived' do
+			employer
+			employer_profile(employer)
+			employer.update(deleted_at: Time.now)
+			expect(Employer.first.deleted_at).not_to be_nil
+			expect(subject).not_to permit(employer, job)
+			expect(subject).not_to permit(candidate, job)
+			expect(subject).not_to permit(nil, job)
+		end
+
+		it 'grant access when owner is not archived' do
+			employer
+			employer_profile(employer)
+			employer.update(deleted_at: nil)
+			expect(Employer.first.deleted_at).to be_nil
+			expect(subject).to permit(employer, job)
+			expect(subject).to permit(candidate, job)
+			expect(subject).to permit(nil, job)
 		end
 	end
 end
