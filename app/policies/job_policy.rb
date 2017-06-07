@@ -61,6 +61,10 @@ class JobPolicy < ApplicationPolicy
 		!user.archived?
 	end
 
+	def list_expired_jobs?
+		!user.archived?
+	end
+
 	def inactivate_job?
 		user.is_owner_of?(job) && !user.archived?
 	end
