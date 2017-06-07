@@ -8,16 +8,17 @@ class CandidateProfilePolicy < ApplicationPolicy
 
 	# if incognito ON, profile is visible to profile-owner and employers whose jobs profile-owner has applied
 	# if incognito OFF, anyone can see the profile
+	# when profile owner is archived, in such case neither owner not others can view their profile
 	# ToDo: Testcase is remaining to modify
 	def profile?
 		case user.class.name.to_s
 			when 'Candidate'
 				(user.is_owner_of?(profile) || (profile.is_incognito == false)) && !user.archived?
 			when 'Employer'
-				candidate_has_applied_employers_job?(profile, user) ||
-				(profile.is_incognito == false)
+				!profile.candidate.archived? && (candidate_has_applied_employers_job?(profile, user) ||
+				(profile.is_incognito == false))
 			else
-				profile.is_incognito == false
+				!profile.candidate.archived? && (profile.is_incognito == false)
 		end
 	end
 
