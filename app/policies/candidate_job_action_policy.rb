@@ -13,4 +13,8 @@ class CandidateJobActionPolicy < ApplicationPolicy
   def candidate_job_saved?
     !user.archived?
   end
+
+  def candidate_job_viewed?
+    !user.archived?
+  end
 end
