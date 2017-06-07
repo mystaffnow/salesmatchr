@@ -57,6 +57,10 @@ class JobPolicy < ApplicationPolicy
 		user.is_owner_of?(job) && !user.archived?
 	end
 
+	def employer_archive?
+		!user.archived?
+	end
+
 	def inactivate_job?
 		user.is_owner_of?(job) && !user.archived?
 	end
