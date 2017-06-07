@@ -27,6 +27,20 @@ RSpec.describe JobCandidatePolicy do
 		it 'grant access to resource-owner' do
 			expect(subject).to permit(employer, job_candidate)
 		end
+
+		it 'denies access to employer as resource owner when they are archived' do
+			employer
+			employer.update(deleted_at: Time.now)
+			expect(employer.deleted_at).not_to be_nil
+			expect(subject).not_to permit(employer, job_candidate)
+		end
+
+		it 'grant access to employer as resource owner when they are not archived' do
+			employer
+			employer_profile(employer)
+			expect(Employer.first.deleted_at).to be_nil
+			expect(subject).to permit(Employer.first, job_candidate)
+		end
 	end
 
 	permissions :withdraw?, :receipt? do
