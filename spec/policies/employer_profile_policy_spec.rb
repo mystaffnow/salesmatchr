@@ -19,5 +19,18 @@ RSpec.describe EmployerProfilePolicy do
 			profile = employer_profile(employer)
 			expect(subject).to permit(employer, profile)
 		end
+
+		it 'denies access when resource owner is archived' do
+			profile = employer_profile(employer)
+			employer.update(deleted_at: Time.now)
+			expect(Employer.first.deleted_at).not_to be_nil
+			expect(subject).not_to permit(employer, profile)
+		end
+
+		it 'grant access when resource owner is is not archived' do
+			profile = employer_profile(employer)
+			expect(Employer.first.deleted_at).to be_nil
+			expect(subject).to permit(employer, profile)
+		end
 	end
 end
