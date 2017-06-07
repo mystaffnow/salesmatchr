@@ -7,14 +7,14 @@ class EmployerProfilePolicy < ApplicationPolicy
 	end
 
 	def profile?
-		user.is_owner_of?(profile)
+		user.is_owner_of?(profile) && !user.archived?
 	end
 
 	def account?
-		user.is_owner_of?(profile)
+		user.is_owner_of?(profile) && !user.archived?
 	end
 
 	def update?
-		user.is_owner_of?(profile)
+		user.is_owner_of?(profile) && !user.archived?
 	end
 end
