@@ -49,12 +49,14 @@ RSpec.describe CandidateProfilePolicy do
 			expect(subject).to permit(nil, CandidateProfile.first)
 		end
 
-		it 'denies access to profile owner if owner is archived' do
+		it 'denies access to profile owner and others if owner is archived' do
 			candidate
 			candidate.update deleted_at: Time.now
 			expect(Candidate.first.deleted_at).not_to be_nil
 			expect(candidate.id).to eq(CandidateProfile.first.candidate_id)
-			expect(subject).not_to permit(Candidate.first, CandidateProfile.first)
+			expect(subject).not_to permit(candidate, CandidateProfile.first)
+			expect(subject).not_to permit(employer, CandidateProfile.first)
+			expect(subject).not_to permit(nil, CandidateProfile.first)
 		end
 
 		it 'grant access to profile owner if owner is not archived' do
