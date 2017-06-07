@@ -40,7 +40,7 @@ RSpec.describe CandidateJobActionPolicy do
 		end
 	end
 
-	permissions :candidate_job_saved?, :candidate_job_viewed? do
+	permissions :candidate_job_saved?, :candidate_job_viewed?, :candidate_matches? do
 		it 'denies access when resource owner is archived' do
 			candidate
 			candidate.update(deleted_at: Time.now)

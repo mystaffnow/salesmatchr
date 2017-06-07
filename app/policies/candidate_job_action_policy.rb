@@ -17,4 +17,8 @@ class CandidateJobActionPolicy < ApplicationPolicy
   def candidate_job_viewed?
     !user.archived?
   end
+
+  def candidate_matches?
+    !user.archived?
+  end
 end
