@@ -138,24 +138,7 @@ RSpec.describe JobPolicy do
 		end
 	end
 
-	permissions :employer_archive? do
-		it 'denies access when resource owner is archived' do
-			employer
-			employer_profile(employer)
-			employer.update(deleted_at: Time.now)
-			expect(Employer.first.deleted_at).not_to be_nil
-			expect(subject).not_to permit(employer)
-		end
-
-		it 'grant access when resource owner is not archived' do
-			employer
-			employer_profile(employer)
-			expect(Employer.first.deleted_at).to be_nil
-			expect(subject).to permit(employer)
-		end
-	end
-
-	permissions :list_expired_jobs? do
+	permissions :employer_archive?, :list_expired_jobs? do
 		it 'denies access when resource owner is archived' do
 			employer
 			employer_profile(employer)
