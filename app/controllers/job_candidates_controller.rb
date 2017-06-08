@@ -33,6 +33,7 @@ class JobCandidatesController < ApplicationController
   # Only candidate can apply on Job
   def apply
     @job = Job.find(params.permit(:id)[:id])
+    authorize(@job)
     job_candidate = JobCandidate.create job_id: @job.id, candidate_id: current_candidate.id
     job_candidate.submitted!
 
