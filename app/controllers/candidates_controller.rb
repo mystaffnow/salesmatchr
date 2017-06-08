@@ -67,7 +67,7 @@ class CandidatesController < ApplicationController
   # view archetype result and submit form to complete profile
   # only signed_in candidate access this
   def archetype_result
-
+    authorize(current_candidate)
   end
 
   #should make a put but tired
