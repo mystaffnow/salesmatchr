@@ -76,4 +76,8 @@ class JobPolicy < ApplicationPolicy
 	def pay_to_enable_expired_job?
 		user.is_owner_of?(job) && !user.archived?
 	end
+
+	def apply?
+		!user.archived? && !job.employer.archived?
+	end
 end
