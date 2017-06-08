@@ -10,6 +10,7 @@ class JobCandidatesController < ApplicationController
 
   # return all withdrawn job candidates
   def withdrawn_job_candidates
+    authorize(JobCandidate.new)
     if active_job_candidate_list.present?
       @withdrawn_job_candidates = active_job_candidate_list.includes(:job)
                                   .where(status: JobCandidate.statuses["withdrawn"])
