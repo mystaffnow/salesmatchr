@@ -67,4 +67,19 @@ RSpec.describe JobCandidatePolicy do
 			expect(subject).to permit(candidate, job_candidate)
 		end
 	end
+
+	permissions :withdrawn_job_candidates? do
+		it 'denies access' do
+			candidate
+			candidate.update deleted_at: Time.now
+			expect(Candidate.first.deleted_at).not_to be_nil
+			expect(subject).not_to permit(candidate, job_candidate)
+		end
+
+		it 'permit access' do
+			candidate
+			expect(Candidate.first.deleted_at).to be_nil
+			expect(subject).to permit(candidate, job_candidate)
+		end
+	end
 end
