@@ -154,4 +154,20 @@ RSpec.describe JobPolicy do
 			expect(subject).to permit(employer)
 		end
 	end
+
+	permissions :apply? do
+		it 'denies access' do
+			candidate
+			create(:job_candidate, job_id: job.id, candidate_id: candidate.id, status: 0)
+			candidate.update deleted_at: Time.now
+			expect(Candidate.first.deleted_at).not_to be_nil
+			expect(subject).not_to permit(candidate, job)
+		end
+
+		it 'permit access' do
+			candidate
+			expect(Candidate.first.deleted_at).to be_nil
+			expect(subject).to permit(candidate, job)
+		end
+	end
 end
