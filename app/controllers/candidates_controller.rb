@@ -74,6 +74,7 @@ class CandidatesController < ApplicationController
   # Toggle incognito
   # only signed_in candidate access this
   def incognito
+    authorize(current_candidate)
     tracker = Mixpanel::Tracker.new(ENV["NT_MIXPANEL_TOKEN"])
     tracker.track('candidate-'+current_candidate.email, 'incognito toggle')
     @profile = current_candidate.candidate_profile

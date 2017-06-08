@@ -5,7 +5,8 @@ RSpec.describe CandidatePolicy do
 
   let(:candidate) {create(:candidate)}
 
-  permissions :archetype?, :account?, :update?, :update_archetype?, :archetype_result? do
+  permissions :archetype?, :account?, :update?, :update_archetype?, :archetype_result?,
+              :incognito? do
     it 'denies access when candidate is archived' do
       candidate
       candidate.update(deleted_at: Time.now)

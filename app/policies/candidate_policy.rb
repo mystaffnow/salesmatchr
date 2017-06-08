@@ -18,4 +18,8 @@ class CandidatePolicy < ApplicationPolicy
   def archetype_result?
     user == record && !user.archived?
   end
+
+  def incognito?
+    user == record && !user.archived?
+  end
 end
