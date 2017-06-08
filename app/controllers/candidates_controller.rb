@@ -19,6 +19,7 @@ class CandidatesController < ApplicationController
       @profile = @candidate.candidate_profile
       authorize(@profile)
     elsif current_candidate
+      authorize(current_candidate)
       @candidate = current_candidate
       @profile = current_candidate.candidate_profile
     end
