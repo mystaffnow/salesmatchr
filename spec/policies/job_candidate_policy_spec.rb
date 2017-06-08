@@ -68,7 +68,7 @@ RSpec.describe JobCandidatePolicy do
 		end
 	end
 
-	permissions :withdrawn_job_candidates? do
+	permissions :withdrawn_job_candidates?, :open_job_candidates? do
 		it 'denies access' do
 			candidate
 			candidate.update deleted_at: Time.now
