@@ -6,6 +6,10 @@ class JobCandidatePolicy < ApplicationPolicy
 		@job_candidate = job_candidate
 	end
 
+	def withdrawn_job_candidates?
+		!user.archived?
+	end
+
 	def remove_candidate?
 		user.is_owner_of?(job_candidate.job) && !user.archived?
 	end
