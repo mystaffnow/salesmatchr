@@ -8,7 +8,7 @@ RSpec.describe EmployerProfilePolicy do
 	let(:employer1) {create(:employer)}
 	let(:candidate) {create(:candidate)}
 
-	permissions :profile?, :account?, :update? do
+	permissions :profile? do
 		it 'denies access when resource owner not found' do
 			profile = employer_profile(employer)
 			expect(subject).not_to permit(candidate, profile)
