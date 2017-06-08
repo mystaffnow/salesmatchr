@@ -87,6 +87,7 @@ class CandidatesController < ApplicationController
   # subscribe and unsubscribe to job match alert
   # only signed in candidate access this
   def subscription
+    authorize(current_candidate)
     @profile = current_candidate.candidate_profile
     @profile.toggle!(:is_active_match_subscription)
     respond_to do |format|

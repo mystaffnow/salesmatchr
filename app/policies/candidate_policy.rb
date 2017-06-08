@@ -22,4 +22,8 @@ class CandidatePolicy < ApplicationPolicy
   def incognito?
     user == record && !user.archived?
   end
+
+  def subscription?
+    user == record && !user.archived?
+  end
 end
