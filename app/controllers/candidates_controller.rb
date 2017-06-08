@@ -49,6 +49,7 @@ class CandidatesController < ApplicationController
   # update archetype
   # only signed_in candidate access this
   def update_archetype
+    authorize(current_candidate)
     tracker = Mixpanel::Tracker.new(ENV["NT_MIXPANEL_TOKEN"])
     tracker.track('candidate-'+current_candidate.email, 'updated archetype')
 
