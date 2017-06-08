@@ -27,6 +27,7 @@ class CandidatesController < ApplicationController
   # submit profile info
   # only signed_in candidate access this
   def account
+    authorize(current_candidate)
     current_candidate.build_candidate_profile if !current_candidate.candidate_profile
   end
 
