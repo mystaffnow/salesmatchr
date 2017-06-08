@@ -26,4 +26,8 @@ class CandidatePolicy < ApplicationPolicy
   def subscription?
     user == record && !user.archived?
   end
+
+  def profile?
+    user == record && !user.archived?
+  end
 end
