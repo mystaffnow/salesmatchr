@@ -6,4 +6,8 @@ class CandidatePolicy < ApplicationPolicy
   def account?
     user == record && !user.archived?
   end
+
+  def update?
+    user == record && !user.archived?
+  end
 end
