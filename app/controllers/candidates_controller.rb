@@ -34,6 +34,7 @@ class CandidatesController < ApplicationController
   # update candidate, profile, education, work experiences.
   # only signed_in candidate access this
   def update
+    authorize(current_candidate)
     respond_to do |format|
       if current_candidate.update(candidate_params)
         current_candidate.save
