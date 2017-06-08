@@ -21,6 +21,7 @@ class JobCandidatesController < ApplicationController
   # return all job_candidates who are applicants, submitted, viewed,
   # removed, shortlisted candidates
   def open_job_candidates
+    authorize(JobCandidate.new)
     if active_job_candidate_list.present?
       @open_job_candidates = active_job_candidate_list.includes(:job)
                             .where("job_candidates.status in (?)",
