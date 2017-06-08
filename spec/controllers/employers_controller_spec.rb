@@ -88,7 +88,7 @@ RSpec.describe EmployersController, :type => :controller do
       
       it 'should redirect to candidates_archetype_path' do
         candidate.update(archetype_score: nil)
-        get :public, id: candidate.id
+        get :public, id: employer.id
         expect(response).to redirect_to(candidates_archetype_path)
       end
     end
@@ -100,7 +100,6 @@ RSpec.describe EmployersController, :type => :controller do
       }
 
       it 'should correctly assign employer' do
-        # employer_profile(employer)
         get :public, id: employer.id
         expect(assigns(:employer)).to eq(employer)
       end
@@ -108,7 +107,7 @@ RSpec.describe EmployersController, :type => :controller do
       it 'should redirect to /employers/account' do
         blank_profile(EmployerProfile.first)
         # EmployerProfile.first.update(zip: nil, state_id: nil, city: nil, website: nil)
-        get :public, id: candidate.id
+        get :public, id: employer.id
         expect(response).to redirect_to("/employers/account")
       end
     end

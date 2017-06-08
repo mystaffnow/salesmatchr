@@ -34,9 +34,9 @@ class EmployersController < ApplicationController
 
   # Get employer profile publicly, signed in employer or candidate can access this
   def public
-    authorize(@profile)
     @employer = Employer.find(params[:id])
     @profile = @employer.try(:employer_profile)
+    authorize(@employer)
   end
 
   # Employer has to add valid payment information to use services like making job active

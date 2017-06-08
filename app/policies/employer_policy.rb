@@ -35,6 +35,6 @@ class EmployerPolicy < ApplicationPolicy
   end
 
   def public?
-    !user.archived?
+    !record.archived?
   end
 end
