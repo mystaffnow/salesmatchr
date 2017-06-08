@@ -10,4 +10,8 @@ class CandidatePolicy < ApplicationPolicy
   def update?
     user == record && !user.archived?
   end
+
+  def update_archetype?
+    user == record && !user.archived?
+  end
 end
