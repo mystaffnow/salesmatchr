@@ -10,6 +10,10 @@ class JobCandidatePolicy < ApplicationPolicy
 		!user.archived?
 	end
 
+	def open_job_candidates?
+		!user.archived?
+	end
+
 	def remove_candidate?
 		user.is_owner_of?(job_candidate.job) && !user.archived?
 	end
