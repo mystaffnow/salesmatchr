@@ -14,13 +14,13 @@ class EmployersController < ApplicationController
 
   # submit account information, signed in employer can access this
   def account
-    # authorize @profile
+    authorize current_employer
     current_employer.build_employer_profile if !current_employer.employer_profile
   end
 
   # update profile information of employer, signed in employer can access this
   def update
-    # authorize @profile
+    authorize current_employer
     respond_to do |format|
       if current_employer.update(employer_params)
         current_employer.save
@@ -34,6 +34,7 @@ class EmployersController < ApplicationController
 
   # Get employer profile publicly, signed in employer or candidate can access this
   def public
+    authorize(@profile)
     @employer = Employer.find(params[:id])
     @profile = @employer.try(:employer_profile)
   end
@@ -41,11 +42,13 @@ class EmployersController < ApplicationController
   # Employer has to add valid payment information to use services like making job active
   # current_employer can access this
   def add_payment_method
+    authorize(current_employer)
     @customer = Customer.new
   end
 
   # add payment information of employer
   def insert_payment_method
+    authorize current_employer
     @customer = Customer.new(customer_params)
     pay_service = Services::Pay.new(current_employer, nil, @customer.stripe_card_token)
 
@@ -60,12 +63,14 @@ class EmployersController < ApplicationController
   # list payment methods
   # required current_employer
   def list_payment_method
+    authorize current_employer
     @payment_methods = current_employer.customers
   end
 
   # Select any one payment method to pay by using service, eg: job active
   # required current_employer
   def choose_payment_method
+    authorize current_employer
     @customer = Customer.find(params[:id])
     current_employer.customers.update_all(is_selected: false)
     @customer.update(is_selected: true)
