@@ -38,7 +38,12 @@ ActiveAdmin.register Employer do
 
   member_action :archive, method: :put do
     resource.update(deleted_at: Time.now)
-    redirect_to staffnow_employers_path, notice: "Employer record is archived"
+    redirect_to staffnow_employers_path, notice: "Employer record is archived."
+  end
+
+  member_action :reactivate, method: :put do
+    resource.update(deleted_at: nil)
+    redirect_to staffnow_employers_path, notice: "Employer is reactivated again."
   end
 
   index do
@@ -53,7 +58,7 @@ ActiveAdmin.register Employer do
       if obj.deleted_at.nil?
         link_to "Archive", archive_staffnow_employer_path(obj), method: :put
       else
-        "Archived"
+        link_to "Reactivate", reactivate_staffnow_employer_path(obj), method: :put
       end
     end
   	actions
