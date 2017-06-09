@@ -19,6 +19,12 @@ ActiveAdmin.register CandidateProfile do
 
   menu priority: 2, parent: 'Candidate'
 
+  controller do
+    def scoped_collection
+      super.includes([:candidate, :state, :education_level])
+    end
+  end
+
   index do
     id_column
 
