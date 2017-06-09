@@ -47,7 +47,12 @@ ActiveAdmin.register Candidate do
 
   member_action :archive, method: :put do
     resource.update(deleted_at: Time.now)
-    redirect_to staffnow_candidates_path, notice: "Candidate record is archived"
+    redirect_to staffnow_candidates_path, notice: "Candidate record is archived."
+  end
+
+  member_action :reactivate, method: :put do
+    resource.update(deleted_at: nil)
+    redirect_to staffnow_candidates_path, notice: "Candidate is reactivated again."
   end
 
   index do
@@ -65,7 +70,7 @@ ActiveAdmin.register Candidate do
       if obj.deleted_at.nil?
         link_to "Archive", archive_staffnow_candidate_path(obj), method: :put
       else
-        "Archived"
+        link_to "Reactivate", reactivate_staffnow_candidate_path(obj), method: :put
       end
     end
     actions
