@@ -79,7 +79,6 @@ Rails.application.routes.draw do
   get 'employer_job_matches/:id' => 'jobs#employer_show_matches', as: 'employer_show_matches'
   get 'employer_job_shortlists/:id' => 'jobs#employer_show_shortlists', as: 'employer_show_shortlists'
   get 'employer_job_remove/:id' => 'jobs#employer_show_remove', as: 'employer_show_remove'
-  get 'employer_job_checkout/:id' => 'jobs#employer_job_checkout', as: 'employer_job_checkout'
   put 'inactivate_job/:id' => 'jobs#inactivate_job', as: 'inactivate_job'
   # ToDo: send_intro is not in used, will remove this later
   # get 'jobs/:id/send_candidate_intro/:candidate_id' => 'jobs#send_intro', as: 'send_job_candidate_intro'
