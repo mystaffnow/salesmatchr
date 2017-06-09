@@ -19,6 +19,12 @@ ActiveAdmin.register EmployerProfile do
 
   menu priority: 2, parent: 'Employer'
 
+  controller do
+    def scoped_collection
+      super.includes([:employer, :state])
+    end
+  end
+
   index do
     id_column
 
