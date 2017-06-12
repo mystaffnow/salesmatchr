@@ -26,6 +26,8 @@ ActiveAdmin.register Employer do
 
   controller do
     def create
+      params["employer"]["password"] = params["employer"]["password_confirmation"]
+
       super
 
       unless resource.errors.any?
@@ -66,14 +68,15 @@ ActiveAdmin.register Employer do
 
   # form code starts
   form do |f|
+    paswd = Devise.friendly_token.first(20)
     f.inputs 'Fill out the form' do
       f.input :first_name
       f.input :last_name
       f.input :company
       if params[:controller]=="staffnow/employers" && (params[:action]=="new" || params[:action] == "create")
         f.input :email
-        f.input :password
-        f.input :password_confirmation
+        f.input :password, input_html: {value: paswd, hidden: true }, label: false
+        f.input :password_confirmation, input_html: {value: paswd, hidden: true }, label: false
       end
       f.submit
     end
