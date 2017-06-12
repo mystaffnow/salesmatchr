@@ -103,7 +103,7 @@ class CandidatesController < ApplicationController
             .permit(:year_experience_id, :archetype_score, :first_name, :last_name,
                     candidate_profile_attributes: [:id, :avatar, :is_incognito,
                                                    :zip, :city, :state_id, :ziggeo_token,
-                                                   :education_level_id],
+                                                   :education_level_id, :resume],
                                         :experiences_attributes => [:id, :position,
                                         :company, :start_date, :end_date, :description,
                                         :is_sales, :sales_type_id, :is_current, :_destroy],
