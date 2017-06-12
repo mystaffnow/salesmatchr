@@ -22,6 +22,14 @@
         .row
           - if @profile.present?
             .col-md-12.text-center
+              #incognito-panel
+                #incognito-header
+                  Resume
+                #incognito-content
+                  = link_to "Download Resume", @profile.resume.url, class: 'btn btn-primary'
+                %br
+                %br
+            .col-md-12.text-center
               - if current_candidate && current_candidate.id == @candidate.id
                 #incognito-panel
                   #incognito-header
