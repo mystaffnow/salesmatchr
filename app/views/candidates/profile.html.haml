@@ -26,7 +26,10 @@
                 #incognito-header
                   Resume
                 #incognito-content
-                  = link_to "Download Resume", @profile.resume.url, class: 'btn btn-primary'
+                  - if @profile.resume.present?
+                    = link_to "Download Resume", @profile.resume.url, class: 'btn btn-primary'
+                  - else
+                    Resume is not uploaded yet!
                 %br
                 %br
             .col-md-12.text-center
