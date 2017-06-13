@@ -55,6 +55,11 @@ ActiveAdmin.register CandidateProfile do
       row :avatar do |img|
         image_tag img.avatar.url(:medium)
       end
+      row :resume do |cp|
+        if cp.resume.present?
+          link_to 'Download', cp.resume.url
+        end
+      end
       row :ziggeo_token
       row :is_incognito
       row :is_active_match_subscription
