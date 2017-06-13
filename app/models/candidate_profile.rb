@@ -28,8 +28,8 @@ class CandidateProfile < ActiveRecord::Base
   has_attached_file :avatar,  :default_url => "/img/missing.png", :styles => { :medium => "200x200#" }
   validates_attachment_content_type :avatar, :content_type => /\Aimage\/.*\Z/
 
-  has_attached_file :resume
-  # validates_attachment_content_type :resume, :content_type => /\Aimage\/.*\Z/
+  has_attached_file :resume, styles: {thumbnail: "60x60#"}
+  validates_attachment :resume, content_type: { content_type: "application/pdf" }
 
   validates :candidate_id, uniqueness: true
 
