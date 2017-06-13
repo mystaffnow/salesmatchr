@@ -32,6 +32,8 @@ ActiveAdmin.register Candidate do
     end
 
     def create
+      params["candidate"]["password"] = params["candidate"]["password_confirmation"]
+      
       super
 
       unless resource.errors.any?
@@ -45,6 +47,16 @@ ActiveAdmin.register Candidate do
     end
   end
 
+  member_action :archive, method: :put do
+    resource.update(deleted_at: Time.now)
+    redirect_to staffnow_candidates_path, notice: "Candidate record is archived."
+  end
+
+  member_action :reactivate, method: :put do
+    resource.update(deleted_at: nil)
+    redirect_to staffnow_candidates_path, notice: "Candidate is reactivated again."
+  end
+
   index do
     id_column
     column :first_name
@@ -55,6 +67,14 @@ ActiveAdmin.register Candidate do
     column :archetype_score
     column :archetype_string
     column :email
+    column :deleted_at
+    column :archive do |obj|
+      if obj.deleted_at.nil?
+        link_to "Archive", archive_staffnow_candidate_path(obj), method: :put
+      else
+        link_to "Reactivate", reactivate_staffnow_candidate_path(obj), method: :put
+      end
+    end
     actions
   end
 
@@ -65,9 +85,10 @@ ActiveAdmin.register Candidate do
       f.input :last_name
       f.input :year_experience, as: :select, collection: YearExperience.all.map { |x| [x.name, x.id] }, include_blank: false
       if params[:controller]=="staffnow/candidates" && (params[:action]=="new" || params[:action] == "create")
+        paswd = Devise.friendly_token.first(20)
         f.input :email
-        f.input :password
-        f.input :password_confirmation
+        f.input :password, input_html: {value: paswd, hidden: true }, label: false
+        f.input :password_confirmation, input_html: {value: paswd, hidden: true }, label: false
       end
       f.submit
     end

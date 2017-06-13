@@ -943,8 +943,6 @@ RSpec.describe JobsController, :type => :controller do
     end
   end
 
-  # describe '#employer_job_checkout'
-
   describe '#update' do
     let(:new_attributes) {
       {

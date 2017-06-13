@@ -10,6 +10,7 @@ class JobCandidatesController < ApplicationController
 
   # return all withdrawn job candidates
   def withdrawn_job_candidates
+    authorize(JobCandidate.new)
     if active_job_candidate_list.present?
       @withdrawn_job_candidates = active_job_candidate_list.includes(:job)
                                   .where(status: JobCandidate.statuses["withdrawn"])
@@ -20,6 +21,7 @@ class JobCandidatesController < ApplicationController
   # return all job_candidates who are applicants, submitted, viewed,
   # removed, shortlisted candidates
   def open_job_candidates
+    authorize(JobCandidate.new)
     if active_job_candidate_list.present?
       @open_job_candidates = active_job_candidate_list.includes(:job)
                             .where("job_candidates.status in (?)",
@@ -31,6 +33,7 @@ class JobCandidatesController < ApplicationController
   # Only candidate can apply on Job
   def apply
     @job = Job.find(params.permit(:id)[:id])
+    authorize(@job)
     job_candidate = JobCandidate.create job_id: @job.id, candidate_id: current_candidate.id
     job_candidate.submitted!
 

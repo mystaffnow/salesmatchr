@@ -16,10 +16,16 @@ ActiveAdmin.register Customer do
 
   menu priority: 3, parent: 'Employer'
 
+  controller do
+    def scoped_collection
+      super.includes(:employer)
+    end
+  end
+
   index do
     id_column
 
-    column :employer_id
+    column :employer
     column :stripe_card_token
     column :stripe_customer_id
     column :last4

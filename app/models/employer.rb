@@ -43,8 +43,14 @@ class Employer < ActiveRecord::Base
     "#{self.first_name} #{self.last_name}"
   end
 
+  # authorization
   def is_owner_of?(obj)
     self.id == obj.try(:employer_id)
+  end
+
+  # authorization: use this method to check object's parent is archived or not archived
+  def archived?
+    self.deleted_at.present?
   end
 
   def can_proceed
@@ -57,6 +63,22 @@ class Employer < ActiveRecord::Base
   def selected_card
     # it will return nil if no customers || customer
     self.customers.where("is_selected=?", true).try(:first) 
+  end
+
+  # instead of deleting, indicate the candidate requested a delete
+  # and timestamp it
+  def archive
+    update_attribute(:deleted_at, Time.current)
+  end
+
+  # ensure candidate account is active
+  def active_for_authentication?
+    super && !deleted_at
+  end
+
+  # provide a custom message for a deleted account
+  def inactive_message
+    !deleted_at ? super : :deleted_account
   end
 
   private

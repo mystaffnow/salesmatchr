@@ -50,8 +50,14 @@ class Candidate < ActiveRecord::Base
     return self.first_name + ' ' + self.last_name
   end
 
+  # authorization
   def is_owner_of?(obj)
     self.id == obj.try(:candidate_id)
+  end
+
+  # authorization: use this method to check object's parent is archived or not archived
+  def archived?
+    self.deleted_at.present?
   end
 
   def has_applied(job)
@@ -111,6 +117,22 @@ class Candidate < ActiveRecord::Base
     else
       return 'Relaxed Farmer'
     end
+  end
+
+  # instead of deleting, indicate the candidate requested a delete
+  # and timestamp it
+  def archive
+    update_attribute(:deleted_at, Time.current)
+  end
+
+  # ensure candidate account is active
+  def active_for_authentication?
+    super && !deleted_at
+  end
+
+  # provide a custom message for a deleted account
+  def inactive_message
+    !deleted_at ? super : :deleted_account
   end
 
   private

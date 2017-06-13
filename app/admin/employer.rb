@@ -26,6 +26,8 @@ ActiveAdmin.register Employer do
 
   controller do
     def create
+      params["employer"]["password"] = params["employer"]["password_confirmation"]
+
       super
 
       unless resource.errors.any?
@@ -36,6 +38,16 @@ ActiveAdmin.register Employer do
     end
   end
 
+  member_action :archive, method: :put do
+    resource.update(deleted_at: Time.now)
+    redirect_to staffnow_employers_path, notice: "Employer record is archived."
+  end
+
+  member_action :reactivate, method: :put do
+    resource.update(deleted_at: nil)
+    redirect_to staffnow_employers_path, notice: "Employer is reactivated again."
+  end
+
   index do
   	id_column
 
@@ -43,19 +55,28 @@ ActiveAdmin.register Employer do
   	column :last_name
   	column :company
   	column :email
+    column :deleted_at
+    column :archive do |obj|
+      if obj.deleted_at.nil?
+        link_to "Archive", archive_staffnow_employer_path(obj), method: :put
+      else
+        link_to "Reactivate", reactivate_staffnow_employer_path(obj), method: :put
+      end
+    end
   	actions
   end
 
   # form code starts
   form do |f|
+    paswd = Devise.friendly_token.first(20)
     f.inputs 'Fill out the form' do
       f.input :first_name
       f.input :last_name
       f.input :company
       if params[:controller]=="staffnow/employers" && (params[:action]=="new" || params[:action] == "create")
         f.input :email
-        f.input :password
-        f.input :password_confirmation
+        f.input :password, input_html: {value: paswd, hidden: true }, label: false
+        f.input :password_confirmation, input_html: {value: paswd, hidden: true }, label: false
       end
       f.submit
     end

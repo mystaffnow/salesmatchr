@@ -202,10 +202,6 @@ class JobsController < ApplicationController
     end
   end
 
-  def employer_job_checkout
-
-  end
-
   # Send email to all candidates who matches the job and who have only subscribed to alert feature
   def email_match_candidates
     authorize @job

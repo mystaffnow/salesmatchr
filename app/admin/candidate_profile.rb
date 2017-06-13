@@ -13,27 +13,35 @@ ActiveAdmin.register CandidateProfile do
 #   permitted
 # end
 
-  actions :all, :except => [:new, :create]
-
-  permit_params :candidate_id, :city, :state_id, :zip, :education_level_id
+  permit_params :candidate_id, :city, :state_id, :zip, :education_level_id, :avatar, :resume
 
   menu priority: 2, parent: 'Candidate'
+
+  controller do
+    def scoped_collection
+      super.includes([:candidate, :state, :education_level])
+    end
+  end
 
   index do
     id_column
 
-    column :candidate_id
+    column :candidate
     column :city
-    column :state_id
+    column :state
     column :zip
-    column :education_level_id
+    column :education_level
     column :avatar do |img|
       image_tag img.avatar.url(:medium)
     end
     column :ziggeo_token
     column :is_incognito
     column :is_active_match_subscription
-
+    column :resume do |cp|
+      if cp.resume.present?
+        link_to 'Download', cp.resume.url
+      end
+    end
     actions
   end
 
@@ -47,6 +55,11 @@ ActiveAdmin.register CandidateProfile do
       row :avatar do |img|
         image_tag img.avatar.url(:medium)
       end
+      row :resume do |cp|
+        if cp.resume.present?
+          link_to 'Download', cp.resume.url
+        end
+      end
       row :ziggeo_token
       row :is_incognito
       row :is_active_match_subscription
@@ -56,6 +69,7 @@ ActiveAdmin.register CandidateProfile do
 
   form do |f|
     f.inputs 'Fill out the form' do
+      f.input :candidate_id, as: :select, collection: Candidate.all.map { |x| [x.name, x.id] }, include_blank: false
       f.input :city
       f.input :state_id, as: :select, collection: State.all.map { |x| [x.name, x.id] }, include_blank: false
       f.input :zip
@@ -63,6 +77,7 @@ ActiveAdmin.register CandidateProfile do
       f.input :is_incognito
       f.input :is_active_match_subscription
       f.input :avatar, as: :file
+      f.input :resume, as: :file
       f.actions
     end
   end

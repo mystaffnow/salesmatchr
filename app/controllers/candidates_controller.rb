@@ -6,6 +6,7 @@ class CandidatesController < ApplicationController
   # submit archetype
   # only signed_in candidate access this
   def archetype
+    authorize(current_candidate)
   end
 
   # view profile
@@ -18,6 +19,7 @@ class CandidatesController < ApplicationController
       @profile = @candidate.candidate_profile
       authorize(@profile)
     elsif current_candidate
+      authorize(current_candidate)
       @candidate = current_candidate
       @profile = current_candidate.candidate_profile
     end
@@ -26,12 +28,14 @@ class CandidatesController < ApplicationController
   # submit profile info
   # only signed_in candidate access this
   def account
+    authorize(current_candidate)
     current_candidate.build_candidate_profile if !current_candidate.candidate_profile
   end
 
   # update candidate, profile, education, work experiences.
   # only signed_in candidate access this
   def update
+    authorize(current_candidate)
     respond_to do |format|
       if current_candidate.update(candidate_params)
         current_candidate.save
@@ -46,6 +50,7 @@ class CandidatesController < ApplicationController
   # update archetype
   # only signed_in candidate access this
   def update_archetype
+    authorize(current_candidate)
     tracker = Mixpanel::Tracker.new(ENV["NT_MIXPANEL_TOKEN"])
     tracker.track('candidate-'+current_candidate.email, 'updated archetype')
 
@@ -63,13 +68,14 @@ class CandidatesController < ApplicationController
   # view archetype result and submit form to complete profile
   # only signed_in candidate access this
   def archetype_result
-
+    authorize(current_candidate)
   end
 
   #should make a put but tired
   # Toggle incognito
   # only signed_in candidate access this
   def incognito
+    authorize(current_candidate)
     tracker = Mixpanel::Tracker.new(ENV["NT_MIXPANEL_TOKEN"])
     tracker.track('candidate-'+current_candidate.email, 'incognito toggle')
     @profile = current_candidate.candidate_profile
@@ -82,6 +88,7 @@ class CandidatesController < ApplicationController
   # subscribe and unsubscribe to job match alert
   # only signed in candidate access this
   def subscription
+    authorize(current_candidate)
     @profile = current_candidate.candidate_profile
     @profile.toggle!(:is_active_match_subscription)
     respond_to do |format|
@@ -96,7 +103,7 @@ class CandidatesController < ApplicationController
             .permit(:year_experience_id, :archetype_score, :first_name, :last_name,
                     candidate_profile_attributes: [:id, :avatar, :is_incognito,
                                                    :zip, :city, :state_id, :ziggeo_token,
-                                                   :education_level_id],
+                                                   :education_level_id, :resume],
                                         :experiences_attributes => [:id, :position,
                                         :company, :start_date, :end_date, :description,
                                         :is_sales, :sales_type_id, :is_current, :_destroy],

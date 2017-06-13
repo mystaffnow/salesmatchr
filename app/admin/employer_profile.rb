@@ -12,22 +12,27 @@ ActiveAdmin.register EmployerProfile do
 #   permitted << :other if resource.something?
 #   permitted
 # end
-  actions :all, :except => [:new, :create]
 
   permit_params :employer_id, :website, :ziggeo_token, :zip, :city,
                 :state_id, :description, :avatar
 
   menu priority: 2, parent: 'Employer'
 
+  controller do
+    def scoped_collection
+      super.includes([:employer, :state])
+    end
+  end
+
   index do
     id_column
 
-    column :employer_id
+    column :employer
     column :website
     column :ziggeo_token
     column :zip
     column :city
-    column :state_id, as: :select, collection: State.all.map {|x| [x.name, x.id]}, included_blank: false
+    column :state
     column :description
     column :avatar do |img|
       image_tag img.avatar.url(:medium)
@@ -53,6 +58,7 @@ ActiveAdmin.register EmployerProfile do
 
   form do |f|
     f.inputs 'Fill out the form' do
+      f.input :employer_id, as: :select, collection: Employer.all.map { |x| [x.name, x.id] }, include_blank: false
       f.input :website
       f.input :state_id, as: :select, collection: State.all.map { |x| [x.name, x.id] }, include_blank: false
       f.input :zip
