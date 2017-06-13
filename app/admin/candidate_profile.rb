@@ -13,7 +13,7 @@ ActiveAdmin.register CandidateProfile do
 #   permitted
 # end
 
-  permit_params :candidate_id, :city, :state_id, :zip, :education_level_id
+  permit_params :candidate_id, :city, :state_id, :zip, :education_level_id, :avatar, :resume
 
   menu priority: 2, parent: 'Candidate'
 
@@ -64,6 +64,7 @@ ActiveAdmin.register CandidateProfile do
 
   form do |f|
     f.inputs 'Fill out the form' do
+      f.input :candidate_id, as: :select, collection: Candidate.all.map { |x| [x.name, x.id] }, include_blank: false
       f.input :city
       f.input :state_id, as: :select, collection: State.all.map { |x| [x.name, x.id] }, include_blank: false
       f.input :zip
@@ -71,6 +72,7 @@ ActiveAdmin.register CandidateProfile do
       f.input :is_incognito
       f.input :is_active_match_subscription
       f.input :avatar, as: :file
+      f.input :resume, as: :file
       f.actions
     end
   end
