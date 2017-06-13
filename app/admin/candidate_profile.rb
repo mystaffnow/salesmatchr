@@ -13,8 +13,6 @@ ActiveAdmin.register CandidateProfile do
 #   permitted
 # end
 
-  actions :all, :except => [:new, :create]
-
   permit_params :candidate_id, :city, :state_id, :zip, :education_level_id
 
   menu priority: 2, parent: 'Candidate'
@@ -39,7 +37,11 @@ ActiveAdmin.register CandidateProfile do
     column :ziggeo_token
     column :is_incognito
     column :is_active_match_subscription
-
+    column :resume do |cp|
+      if cp.resume.present?
+        link_to 'Download', cp.resume.url
+      end
+    end
     actions
   end
 
