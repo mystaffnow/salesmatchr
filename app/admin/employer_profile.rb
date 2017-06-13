@@ -12,7 +12,6 @@ ActiveAdmin.register EmployerProfile do
 #   permitted << :other if resource.something?
 #   permitted
 # end
-  actions :all, :except => [:new, :create]
 
   permit_params :employer_id, :website, :ziggeo_token, :zip, :city,
                 :state_id, :description, :avatar
@@ -59,6 +58,7 @@ ActiveAdmin.register EmployerProfile do
 
   form do |f|
     f.inputs 'Fill out the form' do
+      f.input :employer_id, as: :select, collection: Employer.all.map { |x| [x.name, x.id] }, include_blank: false
       f.input :website
       f.input :state_id, as: :select, collection: State.all.map { |x| [x.name, x.id] }, include_blank: false
       f.input :zip
