@@ -40,6 +40,12 @@ ActiveAdmin.register Employer do
 
   member_action :archive, method: :put do
     resource.update(deleted_at: Time.now)
+
+    # employer is archived so inactive all of his jobs
+    if resource.jobs.present?
+      resource.jobs.map {|job| job.update(is_active: false)}
+    end
+
     redirect_to staffnow_employers_path, notice: "Employer record is archived."
   end
 
